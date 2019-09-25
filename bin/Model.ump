@@ -1,0 +1,74 @@
+class QuoridorSystem
+{
+}
+
+association {1 User player -- * Pawn pawn;  1 QuoridorSystem qSystem <@>- 0..* Game game; 1 QuoridorSystem qSystem <@>- 0..* User player; 1 Game game <@>- 2..4 Pawn pawn; 1 Pawn pawn -- 5..10 Wall walls;}
+class User
+{
+    userName;
+   password;
+}
+
+
+class BoardItem
+{
+  class Pawn{}
+  class Wall{}
+  currentPosition;
+}
+
+class Game
+{
+  Date startDate;
+  Time startTime;
+enum GameState {Active, Completed, Paused}
+GameState gameState;
+    Integer gameId;
+ }
+
+class Pawn
+{
+  lastPosition;
+}
+
+class Wall
+{
+  Boolean isAvailable;
+}
+
+//$?[End_of_model]$?
+
+namespace -;
+
+
+class QuoridorSystem
+{
+  position 206 12 119 41;
+}
+
+class User
+{
+  position 37 95 109 75;
+  position.association User__QuoridorSystem 101,0 0,33;
+}
+
+class BoardItem
+{
+  position 143 189 176 58;
+}
+
+class Game
+{
+  position 380 95 182 109;
+  position.association Game__QuoridorSystem 47,0 119,34;
+  }
+
+class Pawn
+{
+  position 38 318 151 58;
+}
+
+class Wall
+{
+  position 395 328 159 58;
+}
