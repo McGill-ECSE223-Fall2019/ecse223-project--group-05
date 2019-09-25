@@ -4,8 +4,8 @@
 package ca.mcgill.ecse223.quoridor.model;
 
 // line 13 "../Model.ump"
-// line 55 "../Model.ump"
-public class BoardItem
+// line 56 "../Model.ump"
+public abstract class BoardItem
 {
 
   //------------------------

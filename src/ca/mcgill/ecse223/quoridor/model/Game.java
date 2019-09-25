@@ -6,8 +6,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 20 "../Model.ump"
-// line 60 "../Model.ump"
+// line 21 "../Model.ump"
+// line 61 "../Model.ump"
 public class Game
 {
 
@@ -30,6 +30,7 @@ public class Game
   //Game Associations
   private QuoridorSystem qSystem;
   private List<Pawn> pawn;
+  private List<Wall> wall;
 
   //------------------------
   // CONSTRUCTOR
@@ -47,6 +48,7 @@ public class Game
       throw new RuntimeException("Unable to create game due to qSystem");
     }
     pawn = new ArrayList<Pawn>();
+    wall = new ArrayList<Wall>();
   }
 
   //------------------------
@@ -139,6 +141,36 @@ public class Game
     int index = pawn.indexOf(aPawn);
     return index;
   }
+  /* Code from template association_GetMany */
+  public Wall getWall(int index)
+  {
+    Wall aWall = wall.get(index);
+    return aWall;
+  }
+
+  public List<Wall> getWall()
+  {
+    List<Wall> newWall = Collections.unmodifiableList(wall);
+    return newWall;
+  }
+
+  public int numberOfWall()
+  {
+    int number = wall.size();
+    return number;
+  }
+
+  public boolean hasWall()
+  {
+    boolean has = wall.size() > 0;
+    return has;
+  }
+
+  public int indexOfWall(Wall aWall)
+  {
+    int index = wall.indexOf(aWall);
+    return index;
+  }
   /* Code from template association_SetOneToMany */
   public boolean setQSystem(QuoridorSystem aQSystem)
   {
@@ -158,23 +190,17 @@ public class Game
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_IsNumberOfValidMethod */
-  public boolean isNumberOfPawnValid()
-  {
-    boolean isValid = numberOfPawn() >= minimumNumberOfPawn() && numberOfPawn() <= maximumNumberOfPawn();
-    return isValid;
-  }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfPawn()
   {
-    return 2;
+    return 0;
   }
   /* Code from template association_MaximumNumberOfMethod */
   public static int maximumNumberOfPawn()
   {
-    return 4;
+    return 2;
   }
-  /* Code from template association_AddMNToOnlyOne */
+  /* Code from template association_AddOptionalNToOne */
   public Pawn addPawn(String aCurrentPosition, String aLastPosition, User aPlayer)
   {
     if (numberOfPawn() >= maximumNumberOfPawn())
@@ -198,12 +224,6 @@ public class Game
 
     Game existingGame = aPawn.getGame();
     boolean isNewGame = existingGame != null && !this.equals(existingGame);
-
-    if (isNewGame && existingGame.numberOfPawn() <= minimumNumberOfPawn())
-    {
-      return wasAdded;
-    }
-
     if (isNewGame)
     {
       aPawn.setGame(this);
@@ -220,18 +240,11 @@ public class Game
   {
     boolean wasRemoved = false;
     //Unable to remove aPawn, as it must always have a game
-    if (this.equals(aPawn.getGame()))
+    if (!this.equals(aPawn.getGame()))
     {
-      return wasRemoved;
+      pawn.remove(aPawn);
+      wasRemoved = true;
     }
-
-    //game already at minimum (2)
-    if (numberOfPawn() <= minimumNumberOfPawn())
-    {
-      return wasRemoved;
-    }
-    pawn.remove(aPawn);
-    wasRemoved = true;
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
@@ -266,6 +279,95 @@ public class Game
     }
     return wasAdded;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfWall()
+  {
+    return 0;
+  }
+  /* Code from template association_MaximumNumberOfMethod */
+  public static int maximumNumberOfWall()
+  {
+    return 20;
+  }
+  /* Code from template association_AddOptionalNToOne */
+  public Wall addWall(String aCurrentPosition, boolean aIsAvailable, Pawn aPawn)
+  {
+    if (numberOfWall() >= maximumNumberOfWall())
+    {
+      return null;
+    }
+    else
+    {
+      return new Wall(aCurrentPosition, aIsAvailable, aPawn, this);
+    }
+  }
+
+  public boolean addWall(Wall aWall)
+  {
+    boolean wasAdded = false;
+    if (wall.contains(aWall)) { return false; }
+    if (numberOfWall() >= maximumNumberOfWall())
+    {
+      return wasAdded;
+    }
+
+    Game existingGame = aWall.getGame();
+    boolean isNewGame = existingGame != null && !this.equals(existingGame);
+    if (isNewGame)
+    {
+      aWall.setGame(this);
+    }
+    else
+    {
+      wall.add(aWall);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeWall(Wall aWall)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aWall, as it must always have a game
+    if (!this.equals(aWall.getGame()))
+    {
+      wall.remove(aWall);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addWallAt(Wall aWall, int index)
+  {  
+    boolean wasAdded = false;
+    if(addWall(aWall))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfWall()) { index = numberOfWall() - 1; }
+      wall.remove(aWall);
+      wall.add(index, aWall);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveWallAt(Wall aWall, int index)
+  {
+    boolean wasAdded = false;
+    if(wall.contains(aWall))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfWall()) { index = numberOfWall() - 1; }
+      wall.remove(aWall);
+      wall.add(index, aWall);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addWallAt(aWall, index);
+    }
+    return wasAdded;
+  }
 
   public void delete()
   {
@@ -280,6 +382,13 @@ public class Game
       Pawn aPawn = pawn.get(pawn.size() - 1);
       aPawn.delete();
       pawn.remove(aPawn);
+    }
+    
+    while (wall.size() > 0)
+    {
+      Wall aWall = wall.get(wall.size() - 1);
+      aWall.delete();
+      wall.remove(aWall);
     }
     
   }
