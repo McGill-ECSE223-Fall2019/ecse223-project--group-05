@@ -3,9 +3,9 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 16 "../Model.ump"
-// line 34 "../Model.ump"
-// line 71 "../Model.ump"
+// line 17 "../Model.ump"
+// line 35 "../Model.ump"
+// line 72 "../Model.ump"
 public class Wall extends BoardItem
 {
 
@@ -18,12 +18,13 @@ public class Wall extends BoardItem
 
   //Wall Associations
   private Pawn pawn;
+  private Game game;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Wall(String aCurrentPosition, boolean aIsAvailable, Pawn aPawn)
+  public Wall(String aCurrentPosition, boolean aIsAvailable, Pawn aPawn, Game aGame)
   {
     super(aCurrentPosition);
     isAvailable = aIsAvailable;
@@ -31,6 +32,11 @@ public class Wall extends BoardItem
     if (!didAddPawn)
     {
       throw new RuntimeException("Unable to create wall due to pawn");
+    }
+    boolean didAddGame = setGame(aGame);
+    if (!didAddGame)
+    {
+      throw new RuntimeException("Unable to create wall due to game");
     }
   }
 
@@ -59,6 +65,11 @@ public class Wall extends BoardItem
   public Pawn getPawn()
   {
     return pawn;
+  }
+  /* Code from template association_GetOne */
+  public Game getGame()
+  {
+    return game;
   }
   /* Code from template association_SetOneToAtMostN */
   public boolean setPawn(Pawn aPawn)
@@ -91,6 +102,37 @@ public class Wall extends BoardItem
     wasSet = true;
     return wasSet;
   }
+  /* Code from template association_SetOneToAtMostN */
+  public boolean setGame(Game aGame)
+  {
+    boolean wasSet = false;
+    //Must provide game to wall
+    if (aGame == null)
+    {
+      return wasSet;
+    }
+
+    //game already at maximum (20)
+    if (aGame.numberOfWall() >= Game.maximumNumberOfWall())
+    {
+      return wasSet;
+    }
+    
+    Game existingGame = game;
+    game = aGame;
+    if (existingGame != null && !existingGame.equals(aGame))
+    {
+      boolean didRemove = existingGame.removeWall(this);
+      if (!didRemove)
+      {
+        game = existingGame;
+        return wasSet;
+      }
+    }
+    game.addWall(this);
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -100,6 +142,12 @@ public class Wall extends BoardItem
     {
       placeholderPawn.removeWall(this);
     }
+    Game placeholderGame = game;
+    this.game = null;
+    if(placeholderGame != null)
+    {
+      placeholderGame.removeWall(this);
+    }
     super.delete();
   }
 
@@ -108,6 +156,7 @@ public class Wall extends BoardItem
   {
     return super.toString() + "["+
             "isAvailable" + ":" + getIsAvailable()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "pawn = "+(getPawn()!=null?Integer.toHexString(System.identityHashCode(getPawn())):"null");
+            "  " + "pawn = "+(getPawn()!=null?Integer.toHexString(System.identityHashCode(getPawn())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null");
   }
 }

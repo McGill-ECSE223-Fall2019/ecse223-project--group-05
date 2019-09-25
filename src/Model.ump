@@ -2,7 +2,7 @@ class QuoridorSystem
 {
 }
 
-association {1 User player -- * Pawn pawn;  1 QuoridorSystem qSystem <@>- 0..* Game game; 1 QuoridorSystem qSystem <@>- 0..* User player; 1 Game game <@>- 2..4 Pawn pawn; 1 Pawn pawn -- 5..10 Wall walls;}
+association {1 User player -- * Pawn pawn;  1 QuoridorSystem qSystem <@>- 0..* Game game; 1 QuoridorSystem qSystem <@>- 0..* User player; 1 Game game <@>- 0..2 Pawn pawn; 1 Pawn pawn -- 0..10 Wall walls;1 Game game <@>- 0..20 Wall wall;}
 class User
 {
     userName;
@@ -12,6 +12,7 @@ class User
 
 class BoardItem
 {
+  abstract;
   class Pawn{}
   class Wall{}
   currentPosition;

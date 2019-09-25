@@ -4,9 +4,9 @@
 package ca.mcgill.ecse223.quoridor.model;
 import java.util.*;
 
-// line 15 "../Model.ump"
-// line 29 "../Model.ump"
-// line 66 "../Model.ump"
+// line 16 "../Model.ump"
+// line 30 "../Model.ump"
+// line 67 "../Model.ump"
 public class Pawn extends BoardItem
 {
 
@@ -128,7 +128,7 @@ public class Pawn extends BoardItem
       return wasSet;
     }
 
-    //game already at maximum (4)
+    //game already at maximum (2)
     if (aGame.numberOfPawn() >= Game.maximumNumberOfPawn())
     {
       return wasSet;
@@ -149,24 +149,18 @@ public class Pawn extends BoardItem
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_IsNumberOfValidMethod */
-  public boolean isNumberOfWallsValid()
-  {
-    boolean isValid = numberOfWalls() >= minimumNumberOfWalls() && numberOfWalls() <= maximumNumberOfWalls();
-    return isValid;
-  }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfWalls()
   {
-    return 5;
+    return 0;
   }
   /* Code from template association_MaximumNumberOfMethod */
   public static int maximumNumberOfWalls()
   {
     return 10;
   }
-  /* Code from template association_AddMNToOnlyOne */
-  public Wall addWall(String aCurrentPosition, boolean aIsAvailable)
+  /* Code from template association_AddOptionalNToOne */
+  public Wall addWall(String aCurrentPosition, boolean aIsAvailable, Game aGame)
   {
     if (numberOfWalls() >= maximumNumberOfWalls())
     {
@@ -174,7 +168,7 @@ public class Pawn extends BoardItem
     }
     else
     {
-      return new Wall(aCurrentPosition, aIsAvailable, this);
+      return new Wall(aCurrentPosition, aIsAvailable, this, aGame);
     }
   }
 
@@ -189,12 +183,6 @@ public class Pawn extends BoardItem
 
     Pawn existingPawn = aWall.getPawn();
     boolean isNewPawn = existingPawn != null && !this.equals(existingPawn);
-
-    if (isNewPawn && existingPawn.numberOfWalls() <= minimumNumberOfWalls())
-    {
-      return wasAdded;
-    }
-
     if (isNewPawn)
     {
       aWall.setPawn(this);
@@ -211,18 +199,11 @@ public class Pawn extends BoardItem
   {
     boolean wasRemoved = false;
     //Unable to remove aWall, as it must always have a pawn
-    if (this.equals(aWall.getPawn()))
+    if (!this.equals(aWall.getPawn()))
     {
-      return wasRemoved;
+      walls.remove(aWall);
+      wasRemoved = true;
     }
-
-    //pawn already at minimum (5)
-    if (numberOfWalls() <= minimumNumberOfWalls())
-    {
-      return wasRemoved;
-    }
-    walls.remove(aWall);
-    wasRemoved = true;
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
