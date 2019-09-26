@@ -37,7 +37,7 @@ Color color;
 
 class Wall
 {
-enum Orientation {Horizontal, Veritcal}
+enum Orientation {Horizontal, Vertical}
 Orientation orientation;
 Boolean isAvailable;
 }

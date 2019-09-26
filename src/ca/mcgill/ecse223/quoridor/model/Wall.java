@@ -13,7 +13,7 @@ public class Wall extends BoardItem
   // ENUMERATIONS
   //------------------------
 
-  public enum Orientation { Horizontal, Veritcal }
+  public enum Orientation { Horizontal, Vertical }
 
   //------------------------
   // MEMBER VARIABLES
