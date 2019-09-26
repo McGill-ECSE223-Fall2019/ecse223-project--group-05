@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 36 "../../../../../Model.ump"
+// line 39 "../../../../../Model.ump"
 public class Game
 {
 
@@ -30,6 +30,7 @@ public class Game
   private QuoridorSystem qSystem;
   private List<Pawn> pawn;
   private List<Wall> wall;
+  private Step firstStep;
 
   //------------------------
   // CONSTRUCTOR
@@ -169,6 +170,17 @@ public class Game
   {
     int index = wall.indexOf(aWall);
     return index;
+  }
+  /* Code from template association_GetOne */
+  public Step getFirstStep()
+  {
+    return firstStep;
+  }
+
+  public boolean hasFirstStep()
+  {
+    boolean has = firstStep != null;
+    return has;
   }
   /* Code from template association_SetOneToMany */
   public boolean setQSystem(QuoridorSystem aQSystem)
@@ -367,6 +379,14 @@ public class Game
     }
     return wasAdded;
   }
+  /* Code from template association_SetUnidirectionalOptionalOne */
+  public boolean setFirstStep(Step aNewFirstStep)
+  {
+    boolean wasSet = false;
+    firstStep = aNewFirstStep;
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -390,6 +410,7 @@ public class Game
       wall.remove(aWall);
     }
     
+    firstStep = null;
   }
 
 
@@ -400,6 +421,7 @@ public class Game
             "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "gameState" + "=" + (getGameState() != null ? !getGameState().equals(this)  ? getGameState().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "qSystem = "+(getQSystem()!=null?Integer.toHexString(System.identityHashCode(getQSystem())):"null");
+            "  " + "qSystem = "+(getQSystem()!=null?Integer.toHexString(System.identityHashCode(getQSystem())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "firstStep = "+(getFirstStep()!=null?Integer.toHexString(System.identityHashCode(getFirstStep())):"null");
   }
 }

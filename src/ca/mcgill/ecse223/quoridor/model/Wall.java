@@ -3,8 +3,8 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 33 "../../../../../Model.ump"
-// line 55 "../../../../../Model.ump"
+// line 36 "../../../../../Model.ump"
+// line 58 "../../../../../Model.ump"
 public class Wall extends BoardItem
 {
 

@@ -8,6 +8,9 @@ association
 	1 Game game <@>- 0..2 Pawn pawn; 
 	1 Pawn pawn -- 0..10 Wall walls;
 	1 Game game <@>- 0..20 Wall wall;
+	* Game game -> 0..1 Step firstStep;
+    * Step -> 1 BoardItem boardItem;
+    0..1 Step prev -- 0..1 Step next;
 }
 
 class QuoridorSystem {
@@ -58,4 +61,8 @@ class Wall {
 	enum Orientation {Horizontal, Vertical}
 	Orientation orientation;
 	Boolean isAvailable;
+}
+
+class Step{
+    String description;
 }
