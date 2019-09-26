@@ -6,8 +6,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 21 "../Model.ump"
-// line 61 "../Model.ump"
+// line 22 "../../../../../Model.ump"
+// line 66 "../../../../../Model.ump"
 public class Game
 {
 
@@ -201,7 +201,7 @@ public class Game
     return 2;
   }
   /* Code from template association_AddOptionalNToOne */
-  public Pawn addPawn(String aCurrentPosition, String aLastPosition, User aPlayer)
+  public Pawn addPawn(int aRow, Character aColumn, Pawn.Color aColor, String aLastPosition, User aPlayer)
   {
     if (numberOfPawn() >= maximumNumberOfPawn())
     {
@@ -209,7 +209,7 @@ public class Game
     }
     else
     {
-      return new Pawn(aCurrentPosition, aLastPosition, aPlayer, this);
+      return new Pawn(aRow, aColumn, aColor, aLastPosition, aPlayer, this);
     }
   }
 
@@ -290,7 +290,7 @@ public class Game
     return 20;
   }
   /* Code from template association_AddOptionalNToOne */
-  public Wall addWall(String aCurrentPosition, boolean aIsAvailable, Pawn aPawn)
+  public Wall addWall(int aRow, Character aColumn, Wall.Orientation aOrientation, boolean aIsAvailable, Pawn aPawn)
   {
     if (numberOfWall() >= maximumNumberOfWall())
     {
@@ -298,7 +298,7 @@ public class Game
     }
     else
     {
-      return new Wall(aCurrentPosition, aIsAvailable, aPawn, this);
+      return new Wall(aRow, aColumn, aOrientation, aIsAvailable, aPawn, this);
     }
   }
 

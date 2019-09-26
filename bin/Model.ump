@@ -12,11 +12,12 @@ class User
 
 class BoardItem
 {
-  abstract;
+  Integer row;
+Character column;
+abstract;
   class Pawn{}
   class Wall{}
-  currentPosition;
-}
+  }
 
 class Game
 {
@@ -29,17 +30,21 @@ GameState gameState;
 
 class Pawn
 {
+enum Color {White, Black}
+Color color;
   lastPosition;
 }
 
 class Wall
 {
-  Boolean isAvailable;
+enum Orientation {Horizontal, Veritcal}
+Orientation orientation;
+Boolean isAvailable;
 }
 
-//$?[End_of_model]$?
 
-namespace -;
+
+namespace ca.mcgill.ecse223.quoridor.model;
 
 
 class QuoridorSystem
@@ -55,7 +60,7 @@ class User
 
 class BoardItem
 {
-  position 143 189 176 58;
+  position 143 189 124 90;
 }
 
 class Game
