@@ -3,8 +3,8 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 13 "../Model.ump"
-// line 56 "../Model.ump"
+// line 13 "../../../../../Model.ump"
+// line 61 "../../../../../Model.ump"
 public abstract class BoardItem
 {
 
@@ -13,32 +13,47 @@ public abstract class BoardItem
   //------------------------
 
   //BoardItem Attributes
-  private String currentPosition;
+  private int row;
+  private Character column;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public BoardItem(String aCurrentPosition)
+  public BoardItem(int aRow, Character aColumn)
   {
-    currentPosition = aCurrentPosition;
+    row = aRow;
+    column = aColumn;
   }
 
   //------------------------
   // INTERFACE
   //------------------------
 
-  public boolean setCurrentPosition(String aCurrentPosition)
+  public boolean setRow(int aRow)
   {
     boolean wasSet = false;
-    currentPosition = aCurrentPosition;
+    row = aRow;
     wasSet = true;
     return wasSet;
   }
 
-  public String getCurrentPosition()
+  public boolean setColumn(Character aColumn)
   {
-    return currentPosition;
+    boolean wasSet = false;
+    column = aColumn;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public int getRow()
+  {
+    return row;
+  }
+
+  public Character getColumn()
+  {
+    return column;
   }
 
   public void delete()
@@ -48,6 +63,7 @@ public abstract class BoardItem
   public String toString()
   {
     return super.toString() + "["+
-            "currentPosition" + ":" + getCurrentPosition()+ "]";
+            "row" + ":" + getRow()+ "," +
+            "column" + ":" + getColumn()+ "]";
   }
 }

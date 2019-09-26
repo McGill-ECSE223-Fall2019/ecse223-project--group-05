@@ -4,17 +4,24 @@
 package ca.mcgill.ecse223.quoridor.model;
 import java.util.*;
 
-// line 16 "../Model.ump"
-// line 30 "../Model.ump"
-// line 67 "../Model.ump"
+// line 18 "../../../../../Model.ump"
+// line 31 "../../../../../Model.ump"
+// line 72 "../../../../../Model.ump"
 public class Pawn extends BoardItem
 {
+
+  //------------------------
+  // ENUMERATIONS
+  //------------------------
+
+  public enum Color { White, Black }
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
   //Pawn Attributes
+  private Color color;
   private String lastPosition;
 
   //Pawn Associations
@@ -26,9 +33,10 @@ public class Pawn extends BoardItem
   // CONSTRUCTOR
   //------------------------
 
-  public Pawn(String aCurrentPosition, String aLastPosition, User aPlayer, Game aGame)
+  public Pawn(int aRow, Character aColumn, Color aColor, String aLastPosition, User aPlayer, Game aGame)
   {
-    super(aCurrentPosition);
+    super(aRow, aColumn);
+    color = aColor;
     lastPosition = aLastPosition;
     boolean didAddPlayer = setPlayer(aPlayer);
     if (!didAddPlayer)
@@ -47,12 +55,25 @@ public class Pawn extends BoardItem
   // INTERFACE
   //------------------------
 
+  public boolean setColor(Color aColor)
+  {
+    boolean wasSet = false;
+    color = aColor;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setLastPosition(String aLastPosition)
   {
     boolean wasSet = false;
     lastPosition = aLastPosition;
     wasSet = true;
     return wasSet;
+  }
+
+  public Color getColor()
+  {
+    return color;
   }
 
   public String getLastPosition()
@@ -160,7 +181,7 @@ public class Pawn extends BoardItem
     return 10;
   }
   /* Code from template association_AddOptionalNToOne */
-  public Wall addWall(String aCurrentPosition, boolean aIsAvailable, Game aGame)
+  public Wall addWall(int aRow, Character aColumn, Wall.Orientation aOrientation, boolean aIsAvailable, Game aGame)
   {
     if (numberOfWalls() >= maximumNumberOfWalls())
     {
@@ -168,7 +189,7 @@ public class Pawn extends BoardItem
     }
     else
     {
-      return new Wall(aCurrentPosition, aIsAvailable, this, aGame);
+      return new Wall(aRow, aColumn, aOrientation, aIsAvailable, this, aGame);
     }
   }
 
@@ -266,6 +287,7 @@ public class Pawn extends BoardItem
   {
     return super.toString() + "["+
             "lastPosition" + ":" + getLastPosition()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "color" + "=" + (getColor() != null ? !getColor().equals(this)  ? getColor().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null");
   }

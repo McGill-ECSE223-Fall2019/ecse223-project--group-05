@@ -3,17 +3,24 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 17 "../Model.ump"
-// line 35 "../Model.ump"
-// line 72 "../Model.ump"
+// line 19 "../../../../../Model.ump"
+// line 38 "../../../../../Model.ump"
+// line 77 "../../../../../Model.ump"
 public class Wall extends BoardItem
 {
+
+  //------------------------
+  // ENUMERATIONS
+  //------------------------
+
+  public enum Orientation { Horizontal, Veritcal }
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
   //Wall Attributes
+  private Orientation orientation;
   private boolean isAvailable;
 
   //Wall Associations
@@ -24,9 +31,10 @@ public class Wall extends BoardItem
   // CONSTRUCTOR
   //------------------------
 
-  public Wall(String aCurrentPosition, boolean aIsAvailable, Pawn aPawn, Game aGame)
+  public Wall(int aRow, Character aColumn, Orientation aOrientation, boolean aIsAvailable, Pawn aPawn, Game aGame)
   {
-    super(aCurrentPosition);
+    super(aRow, aColumn);
+    orientation = aOrientation;
     isAvailable = aIsAvailable;
     boolean didAddPawn = setPawn(aPawn);
     if (!didAddPawn)
@@ -44,12 +52,25 @@ public class Wall extends BoardItem
   // INTERFACE
   //------------------------
 
+  public boolean setOrientation(Orientation aOrientation)
+  {
+    boolean wasSet = false;
+    orientation = aOrientation;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setIsAvailable(boolean aIsAvailable)
   {
     boolean wasSet = false;
     isAvailable = aIsAvailable;
     wasSet = true;
     return wasSet;
+  }
+
+  public Orientation getOrientation()
+  {
+    return orientation;
   }
 
   public boolean getIsAvailable()
@@ -156,6 +177,7 @@ public class Wall extends BoardItem
   {
     return super.toString() + "["+
             "isAvailable" + ":" + getIsAvailable()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "orientation" + "=" + (getOrientation() != null ? !getOrientation().equals(this)  ? getOrientation().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "pawn = "+(getPawn()!=null?Integer.toHexString(System.identityHashCode(getPawn())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null");
   }
