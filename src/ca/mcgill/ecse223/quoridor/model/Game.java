@@ -6,8 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 22 "../../../../../Model.ump"
-// line 66 "../../../../../Model.ump"
+// line 36 "../../../../../Model.ump"
 public class Game
 {
 
