@@ -6,8 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 22 "../../../../../Model.ump"
-// line 66 "../../../../../Model.ump"
+// line 40 "../../../../../Model.ump"
 public class Game
 {
 
@@ -31,6 +30,8 @@ public class Game
   private QuoridorSystem qSystem;
   private List<Pawn> pawn;
   private List<Wall> wall;
+  private List<Step> allSteps;
+  private Step currentStep;
 
   //------------------------
   // CONSTRUCTOR
@@ -49,6 +50,7 @@ public class Game
     }
     pawn = new ArrayList<Pawn>();
     wall = new ArrayList<Wall>();
+    allSteps = new ArrayList<Step>();
   }
 
   //------------------------
@@ -170,6 +172,47 @@ public class Game
   {
     int index = wall.indexOf(aWall);
     return index;
+  }
+  /* Code from template association_GetMany */
+  public Step getAllStep(int index)
+  {
+    Step aAllStep = allSteps.get(index);
+    return aAllStep;
+  }
+
+  public List<Step> getAllSteps()
+  {
+    List<Step> newAllSteps = Collections.unmodifiableList(allSteps);
+    return newAllSteps;
+  }
+
+  public int numberOfAllSteps()
+  {
+    int number = allSteps.size();
+    return number;
+  }
+
+  public boolean hasAllSteps()
+  {
+    boolean has = allSteps.size() > 0;
+    return has;
+  }
+
+  public int indexOfAllStep(Step aAllStep)
+  {
+    int index = allSteps.indexOf(aAllStep);
+    return index;
+  }
+  /* Code from template association_GetOne */
+  public Step getCurrentStep()
+  {
+    return currentStep;
+  }
+
+  public boolean hasCurrentStep()
+  {
+    boolean has = currentStep != null;
+    return has;
   }
   /* Code from template association_SetOneToMany */
   public boolean setQSystem(QuoridorSystem aQSystem)
@@ -368,6 +411,71 @@ public class Game
     }
     return wasAdded;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfAllSteps()
+  {
+    return 0;
+  }
+  /* Code from template association_AddUnidirectionalMany */
+  public boolean addAllStep(Step aAllStep)
+  {
+    boolean wasAdded = false;
+    if (allSteps.contains(aAllStep)) { return false; }
+    allSteps.add(aAllStep);
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeAllStep(Step aAllStep)
+  {
+    boolean wasRemoved = false;
+    if (allSteps.contains(aAllStep))
+    {
+      allSteps.remove(aAllStep);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addAllStepAt(Step aAllStep, int index)
+  {  
+    boolean wasAdded = false;
+    if(addAllStep(aAllStep))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfAllSteps()) { index = numberOfAllSteps() - 1; }
+      allSteps.remove(aAllStep);
+      allSteps.add(index, aAllStep);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveAllStepAt(Step aAllStep, int index)
+  {
+    boolean wasAdded = false;
+    if(allSteps.contains(aAllStep))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfAllSteps()) { index = numberOfAllSteps() - 1; }
+      allSteps.remove(aAllStep);
+      allSteps.add(index, aAllStep);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addAllStepAt(aAllStep, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_SetUnidirectionalOptionalOne */
+  public boolean setCurrentStep(Step aNewCurrentStep)
+  {
+    boolean wasSet = false;
+    currentStep = aNewCurrentStep;
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -391,6 +499,8 @@ public class Game
       wall.remove(aWall);
     }
     
+    allSteps.clear();
+    currentStep = null;
   }
 
 
@@ -401,6 +511,7 @@ public class Game
             "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "gameState" + "=" + (getGameState() != null ? !getGameState().equals(this)  ? getGameState().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "qSystem = "+(getQSystem()!=null?Integer.toHexString(System.identityHashCode(getQSystem())):"null");
+            "  " + "qSystem = "+(getQSystem()!=null?Integer.toHexString(System.identityHashCode(getQSystem())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "currentStep = "+(getCurrentStep()!=null?Integer.toHexString(System.identityHashCode(getCurrentStep())):"null");
   }
 }

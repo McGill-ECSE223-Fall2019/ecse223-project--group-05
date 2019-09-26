@@ -6,8 +6,7 @@ import java.util.*;
 import java.sql.Date;
 import java.sql.Time;
 
-// line 1 "../../../../../Model.ump"
-// line 50 "../../../../../Model.ump"
+// line 17 "../../../../../Model.ump"
 public class QuoridorSystem
 {
 

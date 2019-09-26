@@ -1,80 +1,73 @@
-class QuoridorSystem
-{
-}
-
-association {1 User player -- * Pawn pawn;  1 QuoridorSystem qSystem <@>- 0..* Game game; 1 QuoridorSystem qSystem <@>- 0..* User player; 1 Game game <@>- 0..2 Pawn pawn; 1 Pawn pawn -- 0..10 Wall walls;1 Game game <@>- 0..20 Wall wall;}
-class User
-{
-    userName;
-   password;
-}
-
-
-class BoardItem
-{
-  Integer row;
-Character column;
-abstract;
-  class Pawn{}
-  class Wall{}
-  }
-
-class Game
-{
-  Date startDate;
-  Time startTime;
-enum GameState {Active, Completed, Paused}
-GameState gameState;
-    Integer gameId;
- }
-
-class Pawn
-{
-enum Color {White, Black}
-Color color;
-  lastPosition;
-}
-
-class Wall
-{
-enum Orientation {Horizontal, Vertical}
-Orientation orientation;
-Boolean isAvailable;
-}
-
-
-
 namespace ca.mcgill.ecse223.quoridor.model;
 
-
-class QuoridorSystem
+association 
 {
-  position 206 12 119 41;
+	1 User player -- * Pawn pawn;  
+	1 QuoridorSystem qSystem <@>- 0..* Game game; 
+	1 QuoridorSystem qSystem <@>- 0..* User player; 
+	1 Game game <@>- 0..2 Pawn pawn; 
+	1 Pawn pawn -- 0..10 Wall walls;
+	1 Game game <@>- 0..20 Wall wall;
+	* Game game -> * Step allSteps;
+	* Game game -> 0..1 Step currentStep;
+    * Step -> 1 BoardItem boardItem;
+    0..1 Step prev -- 0..1 Step next;
 }
 
-class User
-{
-  position 37 95 109 75;
-  position.association User__QuoridorSystem 101,0 0,33;
+class QuoridorSystem {
+	position 206 12 119 41;
 }
 
-class BoardItem
-{
-  position 143 189 124 90;
+class User {
+	position 37 95 109 75;
+	
+	position.association User__QuoridorSystem 101,0 0,33;
+	userName;
+	password;
 }
 
-class Game
-{
-  position 380 95 182 109;
-  position.association Game__QuoridorSystem 47,0 119,34;
-  }
 
-class Pawn
-{
-  position 38 318 151 58;
+class BoardItem {
+	position 143 189 124 90;
+	
+	Integer row;
+	Character column;
+	abstract;
+  	class Pawn{}
+  	class Wall{}
 }
 
-class Wall
-{
-  position 395 328 159 58;
+class Game {
+	position 380 95 182 109;
+	
+	position.association Game__QuoridorSystem 47,0 119,34;
+	Date startDate;
+	Time startTime;
+	enum GameState {Active, Completed, Paused}
+	GameState gameState;
+	Integer gameId;
+}
+
+class Pawn {
+	position 38 318 151 58;
+	
+	enum Color {White, Black}
+	Color color;
+	lastPosition;
+}
+
+class Wall {
+	position 395 328 159 58;
+	
+	enum Orientation {Horizontal, Vertical}
+	Orientation orientation;
+	Boolean isAvailable;
+}
+
+class Step{
+    position 600 225 200 100;
+    
+    log;
+    enum StepType {regularJump,largeJump,wallPlace}
+    StepType stepType;
 }
