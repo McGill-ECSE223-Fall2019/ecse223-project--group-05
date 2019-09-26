@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 29 "../../../../../Model.ump"
+// line 30 "../../../../../Model.ump"
 public abstract class BoardItem
 {
 

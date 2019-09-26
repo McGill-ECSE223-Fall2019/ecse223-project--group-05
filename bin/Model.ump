@@ -8,7 +8,8 @@ association
 	1 Game game <@>- 0..2 Pawn pawn; 
 	1 Pawn pawn -- 0..10 Wall walls;
 	1 Game game <@>- 0..20 Wall wall;
-	* Game game -> 0..1 Step firstStep;
+	* Game game -> * Step allSteps;
+	* Game game -> 0..1 Step currentStep;
     * Step -> 1 BoardItem boardItem;
     0..1 Step prev -- 0..1 Step next;
 }
@@ -64,5 +65,9 @@ class Wall {
 }
 
 class Step{
-    String description;
+    position 600 225 200 100;
+    
+    log;
+    enum StepType {regularJump,largeJump,wallPlace}
+    StepType stepType;
 }

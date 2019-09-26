@@ -3,16 +3,23 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 66 "../../../../../Model.ump"
+// line 67 "../../../../../Model.ump"
 public class Step
 {
+
+  //------------------------
+  // ENUMERATIONS
+  //------------------------
+
+  public enum StepType { RegularJump, LargeJump, WallPlace }
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
   //Step Attributes
-  private String description;
+  private String log;
+  private StepType stepType;
 
   //Step Associations
   private BoardItem boardItem;
@@ -23,9 +30,10 @@ public class Step
   // CONSTRUCTOR
   //------------------------
 
-  public Step(String aDescription, BoardItem aBoardItem)
+  public Step(String aLog, StepType aStepType, BoardItem aBoardItem)
   {
-    description = aDescription;
+    log = aLog;
+    stepType = aStepType;
     if (!setBoardItem(aBoardItem))
     {
       throw new RuntimeException("Unable to create Step due to aBoardItem");
@@ -36,17 +44,30 @@ public class Step
   // INTERFACE
   //------------------------
 
-  public boolean setDescription(String aDescription)
+  public boolean setLog(String aLog)
   {
     boolean wasSet = false;
-    description = aDescription;
+    log = aLog;
     wasSet = true;
     return wasSet;
   }
 
-  public String getDescription()
+  public boolean setStepType(StepType aStepType)
   {
-    return description;
+    boolean wasSet = false;
+    stepType = aStepType;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public String getLog()
+  {
+    return log;
+  }
+
+  public StepType getStepType()
+  {
+    return stepType;
   }
   /* Code from template association_GetOne */
   public BoardItem getBoardItem()
@@ -170,7 +191,8 @@ public class Step
   public String toString()
   {
     return super.toString() + "["+
-            "description" + ":" + getDescription()+ "]" + System.getProperties().getProperty("line.separator") +
+            "log" + ":" + getLog()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "stepType" + "=" + (getStepType() != null ? !getStepType().equals(this)  ? getStepType().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "boardItem = "+(getBoardItem()!=null?Integer.toHexString(System.identityHashCode(getBoardItem())):"null");
   }
 }
