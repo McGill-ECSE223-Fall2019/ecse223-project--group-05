@@ -12,6 +12,14 @@ association
 	* Game game -> 0..1 Step currentStep;
     * Step -> 1 BoardItem boardItem;
     0..1 Step prev -- 0..1 Step next;
+  1 Game game -- 81 Tile tiles;
+  0..1 Pawn pawnOnTile -- 1 Tile pos;
+}
+
+class Tile
+{
+  Integer row;
+  Character column;
 }
 
 class QuoridorSystem {
