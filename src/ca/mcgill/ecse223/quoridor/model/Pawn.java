@@ -2,17 +2,18 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.quoridor.model;
+import java.sql.Time;
 import java.util.*;
 
-// line 36 "../../../../../Model.ump"
-// line 51 "../../../../../Model.ump"
-public class Pawn extends BoardItem
+// line 61 "../../../../../Model.ump"
+public class Pawn
 {
 
   //------------------------
   // ENUMERATIONS
   //------------------------
 
+  public enum Orientation { Horizontal, Vertical }
   public enum Color { White, Black }
 
   //------------------------
@@ -21,22 +22,22 @@ public class Pawn extends BoardItem
 
   //Pawn Attributes
   private Color color;
-  private String lastPosition;
+  private Time thinkingTime;
 
   //Pawn Associations
   private User player;
   private Game game;
   private List<Wall> walls;
+  private Tile tile;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Pawn(int aRow, Character aColumn, Color aColor, String aLastPosition, User aPlayer, Game aGame)
+  public Pawn(Color aColor, Time aThinkingTime, User aPlayer, Game aGame, Tile aTile)
   {
-    super(aRow, aColumn);
     color = aColor;
-    lastPosition = aLastPosition;
+    thinkingTime = aThinkingTime;
     boolean didAddPlayer = setPlayer(aPlayer);
     if (!didAddPlayer)
     {
@@ -48,6 +49,11 @@ public class Pawn extends BoardItem
       throw new RuntimeException("Unable to create pawn due to game");
     }
     walls = new ArrayList<Wall>();
+    boolean didAddTile = setTile(aTile);
+    if (!didAddTile)
+    {
+      throw new RuntimeException("Unable to create pawn due to tile");
+    }
   }
 
   //------------------------
@@ -62,10 +68,10 @@ public class Pawn extends BoardItem
     return wasSet;
   }
 
-  public boolean setLastPosition(String aLastPosition)
+  public boolean setThinkingTime(Time aThinkingTime)
   {
     boolean wasSet = false;
-    lastPosition = aLastPosition;
+    thinkingTime = aThinkingTime;
     wasSet = true;
     return wasSet;
   }
@@ -75,9 +81,9 @@ public class Pawn extends BoardItem
     return color;
   }
 
-  public String getLastPosition()
+  public Time getThinkingTime()
   {
-    return lastPosition;
+    return thinkingTime;
   }
   /* Code from template association_GetOne */
   public User getPlayer()
@@ -119,6 +125,11 @@ public class Pawn extends BoardItem
     int index = walls.indexOf(aWall);
     return index;
   }
+  /* Code from template association_GetOne */
+  public Tile getTile()
+  {
+    return tile;
+  }
   /* Code from template association_SetOneToMany */
   public boolean setPlayer(User aPlayer)
   {
@@ -149,7 +160,7 @@ public class Pawn extends BoardItem
     }
 
     //game already at maximum (2)
-    if (aGame.numberOfPawn() >= Game.maximumNumberOfPawn())
+    if (aGame.numberOfPawns() >= Game.maximumNumberOfPawns())
     {
       return wasSet;
     }
@@ -179,19 +190,7 @@ public class Pawn extends BoardItem
   {
     return 10;
   }
-  /* Code from template association_AddOptionalNToOne */
-  public Wall addWall(int aRow, Character aColumn, Wall.Orientation aOrientation, boolean aIsAvailable, Game aGame)
-  {
-    if (numberOfWalls() >= maximumNumberOfWalls())
-    {
-      return null;
-    }
-    else
-    {
-      return new Wall(aRow, aColumn, aOrientation, aIsAvailable, this, aGame);
-    }
-  }
-
+  /* Code from template association_AddOptionalNToOptionalOne */
   public boolean addWall(Wall aWall)
   {
     boolean wasAdded = false;
@@ -202,10 +201,14 @@ public class Pawn extends BoardItem
     }
 
     Pawn existingPawn = aWall.getPawn();
-    boolean isNewPawn = existingPawn != null && !this.equals(existingPawn);
-    if (isNewPawn)
+    if (existingPawn == null)
     {
       aWall.setPawn(this);
+    }
+    else if (!this.equals(existingPawn))
+    {
+      existingPawn.removeWall(aWall);
+      addWall(aWall);
     }
     else
     {
@@ -218,10 +221,10 @@ public class Pawn extends BoardItem
   public boolean removeWall(Wall aWall)
   {
     boolean wasRemoved = false;
-    //Unable to remove aWall, as it must always have a pawn
-    if (!this.equals(aWall.getPawn()))
+    if (walls.contains(aWall))
     {
       walls.remove(aWall);
+      aWall.setPawn(null);
       wasRemoved = true;
     }
     return wasRemoved;
@@ -258,6 +261,34 @@ public class Pawn extends BoardItem
     }
     return wasAdded;
   }
+  /* Code from template association_SetOneToOptionalOne */
+  public boolean setTile(Tile aNewTile)
+  {
+    boolean wasSet = false;
+    if (aNewTile == null)
+    {
+      //Unable to setTile to null, as pawn must always be associated to a tile
+      return wasSet;
+    }
+    
+    Pawn existingPawn = aNewTile.getPawn();
+    if (existingPawn != null && !equals(existingPawn))
+    {
+      //Unable to setTile, the current tile already has a pawn, which would be orphaned if it were re-assigned
+      return wasSet;
+    }
+    
+    Tile anOldTile = tile;
+    tile = aNewTile;
+    tile.setPawn(this);
+
+    if (anOldTile != null)
+    {
+      anOldTile.setPawn(null);
+    }
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -273,21 +304,26 @@ public class Pawn extends BoardItem
     {
       placeholderGame.removePawn(this);
     }
-    for(int i=walls.size(); i > 0; i--)
+    while( !walls.isEmpty() )
     {
-      Wall aWall = walls.get(i - 1);
-      aWall.delete();
+      walls.get(0).setPawn(null);
     }
-    super.delete();
+    Tile existingTile = tile;
+    tile = null;
+    if (existingTile != null)
+    {
+      existingTile.setPawn(null);
+    }
   }
 
 
   public String toString()
   {
-    return super.toString() + "["+
-            "lastPosition" + ":" + getLastPosition()+ "]" + System.getProperties().getProperty("line.separator") +
+    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "color" + "=" + (getColor() != null ? !getColor().equals(this)  ? getColor().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "thinkingTime" + "=" + (getThinkingTime() != null ? !getThinkingTime().equals(this)  ? getThinkingTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null");
+            "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "tile = "+(getTile()!=null?Integer.toHexString(System.identityHashCode(getTile())):"null");
   }
 }

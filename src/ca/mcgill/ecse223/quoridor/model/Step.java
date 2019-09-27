@@ -2,16 +2,11 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.quoridor.model;
+import java.util.*;
 
-// line 67 "../../../../../Model.ump"
+// line 77 "../../../../../Model.ump"
 public class Step
 {
-
-  //------------------------
-  // ENUMERATIONS
-  //------------------------
-
-  public enum StepType { RegularJump, LargeJump, WallPlace }
 
   //------------------------
   // MEMBER VARIABLES
@@ -19,25 +14,20 @@ public class Step
 
   //Step Attributes
   private String log;
-  private StepType stepType;
 
   //Step Associations
-  private BoardItem boardItem;
   private Step next;
   private Step prev;
+  private List<Tile> tiles;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Step(String aLog, StepType aStepType, BoardItem aBoardItem)
+  public Step(String aLog)
   {
     log = aLog;
-    stepType = aStepType;
-    if (!setBoardItem(aBoardItem))
-    {
-      throw new RuntimeException("Unable to create Step due to aBoardItem");
-    }
+    tiles = new ArrayList<Tile>();
   }
 
   //------------------------
@@ -52,27 +42,9 @@ public class Step
     return wasSet;
   }
 
-  public boolean setStepType(StepType aStepType)
-  {
-    boolean wasSet = false;
-    stepType = aStepType;
-    wasSet = true;
-    return wasSet;
-  }
-
   public String getLog()
   {
     return log;
-  }
-
-  public StepType getStepType()
-  {
-    return stepType;
-  }
-  /* Code from template association_GetOne */
-  public BoardItem getBoardItem()
-  {
-    return boardItem;
   }
   /* Code from template association_GetOne */
   public Step getNext()
@@ -96,16 +68,35 @@ public class Step
     boolean has = prev != null;
     return has;
   }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setBoardItem(BoardItem aNewBoardItem)
+  /* Code from template association_GetMany */
+  public Tile getTile(int index)
   {
-    boolean wasSet = false;
-    if (aNewBoardItem != null)
-    {
-      boardItem = aNewBoardItem;
-      wasSet = true;
-    }
-    return wasSet;
+    Tile aTile = tiles.get(index);
+    return aTile;
+  }
+
+  public List<Tile> getTiles()
+  {
+    List<Tile> newTiles = Collections.unmodifiableList(tiles);
+    return newTiles;
+  }
+
+  public int numberOfTiles()
+  {
+    int number = tiles.size();
+    return number;
+  }
+
+  public boolean hasTiles()
+  {
+    boolean has = tiles.size() > 0;
+    return has;
+  }
+
+  public int indexOfTile(Tile aTile)
+  {
+    int index = tiles.indexOf(aTile);
+    return index;
   }
   /* Code from template association_SetOptionalOneToOptionalOne */
   public boolean setNext(Step aNewNext)
@@ -173,10 +164,101 @@ public class Step
     wasSet = true;
     return wasSet;
   }
+  /* Code from template association_IsNumberOfValidMethod */
+  public boolean isNumberOfTilesValid()
+  {
+    boolean isValid = numberOfTiles() >= minimumNumberOfTiles();
+    return isValid;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfTiles()
+  {
+    return 1;
+  }
+  /* Code from template association_AddMandatoryManyToOne */
+  public Tile addTile(int aRow, Character aColumn, Game aGame)
+  {
+    Tile aNewTile = new Tile(aRow, aColumn, aGame, this);
+    return aNewTile;
+  }
+
+  public boolean addTile(Tile aTile)
+  {
+    boolean wasAdded = false;
+    if (tiles.contains(aTile)) { return false; }
+    Step existingStep = aTile.getStep();
+    boolean isNewStep = existingStep != null && !this.equals(existingStep);
+
+    if (isNewStep && existingStep.numberOfTiles() <= minimumNumberOfTiles())
+    {
+      return wasAdded;
+    }
+    if (isNewStep)
+    {
+      aTile.setStep(this);
+    }
+    else
+    {
+      tiles.add(aTile);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeTile(Tile aTile)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aTile, as it must always have a step
+    if (this.equals(aTile.getStep()))
+    {
+      return wasRemoved;
+    }
+
+    //step already at minimum (1)
+    if (numberOfTiles() <= minimumNumberOfTiles())
+    {
+      return wasRemoved;
+    }
+
+    tiles.remove(aTile);
+    wasRemoved = true;
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addTileAt(Tile aTile, int index)
+  {  
+    boolean wasAdded = false;
+    if(addTile(aTile))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfTiles()) { index = numberOfTiles() - 1; }
+      tiles.remove(aTile);
+      tiles.add(index, aTile);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveTileAt(Tile aTile, int index)
+  {
+    boolean wasAdded = false;
+    if(tiles.contains(aTile))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfTiles()) { index = numberOfTiles() - 1; }
+      tiles.remove(aTile);
+      tiles.add(index, aTile);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addTileAt(aTile, index);
+    }
+    return wasAdded;
+  }
 
   public void delete()
   {
-    boardItem = null;
     if (next != null)
     {
       next.setPrev(null);
@@ -185,14 +267,17 @@ public class Step
     {
       prev.setNext(null);
     }
+    for(int i=tiles.size(); i > 0; i--)
+    {
+      Tile aTile = tiles.get(i - 1);
+      aTile.delete();
+    }
   }
 
 
   public String toString()
   {
     return super.toString() + "["+
-            "log" + ":" + getLog()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "stepType" + "=" + (getStepType() != null ? !getStepType().equals(this)  ? getStepType().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "boardItem = "+(getBoardItem()!=null?Integer.toHexString(System.identityHashCode(getBoardItem())):"null");
+            "log" + ":" + getLog()+ "]";
   }
 }
