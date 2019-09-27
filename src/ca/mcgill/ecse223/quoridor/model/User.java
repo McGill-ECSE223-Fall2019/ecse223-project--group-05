@@ -3,8 +3,9 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 import java.util.*;
+import java.sql.Time;
 
-// line 21 "../../../../../Model.ump"
+// line 42 "../../../../../Model.ump"
 public class User
 {
 
@@ -106,9 +107,9 @@ public class User
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Pawn addPawn(int aRow, Character aColumn, Pawn.Color aColor, String aLastPosition, Game aGame)
+  public Pawn addPawn(Pawn.Color aColor, Time aThinkingTime, Game aGame, Tile aTile)
   {
-    return new Pawn(aRow, aColumn, aColor, aLastPosition, this, aGame);
+    return new Pawn(aColor, aThinkingTime, this, aGame, aTile);
   }
 
   public boolean addPawn(Pawn aPawn)

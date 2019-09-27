@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 40 "../../../../../Model.ump"
+// line 50 "../../../../../Model.ump"
 public class Game
 {
 
@@ -14,6 +14,7 @@ public class Game
   // ENUMERATIONS
   //------------------------
 
+  public enum Orientation { Horizontal, Vertical }
   public enum GameState { Active, Completed, Paused }
 
   //------------------------
@@ -28,10 +29,11 @@ public class Game
 
   //Game Associations
   private QuoridorSystem qSystem;
-  private List<Pawn> pawn;
-  private List<Wall> wall;
-  private List<Step> allSteps;
+  private List<Pawn> pawns;
+  private List<Wall> walls;
+  private List<Step> steps;
   private Step currentStep;
+  private List<Tile> tiles;
 
   //------------------------
   // CONSTRUCTOR
@@ -48,9 +50,10 @@ public class Game
     {
       throw new RuntimeException("Unable to create game due to qSystem");
     }
-    pawn = new ArrayList<Pawn>();
-    wall = new ArrayList<Wall>();
-    allSteps = new ArrayList<Step>();
+    pawns = new ArrayList<Pawn>();
+    walls = new ArrayList<Wall>();
+    steps = new ArrayList<Step>();
+    tiles = new ArrayList<Tile>();
   }
 
   //------------------------
@@ -116,91 +119,91 @@ public class Game
   /* Code from template association_GetMany */
   public Pawn getPawn(int index)
   {
-    Pawn aPawn = pawn.get(index);
+    Pawn aPawn = pawns.get(index);
     return aPawn;
   }
 
-  public List<Pawn> getPawn()
+  public List<Pawn> getPawns()
   {
-    List<Pawn> newPawn = Collections.unmodifiableList(pawn);
-    return newPawn;
+    List<Pawn> newPawns = Collections.unmodifiableList(pawns);
+    return newPawns;
   }
 
-  public int numberOfPawn()
+  public int numberOfPawns()
   {
-    int number = pawn.size();
+    int number = pawns.size();
     return number;
   }
 
-  public boolean hasPawn()
+  public boolean hasPawns()
   {
-    boolean has = pawn.size() > 0;
+    boolean has = pawns.size() > 0;
     return has;
   }
 
   public int indexOfPawn(Pawn aPawn)
   {
-    int index = pawn.indexOf(aPawn);
+    int index = pawns.indexOf(aPawn);
     return index;
   }
   /* Code from template association_GetMany */
   public Wall getWall(int index)
   {
-    Wall aWall = wall.get(index);
+    Wall aWall = walls.get(index);
     return aWall;
   }
 
-  public List<Wall> getWall()
+  public List<Wall> getWalls()
   {
-    List<Wall> newWall = Collections.unmodifiableList(wall);
-    return newWall;
+    List<Wall> newWalls = Collections.unmodifiableList(walls);
+    return newWalls;
   }
 
-  public int numberOfWall()
+  public int numberOfWalls()
   {
-    int number = wall.size();
+    int number = walls.size();
     return number;
   }
 
-  public boolean hasWall()
+  public boolean hasWalls()
   {
-    boolean has = wall.size() > 0;
+    boolean has = walls.size() > 0;
     return has;
   }
 
   public int indexOfWall(Wall aWall)
   {
-    int index = wall.indexOf(aWall);
+    int index = walls.indexOf(aWall);
     return index;
   }
   /* Code from template association_GetMany */
-  public Step getAllStep(int index)
+  public Step getStep(int index)
   {
-    Step aAllStep = allSteps.get(index);
-    return aAllStep;
+    Step aStep = steps.get(index);
+    return aStep;
   }
 
-  public List<Step> getAllSteps()
+  public List<Step> getSteps()
   {
-    List<Step> newAllSteps = Collections.unmodifiableList(allSteps);
-    return newAllSteps;
+    List<Step> newSteps = Collections.unmodifiableList(steps);
+    return newSteps;
   }
 
-  public int numberOfAllSteps()
+  public int numberOfSteps()
   {
-    int number = allSteps.size();
+    int number = steps.size();
     return number;
   }
 
-  public boolean hasAllSteps()
+  public boolean hasSteps()
   {
-    boolean has = allSteps.size() > 0;
+    boolean has = steps.size() > 0;
     return has;
   }
 
-  public int indexOfAllStep(Step aAllStep)
+  public int indexOfStep(Step aStep)
   {
-    int index = allSteps.indexOf(aAllStep);
+    int index = steps.indexOf(aStep);
     return index;
   }
   /* Code from template association_GetOne */
@@ -213,6 +216,36 @@ public class Game
   {
     boolean has = currentStep != null;
     return has;
+  }
+  /* Code from template association_GetMany */
+  public Tile getTile(int index)
+  {
+    Tile aTile = tiles.get(index);
+    return aTile;
+  }
+
+  public List<Tile> getTiles()
+  {
+    List<Tile> newTiles = Collections.unmodifiableList(tiles);
+    return newTiles;
+  }
+
+  public int numberOfTiles()
+  {
+    int number = tiles.size();
+    return number;
+  }
+
+  public boolean hasTiles()
+  {
+    boolean has = tiles.size() > 0;
+    return has;
+  }
+
+  public int indexOfTile(Tile aTile)
+  {
+    int index = tiles.indexOf(aTile);
+    return index;
   }
   /* Code from template association_SetOneToMany */
   public boolean setQSystem(QuoridorSystem aQSystem)
@@ -233,47 +266,64 @@ public class Game
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfPawn()
+  /* Code from template association_IsNumberOfValidMethod */
+  public boolean isNumberOfPawnsValid()
   {
-    return 0;
+    boolean isValid = numberOfPawns() >= minimumNumberOfPawns() && numberOfPawns() <= maximumNumberOfPawns();
+    return isValid;
   }
-  /* Code from template association_MaximumNumberOfMethod */
-  public static int maximumNumberOfPawn()
+  /* Code from template association_RequiredNumberOfMethod */
+  public static int requiredNumberOfPawns()
   {
     return 2;
   }
-  /* Code from template association_AddOptionalNToOne */
-  public Pawn addPawn(int aRow, Character aColumn, Pawn.Color aColor, String aLastPosition, User aPlayer)
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfPawns()
   {
-    if (numberOfPawn() >= maximumNumberOfPawn())
+    return 2;
+  }
+  /* Code from template association_MaximumNumberOfMethod */
+  public static int maximumNumberOfPawns()
+  {
+    return 2;
+  }
+  /* Code from template association_AddMNToOnlyOne */
+  public Pawn addPawn(Pawn.Color aColor, Time aThinkingTime, User aPlayer, Tile aTile)
+  {
+    if (numberOfPawns() >= maximumNumberOfPawns())
     {
       return null;
     }
     else
     {
-      return new Pawn(aRow, aColumn, aColor, aLastPosition, aPlayer, this);
+      return new Pawn(aColor, aThinkingTime, aPlayer, this, aTile);
     }
   }
 
   public boolean addPawn(Pawn aPawn)
   {
     boolean wasAdded = false;
-    if (pawn.contains(aPawn)) { return false; }
-    if (numberOfPawn() >= maximumNumberOfPawn())
+    if (pawns.contains(aPawn)) { return false; }
+    if (numberOfPawns() >= maximumNumberOfPawns())
     {
       return wasAdded;
     }
 
     Game existingGame = aPawn.getGame();
     boolean isNewGame = existingGame != null && !this.equals(existingGame);
+
+    if (isNewGame && existingGame.numberOfPawns() <= minimumNumberOfPawns())
+    {
+      return wasAdded;
+    }
+
     if (isNewGame)
     {
       aPawn.setGame(this);
     }
     else
     {
-      pawn.add(aPawn);
+      pawns.add(aPawn);
     }
     wasAdded = true;
     return wasAdded;
@@ -283,86 +333,53 @@ public class Game
   {
     boolean wasRemoved = false;
     //Unable to remove aPawn, as it must always have a game
-    if (!this.equals(aPawn.getGame()))
+    if (this.equals(aPawn.getGame()))
     {
-      pawn.remove(aPawn);
-      wasRemoved = true;
+      return wasRemoved;
     }
+
+    //game already at minimum (2)
+    if (numberOfPawns() <= minimumNumberOfPawns())
+    {
+      return wasRemoved;
+    }
+    pawns.remove(aPawn);
+    wasRemoved = true;
     return wasRemoved;
   }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addPawnAt(Pawn aPawn, int index)
-  {  
-    boolean wasAdded = false;
-    if(addPawn(aPawn))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfPawn()) { index = numberOfPawn() - 1; }
-      pawn.remove(aPawn);
-      pawn.add(index, aPawn);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMovePawnAt(Pawn aPawn, int index)
-  {
-    boolean wasAdded = false;
-    if(pawn.contains(aPawn))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfPawn()) { index = numberOfPawn() - 1; }
-      pawn.remove(aPawn);
-      pawn.add(index, aPawn);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addPawnAt(aPawn, index);
-    }
-    return wasAdded;
-  }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfWall()
+  public static int minimumNumberOfWalls()
   {
     return 0;
   }
   /* Code from template association_MaximumNumberOfMethod */
-  public static int maximumNumberOfWall()
+  public static int maximumNumberOfWalls()
   {
     return 20;
   }
-  /* Code from template association_AddOptionalNToOne */
-  public Wall addWall(int aRow, Character aColumn, Wall.Orientation aOrientation, boolean aIsAvailable, Pawn aPawn)
-  {
-    if (numberOfWall() >= maximumNumberOfWall())
-    {
-      return null;
-    }
-    else
-    {
-      return new Wall(aRow, aColumn, aOrientation, aIsAvailable, aPawn, this);
-    }
-  }
-
+  /* Code from template association_AddOptionalNToOptionalOne */
   public boolean addWall(Wall aWall)
   {
     boolean wasAdded = false;
-    if (wall.contains(aWall)) { return false; }
-    if (numberOfWall() >= maximumNumberOfWall())
+    if (walls.contains(aWall)) { return false; }
+    if (numberOfWalls() >= maximumNumberOfWalls())
     {
       return wasAdded;
     }
 
     Game existingGame = aWall.getGame();
-    boolean isNewGame = existingGame != null && !this.equals(existingGame);
-    if (isNewGame)
+    if (existingGame == null)
     {
       aWall.setGame(this);
     }
+    else if (!this.equals(existingGame))
+    {
+      existingGame.removeWall(aWall);
+      addWall(aWall);
+    }
     else
     {
-      wall.add(aWall);
+      walls.add(aWall);
     }
     wasAdded = true;
     return wasAdded;
@@ -371,10 +388,10 @@ public class Game
   public boolean removeWall(Wall aWall)
   {
     boolean wasRemoved = false;
-    //Unable to remove aWall, as it must always have a game
-    if (!this.equals(aWall.getGame()))
+    if (walls.contains(aWall))
     {
-      wall.remove(aWall);
+      walls.remove(aWall);
+      aWall.setGame(null);
       wasRemoved = true;
     }
     return wasRemoved;
@@ -386,9 +403,9 @@ public class Game
     if(addWall(aWall))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfWall()) { index = numberOfWall() - 1; }
-      wall.remove(aWall);
-      wall.add(index, aWall);
+      if(index > numberOfWalls()) { index = numberOfWalls() - 1; }
+      walls.remove(aWall);
+      walls.add(index, aWall);
       wasAdded = true;
     }
     return wasAdded;
@@ -397,12 +414,12 @@ public class Game
   public boolean addOrMoveWallAt(Wall aWall, int index)
   {
     boolean wasAdded = false;
-    if(wall.contains(aWall))
+    if(walls.contains(aWall))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfWall()) { index = numberOfWall() - 1; }
-      wall.remove(aWall);
-      wall.add(index, aWall);
+      if(index > numberOfWalls()) { index = numberOfWalls() - 1; }
+      walls.remove(aWall);
+      walls.add(index, aWall);
       wasAdded = true;
     } 
     else 
@@ -412,59 +429,59 @@ public class Game
     return wasAdded;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfAllSteps()
+  public static int minimumNumberOfSteps()
   {
     return 0;
   }
   /* Code from template association_AddUnidirectionalMany */
-  public boolean addAllStep(Step aAllStep)
+  public boolean addStep(Step aStep)
   {
     boolean wasAdded = false;
-    if (allSteps.contains(aAllStep)) { return false; }
-    allSteps.add(aAllStep);
+    if (steps.contains(aStep)) { return false; }
+    steps.add(aStep);
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeAllStep(Step aAllStep)
+  public boolean removeStep(Step aStep)
   {
     boolean wasRemoved = false;
-    if (allSteps.contains(aAllStep))
+    if (steps.contains(aStep))
     {
-      allSteps.remove(aAllStep);
+      steps.remove(aStep);
       wasRemoved = true;
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addAllStepAt(Step aAllStep, int index)
+  public boolean addStepAt(Step aStep, int index)
   {  
     boolean wasAdded = false;
-    if(addAllStep(aAllStep))
+    if(addStep(aStep))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfAllSteps()) { index = numberOfAllSteps() - 1; }
-      allSteps.remove(aAllStep);
-      allSteps.add(index, aAllStep);
+      if(index > numberOfSteps()) { index = numberOfSteps() - 1; }
+      steps.remove(aStep);
+      steps.add(index, aStep);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveAllStepAt(Step aAllStep, int index)
+  public boolean addOrMoveStepAt(Step aStep, int index)
   {
     boolean wasAdded = false;
-    if(allSteps.contains(aAllStep))
+    if(steps.contains(aStep))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfAllSteps()) { index = numberOfAllSteps() - 1; }
-      allSteps.remove(aAllStep);
-      allSteps.add(index, aAllStep);
+      if(index > numberOfSteps()) { index = numberOfSteps() - 1; }
+      steps.remove(aStep);
+      steps.add(index, aStep);
       wasAdded = true;
     } 
     else 
     {
-      wasAdded = addAllStepAt(aAllStep, index);
+      wasAdded = addStepAt(aStep, index);
     }
     return wasAdded;
   }
@@ -476,6 +493,87 @@ public class Game
     wasSet = true;
     return wasSet;
   }
+  /* Code from template association_IsNumberOfValidMethod */
+  public boolean isNumberOfTilesValid()
+  {
+    boolean isValid = numberOfTiles() >= minimumNumberOfTiles() && numberOfTiles() <= maximumNumberOfTiles();
+    return isValid;
+  }
+  /* Code from template association_RequiredNumberOfMethod */
+  public static int requiredNumberOfTiles()
+  {
+    return 81;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfTiles()
+  {
+    return 81;
+  }
+  /* Code from template association_MaximumNumberOfMethod */
+  public static int maximumNumberOfTiles()
+  {
+    return 81;
+  }
+  /* Code from template association_AddMNToOnlyOne */
+  public Tile addTile(int aRow, Character aColumn, Step aStep)
+  {
+    if (numberOfTiles() >= maximumNumberOfTiles())
+    {
+      return null;
+    }
+    else
+    {
+      return new Tile(aRow, aColumn, this, aStep);
+    }
+  }
+
+  public boolean addTile(Tile aTile)
+  {
+    boolean wasAdded = false;
+    if (tiles.contains(aTile)) { return false; }
+    if (numberOfTiles() >= maximumNumberOfTiles())
+    {
+      return wasAdded;
+    }
+
+    Game existingGame = aTile.getGame();
+    boolean isNewGame = existingGame != null && !this.equals(existingGame);
+
+    if (isNewGame && existingGame.numberOfTiles() <= minimumNumberOfTiles())
+    {
+      return wasAdded;
+    }
+
+    if (isNewGame)
+    {
+      aTile.setGame(this);
+    }
+    else
+    {
+      tiles.add(aTile);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeTile(Tile aTile)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aTile, as it must always have a game
+    if (this.equals(aTile.getGame()))
+    {
+      return wasRemoved;
+    }
+
+    //game already at minimum (81)
+    if (numberOfTiles() <= minimumNumberOfTiles())
+    {
+      return wasRemoved;
+    }
+    tiles.remove(aTile);
+    wasRemoved = true;
+    return wasRemoved;
+  }
 
   public void delete()
   {
@@ -485,22 +583,29 @@ public class Game
     {
       placeholderQSystem.removeGame(this);
     }
-    while (pawn.size() > 0)
+    while (pawns.size() > 0)
     {
-      Pawn aPawn = pawn.get(pawn.size() - 1);
+      Pawn aPawn = pawns.get(pawns.size() - 1);
       aPawn.delete();
-      pawn.remove(aPawn);
+      pawns.remove(aPawn);
     }
     
-    while (wall.size() > 0)
+    while (walls.size() > 0)
     {
-      Wall aWall = wall.get(wall.size() - 1);
+      Wall aWall = walls.get(walls.size() - 1);
       aWall.delete();
-      wall.remove(aWall);
+      walls.remove(aWall);
     }
     
-    allSteps.clear();
+    steps.clear();
     currentStep = null;
+    while (tiles.size() > 0)
+    {
+      Tile aTile = tiles.get(tiles.size() - 1);
+      aTile.delete();
+      tiles.remove(aTile);
+    }
+    
   }
 
 
