@@ -2,11 +2,10 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.quoridor.model;
-import java.util.*;
 
-// line 33 "../../../../../Model.ump"
-// line 81 "../../../../../Model.ump"
-// line 97 "../../../../../Model.ump"
+// line 40 "../../../../../Model.ump"
+// line 87 "../../../../../Model.ump"
+// line 103 "../../../../../Model.ump"
 public class WallPlacement extends Step
 {
 
@@ -27,9 +26,9 @@ public class WallPlacement extends Step
   // CONSTRUCTOR
   //------------------------
 
-  public WallPlacement(String aLog, Orientation aOrientation)
+  public WallPlacement(String aLog, Tile aEarlierState, Orientation aOrientation)
   {
-    super(aLog);
+    super(aLog, aEarlierState);
     orientation = aOrientation;
   }
 

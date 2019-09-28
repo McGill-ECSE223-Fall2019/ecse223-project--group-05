@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 70 "../../../../../Model.ump"
+// line 77 "../../../../../Model.ump"
 public class Wall
 {
 
@@ -19,25 +19,34 @@ public class Wall
 
   //Wall Attributes
   private Orientation orientation;
-  private boolean isAvailable;
 
   //Wall Associations
-  private Pawn pawn;
   private Game game;
-  private Tile tile;
+  private Pawn usedBy;
+  private Pawn pawn;
+  private Tile currentPosition;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Wall(Orientation aOrientation, boolean aIsAvailable, Tile aTile)
+  public Wall(Orientation aOrientation, Game aGame, Pawn aPawn, Tile aCurrentPosition)
   {
     orientation = aOrientation;
-    isAvailable = aIsAvailable;
-    boolean didAddTile = setTile(aTile);
-    if (!didAddTile)
+    boolean didAddGame = setGame(aGame);
+    if (!didAddGame)
     {
-      throw new RuntimeException("Unable to create wall due to tile");
+      throw new RuntimeException("Unable to create wall due to game");
+    }
+    boolean didAddPawn = setPawn(aPawn);
+    if (!didAddPawn)
+    {
+      throw new RuntimeException("Unable to create ownsWall due to pawn");
+    }
+    boolean didAddCurrentPosition = setCurrentPosition(aCurrentPosition);
+    if (!didAddCurrentPosition)
+    {
+      throw new RuntimeException("Unable to create wall due to currentPosition");
     }
   }
 
@@ -53,123 +62,144 @@ public class Wall
     return wasSet;
   }
 
-  public boolean setIsAvailable(boolean aIsAvailable)
-  {
-    boolean wasSet = false;
-    isAvailable = aIsAvailable;
-    wasSet = true;
-    return wasSet;
-  }
-
   public Orientation getOrientation()
   {
     return orientation;
-  }
-
-  public boolean getIsAvailable()
-  {
-    return isAvailable;
-  }
-  /* Code from template attribute_IsBoolean */
-  public boolean isIsAvailable()
-  {
-    return isAvailable;
-  }
-  /* Code from template association_GetOne */
-  public Pawn getPawn()
-  {
-    return pawn;
-  }
-
-  public boolean hasPawn()
-  {
-    boolean has = pawn != null;
-    return has;
   }
   /* Code from template association_GetOne */
   public Game getGame()
   {
     return game;
   }
-
-  public boolean hasGame()
+  /* Code from template association_GetOne */
+  public Pawn getUsedBy()
   {
-    boolean has = game != null;
+    return usedBy;
+  }
+
+  public boolean hasUsedBy()
+  {
+    boolean has = usedBy != null;
     return has;
   }
   /* Code from template association_GetOne */
-  public Tile getTile()
+  public Pawn getPawn()
   {
-    return tile;
+    return pawn;
   }
-  /* Code from template association_SetOptionalOneToOptionalN */
-  public boolean setPawn(Pawn aPawn)
+  /* Code from template association_GetOne */
+  public Tile getCurrentPosition()
   {
-    boolean wasSet = false;
-    if (aPawn != null && aPawn.numberOfWalls() >= Pawn.maximumNumberOfWalls())
-    {
-      return wasSet;
-    }
-
-    Pawn existingPawn = pawn;
-    pawn = aPawn;
-    if (existingPawn != null && !existingPawn.equals(aPawn))
-    {
-      existingPawn.removeWall(this);
-    }
-    if (aPawn != null)
-    {
-      aPawn.addWall(this);
-    }
-    wasSet = true;
-    return wasSet;
+    return currentPosition;
   }
-  /* Code from template association_SetOptionalOneToOptionalN */
+  /* Code from template association_SetOneToAtMostN */
   public boolean setGame(Game aGame)
   {
     boolean wasSet = false;
-    if (aGame != null && aGame.numberOfWalls() >= Game.maximumNumberOfWalls())
+    //Must provide game to wall
+    if (aGame == null)
     {
       return wasSet;
     }
 
+    //game already at maximum (20)
+    if (aGame.numberOfWalls() >= Game.maximumNumberOfWalls())
+    {
+      return wasSet;
+    }
+    
     Game existingGame = game;
     game = aGame;
     if (existingGame != null && !existingGame.equals(aGame))
     {
-      existingGame.removeWall(this);
+      boolean didRemove = existingGame.removeWall(this);
+      if (!didRemove)
+      {
+        game = existingGame;
+        return wasSet;
+      }
     }
-    if (aGame != null)
+    game.addWall(this);
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_SetOptionalOneToOptionalN */
+  public boolean setUsedBy(Pawn aUsedBy)
+  {
+    boolean wasSet = false;
+    if (aUsedBy != null && aUsedBy.numberOfOnBoard() >= Pawn.maximumNumberOfOnBoard())
     {
-      aGame.addWall(this);
+      return wasSet;
+    }
+
+    Pawn existingUsedBy = usedBy;
+    usedBy = aUsedBy;
+    if (existingUsedBy != null && !existingUsedBy.equals(aUsedBy))
+    {
+      existingUsedBy.removeOnBoard(this);
+    }
+    if (aUsedBy != null)
+    {
+      aUsedBy.addOnBoard(this);
     }
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToOptionalOne */
-  public boolean setTile(Tile aNewTile)
+  /* Code from template association_SetOneToAtMostN */
+  public boolean setPawn(Pawn aPawn)
   {
     boolean wasSet = false;
-    if (aNewTile == null)
+    //Must provide pawn to ownsWall
+    if (aPawn == null)
     {
-      //Unable to setTile to null, as wall must always be associated to a tile
+      return wasSet;
+    }
+
+    //pawn already at maximum (10)
+    if (aPawn.numberOfOwnsWall() >= Pawn.maximumNumberOfOwnsWall())
+    {
       return wasSet;
     }
     
-    Wall existingWall = aNewTile.getWall();
+    Pawn existingPawn = pawn;
+    pawn = aPawn;
+    if (existingPawn != null && !existingPawn.equals(aPawn))
+    {
+      boolean didRemove = existingPawn.removeOwnsWall(this);
+      if (!didRemove)
+      {
+        pawn = existingPawn;
+        return wasSet;
+      }
+    }
+    pawn.addOwnsWall(this);
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_SetOneToOptionalOne */
+  public boolean setCurrentPosition(Tile aNewCurrentPosition)
+  {
+    boolean wasSet = false;
+    if (aNewCurrentPosition == null)
+    {
+      //Unable to setCurrentPosition to null, as wall must always be associated to a currentPosition
+      return wasSet;
+    }
+    
+    Wall existingWall = aNewCurrentPosition.getWall();
     if (existingWall != null && !equals(existingWall))
     {
-      //Unable to setTile, the current tile already has a wall, which would be orphaned if it were re-assigned
+      //Unable to setCurrentPosition, the current currentPosition already has a wall, which would be orphaned if it were re-assigned
       return wasSet;
     }
     
-    Tile anOldTile = tile;
-    tile = aNewTile;
-    tile.setWall(this);
+    Tile anOldCurrentPosition = currentPosition;
+    currentPosition = aNewCurrentPosition;
+    currentPosition.setWall(this);
 
-    if (anOldTile != null)
+    if (anOldCurrentPosition != null)
     {
-      anOldTile.setWall(null);
+      anOldCurrentPosition.setWall(null);
     }
     wasSet = true;
     return wasSet;
@@ -177,34 +207,40 @@ public class Wall
 
   public void delete()
   {
-    if (pawn != null)
+    Game placeholderGame = game;
+    this.game = null;
+    if(placeholderGame != null)
     {
-      Pawn placeholderPawn = pawn;
-      this.pawn = null;
-      placeholderPawn.removeWall(this);
-    }
-    if (game != null)
-    {
-      Game placeholderGame = game;
-      this.game = null;
       placeholderGame.removeWall(this);
     }
-    Tile existingTile = tile;
-    tile = null;
-    if (existingTile != null)
+    if (usedBy != null)
     {
-      existingTile.setWall(null);
+      Pawn placeholderUsedBy = usedBy;
+      this.usedBy = null;
+      placeholderUsedBy.removeOnBoard(this);
+    }
+    Pawn placeholderPawn = pawn;
+    this.pawn = null;
+    if(placeholderPawn != null)
+    {
+      placeholderPawn.removeOwnsWall(this);
+    }
+    Tile existingCurrentPosition = currentPosition;
+    currentPosition = null;
+    if (existingCurrentPosition != null)
+    {
+      existingCurrentPosition.setWall(null);
     }
   }
 
 
   public String toString()
   {
-    return super.toString() + "["+
-            "isAvailable" + ":" + getIsAvailable()+ "]" + System.getProperties().getProperty("line.separator") +
+    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "orientation" + "=" + (getOrientation() != null ? !getOrientation().equals(this)  ? getOrientation().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "pawn = "+(getPawn()!=null?Integer.toHexString(System.identityHashCode(getPawn())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "tile = "+(getTile()!=null?Integer.toHexString(System.identityHashCode(getTile())):"null");
+            "  " + "usedBy = "+(getUsedBy()!=null?Integer.toHexString(System.identityHashCode(getUsedBy())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "pawn = "+(getPawn()!=null?Integer.toHexString(System.identityHashCode(getPawn())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "currentPosition = "+(getCurrentPosition()!=null?Integer.toHexString(System.identityHashCode(getCurrentPosition())):"null");
   }
 }

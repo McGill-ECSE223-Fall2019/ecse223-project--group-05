@@ -2,11 +2,10 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.quoridor.model;
-import java.util.*;
 
-// line 27 "../../../../../Model.ump"
-// line 80 "../../../../../Model.ump"
-// line 92 "../../../../../Model.ump"
+// line 34 "../../../../../Model.ump"
+// line 86 "../../../../../Model.ump"
+// line 98 "../../../../../Model.ump"
 public class JumpStep extends Step
 {
 
@@ -22,9 +21,9 @@ public class JumpStep extends Step
   // CONSTRUCTOR
   //------------------------
 
-  public JumpStep(String aLog, int aJumpedRow, Character aJumpedColumn)
+  public JumpStep(String aLog, Tile aEarlierState, int aJumpedRow, Character aJumpedColumn)
   {
-    super(aLog);
+    super(aLog, aEarlierState);
     jumpedRow = aJumpedRow;
     jumpedColumn = aJumpedColumn;
   }
