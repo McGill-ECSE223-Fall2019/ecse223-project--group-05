@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 57 "../../../../../Model.ump"
+// line 55 "../../../../../Model.ump"
 public class Game
 {
 
@@ -514,12 +514,26 @@ public class Game
   {
     return 0;
   }
-  /* Code from template association_AddUnidirectionalMany */
+  /* Code from template association_AddManyToOne */
+  public Step addStep(String aLog, Game aGame, Tile aEarlierState)
+  {
+    return new Step(aLog, this, aGame, aEarlierState);
+  }
+
   public boolean addStep(Step aStep)
   {
     boolean wasAdded = false;
     if (steps.contains(aStep)) { return false; }
-    steps.add(aStep);
+    Game existingGameSteps = aStep.getGameSteps();
+    boolean isNewGameSteps = existingGameSteps != null && !this.equals(existingGameSteps);
+    if (isNewGameSteps)
+    {
+      aStep.setGameSteps(this);
+    }
+    else
+    {
+      steps.add(aStep);
+    }
     wasAdded = true;
     return wasAdded;
   }
@@ -527,7 +541,8 @@ public class Game
   public boolean removeStep(Step aStep)
   {
     boolean wasRemoved = false;
-    if (steps.contains(aStep))
+    //Unable to remove aStep, as it must always have a gameSteps
+    if (!this.equals(aStep.getGameSteps()))
     {
       steps.remove(aStep);
       wasRemoved = true;
@@ -566,11 +581,30 @@ public class Game
     }
     return wasAdded;
   }
-  /* Code from template association_SetUnidirectionalOptionalOne */
+  /* Code from template association_SetOptionalOneToOne */
   public boolean setCurrentStep(Step aNewCurrentStep)
   {
     boolean wasSet = false;
+    if (currentStep != null && !currentStep.equals(aNewCurrentStep) && equals(currentStep.getGame()))
+    {
+      //Unable to setCurrentStep, as existing currentStep would become an orphan
+      return wasSet;
+    }
+
     currentStep = aNewCurrentStep;
+    Game anOldGame = aNewCurrentStep != null ? aNewCurrentStep.getGame() : null;
+
+    if (!this.equals(anOldGame))
+    {
+      if (anOldGame != null)
+      {
+        anOldGame.currentStep = null;
+      }
+      if (currentStep != null)
+      {
+        currentStep.setGame(this);
+      }
+    }
     wasSet = true;
     return wasSet;
   }
@@ -604,8 +638,20 @@ public class Game
       tiles.remove(aTile);
     }
     
-    steps.clear();
+    while (steps.size() > 0)
+    {
+      Step aStep = steps.get(steps.size() - 1);
+      aStep.delete();
+      steps.remove(aStep);
+    }
+    
+    Step existingCurrentStep = currentStep;
     currentStep = null;
+    if (existingCurrentStep != null)
+    {
+      existingCurrentStep.delete();
+      existingCurrentStep.setGame(null);
+    }
   }
 
 

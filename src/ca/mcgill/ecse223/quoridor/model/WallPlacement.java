@@ -3,9 +3,9 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 40 "../../../../../Model.ump"
-// line 87 "../../../../../Model.ump"
-// line 103 "../../../../../Model.ump"
+// line 38 "../../../../../Model.ump"
+// line 85 "../../../../../Model.ump"
+// line 101 "../../../../../Model.ump"
 public class WallPlacement extends Step
 {
 
@@ -26,9 +26,9 @@ public class WallPlacement extends Step
   // CONSTRUCTOR
   //------------------------
 
-  public WallPlacement(String aLog, Tile aEarlierState, Orientation aOrientation)
+  public WallPlacement(String aLog, Game aGameSteps, Game aGame, Tile aEarlierState, Orientation aOrientation)
   {
-    super(aLog, aEarlierState);
+    super(aLog, aGameSteps, aGame, aEarlierState);
     orientation = aOrientation;
   }
 
