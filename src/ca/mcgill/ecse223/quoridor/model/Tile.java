@@ -4,8 +4,8 @@
 package ca.mcgill.ecse223.quoridor.model;
 import java.sql.Time;
 
-// line 21 "../../../../../Model.ump"
-// line 87 "../../../../../Model.ump"
+// line 28 "../../../../../Model.ump"
+// line 93 "../../../../../Model.ump"
 public class Tile
 {
 
@@ -21,13 +21,13 @@ public class Tile
   private Game game;
   private Pawn pawn;
   private Wall wall;
-  private Step step;
+  private Step currentState;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Tile(int aRow, Character aColumn, Game aGame, Step aStep)
+  public Tile(int aRow, Character aColumn, Game aGame, Step aCurrentState)
   {
     row = aRow;
     column = aColumn;
@@ -36,10 +36,9 @@ public class Tile
     {
       throw new RuntimeException("Unable to create tile due to game");
     }
-    boolean didAddStep = setStep(aStep);
-    if (!didAddStep)
+    if (!setCurrentState(aCurrentState))
     {
-      throw new RuntimeException("Unable to create tile due to step");
+      throw new RuntimeException("Unable to create Tile due to aCurrentState");
     }
   }
 
@@ -100,9 +99,9 @@ public class Tile
     return has;
   }
   /* Code from template association_GetOne */
-  public Step getStep()
+  public Step getCurrentState()
   {
-    return step;
+    return currentState;
   }
   /* Code from template association_SetOneToAtMostN */
   public boolean setGame(Game aGame)
@@ -139,24 +138,24 @@ public class Tile
   public boolean setPawn(Pawn aNewPawn)
   {
     boolean wasSet = false;
-    if (pawn != null && !pawn.equals(aNewPawn) && equals(pawn.getTile()))
+    if (pawn != null && !pawn.equals(aNewPawn) && equals(pawn.getCurrentPosition()))
     {
       //Unable to setPawn, as existing pawn would become an orphan
       return wasSet;
     }
 
     pawn = aNewPawn;
-    Tile anOldTile = aNewPawn != null ? aNewPawn.getTile() : null;
+    Tile anOldCurrentPosition = aNewPawn != null ? aNewPawn.getCurrentPosition() : null;
 
-    if (!this.equals(anOldTile))
+    if (!this.equals(anOldCurrentPosition))
     {
-      if (anOldTile != null)
+      if (anOldCurrentPosition != null)
       {
-        anOldTile.pawn = null;
+        anOldCurrentPosition.pawn = null;
       }
       if (pawn != null)
       {
-        pawn.setTile(this);
+        pawn.setCurrentPosition(this);
       }
     }
     wasSet = true;
@@ -166,57 +165,38 @@ public class Tile
   public boolean setWall(Wall aNewWall)
   {
     boolean wasSet = false;
-    if (wall != null && !wall.equals(aNewWall) && equals(wall.getTile()))
+    if (wall != null && !wall.equals(aNewWall) && equals(wall.getCurrentPosition()))
     {
       //Unable to setWall, as existing wall would become an orphan
       return wasSet;
     }
 
     wall = aNewWall;
-    Tile anOldTile = aNewWall != null ? aNewWall.getTile() : null;
+    Tile anOldCurrentPosition = aNewWall != null ? aNewWall.getCurrentPosition() : null;
 
-    if (!this.equals(anOldTile))
+    if (!this.equals(anOldCurrentPosition))
     {
-      if (anOldTile != null)
+      if (anOldCurrentPosition != null)
       {
-        anOldTile.wall = null;
+        anOldCurrentPosition.wall = null;
       }
       if (wall != null)
       {
-        wall.setTile(this);
+        wall.setCurrentPosition(this);
       }
     }
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToMandatoryMany */
-  public boolean setStep(Step aStep)
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setCurrentState(Step aNewCurrentState)
   {
     boolean wasSet = false;
-    //Must provide step to tile
-    if (aStep == null)
+    if (aNewCurrentState != null)
     {
-      return wasSet;
+      currentState = aNewCurrentState;
+      wasSet = true;
     }
-
-    if (step != null && step.numberOfTiles() <= Step.minimumNumberOfTiles())
-    {
-      return wasSet;
-    }
-
-    Step existingStep = step;
-    step = aStep;
-    if (existingStep != null && !existingStep.equals(aStep))
-    {
-      boolean didRemove = existingStep.removeTile(this);
-      if (!didRemove)
-      {
-        step = existingStep;
-        return wasSet;
-      }
-    }
-    step.addTile(this);
-    wasSet = true;
     return wasSet;
   }
 
@@ -240,12 +220,7 @@ public class Tile
     {
       existingWall.delete();
     }
-    Step placeholderStep = step;
-    this.step = null;
-    if(placeholderStep != null)
-    {
-      placeholderStep.removeTile(this);
-    }
+    currentState = null;
   }
 
 
@@ -257,6 +232,6 @@ public class Tile
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "pawn = "+(getPawn()!=null?Integer.toHexString(System.identityHashCode(getPawn())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "wall = "+(getWall()!=null?Integer.toHexString(System.identityHashCode(getWall())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "step = "+(getStep()!=null?Integer.toHexString(System.identityHashCode(getStep())):"null");
+            "  " + "currentState = "+(getCurrentState()!=null?Integer.toHexString(System.identityHashCode(getCurrentState())):"null");
   }
 }

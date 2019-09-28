@@ -5,7 +5,7 @@ package ca.mcgill.ecse223.quoridor.model;
 import java.util.*;
 import java.sql.Time;
 
-// line 42 "../../../../../Model.ump"
+// line 49 "../../../../../Model.ump"
 public class User
 {
 
@@ -18,8 +18,8 @@ public class User
   private String password;
 
   //User Associations
-  private List<Pawn> pawn;
   private QuoridorSystem qSystem;
+  private List<Pawn> pawn;
 
   //------------------------
   // CONSTRUCTOR
@@ -29,12 +29,12 @@ public class User
   {
     userName = aUserName;
     password = aPassword;
-    pawn = new ArrayList<Pawn>();
     boolean didAddQSystem = setQSystem(aQSystem);
     if (!didAddQSystem)
     {
       throw new RuntimeException("Unable to create player due to qSystem");
     }
+    pawn = new ArrayList<Pawn>();
   }
 
   //------------------------
@@ -66,6 +66,11 @@ public class User
   {
     return password;
   }
+  /* Code from template association_GetOne */
+  public QuoridorSystem getQSystem()
+  {
+    return qSystem;
+  }
   /* Code from template association_GetMany */
   public Pawn getPawn(int index)
   {
@@ -96,10 +101,24 @@ public class User
     int index = pawn.indexOf(aPawn);
     return index;
   }
-  /* Code from template association_GetOne */
-  public QuoridorSystem getQSystem()
+  /* Code from template association_SetOneToMany */
+  public boolean setQSystem(QuoridorSystem aQSystem)
   {
-    return qSystem;
+    boolean wasSet = false;
+    if (aQSystem == null)
+    {
+      return wasSet;
+    }
+
+    QuoridorSystem existingQSystem = qSystem;
+    qSystem = aQSystem;
+    if (existingQSystem != null && !existingQSystem.equals(aQSystem))
+    {
+      existingQSystem.removePlayer(this);
+    }
+    qSystem.addPlayer(this);
+    wasSet = true;
+    return wasSet;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfPawn()
@@ -107,9 +126,9 @@ public class User
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Pawn addPawn(Pawn.Color aColor, Time aThinkingTime, Game aGame, Tile aTile)
+  public Pawn addPawn(Pawn.Color aColor, Time aThinkingTime, Game aGame, Tile aCurrentPosition)
   {
-    return new Pawn(aColor, aThinkingTime, this, aGame, aTile);
+    return new Pawn(aColor, aThinkingTime, aGame, this, aCurrentPosition);
   }
 
   public boolean addPawn(Pawn aPawn)
@@ -173,38 +192,19 @@ public class User
     }
     return wasAdded;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setQSystem(QuoridorSystem aQSystem)
-  {
-    boolean wasSet = false;
-    if (aQSystem == null)
-    {
-      return wasSet;
-    }
-
-    QuoridorSystem existingQSystem = qSystem;
-    qSystem = aQSystem;
-    if (existingQSystem != null && !existingQSystem.equals(aQSystem))
-    {
-      existingQSystem.removePlayer(this);
-    }
-    qSystem.addPlayer(this);
-    wasSet = true;
-    return wasSet;
-  }
 
   public void delete()
   {
-    for(int i=pawn.size(); i > 0; i--)
-    {
-      Pawn aPawn = pawn.get(i - 1);
-      aPawn.delete();
-    }
     QuoridorSystem placeholderQSystem = qSystem;
     this.qSystem = null;
     if(placeholderQSystem != null)
     {
       placeholderQSystem.removePlayer(this);
+    }
+    for(int i=pawn.size(); i > 0; i--)
+    {
+      Pawn aPawn = pawn.get(i - 1);
+      aPawn.delete();
     }
   }
 

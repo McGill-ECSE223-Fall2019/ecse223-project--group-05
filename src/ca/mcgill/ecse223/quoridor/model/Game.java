@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 50 "../../../../../Model.ump"
+// line 57 "../../../../../Model.ump"
 public class Game
 {
 
@@ -31,9 +31,9 @@ public class Game
   private QuoridorSystem qSystem;
   private List<Pawn> pawns;
   private List<Wall> walls;
+  private List<Tile> tiles;
   private List<Step> steps;
   private Step currentStep;
-  private List<Tile> tiles;
 
   //------------------------
   // CONSTRUCTOR
@@ -52,8 +52,8 @@ public class Game
     }
     pawns = new ArrayList<Pawn>();
     walls = new ArrayList<Wall>();
-    steps = new ArrayList<Step>();
     tiles = new ArrayList<Tile>();
+    steps = new ArrayList<Step>();
   }
 
   //------------------------
@@ -177,6 +177,36 @@ public class Game
     return index;
   }
   /* Code from template association_GetMany */
+  public Tile getTile(int index)
+  {
+    Tile aTile = tiles.get(index);
+    return aTile;
+  }
+
+  public List<Tile> getTiles()
+  {
+    List<Tile> newTiles = Collections.unmodifiableList(tiles);
+    return newTiles;
+  }
+
+  public int numberOfTiles()
+  {
+    int number = tiles.size();
+    return number;
+  }
+
+  public boolean hasTiles()
+  {
+    boolean has = tiles.size() > 0;
+    return has;
+  }
+
+  public int indexOfTile(Tile aTile)
+  {
+    int index = tiles.indexOf(aTile);
+    return index;
+  }
+  /* Code from template association_GetMany */
   public Step getStep(int index)
   {
     Step aStep = steps.get(index);
@@ -216,36 +246,6 @@ public class Game
   {
     boolean has = currentStep != null;
     return has;
-  }
-  /* Code from template association_GetMany */
-  public Tile getTile(int index)
-  {
-    Tile aTile = tiles.get(index);
-    return aTile;
-  }
-
-  public List<Tile> getTiles()
-  {
-    List<Tile> newTiles = Collections.unmodifiableList(tiles);
-    return newTiles;
-  }
-
-  public int numberOfTiles()
-  {
-    int number = tiles.size();
-    return number;
-  }
-
-  public boolean hasTiles()
-  {
-    boolean has = tiles.size() > 0;
-    return has;
-  }
-
-  public int indexOfTile(Tile aTile)
-  {
-    int index = tiles.indexOf(aTile);
-    return index;
   }
   /* Code from template association_SetOneToMany */
   public boolean setQSystem(QuoridorSystem aQSystem)
@@ -288,7 +288,7 @@ public class Game
     return 2;
   }
   /* Code from template association_AddMNToOnlyOne */
-  public Pawn addPawn(Pawn.Color aColor, Time aThinkingTime, User aPlayer, Tile aTile)
+  public Pawn addPawn(Pawn.Color aColor, Time aThinkingTime, User aPlayer, Tile aCurrentPosition)
   {
     if (numberOfPawns() >= maximumNumberOfPawns())
     {
@@ -296,7 +296,7 @@ public class Game
     }
     else
     {
-      return new Pawn(aColor, aThinkingTime, aPlayer, this, aTile);
+      return new Pawn(aColor, aThinkingTime, this, aPlayer, aCurrentPosition);
     }
   }
 
@@ -347,17 +347,40 @@ public class Game
     wasRemoved = true;
     return wasRemoved;
   }
+  /* Code from template association_IsNumberOfValidMethod */
+  public boolean isNumberOfWallsValid()
+  {
+    boolean isValid = numberOfWalls() >= minimumNumberOfWalls() && numberOfWalls() <= maximumNumberOfWalls();
+    return isValid;
+  }
+  /* Code from template association_RequiredNumberOfMethod */
+  public static int requiredNumberOfWalls()
+  {
+    return 20;
+  }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfWalls()
   {
-    return 0;
+    return 20;
   }
   /* Code from template association_MaximumNumberOfMethod */
   public static int maximumNumberOfWalls()
   {
     return 20;
   }
-  /* Code from template association_AddOptionalNToOptionalOne */
+  /* Code from template association_AddMNToOnlyOne */
+  public Wall addWall(Wall.Orientation aOrientation, Pawn aPawn, Tile aCurrentPosition)
+  {
+    if (numberOfWalls() >= maximumNumberOfWalls())
+    {
+      return null;
+    }
+    else
+    {
+      return new Wall(aOrientation, this, aPawn, aCurrentPosition);
+    }
+  }
+
   public boolean addWall(Wall aWall)
   {
     boolean wasAdded = false;
@@ -368,14 +391,16 @@ public class Game
     }
 
     Game existingGame = aWall.getGame();
-    if (existingGame == null)
+    boolean isNewGame = existingGame != null && !this.equals(existingGame);
+
+    if (isNewGame && existingGame.numberOfWalls() <= minimumNumberOfWalls())
+    {
+      return wasAdded;
+    }
+
+    if (isNewGame)
     {
       aWall.setGame(this);
-    }
-    else if (!this.equals(existingGame))
-    {
-      existingGame.removeWall(aWall);
-      addWall(aWall);
     }
     else
     {
@@ -388,45 +413,101 @@ public class Game
   public boolean removeWall(Wall aWall)
   {
     boolean wasRemoved = false;
-    if (walls.contains(aWall))
+    //Unable to remove aWall, as it must always have a game
+    if (this.equals(aWall.getGame()))
     {
-      walls.remove(aWall);
-      aWall.setGame(null);
-      wasRemoved = true;
+      return wasRemoved;
     }
+
+    //game already at minimum (20)
+    if (numberOfWalls() <= minimumNumberOfWalls())
+    {
+      return wasRemoved;
+    }
+    walls.remove(aWall);
+    wasRemoved = true;
     return wasRemoved;
   }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addWallAt(Wall aWall, int index)
-  {  
-    boolean wasAdded = false;
-    if(addWall(aWall))
+  /* Code from template association_IsNumberOfValidMethod */
+  public boolean isNumberOfTilesValid()
+  {
+    boolean isValid = numberOfTiles() >= minimumNumberOfTiles() && numberOfTiles() <= maximumNumberOfTiles();
+    return isValid;
+  }
+  /* Code from template association_RequiredNumberOfMethod */
+  public static int requiredNumberOfTiles()
+  {
+    return 81;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfTiles()
+  {
+    return 81;
+  }
+  /* Code from template association_MaximumNumberOfMethod */
+  public static int maximumNumberOfTiles()
+  {
+    return 81;
+  }
+  /* Code from template association_AddMNToOnlyOne */
+  public Tile addTile(int aRow, Character aColumn, Step aCurrentState)
+  {
+    if (numberOfTiles() >= maximumNumberOfTiles())
     {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfWalls()) { index = numberOfWalls() - 1; }
-      walls.remove(aWall);
-      walls.add(index, aWall);
-      wasAdded = true;
+      return null;
     }
+    else
+    {
+      return new Tile(aRow, aColumn, this, aCurrentState);
+    }
+  }
+
+  public boolean addTile(Tile aTile)
+  {
+    boolean wasAdded = false;
+    if (tiles.contains(aTile)) { return false; }
+    if (numberOfTiles() >= maximumNumberOfTiles())
+    {
+      return wasAdded;
+    }
+
+    Game existingGame = aTile.getGame();
+    boolean isNewGame = existingGame != null && !this.equals(existingGame);
+
+    if (isNewGame && existingGame.numberOfTiles() <= minimumNumberOfTiles())
+    {
+      return wasAdded;
+    }
+
+    if (isNewGame)
+    {
+      aTile.setGame(this);
+    }
+    else
+    {
+      tiles.add(aTile);
+    }
+    wasAdded = true;
     return wasAdded;
   }
 
-  public boolean addOrMoveWallAt(Wall aWall, int index)
+  public boolean removeTile(Tile aTile)
   {
-    boolean wasAdded = false;
-    if(walls.contains(aWall))
+    boolean wasRemoved = false;
+    //Unable to remove aTile, as it must always have a game
+    if (this.equals(aTile.getGame()))
     {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfWalls()) { index = numberOfWalls() - 1; }
-      walls.remove(aWall);
-      walls.add(index, aWall);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addWallAt(aWall, index);
+      return wasRemoved;
     }
-    return wasAdded;
+
+    //game already at minimum (81)
+    if (numberOfTiles() <= minimumNumberOfTiles())
+    {
+      return wasRemoved;
+    }
+    tiles.remove(aTile);
+    wasRemoved = true;
+    return wasRemoved;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfSteps()
@@ -493,87 +574,6 @@ public class Game
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_IsNumberOfValidMethod */
-  public boolean isNumberOfTilesValid()
-  {
-    boolean isValid = numberOfTiles() >= minimumNumberOfTiles() && numberOfTiles() <= maximumNumberOfTiles();
-    return isValid;
-  }
-  /* Code from template association_RequiredNumberOfMethod */
-  public static int requiredNumberOfTiles()
-  {
-    return 81;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfTiles()
-  {
-    return 81;
-  }
-  /* Code from template association_MaximumNumberOfMethod */
-  public static int maximumNumberOfTiles()
-  {
-    return 81;
-  }
-  /* Code from template association_AddMNToOnlyOne */
-  public Tile addTile(int aRow, Character aColumn, Step aStep)
-  {
-    if (numberOfTiles() >= maximumNumberOfTiles())
-    {
-      return null;
-    }
-    else
-    {
-      return new Tile(aRow, aColumn, this, aStep);
-    }
-  }
-
-  public boolean addTile(Tile aTile)
-  {
-    boolean wasAdded = false;
-    if (tiles.contains(aTile)) { return false; }
-    if (numberOfTiles() >= maximumNumberOfTiles())
-    {
-      return wasAdded;
-    }
-
-    Game existingGame = aTile.getGame();
-    boolean isNewGame = existingGame != null && !this.equals(existingGame);
-
-    if (isNewGame && existingGame.numberOfTiles() <= minimumNumberOfTiles())
-    {
-      return wasAdded;
-    }
-
-    if (isNewGame)
-    {
-      aTile.setGame(this);
-    }
-    else
-    {
-      tiles.add(aTile);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeTile(Tile aTile)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aTile, as it must always have a game
-    if (this.equals(aTile.getGame()))
-    {
-      return wasRemoved;
-    }
-
-    //game already at minimum (81)
-    if (numberOfTiles() <= minimumNumberOfTiles())
-    {
-      return wasRemoved;
-    }
-    tiles.remove(aTile);
-    wasRemoved = true;
-    return wasRemoved;
-  }
 
   public void delete()
   {
@@ -597,8 +597,6 @@ public class Game
       walls.remove(aWall);
     }
     
-    steps.clear();
-    currentStep = null;
     while (tiles.size() > 0)
     {
       Tile aTile = tiles.get(tiles.size() - 1);
@@ -606,6 +604,8 @@ public class Game
       tiles.remove(aTile);
     }
     
+    steps.clear();
+    currentStep = null;
   }
 
 

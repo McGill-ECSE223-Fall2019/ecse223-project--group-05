@@ -1,24 +1,29 @@
 namespace ca.mcgill.ecse223.quoridor.model;
 
+
+
 association 
 {
-	1 User player -- 0..* Pawn pawn;  
 	1 QuoridorSystem qSystem <@>- 0..* Game game; 
 	1 QuoridorSystem qSystem <@>- 0..* User player; 
 	1 Game game <@>- 2 Pawn pawns; 
-	0..1 Game game <@>- 0..20 Wall walls;
-	* Game game -> 0..* Step steps;
-	* Game game -> 0..1 Step currentStep;
+	1 Game game <@>- 20 Wall walls;
+	1 Game game <@>- 81 Tile tiles;
+	0..1 Game gameSteps -> 0..* Step steps;
+	0..1 Game game -> 0..1 Step currentStep;
     0..1 Step prev -- 0..1 Step next;
-    1 Game game <@>- 81 Tile tiles;
-    1 Pawn belongsTo -- 0..10 Wall availableWalls;
-    1 Pawn usedBy -- 0..10 Wall onBoard;
-    0..1 Pawn  -- 1 Tile currentPosition;
+	1 User player -- 0..* Pawn pawn; 
+    0..1 Pawn usedBy -- 0..10 Wall onBoard;
+    1 Pawn pawn -- 10 Wall ownsWall;
+    0..1 Pawn pawn  -- 1 Tile currentPosition;
+    0..1 Wall wall  -- 1 Tile currentPosition;
     * Step -> 1 Tile earlierState;
     * Tile -> 1 Step currentState;
   
   
 }
+
+
 
 class Tile
 {
@@ -51,7 +56,7 @@ class User {
 
 class Game {
 	position 377 38 182 109;
-	
+	enum Orientation {Horizontal, Vertical}
 	position.association Game__QuoridorSystem 47,0 119,34;
 	Date startDate;
 	Time startTime;
@@ -68,10 +73,10 @@ class Pawn {
 	Time thinkingTime;
 }
 
-enum Orientation {Horizontal, Vertical}
+
 class Wall {
 	position 395 328 109 73;
-	
+	enum Orientation {Horizontal, Vertical}
 	Orientation orientation;
 	}
 
@@ -97,5 +102,6 @@ class JumpStep
 
 class WallPlacement
 {
+  enum Orientation {Horizontal, Vertical}
   position 779 203 109 56;
 }
