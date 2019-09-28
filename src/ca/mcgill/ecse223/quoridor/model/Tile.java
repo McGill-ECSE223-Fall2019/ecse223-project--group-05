@@ -4,8 +4,8 @@
 package ca.mcgill.ecse223.quoridor.model;
 import java.sql.Time;
 
-// line 28 "../../../../../Model.ump"
-// line 93 "../../../../../Model.ump"
+// line 26 "../../../../../Model.ump"
+// line 91 "../../../../../Model.ump"
 public class Tile
 {
 

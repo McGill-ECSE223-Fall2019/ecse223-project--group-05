@@ -5,7 +5,7 @@ package ca.mcgill.ecse223.quoridor.model;
 import java.sql.Time;
 import java.util.*;
 
-// line 68 "../../../../../Model.ump"
+// line 66 "../../../../../Model.ump"
 public class Pawn
 {
 

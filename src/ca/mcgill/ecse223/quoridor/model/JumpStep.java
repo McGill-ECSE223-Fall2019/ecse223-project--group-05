@@ -3,9 +3,9 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 34 "../../../../../Model.ump"
-// line 86 "../../../../../Model.ump"
-// line 98 "../../../../../Model.ump"
+// line 32 "../../../../../Model.ump"
+// line 84 "../../../../../Model.ump"
+// line 96 "../../../../../Model.ump"
 public class JumpStep extends Step
 {
 
@@ -21,9 +21,9 @@ public class JumpStep extends Step
   // CONSTRUCTOR
   //------------------------
 
-  public JumpStep(String aLog, Tile aEarlierState, int aJumpedRow, Character aJumpedColumn)
+  public JumpStep(String aLog, Game aGameSteps, Game aGame, Tile aEarlierState, int aJumpedRow, Character aJumpedColumn)
   {
-    super(aLog, aEarlierState);
+    super(aLog, aGameSteps, aGame, aEarlierState);
     jumpedRow = aJumpedRow;
     jumpedColumn = aJumpedColumn;
   }

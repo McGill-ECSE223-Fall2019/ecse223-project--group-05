@@ -9,8 +9,8 @@ association
 	1 Game game <@>- 2 Pawn pawns; 
 	1 Game game <@>- 20 Wall walls;
 	1 Game game <@>- 81 Tile tiles;
-	0..1 Game gameSteps -> 0..* Step steps;
-	0..1 Game game -> 0..1 Step currentStep;
+	1 Game gameSteps <@>- 0..* Step steps;
+	1 Game game <@>- 0..1 Step currentStep;
     0..1 Step prev -- 0..1 Step next;
 	1 User player -- 0..* Pawn pawn; 
     0..1 Pawn usedBy -- 0..10 Wall onBoard;
@@ -19,8 +19,6 @@ association
     0..1 Wall wall  -- 1 Tile currentPosition;
     * Step -> 1 Tile earlierState;
     * Tile -> 1 Step currentState;
-  
-  
 }
 
 

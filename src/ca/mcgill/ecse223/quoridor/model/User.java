@@ -5,7 +5,7 @@ package ca.mcgill.ecse223.quoridor.model;
 import java.util.*;
 import java.sql.Time;
 
-// line 49 "../../../../../Model.ump"
+// line 47 "../../../../../Model.ump"
 public class User
 {
 
