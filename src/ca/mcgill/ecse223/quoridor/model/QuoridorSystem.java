@@ -6,7 +6,7 @@ import java.util.*;
 import java.sql.Date;
 import java.sql.Time;
 
-// line 43 "../../../../../Model.ump"
+// line 28 "../../../../../Model.ump"
 public class QuoridorSystem
 {
 
@@ -14,98 +14,115 @@ public class QuoridorSystem
   // MEMBER VARIABLES
   //------------------------
 
+  //QuoridorSystem Attributes
+  private String quoridorSystemId;
+
   //QuoridorSystem Associations
-  private List<Game> game;
-  private List<User> player;
+  private List<Game> games;
+  private List<User> players;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public QuoridorSystem()
+  public QuoridorSystem(String aQuoridorSystemId)
   {
-    game = new ArrayList<Game>();
-    player = new ArrayList<User>();
+    quoridorSystemId = aQuoridorSystemId;
+    games = new ArrayList<Game>();
+    players = new ArrayList<User>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setQuoridorSystemId(String aQuoridorSystemId)
+  {
+    boolean wasSet = false;
+    quoridorSystemId = aQuoridorSystemId;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public String getQuoridorSystemId()
+  {
+    return quoridorSystemId;
+  }
   /* Code from template association_GetMany */
   public Game getGame(int index)
   {
-    Game aGame = game.get(index);
+    Game aGame = games.get(index);
     return aGame;
   }
 
-  public List<Game> getGame()
+  public List<Game> getGames()
   {
-    List<Game> newGame = Collections.unmodifiableList(game);
-    return newGame;
+    List<Game> newGames = Collections.unmodifiableList(games);
+    return newGames;
   }
 
-  public int numberOfGame()
+  public int numberOfGames()
   {
-    int number = game.size();
+    int number = games.size();
     return number;
   }
 
-  public boolean hasGame()
+  public boolean hasGames()
   {
-    boolean has = game.size() > 0;
+    boolean has = games.size() > 0;
     return has;
   }
 
   public int indexOfGame(Game aGame)
   {
-    int index = game.indexOf(aGame);
+    int index = games.indexOf(aGame);
     return index;
   }
   /* Code from template association_GetMany */
   public User getPlayer(int index)
   {
-    User aPlayer = player.get(index);
+    User aPlayer = players.get(index);
     return aPlayer;
   }
 
-  public List<User> getPlayer()
+  public List<User> getPlayers()
   {
-    List<User> newPlayer = Collections.unmodifiableList(player);
-    return newPlayer;
+    List<User> newPlayers = Collections.unmodifiableList(players);
+    return newPlayers;
   }
 
-  public int numberOfPlayer()
+  public int numberOfPlayers()
   {
-    int number = player.size();
+    int number = players.size();
     return number;
   }
 
-  public boolean hasPlayer()
+  public boolean hasPlayers()
   {
-    boolean has = player.size() > 0;
+    boolean has = players.size() > 0;
     return has;
   }
 
   public int indexOfPlayer(User aPlayer)
   {
-    int index = player.indexOf(aPlayer);
+    int index = players.indexOf(aPlayer);
     return index;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfGame()
+  public static int minimumNumberOfGames()
   {
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Game addGame(Date aStartDate, Time aStartTime, Game.GameState aGameState, int aGameId)
+  public Game addGame(String aGameId, Date aStartDate, Time aStartTime, Game.GameState aGameState, Time aThinkingTime)
   {
-    return new Game(aStartDate, aStartTime, aGameState, aGameId, this);
+    return new Game(aGameId, aStartDate, aStartTime, aGameState, aThinkingTime, this);
   }
 
   public boolean addGame(Game aGame)
   {
     boolean wasAdded = false;
-    if (game.contains(aGame)) { return false; }
+    if (games.contains(aGame)) { return false; }
     QuoridorSystem existingQSystem = aGame.getQSystem();
     boolean isNewQSystem = existingQSystem != null && !this.equals(existingQSystem);
     if (isNewQSystem)
@@ -114,7 +131,7 @@ public class QuoridorSystem
     }
     else
     {
-      game.add(aGame);
+      games.add(aGame);
     }
     wasAdded = true;
     return wasAdded;
@@ -126,7 +143,7 @@ public class QuoridorSystem
     //Unable to remove aGame, as it must always have a qSystem
     if (!this.equals(aGame.getQSystem()))
     {
-      game.remove(aGame);
+      games.remove(aGame);
       wasRemoved = true;
     }
     return wasRemoved;
@@ -138,9 +155,9 @@ public class QuoridorSystem
     if(addGame(aGame))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfGame()) { index = numberOfGame() - 1; }
-      game.remove(aGame);
-      game.add(index, aGame);
+      if(index > numberOfGames()) { index = numberOfGames() - 1; }
+      games.remove(aGame);
+      games.add(index, aGame);
       wasAdded = true;
     }
     return wasAdded;
@@ -149,12 +166,12 @@ public class QuoridorSystem
   public boolean addOrMoveGameAt(Game aGame, int index)
   {
     boolean wasAdded = false;
-    if(game.contains(aGame))
+    if(games.contains(aGame))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfGame()) { index = numberOfGame() - 1; }
-      game.remove(aGame);
-      game.add(index, aGame);
+      if(index > numberOfGames()) { index = numberOfGames() - 1; }
+      games.remove(aGame);
+      games.add(index, aGame);
       wasAdded = true;
     } 
     else 
@@ -164,7 +181,7 @@ public class QuoridorSystem
     return wasAdded;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfPlayer()
+  public static int minimumNumberOfPlayers()
   {
     return 0;
   }
@@ -177,7 +194,7 @@ public class QuoridorSystem
   public boolean addPlayer(User aPlayer)
   {
     boolean wasAdded = false;
-    if (player.contains(aPlayer)) { return false; }
+    if (players.contains(aPlayer)) { return false; }
     QuoridorSystem existingQSystem = aPlayer.getQSystem();
     boolean isNewQSystem = existingQSystem != null && !this.equals(existingQSystem);
     if (isNewQSystem)
@@ -186,7 +203,7 @@ public class QuoridorSystem
     }
     else
     {
-      player.add(aPlayer);
+      players.add(aPlayer);
     }
     wasAdded = true;
     return wasAdded;
@@ -198,7 +215,7 @@ public class QuoridorSystem
     //Unable to remove aPlayer, as it must always have a qSystem
     if (!this.equals(aPlayer.getQSystem()))
     {
-      player.remove(aPlayer);
+      players.remove(aPlayer);
       wasRemoved = true;
     }
     return wasRemoved;
@@ -210,9 +227,9 @@ public class QuoridorSystem
     if(addPlayer(aPlayer))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfPlayer()) { index = numberOfPlayer() - 1; }
-      player.remove(aPlayer);
-      player.add(index, aPlayer);
+      if(index > numberOfPlayers()) { index = numberOfPlayers() - 1; }
+      players.remove(aPlayer);
+      players.add(index, aPlayer);
       wasAdded = true;
     }
     return wasAdded;
@@ -221,12 +238,12 @@ public class QuoridorSystem
   public boolean addOrMovePlayerAt(User aPlayer, int index)
   {
     boolean wasAdded = false;
-    if(player.contains(aPlayer))
+    if(players.contains(aPlayer))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfPlayer()) { index = numberOfPlayer() - 1; }
-      player.remove(aPlayer);
-      player.add(index, aPlayer);
+      if(index > numberOfPlayers()) { index = numberOfPlayers() - 1; }
+      players.remove(aPlayer);
+      players.add(index, aPlayer);
       wasAdded = true;
     } 
     else 
@@ -238,20 +255,26 @@ public class QuoridorSystem
 
   public void delete()
   {
-    while (game.size() > 0)
+    while (games.size() > 0)
     {
-      Game aGame = game.get(game.size() - 1);
+      Game aGame = games.get(games.size() - 1);
       aGame.delete();
-      game.remove(aGame);
+      games.remove(aGame);
     }
     
-    while (player.size() > 0)
+    while (players.size() > 0)
     {
-      User aPlayer = player.get(player.size() - 1);
+      User aPlayer = players.get(players.size() - 1);
       aPlayer.delete();
-      player.remove(aPlayer);
+      players.remove(aPlayer);
     }
     
   }
 
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "quoridorSystemId" + ":" + getQuoridorSystemId()+ "]";
+  }
 }

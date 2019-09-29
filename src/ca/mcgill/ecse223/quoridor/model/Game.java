@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 55 "../../../../../Model.ump"
+// line 40 "../../../../../Model.ump"
 public class Game
 {
 
@@ -14,7 +14,6 @@ public class Game
   // ENUMERATIONS
   //------------------------
 
-  public enum Orientation { Horizontal, Vertical }
   public enum GameState { Active, Completed, Paused }
 
   //------------------------
@@ -22,10 +21,11 @@ public class Game
   //------------------------
 
   //Game Attributes
+  private String gameId;
   private Date startDate;
   private Time startTime;
   private GameState gameState;
-  private int gameId;
+  private Time thinkingTime;
 
   //Game Associations
   private QuoridorSystem qSystem;
@@ -39,12 +39,13 @@ public class Game
   // CONSTRUCTOR
   //------------------------
 
-  public Game(Date aStartDate, Time aStartTime, GameState aGameState, int aGameId, QuoridorSystem aQSystem)
+  public Game(String aGameId, Date aStartDate, Time aStartTime, GameState aGameState, Time aThinkingTime, QuoridorSystem aQSystem)
   {
+    gameId = aGameId;
     startDate = aStartDate;
     startTime = aStartTime;
     gameState = aGameState;
-    gameId = aGameId;
+    thinkingTime = aThinkingTime;
     boolean didAddQSystem = setQSystem(aQSystem);
     if (!didAddQSystem)
     {
@@ -59,6 +60,14 @@ public class Game
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setGameId(String aGameId)
+  {
+    boolean wasSet = false;
+    gameId = aGameId;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setStartDate(Date aStartDate)
   {
@@ -84,12 +93,17 @@ public class Game
     return wasSet;
   }
 
-  public boolean setGameId(int aGameId)
+  public boolean setThinkingTime(Time aThinkingTime)
   {
     boolean wasSet = false;
-    gameId = aGameId;
+    thinkingTime = aThinkingTime;
     wasSet = true;
     return wasSet;
+  }
+
+  public String getGameId()
+  {
+    return gameId;
   }
 
   public Date getStartDate()
@@ -107,9 +121,9 @@ public class Game
     return gameState;
   }
 
-  public int getGameId()
+  public Time getThinkingTime()
   {
-    return gameId;
+    return thinkingTime;
   }
   /* Code from template association_GetOne */
   public QuoridorSystem getQSystem()
@@ -288,7 +302,7 @@ public class Game
     return 2;
   }
   /* Code from template association_AddMNToOnlyOne */
-  public Pawn addPawn(Pawn.Color aColor, Time aThinkingTime, User aPlayer, Tile aCurrentPosition)
+  public Pawn addPawn(Pawn.Color aColor, User aPlayer, Tile aCurrentPosition)
   {
     if (numberOfPawns() >= maximumNumberOfPawns())
     {
@@ -296,7 +310,7 @@ public class Game
     }
     else
     {
-      return new Pawn(aColor, aThinkingTime, this, aPlayer, aCurrentPosition);
+      return new Pawn(aColor, this, aPlayer, aCurrentPosition);
     }
   }
 
@@ -369,7 +383,7 @@ public class Game
     return 20;
   }
   /* Code from template association_AddMNToOnlyOne */
-  public Wall addWall(Wall.Orientation aOrientation, Pawn aPawn, Tile aCurrentPosition)
+  public Wall addWall(Wall.Orientation aOrientation, Pawn aOwner, Tile aCurrentPosition)
   {
     if (numberOfWalls() >= maximumNumberOfWalls())
     {
@@ -377,7 +391,7 @@ public class Game
     }
     else
     {
-      return new Wall(aOrientation, this, aPawn, aCurrentPosition);
+      return new Wall(aOrientation, this, aOwner, aCurrentPosition);
     }
   }
 
@@ -450,7 +464,7 @@ public class Game
     return 81;
   }
   /* Code from template association_AddMNToOnlyOne */
-  public Tile addTile(int aRow, Character aColumn, Step aCurrentState)
+  public Tile addTile(int aRow, Character aColumn)
   {
     if (numberOfTiles() >= maximumNumberOfTiles())
     {
@@ -458,7 +472,7 @@ public class Game
     }
     else
     {
-      return new Tile(aRow, aColumn, this, aCurrentState);
+      return new Tile(aRow, aColumn, this);
     }
   }
 
@@ -515,20 +529,20 @@ public class Game
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Step addStep(String aLog, Game aGame, Tile aEarlierState)
+  public Step addStep(int aStepNo, String aLog, Step.StepType aStepType, Tile aTile1, Tile aTile2, GameItem aStepItem)
   {
-    return new Step(aLog, this, aGame, aEarlierState);
+    return new Step(aStepNo, aLog, aStepType, this, aTile1, aTile2, aStepItem);
   }
 
   public boolean addStep(Step aStep)
   {
     boolean wasAdded = false;
     if (steps.contains(aStep)) { return false; }
-    Game existingGameSteps = aStep.getGameSteps();
-    boolean isNewGameSteps = existingGameSteps != null && !this.equals(existingGameSteps);
-    if (isNewGameSteps)
+    Game existingGame = aStep.getGame();
+    boolean isNewGame = existingGame != null && !this.equals(existingGame);
+    if (isNewGame)
     {
-      aStep.setGameSteps(this);
+      aStep.setGame(this);
     }
     else
     {
@@ -541,8 +555,8 @@ public class Game
   public boolean removeStep(Step aStep)
   {
     boolean wasRemoved = false;
-    //Unable to remove aStep, as it must always have a gameSteps
-    if (!this.equals(aStep.getGameSteps()))
+    //Unable to remove aStep, as it must always have a game
+    if (!this.equals(aStep.getGame()))
     {
       steps.remove(aStep);
       wasRemoved = true;
@@ -581,30 +595,11 @@ public class Game
     }
     return wasAdded;
   }
-  /* Code from template association_SetOptionalOneToOne */
+  /* Code from template association_SetUnidirectionalOptionalOne */
   public boolean setCurrentStep(Step aNewCurrentStep)
   {
     boolean wasSet = false;
-    if (currentStep != null && !currentStep.equals(aNewCurrentStep) && equals(currentStep.getGame()))
-    {
-      //Unable to setCurrentStep, as existing currentStep would become an orphan
-      return wasSet;
-    }
-
     currentStep = aNewCurrentStep;
-    Game anOldGame = aNewCurrentStep != null ? aNewCurrentStep.getGame() : null;
-
-    if (!this.equals(anOldGame))
-    {
-      if (anOldGame != null)
-      {
-        anOldGame.currentStep = null;
-      }
-      if (currentStep != null)
-      {
-        currentStep.setGame(this);
-      }
-    }
     wasSet = true;
     return wasSet;
   }
@@ -645,13 +640,7 @@ public class Game
       steps.remove(aStep);
     }
     
-    Step existingCurrentStep = currentStep;
     currentStep = null;
-    if (existingCurrentStep != null)
-    {
-      existingCurrentStep.delete();
-      existingCurrentStep.setGame(null);
-    }
   }
 
 
@@ -662,6 +651,7 @@ public class Game
             "  " + "startDate" + "=" + (getStartDate() != null ? !getStartDate().equals(this)  ? getStartDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "gameState" + "=" + (getGameState() != null ? !getGameState().equals(this)  ? getGameState().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "thinkingTime" + "=" + (getThinkingTime() != null ? !getThinkingTime().equals(this)  ? getThinkingTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "qSystem = "+(getQSystem()!=null?Integer.toHexString(System.identityHashCode(getQSystem())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "currentStep = "+(getCurrentStep()!=null?Integer.toHexString(System.identityHashCode(getCurrentStep())):"null");
   }

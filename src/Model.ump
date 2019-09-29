@@ -10,7 +10,7 @@ association
 	1 Game game <@>- 20 Wall walls;
 	1 Game game <@>- 81 Tile tiles;
 	1 Game game <@>- 0..* Step steps;
-	1 Game game -> 0..1 Step currentStep;
+	* Game game -> 0..1 Step currentStep;
     0..1 Step prev -- 0..1 Step next;
 	1 User player -- 0..* Pawn pawn;
     * Wall -> 1 Pawn owner;

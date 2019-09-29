@@ -2,10 +2,8 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.quoridor.model;
-import java.sql.Time;
 
-// line 26 "../../../../../Model.ump"
-// line 91 "../../../../../Model.ump"
+// line 59 "../../../../../Model.ump"
 public class Tile
 {
 
@@ -21,13 +19,12 @@ public class Tile
   private Game game;
   private Pawn pawn;
   private Wall wall;
-  private Step currentState;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Tile(int aRow, Character aColumn, Game aGame, Step aCurrentState)
+  public Tile(int aRow, Character aColumn, Game aGame)
   {
     row = aRow;
     column = aColumn;
@@ -35,10 +32,6 @@ public class Tile
     if (!didAddGame)
     {
       throw new RuntimeException("Unable to create tile due to game");
-    }
-    if (!setCurrentState(aCurrentState))
-    {
-      throw new RuntimeException("Unable to create Tile due to aCurrentState");
     }
   }
 
@@ -97,11 +90,6 @@ public class Tile
   {
     boolean has = wall != null;
     return has;
-  }
-  /* Code from template association_GetOne */
-  public Step getCurrentState()
-  {
-    return currentState;
   }
   /* Code from template association_SetOneToAtMostN */
   public boolean setGame(Game aGame)
@@ -188,17 +176,6 @@ public class Tile
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setCurrentState(Step aNewCurrentState)
-  {
-    boolean wasSet = false;
-    if (aNewCurrentState != null)
-    {
-      currentState = aNewCurrentState;
-      wasSet = true;
-    }
-    return wasSet;
-  }
 
   public void delete()
   {
@@ -220,7 +197,6 @@ public class Tile
     {
       existingWall.delete();
     }
-    currentState = null;
   }
 
 
@@ -231,7 +207,6 @@ public class Tile
             "column" + ":" + getColumn()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "pawn = "+(getPawn()!=null?Integer.toHexString(System.identityHashCode(getPawn())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "wall = "+(getWall()!=null?Integer.toHexString(System.identityHashCode(getWall())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "currentState = "+(getCurrentState()!=null?Integer.toHexString(System.identityHashCode(getCurrentState())):"null");
+            "  " + "wall = "+(getWall()!=null?Integer.toHexString(System.identityHashCode(getWall())):"null");
   }
 }

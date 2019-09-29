@@ -3,50 +3,72 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 81 "../../../../../Model.ump"
+// line 51 "../../../../../Model.ump"
 public class Step
 {
+
+  //------------------------
+  // ENUMERATIONS
+  //------------------------
+
+  public enum StepType { PawnMove, WallPlace }
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
   //Step Attributes
+  private int stepNo;
   private String log;
+  private StepType stepType;
 
   //Step Associations
-  private Game gameSteps;
   private Game game;
   private Step next;
   private Step prev;
-  private Tile earlierState;
+  private Tile tile1;
+  private Tile tile2;
+  private GameItem stepItem;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Step(String aLog, Game aGameSteps, Game aGame, Tile aEarlierState)
+  public Step(int aStepNo, String aLog, StepType aStepType, Game aGame, Tile aTile1, Tile aTile2, GameItem aStepItem)
   {
+    stepNo = aStepNo;
     log = aLog;
-    boolean didAddGameSteps = setGameSteps(aGameSteps);
-    if (!didAddGameSteps)
-    {
-      throw new RuntimeException("Unable to create step due to gameSteps");
-    }
+    stepType = aStepType;
     boolean didAddGame = setGame(aGame);
     if (!didAddGame)
     {
-      throw new RuntimeException("Unable to create currentStep due to game");
+      throw new RuntimeException("Unable to create step due to game");
     }
-    if (!setEarlierState(aEarlierState))
+    if (!setTile1(aTile1))
     {
-      throw new RuntimeException("Unable to create Step due to aEarlierState");
+      throw new RuntimeException("Unable to create Step due to aTile1");
+    }
+    if (!setTile2(aTile2))
+    {
+      throw new RuntimeException("Unable to create Step due to aTile2");
+    }
+    if (!setStepItem(aStepItem))
+    {
+      throw new RuntimeException("Unable to create Step due to aStepItem");
     }
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setStepNo(int aStepNo)
+  {
+    boolean wasSet = false;
+    stepNo = aStepNo;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setLog(String aLog)
   {
@@ -56,14 +78,27 @@ public class Step
     return wasSet;
   }
 
+  public boolean setStepType(StepType aStepType)
+  {
+    boolean wasSet = false;
+    stepType = aStepType;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public int getStepNo()
+  {
+    return stepNo;
+  }
+
   public String getLog()
   {
     return log;
   }
-  /* Code from template association_GetOne */
-  public Game getGameSteps()
+
+  public StepType getStepType()
   {
-    return gameSteps;
+    return stepType;
   }
   /* Code from template association_GetOne */
   public Game getGame()
@@ -93,54 +128,36 @@ public class Step
     return has;
   }
   /* Code from template association_GetOne */
-  public Tile getEarlierState()
+  public Tile getTile1()
   {
-    return earlierState;
+    return tile1;
+  }
+  /* Code from template association_GetOne */
+  public Tile getTile2()
+  {
+    return tile2;
+  }
+  /* Code from template association_GetOne */
+  public GameItem getStepItem()
+  {
+    return stepItem;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setGameSteps(Game aGameSteps)
+  public boolean setGame(Game aGame)
   {
     boolean wasSet = false;
-    if (aGameSteps == null)
+    if (aGame == null)
     {
       return wasSet;
     }
 
-    Game existingGameSteps = gameSteps;
-    gameSteps = aGameSteps;
-    if (existingGameSteps != null && !existingGameSteps.equals(aGameSteps))
+    Game existingGame = game;
+    game = aGame;
+    if (existingGame != null && !existingGame.equals(aGame))
     {
-      existingGameSteps.removeStep(this);
+      existingGame.removeStep(this);
     }
-    gameSteps.addStep(this);
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOneToOptionalOne */
-  public boolean setGame(Game aNewGame)
-  {
-    boolean wasSet = false;
-    if (aNewGame == null)
-    {
-      //Unable to setGame to null, as currentStep must always be associated to a game
-      return wasSet;
-    }
-    
-    Step existingCurrentStep = aNewGame.getCurrentStep();
-    if (existingCurrentStep != null && !equals(existingCurrentStep))
-    {
-      //Unable to setGame, the current game already has a currentStep, which would be orphaned if it were re-assigned
-      return wasSet;
-    }
-    
-    Game anOldGame = game;
-    game = aNewGame;
-    game.setCurrentStep(this);
-
-    if (anOldGame != null)
-    {
-      anOldGame.setCurrentStep(null);
-    }
+    game.addStep(this);
     wasSet = true;
     return wasSet;
   }
@@ -211,12 +228,34 @@ public class Step
     return wasSet;
   }
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setEarlierState(Tile aNewEarlierState)
+  public boolean setTile1(Tile aNewTile1)
   {
     boolean wasSet = false;
-    if (aNewEarlierState != null)
+    if (aNewTile1 != null)
     {
-      earlierState = aNewEarlierState;
+      tile1 = aNewTile1;
+      wasSet = true;
+    }
+    return wasSet;
+  }
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setTile2(Tile aNewTile2)
+  {
+    boolean wasSet = false;
+    if (aNewTile2 != null)
+    {
+      tile2 = aNewTile2;
+      wasSet = true;
+    }
+    return wasSet;
+  }
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setStepItem(GameItem aNewStepItem)
+  {
+    boolean wasSet = false;
+    if (aNewStepItem != null)
+    {
+      stepItem = aNewStepItem;
       wasSet = true;
     }
     return wasSet;
@@ -224,17 +263,11 @@ public class Step
 
   public void delete()
   {
-    Game placeholderGameSteps = gameSteps;
-    this.gameSteps = null;
-    if(placeholderGameSteps != null)
+    Game placeholderGame = game;
+    this.game = null;
+    if(placeholderGame != null)
     {
-      placeholderGameSteps.removeStep(this);
-    }
-    Game existingGame = game;
-    game = null;
-    if (existingGame != null)
-    {
-      existingGame.setCurrentStep(null);
+      placeholderGame.removeStep(this);
     }
     if (next != null)
     {
@@ -244,16 +277,21 @@ public class Step
     {
       prev.setNext(null);
     }
-    earlierState = null;
+    tile1 = null;
+    tile2 = null;
+    stepItem = null;
   }
 
 
   public String toString()
   {
     return super.toString() + "["+
+            "stepNo" + ":" + getStepNo()+ "," +
             "log" + ":" + getLog()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "gameSteps = "+(getGameSteps()!=null?Integer.toHexString(System.identityHashCode(getGameSteps())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "stepType" + "=" + (getStepType() != null ? !getStepType().equals(this)  ? getStepType().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "earlierState = "+(getEarlierState()!=null?Integer.toHexString(System.identityHashCode(getEarlierState())):"null");
+            "  " + "tile1 = "+(getTile1()!=null?Integer.toHexString(System.identityHashCode(getTile1())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "tile2 = "+(getTile2()!=null?Integer.toHexString(System.identityHashCode(getTile2())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "stepItem = "+(getStepItem()!=null?Integer.toHexString(System.identityHashCode(getStepItem())):"null");
   }
 }
