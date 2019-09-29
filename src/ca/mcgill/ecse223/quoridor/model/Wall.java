@@ -3,8 +3,9 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 75 "../../../../../Model.ump"
-public class Wall
+// line 70 "../../../../../Model.ump"
+// line 80 "../../../../../Model.ump"
+public class Wall extends GameItem
 {
 
   //------------------------
@@ -22,26 +23,25 @@ public class Wall
 
   //Wall Associations
   private Game game;
-  private Pawn usedBy;
-  private Pawn pawn;
+  private Pawn owner;
   private Tile currentPosition;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Wall(Orientation aOrientation, Game aGame, Pawn aPawn, Tile aCurrentPosition)
+  public Wall(Orientation aOrientation, Game aGame, Pawn aOwner, Tile aCurrentPosition)
   {
+    super();
     orientation = aOrientation;
     boolean didAddGame = setGame(aGame);
     if (!didAddGame)
     {
       throw new RuntimeException("Unable to create wall due to game");
     }
-    boolean didAddPawn = setPawn(aPawn);
-    if (!didAddPawn)
+    if (!setOwner(aOwner))
     {
-      throw new RuntimeException("Unable to create ownsWall due to pawn");
+      throw new RuntimeException("Unable to create Wall due to aOwner");
     }
     boolean didAddCurrentPosition = setCurrentPosition(aCurrentPosition);
     if (!didAddCurrentPosition)
@@ -72,20 +72,9 @@ public class Wall
     return game;
   }
   /* Code from template association_GetOne */
-  public Pawn getUsedBy()
+  public Pawn getOwner()
   {
-    return usedBy;
-  }
-
-  public boolean hasUsedBy()
-  {
-    boolean has = usedBy != null;
-    return has;
-  }
-  /* Code from template association_GetOne */
-  public Pawn getPawn()
-  {
-    return pawn;
+    return owner;
   }
   /* Code from template association_GetOne */
   public Tile getCurrentPosition()
@@ -123,57 +112,15 @@ public class Wall
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOptionalOneToOptionalN */
-  public boolean setUsedBy(Pawn aUsedBy)
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setOwner(Pawn aNewOwner)
   {
     boolean wasSet = false;
-    if (aUsedBy != null && aUsedBy.numberOfOnBoard() >= Pawn.maximumNumberOfOnBoard())
+    if (aNewOwner != null)
     {
-      return wasSet;
+      owner = aNewOwner;
+      wasSet = true;
     }
-
-    Pawn existingUsedBy = usedBy;
-    usedBy = aUsedBy;
-    if (existingUsedBy != null && !existingUsedBy.equals(aUsedBy))
-    {
-      existingUsedBy.removeOnBoard(this);
-    }
-    if (aUsedBy != null)
-    {
-      aUsedBy.addOnBoard(this);
-    }
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetOneToAtMostN */
-  public boolean setPawn(Pawn aPawn)
-  {
-    boolean wasSet = false;
-    //Must provide pawn to ownsWall
-    if (aPawn == null)
-    {
-      return wasSet;
-    }
-
-    //pawn already at maximum (10)
-    if (aPawn.numberOfOwnsWall() >= Pawn.maximumNumberOfOwnsWall())
-    {
-      return wasSet;
-    }
-    
-    Pawn existingPawn = pawn;
-    pawn = aPawn;
-    if (existingPawn != null && !existingPawn.equals(aPawn))
-    {
-      boolean didRemove = existingPawn.removeOwnsWall(this);
-      if (!didRemove)
-      {
-        pawn = existingPawn;
-        return wasSet;
-      }
-    }
-    pawn.addOwnsWall(this);
-    wasSet = true;
     return wasSet;
   }
   /* Code from template association_SetOneToOptionalOne */
@@ -213,24 +160,14 @@ public class Wall
     {
       placeholderGame.removeWall(this);
     }
-    if (usedBy != null)
-    {
-      Pawn placeholderUsedBy = usedBy;
-      this.usedBy = null;
-      placeholderUsedBy.removeOnBoard(this);
-    }
-    Pawn placeholderPawn = pawn;
-    this.pawn = null;
-    if(placeholderPawn != null)
-    {
-      placeholderPawn.removeOwnsWall(this);
-    }
+    owner = null;
     Tile existingCurrentPosition = currentPosition;
     currentPosition = null;
     if (existingCurrentPosition != null)
     {
       existingCurrentPosition.setWall(null);
     }
+    super.delete();
   }
 
 
@@ -239,8 +176,7 @@ public class Wall
     return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "orientation" + "=" + (getOrientation() != null ? !getOrientation().equals(this)  ? getOrientation().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "usedBy = "+(getUsedBy()!=null?Integer.toHexString(System.identityHashCode(getUsedBy())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "pawn = "+(getPawn()!=null?Integer.toHexString(System.identityHashCode(getPawn())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "owner = "+(getOwner()!=null?Integer.toHexString(System.identityHashCode(getOwner())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "currentPosition = "+(getCurrentPosition()!=null?Integer.toHexString(System.identityHashCode(getCurrentPosition())):"null");
   }
 }

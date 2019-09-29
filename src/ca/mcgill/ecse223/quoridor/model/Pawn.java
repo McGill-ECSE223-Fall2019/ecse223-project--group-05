@@ -2,11 +2,11 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.quoridor.model;
-import java.sql.Time;
 import java.util.*;
 
-// line 66 "../../../../../Model.ump"
-public class Pawn
+// line 69 "../../../../../Model.ump"
+// line 73 "../../../../../Model.ump"
+public class Pawn extends GameItem
 {
 
   //------------------------
@@ -21,23 +21,22 @@ public class Pawn
 
   //Pawn Attributes
   private Color color;
-  private Time thinkingTime;
 
   //Pawn Associations
   private Game game;
   private User player;
-  private List<Wall> onBoard;
-  private List<Wall> ownsWall;
+  private List<Wall> wallsKept;
+  private List<Wall> wallsUsed;
   private Tile currentPosition;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Pawn(Color aColor, Time aThinkingTime, Game aGame, User aPlayer, Tile aCurrentPosition)
+  public Pawn(Color aColor, Game aGame, User aPlayer, Tile aCurrentPosition)
   {
+    super();
     color = aColor;
-    thinkingTime = aThinkingTime;
     boolean didAddGame = setGame(aGame);
     if (!didAddGame)
     {
@@ -48,8 +47,8 @@ public class Pawn
     {
       throw new RuntimeException("Unable to create pawn due to player");
     }
-    onBoard = new ArrayList<Wall>();
-    ownsWall = new ArrayList<Wall>();
+    wallsKept = new ArrayList<Wall>();
+    wallsUsed = new ArrayList<Wall>();
     boolean didAddCurrentPosition = setCurrentPosition(aCurrentPosition);
     if (!didAddCurrentPosition)
     {
@@ -69,22 +68,9 @@ public class Pawn
     return wasSet;
   }
 
-  public boolean setThinkingTime(Time aThinkingTime)
-  {
-    boolean wasSet = false;
-    thinkingTime = aThinkingTime;
-    wasSet = true;
-    return wasSet;
-  }
-
   public Color getColor()
   {
     return color;
-  }
-
-  public Time getThinkingTime()
-  {
-    return thinkingTime;
   }
   /* Code from template association_GetOne */
   public Game getGame()
@@ -97,63 +83,63 @@ public class Pawn
     return player;
   }
   /* Code from template association_GetMany */
-  public Wall getOnBoard(int index)
+  public Wall getWallsKept(int index)
   {
-    Wall aOnBoard = onBoard.get(index);
-    return aOnBoard;
+    Wall aWallsKept = wallsKept.get(index);
+    return aWallsKept;
   }
 
-  public List<Wall> getOnBoard()
+  public List<Wall> getWallsKept()
   {
-    List<Wall> newOnBoard = Collections.unmodifiableList(onBoard);
-    return newOnBoard;
+    List<Wall> newWallsKept = Collections.unmodifiableList(wallsKept);
+    return newWallsKept;
   }
 
-  public int numberOfOnBoard()
+  public int numberOfWallsKept()
   {
-    int number = onBoard.size();
+    int number = wallsKept.size();
     return number;
   }
 
-  public boolean hasOnBoard()
+  public boolean hasWallsKept()
   {
-    boolean has = onBoard.size() > 0;
+    boolean has = wallsKept.size() > 0;
     return has;
   }
 
-  public int indexOfOnBoard(Wall aOnBoard)
+  public int indexOfWallsKept(Wall aWallsKept)
   {
-    int index = onBoard.indexOf(aOnBoard);
+    int index = wallsKept.indexOf(aWallsKept);
     return index;
   }
   /* Code from template association_GetMany */
-  public Wall getOwnsWall(int index)
+  public Wall getWallsUsed(int index)
   {
-    Wall aOwnsWall = ownsWall.get(index);
-    return aOwnsWall;
+    Wall aWallsUsed = wallsUsed.get(index);
+    return aWallsUsed;
   }
 
-  public List<Wall> getOwnsWall()
+  public List<Wall> getWallsUsed()
   {
-    List<Wall> newOwnsWall = Collections.unmodifiableList(ownsWall);
-    return newOwnsWall;
+    List<Wall> newWallsUsed = Collections.unmodifiableList(wallsUsed);
+    return newWallsUsed;
   }
 
-  public int numberOfOwnsWall()
+  public int numberOfWallsUsed()
   {
-    int number = ownsWall.size();
+    int number = wallsUsed.size();
     return number;
   }
 
-  public boolean hasOwnsWall()
+  public boolean hasWallsUsed()
   {
-    boolean has = ownsWall.size() > 0;
+    boolean has = wallsUsed.size() > 0;
     return has;
   }
 
-  public int indexOfOwnsWall(Wall aOwnsWall)
+  public int indexOfWallsUsed(Wall aWallsUsed)
   {
-    int index = ownsWall.indexOf(aOwnsWall);
+    int index = wallsUsed.indexOf(aWallsUsed);
     return index;
   }
   /* Code from template association_GetOne */
@@ -212,166 +198,182 @@ public class Pawn
     return wasSet;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfOnBoard()
+  public static int minimumNumberOfWallsKept()
   {
     return 0;
   }
   /* Code from template association_MaximumNumberOfMethod */
-  public static int maximumNumberOfOnBoard()
+  public static int maximumNumberOfWallsKept()
   {
     return 10;
   }
-  /* Code from template association_AddOptionalNToOptionalOne */
-  public boolean addOnBoard(Wall aOnBoard)
+  /* Code from template association_AddUnidirectionalOptionalN */
+  public boolean addWallsKept(Wall aWallsKept)
   {
     boolean wasAdded = false;
-    if (onBoard.contains(aOnBoard)) { return false; }
-    if (numberOfOnBoard() >= maximumNumberOfOnBoard())
+    if (wallsKept.contains(aWallsKept)) { return false; }
+    if (numberOfWallsKept() < maximumNumberOfWallsKept())
     {
-      return wasAdded;
+      wallsKept.add(aWallsKept);
+      wasAdded = true;
     }
-
-    Pawn existingUsedBy = aOnBoard.getUsedBy();
-    if (existingUsedBy == null)
-    {
-      aOnBoard.setUsedBy(this);
-    }
-    else if (!this.equals(existingUsedBy))
-    {
-      existingUsedBy.removeOnBoard(aOnBoard);
-      addOnBoard(aOnBoard);
-    }
-    else
-    {
-      onBoard.add(aOnBoard);
-    }
-    wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeOnBoard(Wall aOnBoard)
+  public boolean removeWallsKept(Wall aWallsKept)
   {
     boolean wasRemoved = false;
-    if (onBoard.contains(aOnBoard))
+    if (wallsKept.contains(aWallsKept))
     {
-      onBoard.remove(aOnBoard);
-      aOnBoard.setUsedBy(null);
+      wallsKept.remove(aWallsKept);
       wasRemoved = true;
     }
     return wasRemoved;
   }
+  /* Code from template association_SetUnidirectionalOptionalN */
+  public boolean setWallsKept(Wall... newWallsKept)
+  {
+    boolean wasSet = false;
+    ArrayList<Wall> verifiedWallsKept = new ArrayList<Wall>();
+    for (Wall aWallsKept : newWallsKept)
+    {
+      if (verifiedWallsKept.contains(aWallsKept))
+      {
+        continue;
+      }
+      verifiedWallsKept.add(aWallsKept);
+    }
+
+    if (verifiedWallsKept.size() != newWallsKept.length || verifiedWallsKept.size() > maximumNumberOfWallsKept())
+    {
+      return wasSet;
+    }
+
+    wallsKept.clear();
+    wallsKept.addAll(verifiedWallsKept);
+    wasSet = true;
+    return wasSet;
+  }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addOnBoardAt(Wall aOnBoard, int index)
+  public boolean addWallsKeptAt(Wall aWallsKept, int index)
   {  
     boolean wasAdded = false;
-    if(addOnBoard(aOnBoard))
+    if(addWallsKept(aWallsKept))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfOnBoard()) { index = numberOfOnBoard() - 1; }
-      onBoard.remove(aOnBoard);
-      onBoard.add(index, aOnBoard);
+      if(index > numberOfWallsKept()) { index = numberOfWallsKept() - 1; }
+      wallsKept.remove(aWallsKept);
+      wallsKept.add(index, aWallsKept);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveOnBoardAt(Wall aOnBoard, int index)
+  public boolean addOrMoveWallsKeptAt(Wall aWallsKept, int index)
   {
     boolean wasAdded = false;
-    if(onBoard.contains(aOnBoard))
+    if(wallsKept.contains(aWallsKept))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfOnBoard()) { index = numberOfOnBoard() - 1; }
-      onBoard.remove(aOnBoard);
-      onBoard.add(index, aOnBoard);
+      if(index > numberOfWallsKept()) { index = numberOfWallsKept() - 1; }
+      wallsKept.remove(aWallsKept);
+      wallsKept.add(index, aWallsKept);
       wasAdded = true;
     } 
     else 
     {
-      wasAdded = addOnBoardAt(aOnBoard, index);
+      wasAdded = addWallsKeptAt(aWallsKept, index);
     }
     return wasAdded;
-  }
-  /* Code from template association_IsNumberOfValidMethod */
-  public boolean isNumberOfOwnsWallValid()
-  {
-    boolean isValid = numberOfOwnsWall() >= minimumNumberOfOwnsWall() && numberOfOwnsWall() <= maximumNumberOfOwnsWall();
-    return isValid;
-  }
-  /* Code from template association_RequiredNumberOfMethod */
-  public static int requiredNumberOfOwnsWall()
-  {
-    return 10;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfOwnsWall()
+  public static int minimumNumberOfWallsUsed()
   {
-    return 10;
+    return 0;
   }
   /* Code from template association_MaximumNumberOfMethod */
-  public static int maximumNumberOfOwnsWall()
+  public static int maximumNumberOfWallsUsed()
   {
     return 10;
   }
-  /* Code from template association_AddMNToOnlyOne */
-  public Wall addOwnsWall(Wall.Orientation aOrientation, Game aGame, Tile aCurrentPosition)
-  {
-    if (numberOfOwnsWall() >= maximumNumberOfOwnsWall())
-    {
-      return null;
-    }
-    else
-    {
-      return new Wall(aOrientation, aGame, this, aCurrentPosition);
-    }
-  }
-
-  public boolean addOwnsWall(Wall aOwnsWall)
+  /* Code from template association_AddUnidirectionalOptionalN */
+  public boolean addWallsUsed(Wall aWallsUsed)
   {
     boolean wasAdded = false;
-    if (ownsWall.contains(aOwnsWall)) { return false; }
-    if (numberOfOwnsWall() >= maximumNumberOfOwnsWall())
+    if (wallsUsed.contains(aWallsUsed)) { return false; }
+    if (numberOfWallsUsed() < maximumNumberOfWallsUsed())
     {
-      return wasAdded;
+      wallsUsed.add(aWallsUsed);
+      wasAdded = true;
     }
-
-    Pawn existingPawn = aOwnsWall.getPawn();
-    boolean isNewPawn = existingPawn != null && !this.equals(existingPawn);
-
-    if (isNewPawn && existingPawn.numberOfOwnsWall() <= minimumNumberOfOwnsWall())
-    {
-      return wasAdded;
-    }
-
-    if (isNewPawn)
-    {
-      aOwnsWall.setPawn(this);
-    }
-    else
-    {
-      ownsWall.add(aOwnsWall);
-    }
-    wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeOwnsWall(Wall aOwnsWall)
+  public boolean removeWallsUsed(Wall aWallsUsed)
   {
     boolean wasRemoved = false;
-    //Unable to remove aOwnsWall, as it must always have a pawn
-    if (this.equals(aOwnsWall.getPawn()))
+    if (wallsUsed.contains(aWallsUsed))
     {
-      return wasRemoved;
+      wallsUsed.remove(aWallsUsed);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_SetUnidirectionalOptionalN */
+  public boolean setWallsUsed(Wall... newWallsUsed)
+  {
+    boolean wasSet = false;
+    ArrayList<Wall> verifiedWallsUsed = new ArrayList<Wall>();
+    for (Wall aWallsUsed : newWallsUsed)
+    {
+      if (verifiedWallsUsed.contains(aWallsUsed))
+      {
+        continue;
+      }
+      verifiedWallsUsed.add(aWallsUsed);
     }
 
-    //pawn already at minimum (10)
-    if (numberOfOwnsWall() <= minimumNumberOfOwnsWall())
+    if (verifiedWallsUsed.size() != newWallsUsed.length || verifiedWallsUsed.size() > maximumNumberOfWallsUsed())
     {
-      return wasRemoved;
+      return wasSet;
     }
-    ownsWall.remove(aOwnsWall);
-    wasRemoved = true;
-    return wasRemoved;
+
+    wallsUsed.clear();
+    wallsUsed.addAll(verifiedWallsUsed);
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addWallsUsedAt(Wall aWallsUsed, int index)
+  {  
+    boolean wasAdded = false;
+    if(addWallsUsed(aWallsUsed))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfWallsUsed()) { index = numberOfWallsUsed() - 1; }
+      wallsUsed.remove(aWallsUsed);
+      wallsUsed.add(index, aWallsUsed);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveWallsUsedAt(Wall aWallsUsed, int index)
+  {
+    boolean wasAdded = false;
+    if(wallsUsed.contains(aWallsUsed))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfWallsUsed()) { index = numberOfWallsUsed() - 1; }
+      wallsUsed.remove(aWallsUsed);
+      wallsUsed.add(index, aWallsUsed);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addWallsUsedAt(aWallsUsed, index);
+    }
+    return wasAdded;
   }
   /* Code from template association_SetOneToOptionalOne */
   public boolean setCurrentPosition(Tile aNewCurrentPosition)
@@ -416,21 +418,15 @@ public class Pawn
     {
       placeholderPlayer.removePawn(this);
     }
-    while( !onBoard.isEmpty() )
-    {
-      onBoard.get(0).setUsedBy(null);
-    }
-    for(int i=ownsWall.size(); i > 0; i--)
-    {
-      Wall aOwnsWall = ownsWall.get(i - 1);
-      aOwnsWall.delete();
-    }
+    wallsKept.clear();
+    wallsUsed.clear();
     Tile existingCurrentPosition = currentPosition;
     currentPosition = null;
     if (existingCurrentPosition != null)
     {
       existingCurrentPosition.setPawn(null);
     }
+    super.delete();
   }
 
 
@@ -438,7 +434,6 @@ public class Pawn
   {
     return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "color" + "=" + (getColor() != null ? !getColor().equals(this)  ? getColor().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "thinkingTime" + "=" + (getThinkingTime() != null ? !getThinkingTime().equals(this)  ? getThinkingTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "currentPosition = "+(getCurrentPosition()!=null?Integer.toHexString(System.identityHashCode(getCurrentPosition())):"null");
