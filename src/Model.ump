@@ -4,102 +4,81 @@ namespace ca.mcgill.ecse223.quoridor.model;
 
 association 
 {
-	1 QuoridorSystem qSystem <@>- 0..* Game game; 
-	1 QuoridorSystem qSystem <@>- 0..* User player; 
+	1 QuoridorSystem qSystem <@>- 0..* Game games; 
+	1 QuoridorSystem qSystem <@>- 0..* User players; 
 	1 Game game <@>- 2 Pawn pawns; 
 	1 Game game <@>- 20 Wall walls;
 	1 Game game <@>- 81 Tile tiles;
-	1 Game gameSteps <@>- 0..* Step steps;
-	1 Game game <@>- 0..1 Step currentStep;
+	1 Game game <@>- 0..* Step steps;
+	1 Game game -> 0..1 Step currentStep;
     0..1 Step prev -- 0..1 Step next;
-	1 User player -- 0..* Pawn pawn; 
-    0..1 Pawn usedBy -- 0..10 Wall onBoard;
-    1 Pawn pawn -- 10 Wall ownsWall;
+	1 User player -- 0..* Pawn pawn;
+    * Wall -> 1 Pawn owner;
+    * Pawn -> 0..10 Wall wallsKept;
+    * Pawn -> 0..10 Wall wallsUsed;
     0..1 Pawn pawn  -- 1 Tile currentPosition;
     0..1 Wall wall  -- 1 Tile currentPosition;
-    * Step -> 1 Tile earlierState;
-    * Tile -> 1 Step currentState;
+    * Step -> 1 Tile tile1;
+    * Step -> 1 Tile tile2;
+    * Step -> 1 GameItem stepItem;
 }
 
 
-
-class Tile
-{
-  Integer row;
-  Character column;
-}
-
-class JumpStep
-{
-  Integer jumpedRow;
-  Character jumpedColumn;
-}
-
-class WallPlacement
-{
-  Orientation orientation;
-}
 
 class QuoridorSystem {
-	position 206 12 119 41;
+	position 550 25 125 50;
+    quoridorSystemId;
 }
 
 class User {
-	position 18 62 143 75;
-	
+	position 150 175 150 75;
 	position.association User__QuoridorSystem 101,0 0,33;
 	userName;
 	password;
 }
 
 class Game {
-	position 377 38 182 109;
-	enum Orientation {Horizontal, Vertical}
-	position.association Game__QuoridorSystem 47,0 119,34;
+	position 700 150 200 125;
+    position.association Game__QuoridorSystem 47,0 119,34;
+    gameId;
 	Date startDate;
 	Time startTime;
 	enum GameState {Active, Completed, Paused}
 	GameState gameState;
-	Integer gameId;
+    Time thinkingTime;
+}
+
+class Step{
+    position 825 425 200 175;
+    int stepNo;
+    log;
+    enum StepType{PawnMove,WallPlace}
+    StepType stepType;
+}
+
+class Tile
+{
+  position 296 349 150 75;
+  Integer row;
+  Character column;
+}
+
+class GameItem{
+    position 525 500 100 30;
+    abstract;
+    class Pawn{}
+    class Wall{}
 }
 
 class Pawn {
-	position 46 328 151 73;
-	
+	position 230 700 175 58;
 	enum Color {White, Black}
 	Color color;
-	Time thinkingTime;
 }
 
 
 class Wall {
-	position 395 328 109 73;
+	position 575 700 200 150;
 	enum Orientation {Horizontal, Vertical}
 	Orientation orientation;
-	}
-
-class Step{
-    position 682 72 200 58;
-  
-  class JumpStep{}
-  class WallPlacement{}
-    
-    log;
-}
-
-
-class Tile
-{
-  position 149 200 148 73;
-}
-
-class JumpStep
-{
-  position 595 201 109 74;
-}
-
-class WallPlacement
-{
-  enum Orientation {Horizontal, Vertical}
-  position 779 203 109 56;
 }
