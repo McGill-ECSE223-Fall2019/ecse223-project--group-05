@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 51 "../../../../../Model.ump"
+// line 50 "../../../../../Model.ump"
 public class Step
 {
 

@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 66 "../../../../../Model.ump"
+// line 65 "../../../../../Model.ump"
 public abstract class GameItem
 {
 

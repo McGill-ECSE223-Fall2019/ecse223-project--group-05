@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 40 "../../../../../Model.ump"
+// line 39 "../../../../../Model.ump"
 public class Game
 {
 
@@ -383,7 +383,7 @@ public class Game
     return 20;
   }
   /* Code from template association_AddMNToOnlyOne */
-  public Wall addWall(Wall.Orientation aOrientation, Pawn aOwner, Tile aCurrentPosition)
+  public Wall addWall(Wall.Orientation aOrientation, Tile aCurrentPosition)
   {
     if (numberOfWalls() >= maximumNumberOfWalls())
     {
@@ -391,7 +391,7 @@ public class Game
     }
     else
     {
-      return new Wall(aOrientation, this, aOwner, aCurrentPosition);
+      return new Wall(aOrientation, this, aCurrentPosition);
     }
   }
 

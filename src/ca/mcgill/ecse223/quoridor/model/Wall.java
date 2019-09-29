@@ -3,8 +3,8 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 70 "../../../../../Model.ump"
-// line 80 "../../../../../Model.ump"
+// line 69 "../../../../../Model.ump"
+// line 79 "../../../../../Model.ump"
 public class Wall extends GameItem
 {
 
@@ -23,14 +23,13 @@ public class Wall extends GameItem
 
   //Wall Associations
   private Game game;
-  private Pawn owner;
   private Tile currentPosition;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Wall(Orientation aOrientation, Game aGame, Pawn aOwner, Tile aCurrentPosition)
+  public Wall(Orientation aOrientation, Game aGame, Tile aCurrentPosition)
   {
     super();
     orientation = aOrientation;
@@ -38,10 +37,6 @@ public class Wall extends GameItem
     if (!didAddGame)
     {
       throw new RuntimeException("Unable to create wall due to game");
-    }
-    if (!setOwner(aOwner))
-    {
-      throw new RuntimeException("Unable to create Wall due to aOwner");
     }
     boolean didAddCurrentPosition = setCurrentPosition(aCurrentPosition);
     if (!didAddCurrentPosition)
@@ -70,11 +65,6 @@ public class Wall extends GameItem
   public Game getGame()
   {
     return game;
-  }
-  /* Code from template association_GetOne */
-  public Pawn getOwner()
-  {
-    return owner;
   }
   /* Code from template association_GetOne */
   public Tile getCurrentPosition()
@@ -110,17 +100,6 @@ public class Wall extends GameItem
     }
     game.addWall(this);
     wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setOwner(Pawn aNewOwner)
-  {
-    boolean wasSet = false;
-    if (aNewOwner != null)
-    {
-      owner = aNewOwner;
-      wasSet = true;
-    }
     return wasSet;
   }
   /* Code from template association_SetOneToOptionalOne */
@@ -160,7 +139,6 @@ public class Wall extends GameItem
     {
       placeholderGame.removeWall(this);
     }
-    owner = null;
     Tile existingCurrentPosition = currentPosition;
     currentPosition = null;
     if (existingCurrentPosition != null)
@@ -176,7 +154,6 @@ public class Wall extends GameItem
     return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "orientation" + "=" + (getOrientation() != null ? !getOrientation().equals(this)  ? getOrientation().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "owner = "+(getOwner()!=null?Integer.toHexString(System.identityHashCode(getOwner())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "currentPosition = "+(getCurrentPosition()!=null?Integer.toHexString(System.identityHashCode(getCurrentPosition())):"null");
   }
 }

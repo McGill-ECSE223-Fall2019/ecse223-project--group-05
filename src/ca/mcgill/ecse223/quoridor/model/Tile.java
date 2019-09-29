@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 
-// line 59 "../../../../../Model.ump"
+// line 58 "../../../../../Model.ump"
 public class Tile
 {
 

@@ -4,8 +4,8 @@
 package ca.mcgill.ecse223.quoridor.model;
 import java.util.*;
 
-// line 69 "../../../../../Model.ump"
-// line 73 "../../../../../Model.ump"
+// line 68 "../../../../../Model.ump"
+// line 72 "../../../../../Model.ump"
 public class Pawn extends GameItem
 {
 

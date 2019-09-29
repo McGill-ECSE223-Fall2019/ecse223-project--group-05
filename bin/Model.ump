@@ -13,7 +13,6 @@ association
 	* Game game -> 0..1 Step currentStep;
     0..1 Step prev -- 0..1 Step next;
 	1 User player -- 0..* Pawn pawn;
-    * Wall -> 1 Pawn owner;
     * Pawn -> 0..10 Wall wallsKept;
     * Pawn -> 0..10 Wall wallsUsed;
     0..1 Pawn pawn  -- 1 Tile currentPosition;
