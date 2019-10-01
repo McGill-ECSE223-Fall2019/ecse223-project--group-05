@@ -1,0 +1,5 @@
+matrix:
+  include:
+  - language: java
+    script:
+    - "./ca.mcgill.ecse223.quoridor/gradlew build"
