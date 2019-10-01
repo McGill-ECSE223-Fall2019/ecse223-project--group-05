@@ -2,4 +2,4 @@ matrix:
   include:
   - language: java
     script:
-    - "./gradlew build"
+    - "./ca.mcgill.ecse223.quoridor/gradlew build"
