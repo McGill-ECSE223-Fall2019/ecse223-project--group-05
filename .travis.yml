@@ -3,4 +3,4 @@ matrix:
   - language: java
     before_script: cd ca.mcgill.ecse223.quoridor
     script:
-    - "./gradlew build"
+    - "./gradlew build -xtest"
