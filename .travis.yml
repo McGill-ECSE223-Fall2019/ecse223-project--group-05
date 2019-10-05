@@ -1,5 +1,6 @@
 matrix:
   include:
   - language: java
+    before_script: cd ca.mcgill.ecse223.quoridor
     script:
-    - "./ca.mcgill.ecse223.quoridor/gradlew build"
+    - "./gradlew build"
