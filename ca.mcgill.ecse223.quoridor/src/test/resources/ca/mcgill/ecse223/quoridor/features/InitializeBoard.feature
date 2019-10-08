@@ -3,8 +3,8 @@ Feature: Initialize Board
   my stock of walls and my clock is counting down 
   so that I can start playing the game. 
   
-  #Background:
-	#	Given The game is running
+  Background:
+		Given The game is running
 	
 	Scenario: Initialize board
     When The initialization of the board is initiated 
