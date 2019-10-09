@@ -117,6 +117,17 @@ public class CucumberStepDefinitions {
 		
 		//TODO:model in here
 	}
+
+	@And("^I have a wall in my hand over the board$")
+	public void iHaveAWallInMyHandOverTheBoard() throws Throwable {
+		// GUI-related feature -- TODO for later
+	}
+	
+	@Given("A new game is initializing")
+	public void theGameIsInitializing() {
+		
+		//TODO:model in here
+	}
 	
 	// ***********************************************
 	// Scenario and scenario outline step definitions
