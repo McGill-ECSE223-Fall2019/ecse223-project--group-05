@@ -108,15 +108,10 @@ public class CucumberStepDefinitions {
 		// GUI-related feature -- TODO for later
 	}
 
+	
 	@And("^I have a wall in my hand over the board$")
 	public void iHaveAWallInMyHandOverTheBoard() throws Throwable {
 		// GUI-related feature -- TODO for later
-	}
-	
-	@Given("A new game is initializing")
-	public void theGameIsInitializing() {
-		
-		//TODO:model in here
 	}
 	
 	@Given("^A new game is initializing$")
@@ -125,7 +120,6 @@ public class CucumberStepDefinitions {
 		ArrayList<Player> players = createUsersAndPlayers("user1", "user2");
 		new Game(GameStatus.Initializing, MoveMode.PlayerMove, players.get(0), players.get(1), QuoridorApplication.getQuoridor());
 	}
-
 	// ***********************************************
 	// Scenario and scenario outline step definitions
 	// ***********************************************
@@ -319,12 +313,53 @@ public class CucumberStepDefinitions {
 		//TODO: assert that user name is already in use???
 	}
 
-	@Given("The wall move candidate with {string} at position ({int}, {int}) is valid")
-	public void theWallMoveCandidateWithAtPosition(Integer row, Integer col, Enum dir){
+	@And("Next player to set user name shall be {string}")
+		public void nextPlayerToSetUserNameShallBe(String color){
+
+		//TODO: assert
+
+		}
+
+	@Given("The wall move candidate with {string} at position {int} {int} is valid")
+	public void theWallMoveCandidateWithAtPosition(Integer row, Integer col, String dir){
 
 		//TODO:model in here
 
 	}
+
+	@When("I release the wall in my hand")
+	public void iReleaseTheWallInMyHand(){
+
+		//TODO: controller release wall;
+	}
+
+	@Then("A wall move shall be registered with {string} at position {int} {int}")
+	public void aWallMoveShallBeRegisteredWithAtPosition(Integer row, Integer col, String color){
+
+		//TODO:Assert position
+	}
+
+	@And("I shall not have a wall in my hand")
+	public void iShallNotHaveAWallInMyHand(){
+
+		//TODO:Assert wall is indeed dropped
+	}
+
+	@And("My move shall be completed")
+	public void myMoveShallBeCompleted(){
+
+		//TODO:Assert move completed
+	}
+
+	@And("It shall not be my turn to move")
+	public void iTShallNotBeMyTurnToMove(){
+
+		//TODO:Assert which turn it is
+	}
+
+
+
+
 
 
 	
