@@ -12,9 +12,9 @@ Feature: Drop Wall
     And I have a wall in my hand over the board
 
   Scenario Outline: Valid wall placement 
-    Given The wall move candidate with "<dir>" at position (<row>, <col>) is valid
+    Given The wall move candidate with "<dir>" at position <row> <col> is valid
     When I release the wall in my hand
-    Then A wall move shall be registered with "<dir>" at position (<row>, <col>)
+    Then A wall move shall be registered with "<dir>" at position <row> <col>
     And I shall not have a wall in my hand
     And My move shall be completed
     And It shall not be my turn to move
