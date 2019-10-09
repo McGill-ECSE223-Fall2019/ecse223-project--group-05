@@ -12,7 +12,7 @@ public class Game
   // ENUMERATIONS
   //------------------------
 
-  public enum GameStatus { Initializing, ReadyToStart, Running, WhiteWon, BlackWon, Draw, Replay }
+  public enum GameStatus { Running, WhiteWon, BlackWon, Draw, Replay }
   public enum MoveMode { WallMove, PlayerMove }
 
   //------------------------
