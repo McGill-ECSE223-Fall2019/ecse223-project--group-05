@@ -22,6 +22,8 @@ import ca.mcgill.ecse223.quoridor.model.WallMove;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class CucumberStepDefinitions {
 
@@ -41,6 +43,7 @@ public class CucumberStepDefinitions {
 		ArrayList<Player> createUsersAndPlayers = createUsersAndPlayers("user1", "user2");
 		createAndStartGame(createUsersAndPlayers);
 	}
+	
 
 	@And("^It is my turn to move$")
 	public void itIsMyTurnToMove() throws Throwable {
@@ -103,18 +106,76 @@ public class CucumberStepDefinitions {
 	public void iHaveAWallInMyHandOverTheBoard() throws Throwable {
 		// GUI-related feature -- TODO for later
 	}
+
+	@And("^I have a wall in my hand over the board$")
+	public void iHaveAWallInMyHandOverTheBoard() throws Throwable {
+		// GUI-related feature -- TODO for later
+	}
+	
+	@Given("A new game is initializing")
+	public void theGameIsInitializing() {
+		
+		//TODO:model in here
+	}
 	
 	// ***********************************************
 	// Scenario and scenario outline step definitions
 	// ***********************************************
 
-	/*
-	 * TODO Insert your missing step definitions here
-	 * 
-	 * Call the methods of the controller that will manipulate the model once they
-	 * are implemented
-	 * 
-	 */
+	@Given("Next player to set user name is {string}")
+	public void nextPlayerToSetUserNameIs(String color) {
+		
+		//TODO:model in here
+		
+	}
+	
+	@And("There is existing user {string}")
+	public void thereIsExistingUser(String username) {
+		
+		//TODO:model in here
+	}
+	
+	@And("There is no existing user {string}")
+	public void thereIsNoExistingUser(String username) {
+		
+		//TODO:model in here
+	}
+	
+	@When("The player selects existing {string}")
+	public void thePlayerSelectsExisting(String username) {
+		
+		//TODO:controller method select existing user name
+	}
+	
+	@When("The player provides new user name: {string}")
+	public void thePlayerProvidesNewUserName(String username) {
+		
+		//TODO: controller method create new user name
+	}
+	
+	@Then("The name of player {string} in the new game shall be {string}")
+	public void theNameOfPlayerInTheNewGameShallBe(String color, String username) {
+		
+		//TODO: assert that user name and color are set properly
+	}
+	
+	@Then("The player shall be warned that {string} already exists")
+	public void thePlayerShallBeWarnedThatAlreadyExists(String username) {
+		
+		//TODO: assert that user name is already in use???
+	}
+
+	@Given("The wall move candidate with {string} at position ({int}, {int}) is valid")
+	public void theWallMoveCandidateWithAtPosition(Integer row, Integer col, Enum dir){
+
+		//TODO:model in here
+
+	}
+
+
+	
+	
+
 
 	// ***********************************************
 	// Clean up
