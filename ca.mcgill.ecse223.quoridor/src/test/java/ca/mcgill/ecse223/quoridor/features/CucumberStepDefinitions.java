@@ -52,7 +52,6 @@ public class CucumberStepDefinitions {
 	}
 	
 
-
 	@And("^It is my turn to move$")
 	public void itIsMyTurnToMove() throws Throwable {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
