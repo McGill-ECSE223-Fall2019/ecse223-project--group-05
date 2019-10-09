@@ -4,6 +4,7 @@ import java.util.List;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.model.*;
+import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
 
 import java.util.List;
 
@@ -88,6 +89,37 @@ public class QuoridorController {
 	 */
 	public static void setThinkingTime(int min, int sec, int playerIndex) {
 		throw new java.lang.UnsupportedOperationException();
+	}
+	
+	/**
+	 * @author 	Daniel Wu
+	 * @param 	game is the current game
+	 * @return 	true if game is running and false if not
+	 */
+	public static boolean isGameRunning(Game game) {
+		return game.getGameStatus() == GameStatus.Running;
+	}
+	
+	/**
+	 * @author 	Daniel Wu
+	 * @param 	game is the current game
+	 * @return 	true if game is initializing and false if not
+	 */
+	public static boolean isGameInitializing(Game game) {
+		return game.getGameStatus() == GameStatus.Initializing;
+	}
+	
+	/**
+	 * @author 	Daniel Wu
+	 * @param	game
+	 * @param	
+	 */
+	public static void initializeGame() {
+		
+	}
+	
+	public static void startClock() {
+		
 	}
 
 	/**

@@ -122,6 +122,58 @@ public class CucumberStepDefinitions {
 	// ***********************************************
 	// Scenario and scenario outline step definitions
 	// ***********************************************
+	
+//	Scenario:<Initiate a new game>
+	
+	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Initiate a new game
+	 */
+    @When("A new game is initializing")
+    public void aNewGameIsInitializing() {
+    	
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Initiate a new game
+	 */
+    @And("White player chooses a username")
+    public void whitePlayerChoosesAUsername() {
+    	
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Initiate a new game
+	 */
+    @And("Black player chooses a username")
+    public void blackPlayerChoosesAUsername() {
+    	
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Initiate a new game
+	 */
+    @And("Total thinking time is set")
+    public void totalThinkingTimeIsSet() {
+    	
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Initiate a new game
+	 */
+    @Then("The game is ready to start")
+    public void theGameIsReadyToStart() {
+    	QuoridorController.isGameRunning(game);
+    }
 
 	//Initialize board feature
 	/**
@@ -129,7 +181,6 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The initialization of the board is initiated")
 	public void initializationOfBoardInitiated(){
-		QuoridorController.initializeBoard(QuoridorApplication.getQuoridor());
 	}
 	
 	/**
@@ -684,13 +735,50 @@ public class CucumberStepDefinitions {
 
         //TODO:assert move is not registered
     }
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 *//*
+  	@Given("The game is ready to start")
+  		
+  	}*/
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 */
+  	@When("I start the clock")
+  	public void iStartTheClock() {
+  		
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 *//*
+  	@Then("The game is running")
+  	public void theGameIsRunning() {
+  		
+  	}*/
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 */
+  	@And("The board is initialized")
+  	public void theBoardIsInitialized() {
+  		
+  	}
 
 	// ***********************************************
 	// Clean up
 	// ***********************************************
 
 	// After each scenario, the test model is discarded
-	@After
 	public void tearDown() {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		// Avoid null pointer for step definitions that are not yet implemented.
