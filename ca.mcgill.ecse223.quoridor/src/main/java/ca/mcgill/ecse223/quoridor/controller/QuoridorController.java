@@ -24,9 +24,6 @@ public class QuoridorController {
 		throw new java.lang.UnsupportedOperationException("This controller method is not implemented yet");
 	}
 	
-	public QuoridorController() {
-		
-	}
 	/**
 	 * get the wallMove object associated with the current game and current player with the required orientation, row, and column.
 	 * If no such wallMove object exist, (i.e. there is no such a wall with such a position and orientation), a new object will be created
@@ -62,6 +59,7 @@ public class QuoridorController {
 	public static void moveWall(String side) throws Throwable{
 		throw new java.lang.UnsupportedOperationException();
 	}
+
 	/**
 	 *  Each player is given a fixed time limit for a game. This method changes the remaining thinking
 	 *  time of each player (feature: set total thinking time)
@@ -74,6 +72,7 @@ public class QuoridorController {
 	public static void setThinkingTime(int min, int sec) {
 		throw new java.lang.UnsupportedOperationException();
 	}
+
 	/**
 	 *  Optional feature: Set thinking time for a specific player. 
 	 *  We know that both players are supposed to have the same thinking time. 
@@ -88,8 +87,9 @@ public class QuoridorController {
 	 * 
 	 */
 	public static void setThinkingTime(int min, int sec, int playerIndex) {
-		
+		throw new java.lang.UnsupportedOperationException();
 	}
+
 	/**
 	 *  Communicates to View to check if a Illegal Move Notification is being displayed (feature: move wall)
 	 *  @author David
@@ -100,6 +100,7 @@ public class QuoridorController {
 	public static boolean isIllegalMoveNotificationDisplayed() {
 		throw new java.lang.UnsupportedOperationException();
 	}
+
 	/**
 	 *  Communicates to View to check if a wall is currently is being displayed at a certain location (feature: move wall)
 	 *  @author David

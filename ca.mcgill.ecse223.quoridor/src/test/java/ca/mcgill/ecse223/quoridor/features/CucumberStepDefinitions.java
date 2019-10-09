@@ -851,4 +851,7 @@ public class CucumberStepDefinitions {
 		}
     }
 
+	private void removeWallInStock(Player player) {
+		//TODO;
+	}
 }
