@@ -50,7 +50,8 @@ public class CucumberStepDefinitions {
 		ArrayList<Player> createUsersAndPlayers = createUsersAndPlayers("user1", "user2");
 		createAndStartGame(createUsersAndPlayers);
 	}
-	
+
+
 	@And("^It is my turn to move$")
 	public void itIsMyTurnToMove() throws Throwable {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -112,6 +113,12 @@ public class CucumberStepDefinitions {
 	@And("^I have a wall in my hand over the board$")
 	public void iHaveAWallInMyHandOverTheBoard() throws Throwable {
 		// GUI-related feature -- TODO for later
+	}
+	
+	@Given("A new game is initializing")
+	public void theGameIsInitializing() {
+		
+		//TODO:model in here
 	}
 	
 	@Given("^A new game is initializing$")
@@ -690,7 +697,6 @@ public class CucumberStepDefinitions {
 
         //TODO:assert move is not registered
     }
-
 
 	// ***********************************************
 	// Clean up
