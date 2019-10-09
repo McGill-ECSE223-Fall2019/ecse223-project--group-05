@@ -50,7 +50,8 @@ public class CucumberStepDefinitions {
 		ArrayList<Player> createUsersAndPlayers = createUsersAndPlayers("user1", "user2");
 		createAndStartGame(createUsersAndPlayers);
 	}
-	
+
+
 	@And("^It is my turn to move$")
 	public void itIsMyTurnToMove() throws Throwable {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
