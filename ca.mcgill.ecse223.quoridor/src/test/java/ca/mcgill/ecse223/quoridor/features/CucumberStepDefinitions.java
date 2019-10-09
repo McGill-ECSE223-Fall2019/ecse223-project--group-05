@@ -1,11 +1,17 @@
 package ca.mcgill.ecse223.quoridor.features;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
+import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -22,6 +28,8 @@ import ca.mcgill.ecse223.quoridor.model.WallMove;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class CucumberStepDefinitions {
 
@@ -115,6 +123,101 @@ public class CucumberStepDefinitions {
 	// Scenario and scenario outline step definitions
 	// ***********************************************
 
+	//Initialize board feature
+	@When("The initialization of the board is initiated")
+	public void initializationOfBoardInitiated(){
+		QuoridorController.initializeBoard(game);
+	}
+	
+	@Then("It is white player to move")
+	public void itIsWhitePlayerToMove() {
+		assertEquals(game.getWhitePlayer(),quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove());
+	}
+	
+	@And("White's pawn is in its initial position")
+	public void whitesPawnIsInItsInitialPosition() {
+		assertEquals(board.getTile(36),game.getCurrentPosition().getWhitePosition().getTile());
+	}
+	
+	@And("Black's pawn is in its initial position")
+	public void blacksPawnIsInItsInitialPosition() {
+		assertEquals(board.getTile(44), game.getCurrentPosition().getBlackPosition().getTile());
+	}
+	
+	@And("All of White's walls are in stock")
+	public void allOfWhitesWallsAreInStock() {
+		//ask mentor about this one
+		assertEquals(10, game.getCurrentPosition().getWhiteWallsInStock().size());
+	}
+	
+	@And("All of Black's walls are in stock")
+	public void allOfBlacksWallsAreInStock() {
+		//ask mentor about this one too
+		assertEquals(10, game.getCurrentPosition().getBlackWallsInStock().size());
+	}
+	
+	@And("White's clock is counting down")
+	public void whitesClockIsCountingDown() {
+		//ask mentor about this one... The convert .toString()
+		assertNotEquals("19:00:00", game.getWhitePlayer().getRemainingTime().toString());	
+	}
+	
+	@And("It is shown that this is White's turn")
+	public void itIsShownThatThisIsWhitesTurn() {
+		//As it is a GUI related step, it will be implemented later on
+		
+	}
+	
+	//Grab wall feature
+	
+	@Given("I have more walls on stock")
+	public void iHaveMoreWallsOnStock() {
+		//10 walls are in stock for all players
+		
+	}
+	
+	@Given("I have no more walls on stock")
+	public void iHaveNoMoreWallsOnStock() {
+		// Remove the walls as in stock for the players
+		for (int j = 0; j < 10; j++) {
+			Wall wall = Wall.getWithId(j);
+			game.getCurrentPosition().removeWhiteWallsInStock(wall);
+		}
+		for (int j = 0; j < 10; j++) {
+			Wall wall = Wall.getWithId(j + 10);
+			game.getCurrentPosition().removeBlackWallsInStock(wall);
+		}
+	}
+	
+	@When("I try to grab a wall from my stock")
+	public void iTryToGrabAWallFromMyStock() {
+		bool = QuoridorController.grabWall(game);
+		
+	}
+	
+	@Then("I have a wall in my hand over the board")
+	public void iHaveAWallInMyHandOverTheBoard() {
+		//As this is a GUI related step, it will be implemented later on
+	}
+	
+	@And("The wall in my hand should disappear from my stock")
+	public void theWallInMyHandShoulDisappearFromMyStock() {
+		//I think this is a GUI related step
+		//assertEquals(9, game.getCurrentPosition().getWhiteWallsInStock().size());
+	}
+
+	@And("A wall move candidate shall be created at initial position")
+	public void aWallMoveCandidateShallBeCreatedAtInitialPosition() {
+		//ask mentor 
+		assertNull(game.getWallMoveCandidate().getTargetTile());
+	}
+	
+	@Then("I should be notified that I have no more walls")
+	public void iShouldBeNotifiedThatIHaveNoMoreWalls() {
+		assertEquals(0, bool);
+	}
+	
+	
 	/*
 	 * TODO Insert your missing step definitions here
 	 * 
@@ -230,4 +333,7 @@ public class CucumberStepDefinitions {
 		game.setCurrentPosition(gamePosition);
 	}
 
+	private void removeWallInStock(Player player) {
+		//TODO;
+	}
 }
