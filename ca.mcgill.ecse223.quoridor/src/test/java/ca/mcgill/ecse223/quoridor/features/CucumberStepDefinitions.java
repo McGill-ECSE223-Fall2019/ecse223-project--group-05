@@ -769,6 +769,42 @@ public class CucumberStepDefinitions {
 	 * StartNewGame.feature - StartNewGame
 	 * Scenario: Start clock
 	 */
+
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 *//*
+  	@Given("The game is ready to start")
+  	public void theGameIsReadyToStart() { //Name is same as last function
+  		
+  	}*/
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 */
+  	@When("I start the clock")
+  	public void iStartTheClock() {
+  		
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 *//*
+  	@Then("The game is running")
+  	public void theGameIsRunning() {
+  		
+  	}*/
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 */
   	@And("The board is initialized")
   	public void theBoardIsInitialized() {
   		

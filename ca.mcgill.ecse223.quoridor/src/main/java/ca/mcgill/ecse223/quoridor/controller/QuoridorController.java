@@ -117,6 +117,40 @@ public class QuoridorController {
 	public static void initializeGame() {
 		
 	}
+
+public class QuoridorController {	
+	
+	/**
+	 * @author 	Daniel Wu
+	 * @param 	game is the current game
+	 * @return 	true if game is running and false if not
+	 */
+	public static boolean isGameRunning(Game game) {
+		return game.getGameStatus() == GameStatus.Running;
+	}
+	
+	/**
+	 * @author 	Daniel Wu
+	 * @param 	game is the current game
+	 * @return 	true if game is initializing and false if not
+	 */
+	public static boolean isGameInitializing(Game game) {
+		return game.getGameStatus() == GameStatus.Initializing;
+	}
+	
+	/**
+	 * @author 	Daniel Wu
+	 * @param	game
+	 * @param	
+	 */
+	public static void initializeGame() {
+		
+	}
+	
+	public static void startClock() {
+		
+	}
+
 	
 	public static void startClock() {
 		
