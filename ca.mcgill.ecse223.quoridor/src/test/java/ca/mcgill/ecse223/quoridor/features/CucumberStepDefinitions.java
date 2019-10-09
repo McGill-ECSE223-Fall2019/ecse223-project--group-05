@@ -5,13 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.controller.*;
+import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
+import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -25,6 +35,7 @@ import ca.mcgill.ecse223.quoridor.model.Tile;
 import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
+import cucumber.api.PendingException;
 import io.cucumber.java.After;
 import io.cucumber.java.en.*;
 
@@ -35,6 +46,19 @@ public class CucumberStepDefinitions {
 
 	private WallMove wallMoveCandidate = null;
 
+
+	private Quoridor quoridor;
+	private Board board;
+	private Player player1;
+	private Player player2;
+	private Player currentPlayer;
+	private Game game;
+	
+	private QuoridorController controller = new QuoridorController();
+	
+	private final int fileDataLength = 1000000;
+	private char [] refFileData = new char [fileDataLength];	//Memory for storing data of one file for comparison.
+	private char [] curFileData = new char [fileDataLength];	//Memory for storing data of another file for comparison.
 
 	// ***********************************************
 	// Background step definitions
@@ -890,6 +914,97 @@ public class CucumberStepDefinitions {
 	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
 		// GUI-related feature -- TODO for later
 	}
+	
+	/**
+	 * @Author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Ensures that the file <filename> does not exist in game saves directory
+	 */
+	@Given("^No file \"([^\"]*)\" exists in the filesystem$")
+	public void noFileFilenameExistsInTheFileSystem(String filename) {
+		File file = new File( System.getProperty("user.home")+ SaveConfig.userSaveDir + filename );
+		if (file.exists())	{	file.delete();	}
+	}
+	
+	/**
+	 * @Author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Initiates controller method to save the game in game saves directory
+	 */
+	@When("^The user initiates to save the game with name \"([^\"]*)\"$")
+	public void theUserInitiatesToSaveTheGameWithNameFilename(String filename) {
+		try {
+			controller.saveGame(filename,game);
+		} catch(IOException e) {
+			System.out.println(e.toString());
+		}
+	}
+	
+	/**
+	 * @Author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Asserts that a file with name <filename> now exists in game saves directory
+	 */
+	@Then("^A file with \"([^\"]*)\" is created in the filesystem$")
+	public void aFileWithFilenameIsCreatedInTheFilesystem(String filename) {
+		File file = new File( System.getProperty("user.home")+ SaveConfig.userSaveDir + filename );
+		assert(file.exists());
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Ensures that the file <filename> currently exists in game saves directory.
+	 * It actually writes into the file gibberish for later comparative use.
+	 * At most one megabyte of all of the file's data is stored for this purpose.
+	 */
+	@Given("^File \"([^\"]*)\" exists in the filesystem$")
+	public void fileFilenameExistsInTheFilesystem(String filename) {
+		//First put in our control as the existing file for our test.
+		File file = new File( System.getProperty("user.home")+ SaveConfig.userSaveDir + filename );
+		file.delete();
+		try {
+			String str = "myhelicoptergoessoisoisoisoisoisoisosiosoisoisoisoisoisoisoisoisoisoisoi"; //should do as something that should not ever appear in the text file in regular use.
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+			bufferedWriter.write(str);
+			bufferedWriter.close();
+		} catch(IOException e) {
+			System.out.println(e.toString());
+		}
+		//Now we keep in memory the contents of our existing file.
+		this.readInFileFilenameInFileSystem(filename, this.refFileData);
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * TODO: "And The user confirms to overwrite existing file" AND statement and
+	 * TODO: "And The user cancels to overwrite existing file" AND statement.
+	 * These two can both use the QuoridorController.saveGame(filename,game,forcesave) method.
+	 */
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Asserts that the file of name <filename> has been updated.
+	 */
+	@Then("^File with \"([^\"]*)\" is updated in the filesystem$")
+	public void fileWithFilenameIsUpdatedInTheFileSystem(String filename) {
+		this.readInFileFilenameInFileSystem(filename, this.curFileData);
+		assert( Arrays.equals(refFileData, curFileData) == false );
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Asserts that the file of name <filename> has not been changed.
+	 */
+	@Then("File \"([^\"]*)\" is not changed in the filesystem")
+	public void fileWithFilenameIsNotChangedInTheFileSystem(String filename) {
+		this.readInFileFilenameInFileSystem(filename, this.curFileData);
+		assert( Arrays.equals(refFileData, curFileData) );
+	}
+	
+	
 
 	// DUPLICATE METHOD
 //	/**
@@ -1042,6 +1157,13 @@ public class CucumberStepDefinitions {
 				wall.delete();
 			}
 		}
+		// Clear out file data memories, used for SavePosition features.
+		for( int i = 0 ; i < refFileData.length ; i++ ) {
+			refFileData[i] = 0;
+		}
+		for( int i = 0 ; i < curFileData.length ; i++ ) {
+			curFileData[i] = 0;
+		}
 	}
 
 	// ***********************************************
@@ -1144,4 +1266,17 @@ public class CucumberStepDefinitions {
 			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeBlackWallsInStock(wall);
 		}
     }
+	}
+
+	private void readInFileFilenameInFileSystem(String filename, char [] dataDestination) {
+		try {
+			File file = new File( System.getProperty("user.home")+ SaveConfig.userSaveDir + filename );
+			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+			bufferedReader.read(dataDestination, 0, dataDestination.length);
+			bufferedReader.close();
+		}catch(IOException e) {
+			System.out.println(e.toString());
+		}
+	}
+	
 }
