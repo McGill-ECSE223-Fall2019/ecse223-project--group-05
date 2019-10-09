@@ -587,6 +587,97 @@ public class CucumberStepDefinitions {
     public void theWallMoveCandidateWithAtPositionIsValid(String dir, Integer row, Integer col) {
 
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+	
+	/**
+	 * @Author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Ensures that the file <filename> does not exist in game saves directory
+	 */
+	@Given("^No file \"([^\"]*)\" exists in the filesystem$")
+	public void noFileFilenameExistsInTheFileSystem(String filename) {
+		File file = new File( System.getProperty("user.home")+ SaveConfig.userSaveDir + filename );
+		if (file.exists())	{	file.delete();	}
+	}
+	
+	/**
+	 * @Author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Initiates controller method to save the game in game saves directory
+	 */
+	@When("^The user initiates to save the game with name \"([^\"]*)\"$")
+	public void theUserInitiatesToSaveTheGameWithNameFilename(String filename) {
+		try {
+			controller.saveGame(filename,game);
+		} catch(IOException e) {
+			System.out.println(e.toString());
+		}
+	}
+	
+	/**
+	 * @Author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Asserts that a file with name <filename> now exists in game saves directory
+	 */
+	@Then("^A file with \"([^\"]*)\" is created in the filesystem$")
+	public void aFileWithFilenameIsCreatedInTheFilesystem(String filename) {
+		File file = new File( System.getProperty("user.home")+ SaveConfig.userSaveDir + filename );
+		assert(file.exists());
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Ensures that the file <filename> currently exists in game saves directory.
+	 * It actually writes into the file gibberish for later comparative use.
+	 * At most one megabyte of all of the file's data is stored for this purpose.
+	 */
+	@Given("^File \"([^\"]*)\" exists in the filesystem$")
+	public void fileFilenameExistsInTheFilesystem(String filename) {
+		//First put in our control as the existing file for our test.
+		File file = new File( System.getProperty("user.home")+ SaveConfig.userSaveDir + filename );
+		file.delete();
+		try {
+			String str = "myhelicoptergoessoisoisoisoisoisoisosiosoisoisoisoisoisoisoisoisoisoisoi"; //should do as something that should not ever appear in the text file in regular use.
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+			bufferedWriter.write(str);
+			bufferedWriter.close();
+		} catch(IOException e) {
+			System.out.println(e.toString());
+		}
+		//Now we keep in memory the contents of our existing file.
+		this.readInFileFilenameInFileSystem(filename, this.refFileData);
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * TODO: "And The user confirms to overwrite existing file" AND statement and
+	 * TODO: "And The user cancels to overwrite existing file" AND statement.
+	 * These two can both use the QuoridorController.saveGame(filename,game,forcesave) method.
+	 */
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Asserts that the file of name <filename> has been updated.
+	 */
+	@Then("^File with \"([^\"]*)\" is updated in the filesystem$")
+	public void fileWithFilenameIsUpdatedInTheFileSystem(String filename) {
+		this.readInFileFilenameInFileSystem(filename, this.curFileData);
+		assert( Arrays.equals(refFileData, curFileData) == false );
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Asserts that the file of name <filename> has not been changed.
+	 */
+	@Then("File \"([^\"]*)\" is not changed in the filesystem")
+	public void fileWithFilenameIsNotChangedInTheFileSystem(String filename) {
+		this.readInFileFilenameInFileSystem(filename, this.curFileData);
+		assert( Arrays.equals(refFileData, curFileData) );
+	}
+	
+	
 
         Board board = QuoridorApplication.getQuoridor().getBoard();
 
