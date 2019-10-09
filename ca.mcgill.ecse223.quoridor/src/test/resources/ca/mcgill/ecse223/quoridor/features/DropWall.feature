@@ -12,7 +12,7 @@ Feature: Drop Wall
     And I have a wall in my hand over the board
 
   Scenario Outline: Valid wall placement 
-    Given The wall move candidate with <dir> at position (<row>, <col>) is valid
+    Given The wall move candidate with "<dir>" at position (<row>, <col>) is valid
     When I release the wall in my hand
     Then I do not have a wall in my hand
     But A wall move is registered with <dir> at position (<row>, <col>)
