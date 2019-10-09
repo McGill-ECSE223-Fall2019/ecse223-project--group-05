@@ -129,7 +129,11 @@ public class CucumberStepDefinitions {
 	}
 	
 	
-	
+	@Given("A new game is initializing")
+	public void theGameIsInitializing() {
+		
+		//TODO:model in here
+	}
 	
 	@Given("^A new game is initializing$")
 	public void aNewGameIsInitializing() throws Throwable {
