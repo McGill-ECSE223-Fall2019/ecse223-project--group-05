@@ -5,9 +5,6 @@ import ca.mcgill.ecse223.quoridor.model.*;
 
 public class QuoridorController {
 	
-	public QuoridorController() {
-		
-	}
 	/**
 	 * get the wallMove object associated with the current game and current player with the required orientation, row, and column.
 	 * If no such wallMove object exist, (i.e. there is no such a wall with such a position and orientation), a new object will be created
@@ -43,6 +40,7 @@ public class QuoridorController {
 	public static void moveWall(String side) throws Throwable{
 		throw new java.lang.UnsupportedOperationException();
 	}
+
 	/**
 	 *  Each player is given a fixed time limit for a game. This method changes the remaining thinking
 	 *  time of each player (feature: set total thinking time)
@@ -55,6 +53,7 @@ public class QuoridorController {
 	public static void setThinkingTime(int min, int sec) {
 		throw new java.lang.UnsupportedOperationException();
 	}
+
 	/**
 	 *  Optional feature: Set thinking time for a specific player. 
 	 *  We know that both players are supposed to have the same thinking time. 
@@ -69,8 +68,9 @@ public class QuoridorController {
 	 * 
 	 */
 	public static void setThinkingTime(int min, int sec, int playerIndex) {
-		
+		throw new java.lang.UnsupportedOperationException();
 	}
+
 	/**
 	 *  Communicates to View to check if a Illegal Move Notification is being displayed (feature: move wall)
 	 *  @author David
@@ -81,6 +81,7 @@ public class QuoridorController {
 	public static boolean isIllegalMoveNotificationDisplayed() {
 		throw new java.lang.UnsupportedOperationException();
 	}
+
 	/**
 	 *  Communicates to View to check if a wall is currently is being displayed at a certain location (feature: move wall)
 	 *  @author David
@@ -92,9 +93,35 @@ public class QuoridorController {
 		throw new java.lang.UnsupportedOperationException();
 	}
 	
-	
+	/**
+	 * Gherkin feature: Initialize Board
+	 * This controller method is responsible for setting the current player to move to the white player. 
+	 * It also assigns the white and the black pawn to their initial position and assigns 10 walls to each 
+	 * player. Finally, it starts the white player's timer (thinking time).
+	 * 
+	 * @author             Thomas Philippon
+	 * @param game         - New game 
+	 * @return void    
+	 */
+	public static void initializeBoard(Game game) {
+		
+		throw new java.lang.UnsupportedOperationException("This controller method is not implemented yet");
+	}
 
-	
-
+	/**
+	 * Gherkin feature: Grab Wall
+	 * This controller method is responsible for first checking if the current
+	 *  player to move has more walls on stock. If the player has more walls, a wall candidate
+	 *  object is created at initial position and the method returns 1. If the player has no more walls 
+	 *  on stock, no wall candidate move will be created and the method returns 0.
+	 *  
+	 * @author             Thomas Philippon
+	 * @param game         - Current Game 
+	 * @return Boolean     - Returns 1 if a wall candidate object was created and 0 if not 
+	 */
+	public static Boolean grabWall(Game game) {
+		
+		throw new java.lang.UnsupportedOperationException("This controller method is not implemented yet");
+	}
 	
 }
