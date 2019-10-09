@@ -22,6 +22,8 @@ import ca.mcgill.ecse223.quoridor.model.WallMove;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class CucumberStepDefinitions {
 
@@ -108,13 +110,90 @@ public class CucumberStepDefinitions {
 	// Scenario and scenario outline step definitions
 	// ***********************************************
 
-	/*
-	 * TODO Insert your missing step definitions here
-	 * 
-	 * Call the methods of the controller that will manipulate the model once they
-	 * are implemented
-	 * 
+	
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player1
+	 * Sets up test preconditions such that the player whose turn it is to player is the provided player.
 	 */
+	@Given("The player to move is \"Player\"")
+	public void thePlayerToMoveIsPlayer(Player player1){
+		//TODO
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player1
+	 * Sets up test preconditions such that the clock of theplayer whose turn it is to play is running
+	 */
+	@Given("The clock of \"<player>\" is running")
+	public void theClockOfPlayerIsRunning(Player player1){
+		//TODO
+	}
+
+	/**
+	 * @author Edwin Pan
+	 * @param player2
+	 * Sets up test preconditions such that the clock of the player whose turn it is not to play is stopped
+	 */
+	@Given("The clock of \"<other>\" is stopped")
+	public void theClockOfOtherIsStopped(Player player2){
+		//TODO
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player1
+	 * Makes player 1 complete his move
+	 */
+	@When("Player \"<player>\" completes his move")
+	public void playerPlayerCompletesHisMove(Player player1){
+		//TODO
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player2
+	 * Asserts that the user interface now shows that it is player 2's turn
+	 */
+	@Then("The user interface shall be showing it is \"<other>\" turn")
+	public void theUserInterfaceShallBeShowingItIsOtherTurn(Player player2){
+		//TODO
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player1
+	 * Asserts that the user interface now shows that player 1's clock is stopped
+	 */
+	@Then("The clock of \"<player>\" shall be stopped")
+	public void theClockOfPlayerShallBeStopped(Player player1){
+		//TODO
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player2
+	 * Asserts that the user interface now shows that player 1's clock is running
+	 */
+	@Then("The clock of \"<other>\" shall be running")
+	public void theClockOfOtherShallBeRunning(Player player2){
+		//TODO
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player2
+	 * Asserts that the user interface now shows that the next move belongs to player 2.
+	 */
+	@Then("The next player to move shall be \"<other>\"")
+	public void theNextPlayerToMoveShallBeOther(Player player2){
+		//TODO
+	}
+	
+	
+	
 
 	// ***********************************************
 	// Clean up
