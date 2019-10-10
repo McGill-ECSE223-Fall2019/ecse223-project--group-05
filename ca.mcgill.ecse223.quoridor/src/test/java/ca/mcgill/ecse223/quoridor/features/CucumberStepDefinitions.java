@@ -216,7 +216,9 @@ public class CucumberStepDefinitions {
 	}
 	
 	/**
+	 * common method
 	 * @author Thomas Philippon
+	 * @author Alex Masciotra 
 	 */
 	@Then("I shall have a wall in my hand over the board")
 	public void iShallHaveAWallInMyHandOverTheBoard() throws Throwable{
@@ -317,14 +319,14 @@ public class CucumberStepDefinitions {
 
 		}
 
-	@Given("The wall move candidate with {string} at position {int} {int} is valid")
+	@Given("The wall move candidate with {string} at position \\({int}, {int}) is valid")
 	public void theWallMoveCandidateWithAtPosition(String dir, Integer row, Integer col){
 
 		//TODO:model in here
 
 	}
 
-	@Given("The wall move candidate with {string} at position {int} {int} is invalid")
+	@Given("The wall move candidate with {string} at position \\({int}, {int}) is invalid")
 	public void theWallMoveCandidateWithAtPositionIsInvalid(String dir, Integer row, Integer col){
 
 		//TODO:model
@@ -336,7 +338,7 @@ public class CucumberStepDefinitions {
 		//TODO: controller release wall;
 	}
 
-	@Then("A wall move shall be registered with {string} at position {int} {int}")
+	@Then("A wall move shall be registered with {string} at position \\({int}, {int})")
 	public void aWallMoveShallBeRegisteredWithAtPosition(String color, Integer row, Integer col){
 
 		//TODO:Assert position
@@ -346,12 +348,6 @@ public class CucumberStepDefinitions {
 	public void iShallBeNotifiedThatMyWallMoveIsInvalid(){
 
 		//TODO:assert invalid move
-	}
-
-	@And("I shall have a wall in my hand over the board")
-	public void iShallHaveAWallInMyHandOverTheBoard(){
-
-		//TODO:GUI
 	}
 
 	@And("It shall be my turn to move")
@@ -378,7 +374,7 @@ public class CucumberStepDefinitions {
 		//TODO:Assert which turn it is
 	}
 
-	@But("No wall move shall be registered with {string} at position {int} {int}")
+	@But("No wall move shall be registered with {string} at position \\({int}, {int})")
 	public void noWallMoveShallBeRegisteredWithAtPosition(String dir, Integer row, Integer col){
 
 		//TODO:assert move is not registered
