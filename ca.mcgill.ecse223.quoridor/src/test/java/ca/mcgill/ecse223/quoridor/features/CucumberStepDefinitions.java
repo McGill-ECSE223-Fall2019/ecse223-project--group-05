@@ -20,10 +20,7 @@ import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
 import io.cucumber.java.After;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.en.*;
 
 public class CucumberStepDefinitions {
 
@@ -148,7 +145,7 @@ public class CucumberStepDefinitions {
 	}
 	
 	@Then("The name of player {string} in the new game shall be {string}")
-	public void theNameOfPlayerInTheNewGameShallBe(String color, String username) {
+	public void theNameOfPlayerInTheNewGameShallBe(String username, String color) {
 		
 		//TODO: assert that user name and color are set properly
 	}
@@ -167,10 +164,16 @@ public class CucumberStepDefinitions {
 		}
 
 	@Given("The wall move candidate with {string} at position {int} {int} is valid")
-	public void theWallMoveCandidateWithAtPosition(Integer row, Integer col, String dir){
+	public void theWallMoveCandidateWithAtPosition(String dir, Integer row, Integer col){
 
 		//TODO:model in here
 
+	}
+
+	@Given("The wall move candidate with {string} at position {int} {int} is invalid")
+	public void theWallMoveCandidateWithAtPositionIsInvalid(String dir, Integer row, Integer col){
+
+		//TODO:model
 	}
 
 	@When("I release the wall in my hand")
@@ -180,9 +183,27 @@ public class CucumberStepDefinitions {
 	}
 
 	@Then("A wall move shall be registered with {string} at position {int} {int}")
-	public void aWallMoveShallBeRegisteredWithAtPosition(Integer row, Integer col, String color){
+	public void aWallMoveShallBeRegisteredWithAtPosition(String color, Integer row, Integer col){
 
 		//TODO:Assert position
+	}
+
+	@Then("I shall be notified that my wall move is invalid")
+	public void iShallBeNotifiedThatMyWallMoveIsInvalid(){
+
+		//TODO:assert invalid move
+	}
+
+	@And("I shall have a wall in my hand over the board")
+	public void iShallHaveAWallInMyHandOverTheBoard(){
+
+		//TODO:GUI
+	}
+
+	@And("It shall be my turn to move")
+	public void itShallBeMyTurnToMove(){
+
+		//TODO:assert still my turn
 	}
 
 	@And("I shall not have a wall in my hand")
@@ -201,6 +222,12 @@ public class CucumberStepDefinitions {
 	public void iTShallNotBeMyTurnToMove(){
 
 		//TODO:Assert which turn it is
+	}
+
+	@But("No wall move shall be registered with {string} at position {int} {int}")
+	public void noWallMoveShallBeRegisteredWithAtPosition(String dir, Integer row, Integer col){
+
+		//TODO:assert move is not registered
 	}
 
 
