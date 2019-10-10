@@ -12,9 +12,9 @@ Feature: Drop Wall
     And I have a wall in my hand over the board
 
   Scenario Outline: Valid wall placement 
-    Given The wall move candidate with "<dir>" at position <row> <col> is valid
+    Given The wall move candidate with "<dir>" at position (<row>, <col>) is valid
     When I release the wall in my hand
-    Then A wall move shall be registered with "<dir>" at position <row> <col>
+    Then A wall move shall be registered with "<dir>" at position (<row>, <col>)
     And I shall not have a wall in my hand
     And My move shall be completed
     And It shall not be my turn to move
@@ -25,12 +25,12 @@ Feature: Drop Wall
       | vertical   |   5 |   6 |
 
   Scenario Outline: Invalid wall placement
-    Given The wall move candidate with "<dir>" at position <row> <col> is invalid
+    Given The wall move candidate with "<dir>" at position (<row>, <col>) is invalid
     When I release the wall in my hand
     Then I shall be notified that my wall move is invalid
     And I shall have a wall in my hand over the board
     And It shall be my turn to move
-  	But No wall move shall be registered with "<dir>" at position <row> <col>
+  	But No wall move shall be registered with "<dir>" at position (<row>, <col>)
   	
     Examples: 
       | dir        | row | col |
