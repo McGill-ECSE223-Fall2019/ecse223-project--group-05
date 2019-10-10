@@ -221,7 +221,9 @@ public class CucumberStepDefinitions {
 	}
 	
 	/**
+	 * common method
 	 * @author Thomas Philippon
+	 * @author Alex Masciotra 
 	 */
 	@And("The wall in my hand shall disappear from my stock")
 	public void theWallInMyHandShallDisappearFromMyStock() {
