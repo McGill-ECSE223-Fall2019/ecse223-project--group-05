@@ -42,17 +42,6 @@ import io.cucumber.java.en.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CucumberStepDefinitions {
-	boolean boardInitialized = true; //Used to check whether or not board was initialized
-
-	private WallMove wallMoveCandidate = null;
-
-
-	private Quoridor quoridor;
-	private Board board;
-	private Player player1;
-	private Player player2;
-	private Player currentPlayer;
-	private Game game;
 	
 	private QuoridorController controller = new QuoridorController();
 	
@@ -607,7 +596,7 @@ public class CucumberStepDefinitions {
 	@When("^The user initiates to save the game with name \"([^\"]*)\"$")
 	public void theUserInitiatesToSaveTheGameWithNameFilename(String filename) {
 		try {
-			controller.saveGame(filename,game);
+			controller.saveGame(filename,QuoridorApplication.getQuoridor().getCurrentGame());
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
