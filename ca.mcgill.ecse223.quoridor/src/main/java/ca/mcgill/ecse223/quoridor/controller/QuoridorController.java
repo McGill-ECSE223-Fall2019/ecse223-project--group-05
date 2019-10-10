@@ -139,4 +139,9 @@ public class QuoridorController {
 	}
 	
 	
+    public void releaseWall(Game game){
+
+
+    }
+
 }
