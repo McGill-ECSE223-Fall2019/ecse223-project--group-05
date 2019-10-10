@@ -426,8 +426,4 @@ public class CucumberStepDefinitions {
 
 		game.setCurrentPosition(gamePosition);
 	}
-
-	private void removeWallInStock(Player player) {
-		//TODO;
-	}
 }
