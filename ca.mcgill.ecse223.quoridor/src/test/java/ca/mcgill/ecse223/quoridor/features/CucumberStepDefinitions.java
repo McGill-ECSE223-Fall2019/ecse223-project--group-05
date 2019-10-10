@@ -269,7 +269,9 @@ public class CucumberStepDefinitions {
 		assertEquals(9, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().numberOfWhiteWallsInStock());
 	}
 	/**
+	 * common method
 	 * @author Thomas Philippon
+	 * @author Alex Masciotra 
 	 */
 	@Then("I shall have a wall in my hand over the board")
 	public void iShallHaveAWallInMyHandOverTheBoard() throws Throwable{
