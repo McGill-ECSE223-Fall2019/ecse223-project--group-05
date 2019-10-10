@@ -121,6 +121,11 @@ public class CucumberStepDefinitions {
 	
 	@Given("A new game is initializing")
 	public void theGameIsInitializing() {
+
+	    Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+	    Enum gameStatus = game.getGameStatus();
+
+
 		
 		//TODO:model in here
 	}
