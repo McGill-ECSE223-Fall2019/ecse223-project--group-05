@@ -123,32 +123,38 @@ public class QuoridorController {
 	/**
 	 * @author 	Daniel Wu
 	 * @param 	game is the current game
-	 * @return 	true if game is running and false if not
+	 * @return 	true if gamestate is initializing and false if not
 	 */
-	public static boolean isGameRunning(Game game) {
-		return game.getGameStatus() == GameStatus.Running;
+	public static Boolean isGameInitializing(Game game) {
+		throw new java.lang.UnsupportedOperationException();
 	}
 	
 	/**
 	 * @author 	Daniel Wu
-	 * @param 	game is the current game
-	 * @return 	true if game is initializing and false if not
+	 * @param 	player is the player whether it be white or black
+	 * @return 	true if the player chose a username and false if not
 	 */
-	public static boolean isGameInitializing(Game game) {
-		return game.getGameStatus() == GameStatus.Initializing;
+	public static Boolean playerChoseUsername(Player player) {
+		throw new java.lang.UnsupportedOperationException();
 	}
 	
 	/**
 	 * @author 	Daniel Wu
-	 * @param	game
-	 * @param	
+	 * @param 	bool takes the return from Player.setRemainingTime
+	 * @return 	true if the thinking time is set and false if not
 	 */
-	public static void initializeGame() {
-		
+	public static Boolean thinkingTimeIsSet(boolean bool) {
+		throw new java.lang.UnsupportedOperationException();
 	}
 	
-	public static void startClock() {
-		
+	/**
+	 * @author 	Daniel Wu
+	 * @param	whitePlayer	the white player in the game
+	 * @param	blackPlayer	the black player in the game
+	 * @return	true if the clock is started for both players
+	 */
+	public static Boolean startClock(Player whitePlayer, Player blackPlayer) {
+		throw new java.lang.UnsupportedOperationException();
 	}
 
 	
@@ -258,5 +264,15 @@ public class QuoridorController {
 
         //get all existing userNames and check to see if new userNAme is unique and available or in use
     }
+	/**
+	 * @author 	Daniel Wu
+	 * @param	
+	 * @return	
+	 */
+	public static String validateWallPosition() {
+		throw new java.lang.UnsupportedOperationException();
+	}
+	
+	//Getter for gamestate 
 }
 

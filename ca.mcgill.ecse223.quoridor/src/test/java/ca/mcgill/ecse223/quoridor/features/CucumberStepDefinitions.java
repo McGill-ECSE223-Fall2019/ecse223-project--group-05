@@ -32,6 +32,8 @@ import io.cucumber.java.en.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CucumberStepDefinitions {
+	boolean timeSet = true;	//Used to check whether or not time was set
+	boolean boardInitialized = true; //Used to check whether or not board was initialized
 
 	// ***********************************************
 	// Background step definitions
@@ -130,9 +132,9 @@ public class CucumberStepDefinitions {
 	 * StartNewGame.feature - StartNewGame
 	 * Scenario: Initiate a new game
 	 */
-    @When("A new game is initializing")
-    public void aNewGameIsInitializing() {
-    	
+    @When("A new game is being initialized")
+    public void aNewGameIsBeingInitializing() throws java.lang.UnsupportedOperationException{
+    	QuoridorController.isGameInitializing(QuoridorApplication.getQuoridor().getCurrentGame());
     }
     
     /**
@@ -141,8 +143,8 @@ public class CucumberStepDefinitions {
 	 * Scenario: Initiate a new game
 	 */
     @And("White player chooses a username")
-    public void whitePlayerChoosesAUsername() {
-    	
+    public void whitePlayerChosesAUsername() throws java.lang.UnsupportedOperationException{
+    	QuoridorController.playerChoseUsername(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer());
     }
     
     /**
@@ -151,8 +153,8 @@ public class CucumberStepDefinitions {
 	 * Scenario: Initiate a new game
 	 */
     @And("Black player chooses a username")
-    public void blackPlayerChoosesAUsername() {
-    	
+    public void blackPlayerChoosesAUsername() throws java.lang.UnsupportedOperationException{
+    	QuoridorController.playerChoseUsername(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer());
     }
     
     /**
@@ -161,8 +163,8 @@ public class CucumberStepDefinitions {
 	 * Scenario: Initiate a new game
 	 */
     @And("Total thinking time is set")
-    public void totalThinkingTimeIsSet() {
-    	
+    public void totalThinkingTimeIsSet()  throws java.lang.UnsupportedOperationException{
+    	QuoridorController.thinkingTimeIsSet(timeSet);
     }
     
     /**
@@ -170,9 +172,10 @@ public class CucumberStepDefinitions {
 	 * StartNewGame.feature - StartNewGame
 	 * Scenario: Initiate a new game
 	 */
-    @Then("The game is ready to start")
-    public void theGameIsReadyToStart() {
-    	QuoridorController.isGameRunning(game);
+    @Then("The game shall become ready to start")
+    public void theGameShallBecomeReadyToStart() {
+    	assertEquals(Game.GameStatus.ReadyToStart, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
+    	//TODO check GUI field
     }
 
 	//Initialize board feature
@@ -774,11 +777,11 @@ public class CucumberStepDefinitions {
 	 * @author Daniel Wu
 	 * StartNewGame.feature - StartNewGame
 	 * Scenario: Start clock
-	 *//*
+	 */
   	@Given("The game is ready to start")
-  	public void theGameIsReadyToStart() { //Name is same as last function
-  		
-  	}*/
+  	public void theGameIsReadyToStart() {
+  		QuoridorApplication.getQuoridor().getCurrentGame().setGameStatus(Game.GameStatus.ReadyToStart);
+  	}
   	
   	/**
 	 * @author Daniel Wu
@@ -786,29 +789,90 @@ public class CucumberStepDefinitions {
 	 * Scenario: Start clock
 	 */
   	@When("I start the clock")
-  	public void iStartTheClock() {
-  		
+  	public void iStartTheClock() throws java.lang.UnsupportedOperationException {
+  		QuoridorController.startClock(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer(),
+  				QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer());
   	}
-  	
-  	/**
-	 * @author Daniel Wu
-	 * StartNewGame.feature - StartNewGame
-	 * Scenario: Start clock
-	 *//*
-  	@Then("The game is running")
-  	public void theGameIsRunning() {
-  		
-  	}*/
   	
   	/**
 	 * @author Daniel Wu
 	 * StartNewGame.feature - StartNewGame
 	 * Scenario: Start clock
 	 */
-  	@And("The board is initialized")
-  	public void theBoardIsInitialized() {
+  	@Then("The game shall be running")
+  	public void theGameShallBeRunning() {
+    	assertEquals(Game.GameStatus.Running, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 */
+  	@And("The board shall be initialized")
+  	public void theBoardShallBeInitialized() {
+  		assertEquals(true, boardInitialized);
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * ValidatePosition.feature - ValidatePosition
+	 * Scenario: Validate pawn postion
+	 */
+  	@Given("A game position is supplied with pawn coordinate {int}:{int}")
+  	public void aGamePositionIsSuppliedWithPawnCoordinate(int row, int col) {
   		
   	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * ValidatePosition.feature - ValidatePosition
+	 * Scenario: Validate pawn postion
+	 */
+  	@When("Validation of the position is initiated")
+  	public void validationOfThePawnPositionIsInitiated() {
+  		
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * ValidatePosition.feature - ValidatePosition
+	 * Scenario: Validate pawn postion
+	 */
+    @Then("The position shall be <result>")
+    public void thePositionShallBeResult() {
+    	
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * ValidatePosition.feature - ValidatePosition
+	 * Scenario: Validate wall postion
+	 */
+    @Given("A game position is supplied with wall coordinate <row>:<col>-<dir>")
+    public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, Direction direction) {
+    	
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * ValidatePosition.feature - ValidatePosition
+	 * Scenario: Validate wall postion
+	 */
+    @When("Validation of the position is initiated")
+    public void validationOfTheWallPositionIsInitiated() {
+    	
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * ValidatePosition.feature - ValidatePosition
+	 * Scenario: Validate wall postion
+	 */
+    @Then("The position shall be {string}")
+    public void thePositionShallBe() {
+    	
+    }
 
 	// ***********************************************
 	// Clean up
