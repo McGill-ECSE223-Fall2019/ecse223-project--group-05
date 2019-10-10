@@ -359,7 +359,7 @@ public class QuoridorController {
 	 * @return savingStatus enum
 	 * @throws IOException
 	 */
-	public SavingStatus saveGame(String filename, Game game) throws IOException{
+	public static SavingStatus saveGame(String filename, Game game) throws IOException{
 		return SavingStatus.failed;
 	}
 	/**
@@ -374,7 +374,7 @@ public class QuoridorController {
 	 * @return savingStatus enum
 	 * @throws IOException
 	 */
-	public SavingStatus saveGame(String filename, Game game, boolean overwrite) throws IOException{
+	public static SavingStatus saveGame(String filename, Game game, boolean overwrite) throws IOException{
 		return SavingStatus.failed;
 	}
 	
