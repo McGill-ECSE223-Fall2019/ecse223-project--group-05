@@ -39,8 +39,6 @@ import io.cucumber.java.en.When;
 
 public class CucumberStepDefinitions {
 	
-	private QuoridorController controller = new QuoridorController();
-	
 	private String saveFilename = "";
 	private final int fileDataLength = 1000000;
 	private char [] refFileData = new char [fileDataLength];	//Memory for storing data of one file for comparison.
@@ -174,7 +172,7 @@ public class CucumberStepDefinitions {
 	@When("^The user initiates to save the game with name \"([^\"]*)\"$")
 	public void theUserInitiatesToSaveTheGameWithNameFilename(String filename) {
 		try {
-			controller.saveGame(filename,QuoridorApplication.getQuoridor().getCurrentGame());
+			QuoridorController.saveGame(filename,QuoridorApplication.getQuoridor().getCurrentGame());
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
@@ -188,7 +186,7 @@ public class CucumberStepDefinitions {
 	@When("^The user confirms to overwrite existing file$")
 	public void theUserConfirmsToOverwriteExistingFile() {
 		try {
-			controller.saveGame(this.saveFilename, QuoridorApplication.getQuoridor().getCurrentGame(),true);
+			QuoridorController.saveGame(this.saveFilename, QuoridorApplication.getQuoridor().getCurrentGame(),true);
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
@@ -202,7 +200,7 @@ public class CucumberStepDefinitions {
 	@When("^The user cancels to overwrite existing file$")
 	public void theUserCancelsToOverwriteExistingFile() {
 		try {
-			controller.saveGame(this.saveFilename, QuoridorApplication.getQuoridor().getCurrentGame(),false);
+			QuoridorController.saveGame(this.saveFilename, QuoridorApplication.getQuoridor().getCurrentGame(),false);
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}

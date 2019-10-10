@@ -7,8 +7,6 @@ import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
 import ca.mcgill.ecse223.quoridor.model.*;
 
 public class QuoridorController {
-	
-	public QuoridorController() {}
 
 	/**
 	 * NOT IMPLEMENTED. Currently always returns SavingStatus.failed.
@@ -21,7 +19,7 @@ public class QuoridorController {
 	 * @return savingStatus enum
 	 * @throws IOException
 	 */
-	public SavingStatus saveGame(String filename, Game game) throws IOException{
+	public static SavingStatus saveGame(String filename, Game game) throws IOException{
 		return SavingStatus.failed;
 	}
 	/**
@@ -36,7 +34,7 @@ public class QuoridorController {
 	 * @return savingStatus enum
 	 * @throws IOException
 	 */
-	public SavingStatus saveGame(String filename, Game game, boolean overwrite) throws IOException{
+	public static SavingStatus saveGame(String filename, Game game, boolean overwrite) throws IOException{
 		return SavingStatus.failed;
 	}
 	
