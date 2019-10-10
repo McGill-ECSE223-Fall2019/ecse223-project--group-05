@@ -20,8 +20,7 @@ import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
 import io.cucumber.java.After;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
+import io.cucumber.java.en.*;
 
 public class CucumberStepDefinitions {
 
@@ -41,6 +40,7 @@ public class CucumberStepDefinitions {
 		ArrayList<Player> createUsersAndPlayers = createUsersAndPlayers("user1", "user2");
 		createAndStartGame(createUsersAndPlayers);
 	}
+	
 
 	@And("^It is my turn to move$")
 	public void itIsMyTurnToMove() throws Throwable {
@@ -104,17 +104,140 @@ public class CucumberStepDefinitions {
 		// GUI-related feature -- TODO for later
 	}
 	
+	@Given("A new game is initializing")
+	public void theGameIsInitializing() {
+		
+		//TODO:model in here
+	}
 	// ***********************************************
 	// Scenario and scenario outline step definitions
 	// ***********************************************
 
-	/*
-	 * TODO Insert your missing step definitions here
-	 * 
-	 * Call the methods of the controller that will manipulate the model once they
-	 * are implemented
-	 * 
-	 */
+	@Given("Next player to set user name is {string}")
+	public void nextPlayerToSetUserNameIs(String color) {
+		
+		//TODO:model in here
+		
+	}
+	
+	@And("There is existing user {string}")
+	public void thereIsExistingUser(String username) {
+		
+		//TODO:model in here
+	}
+	
+	@And("There is no existing user {string}")
+	public void thereIsNoExistingUser(String username) {
+		
+		//TODO:model in here
+	}
+	
+	@When("The player selects existing {string}")
+	public void thePlayerSelectsExisting(String username) {
+		
+		//TODO:controller method select existing user name
+	}
+	
+	@When("The player provides new user name: {string}")
+	public void thePlayerProvidesNewUserName(String username) {
+		
+		//TODO: controller method create new user name
+	}
+	
+	@Then("The name of player {string} in the new game shall be {string}")
+	public void theNameOfPlayerInTheNewGameShallBe(String username, String color) {
+		
+		//TODO: assert that user name and color are set properly
+	}
+	
+	@Then("The player shall be warned that {string} already exists")
+	public void thePlayerShallBeWarnedThatAlreadyExists(String username) {
+		
+		//TODO: assert that user name is already in use???
+	}
+
+	@And("Next player to set user name shall be {string}")
+		public void nextPlayerToSetUserNameShallBe(String color){
+
+		//TODO: assert
+
+		}
+
+	@Given("The wall move candidate with {string} at position {int} {int} is valid")
+	public void theWallMoveCandidateWithAtPosition(String dir, Integer row, Integer col){
+
+		//TODO:model in here
+
+	}
+
+	@Given("The wall move candidate with {string} at position {int} {int} is invalid")
+	public void theWallMoveCandidateWithAtPositionIsInvalid(String dir, Integer row, Integer col){
+
+		//TODO:model
+	}
+
+	@When("I release the wall in my hand")
+	public void iReleaseTheWallInMyHand(){
+
+		//TODO: controller release wall;
+	}
+
+	@Then("A wall move shall be registered with {string} at position {int} {int}")
+	public void aWallMoveShallBeRegisteredWithAtPosition(String color, Integer row, Integer col){
+
+		//TODO:Assert position
+	}
+
+	@Then("I shall be notified that my wall move is invalid")
+	public void iShallBeNotifiedThatMyWallMoveIsInvalid(){
+
+		//TODO:assert invalid move
+	}
+
+	@And("I shall have a wall in my hand over the board")
+	public void iShallHaveAWallInMyHandOverTheBoard(){
+
+		//TODO:GUI
+	}
+
+	@And("It shall be my turn to move")
+	public void itShallBeMyTurnToMove(){
+
+		//TODO:assert still my turn
+	}
+
+	@And("I shall not have a wall in my hand")
+	public void iShallNotHaveAWallInMyHand(){
+
+		//TODO:Assert wall is indeed dropped
+	}
+
+	@And("My move shall be completed")
+	public void myMoveShallBeCompleted(){
+
+		//TODO:Assert move completed
+	}
+
+	@And("It shall not be my turn to move")
+	public void iTShallNotBeMyTurnToMove(){
+
+		//TODO:Assert which turn it is
+	}
+
+	@But("No wall move shall be registered with {string} at position {int} {int}")
+	public void noWallMoveShallBeRegisteredWithAtPosition(String dir, Integer row, Integer col){
+
+		//TODO:assert move is not registered
+	}
+
+
+
+
+
+
+	
+	
+
 
 	// ***********************************************
 	// Clean up
