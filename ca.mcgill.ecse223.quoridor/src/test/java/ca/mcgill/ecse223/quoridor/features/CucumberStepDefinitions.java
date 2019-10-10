@@ -104,16 +104,7 @@ public class CucumberStepDefinitions {
 		// GUI-related feature -- TODO for later
 	}
 	
-	@Given("A new game is initializing")
-	public void theGameIsInitializing() {
 
-	    Game game = QuoridorApplication.getQuoridor().getCurrentGame();
-	    Enum gameStatus = game.getGameStatus();
-
-
-		
-		//TODO:model in here
-	}
 	// ***********************************************
 	// Scenario and scenario outline step definitions
 	// ***********************************************
