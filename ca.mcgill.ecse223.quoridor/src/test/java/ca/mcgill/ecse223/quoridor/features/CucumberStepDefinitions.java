@@ -188,7 +188,7 @@ public class CucumberStepDefinitions {
 	 * @author Thomas Philippon
 	 */
 	@And("It shall be shown that this is White's turn")
-	public void itShallBeShownThatThisIsWhitesTurn() {
+	public void itShallBeShownThatThisIsWhitesTurn() throws Throwable{
 		//GUI step, will be implemented later on. TODO
 	}
 	
@@ -223,7 +223,7 @@ public class CucumberStepDefinitions {
 	 * @author Thomas Philippon
 	 */
 	@Then("I shall have a wall in my hand over the board")
-	public void iShallHaveAWallInMyHandOverTheBoard() {
+	public void iShallHaveAWallInMyHandOverTheBoard() throws Throwable{
 		//As this is a GUI related step, it will be implemented later on
 		//TODO 
 	}
@@ -251,7 +251,7 @@ public class CucumberStepDefinitions {
 	 * @author Thomas Philippon
 	 */
 	@Then("I shall be notified that I have no more walls")
-	public void iShouldBeNotifiedThatIHaveNoMoreWalls() {
+	public void iShouldBeNotifiedThatIHaveNoMoreWalls() throws Throwable{
 		//GUI related step, TODO
 	}
 	
@@ -259,7 +259,7 @@ public class CucumberStepDefinitions {
 	 * @author Thomas Philippon
 	 */
 	@And("I shall have no walls in my hand")
-	public void iShallHaveNoWallsInMyHand() {
+	public void iShallHaveNoWallsInMyHand() throws Throwable{
 		//GUI related step, to implemented later. TODO
 	}
 	
