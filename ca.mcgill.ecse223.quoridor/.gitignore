@@ -4,3 +4,4 @@
 /.gradle/
 bin/
 ca.mcgill.ecse223.quoridor/bin/
+/build/
