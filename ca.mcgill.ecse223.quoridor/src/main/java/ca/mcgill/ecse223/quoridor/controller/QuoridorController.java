@@ -11,14 +11,14 @@ public class QuoridorController {
 
 	/**
 	 * @author Edwin Pan
-	 * @return game instance that represents the current game of Quoridor. Makes an empty one if there isn't one.
+	 * @return game instance that represents the current game of Quoridor. Makes a new empty one if there isn't one.
 	 */
 	public static Game getCurrentGame() {
 		return QuoridorApplication.getQuoridor().getCurrentGame();
 	}
 	
 	/**
-	 * NOT IMPLEMENTED. Currently always returns SavingStatus.failed.
+	 * NOT IMPLEMENTED.
 	 * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
 	 * It returns true when serialization of the game is successful and false when unsuccessful.
 	 * This method is overwrite-averse; it does not overwrite files that already exist.
@@ -35,7 +35,7 @@ public class QuoridorController {
 		throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game) not yet implemented.");
 	}
 	/**
-	 * NOT IMPLEMENTED. Currently always returns SavingStatus.failed.
+	 * NOT IMPLEMENTED.
 	 * This is the overwrite-capable version of saveGame.
 	 * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
 	 * It returns true when serialization of the game is successful and false when unsuccessful.
