@@ -372,7 +372,7 @@ public class QuoridorController {
 		if( SaveConfig.createFileSavesFolder() == false ) {
 			return SavingStatus.failed;
 		}
-		return SavingStatus.failed;
+		throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game) not yet implemented.");
 	}
 	/**
 	 * NOT IMPLEMENTED. Currently always returns SavingStatus.failed.
@@ -390,7 +390,7 @@ public class QuoridorController {
 		if( SaveConfig.createFileSavesFolder() == false ) {
 			return SavingStatus.failed;
 		}
-		return SavingStatus.failed;
+		throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game,overwrite) not yet implemented.");
 	}
 	
 	
