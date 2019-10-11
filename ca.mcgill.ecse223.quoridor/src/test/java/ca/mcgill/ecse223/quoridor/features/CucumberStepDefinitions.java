@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CucumberStepDefinitions {
 
+	public Boolean bool;
 	// ***********************************************
 	// Background step definitions
 	// ***********************************************
@@ -127,6 +128,8 @@ public class CucumberStepDefinitions {
 		
 		//TODO:model in here
 	}
+	
+	
 	
 	
 	@Given("^A new game is initializing$")
@@ -261,6 +264,23 @@ public class CucumberStepDefinitions {
 	public void theWallInMyHandShallDisappearFromMyStock() {
 		//The current player is assigned to the white player in the step definition of "It is my turn to move".
 		assertEquals(9, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().numberOfWhiteWallsInStock());
+	}
+	/**
+	 * @author Thomas Philippon
+	 */
+	@Then("I shall have a wall in my hand over the board")
+	public void iShallHaveAWallInMyHandOverTheBoard() {
+		//As this is a GUI related step, it will be implemented later on
+		//TODO 
+	}
+	
+	/**
+	 * @author Thomas Philippon
+	 */
+	@And("The wall in my hand shall disappear from my stock")
+	public void theWallInMyHandShallDisappearFromMyStock() {
+		//The current player is assigned to the white player in the step definition of "It is my turn to move".
+		assertEquals(9, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size());
 	}
 
 	/**
