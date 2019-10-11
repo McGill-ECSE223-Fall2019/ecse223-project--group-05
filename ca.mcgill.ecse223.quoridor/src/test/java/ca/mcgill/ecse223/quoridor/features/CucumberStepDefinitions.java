@@ -175,7 +175,6 @@ public class CucumberStepDefinitions {
     @Then("The game shall become ready to start")
     public void theGameShallBecomeReadyToStart() {
     	assertEquals(Game.GameStatus.ReadyToStart, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
-    	//TODO check GUI field
     }
 
 	//Initialize board feature
@@ -787,17 +786,20 @@ public class CucumberStepDefinitions {
 	 * @author Daniel Wu
 	 * StartNewGame.feature - StartNewGame
 	 * Scenario: Start clock
+	 * starts the clock
 	 */
   	@When("I start the clock")
   	public void iStartTheClock() throws java.lang.UnsupportedOperationException {
-  		QuoridorController.startClock(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer(),
-  				QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer());
+  		Player whitePlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer();
+  		Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
+  		QuoridorController.startClock(whitePlayer, blackPlayer);
   	}
   	
   	/**
 	 * @author Daniel Wu
 	 * StartNewGame.feature - StartNewGame
 	 * Scenario: Start clock
+	 * check if the game is running
 	 */
   	@Then("The game shall be running")
   	public void theGameShallBeRunning() {
@@ -808,6 +810,7 @@ public class CucumberStepDefinitions {
 	 * @author Daniel Wu
 	 * StartNewGame.feature - StartNewGame
 	 * Scenario: Start clock
+	 * check if the board is initialized
 	 */
   	@And("The board shall be initialized")
   	public void theBoardShallBeInitialized() {
@@ -817,57 +820,51 @@ public class CucumberStepDefinitions {
   	/**
 	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
-	 * Scenario: Validate pawn postion
+	 * Scenario: Validate pawn position
 	 */
-  	@Given("A game position is supplied with pawn coordinate {int}:{int}")
+  	/*@Given("A game position is supplied with pawn coordinate {int}:{int}")
   	public void aGamePositionIsSuppliedWithPawnCoordinate(int row, int col) {
-  		
-  	}
+  		GamePosition currentPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition();
+  		int id = currentPosition.getId() + 1;
+  		GamePosition gameposition = new GamePosition(id, );
+  		QuoridorApplication.getQuoridor().getCurrentGame()
+  	}*/
   	
   	/**
 	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
-	 * Scenario: Validate pawn postion
+	 * Scenario: Validate pawn position and Validate wall position
 	 */
   	@When("Validation of the position is initiated")
-  	public void validationOfThePawnPositionIsInitiated() {
+  	public void validationOfThePositionIsInitiated() {
   		
   	}
   	
   	/**
 	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
-	 * Scenario: Validate pawn postion
+	 * Scenario: Validate pawn position
 	 */
     @Then("The position shall be <result>")
-    public void thePositionShallBeResult() {
-    	
+    public void thePositionShallBeResult(String result) {
+    	PlayerPosition playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
+    	assertEquals(result, );
     }
     
     /**
 	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
-	 * Scenario: Validate wall postion
+	 * Scenario: Validate wall position
 	 */
     @Given("A game position is supplied with wall coordinate <row>:<col>-<dir>")
-    public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, Direction direction) {
+    public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, Direction dir]) {
     	
     }
     
     /**
 	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
-	 * Scenario: Validate wall postion
-	 */
-    @When("Validation of the position is initiated")
-    public void validationOfTheWallPositionIsInitiated() {
-    	
-    }
-    
-    /**
-	 * @author Daniel Wu
-	 * ValidatePosition.feature - ValidatePosition
-	 * Scenario: Validate wall postion
+	 * Scenario: Validate wall position
 	 */
     @Then("The position shall be {string}")
     public void thePositionShallBe() {

@@ -156,7 +156,6 @@ public class QuoridorController {
 	public static Boolean startClock(Player whitePlayer, Player blackPlayer) {
 		throw new java.lang.UnsupportedOperationException();
 	}
-
 	
 	public static void startClock() {
 		
@@ -269,7 +268,7 @@ public class QuoridorController {
 	 * @param	
 	 * @return	
 	 */
-	public static String validateWallPosition() {
+	public static String validatePosition(Game.MoveMode move) {
 		throw new java.lang.UnsupportedOperationException();
 	}
 	
