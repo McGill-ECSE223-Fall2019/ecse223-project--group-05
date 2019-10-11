@@ -349,6 +349,14 @@ public class QuoridorController {
 	public QuoridorController() {}
 
 	/**
+	 * @author Edwin Pan
+	 * @return game instance that represents the current game of Quoridor. Makes an empty one if there isn't one.
+	 */
+	public static Game getCurrentGame() {
+		return QuoridorApplication.getQuoridor().getCurrentGame();
+	}
+	
+	/**
 	 * NOT IMPLEMENTED. Currently always returns SavingStatus.failed.
 	 * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
 	 * It returns true when serialization of the game is successful and false when unsuccessful.

@@ -621,7 +621,7 @@ public class CucumberStepDefinitions {
 	@When("The user initiates to save the game with name {string}")
 	public void theUserInitiatesToSaveTheGameWithNameFilename(String filename) {
 		try {
-			QuoridorController.saveGame(filename,QuoridorApplication.getQuoridor().getCurrentGame());
+			QuoridorController.saveGame(filename,QuoridorController.getCurrentGame());
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
@@ -635,7 +635,7 @@ public class CucumberStepDefinitions {
 	@When("The user confirms to overwrite existing file")
 	public void theUserConfirmsToOverwriteExistingFile() {
 		try {
-			QuoridorController.saveGame(this.saveFilename, QuoridorApplication.getQuoridor().getCurrentGame(),true);
+			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), true);
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
@@ -649,7 +649,7 @@ public class CucumberStepDefinitions {
 	@When("The user cancels to overwrite existing file")
 	public void theUserCancelsToOverwriteExistingFile() {
 		try {
-			QuoridorController.saveGame(this.saveFilename, QuoridorApplication.getQuoridor().getCurrentGame(),false);
+			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), false);
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
