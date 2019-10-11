@@ -134,7 +134,7 @@ public class CucumberStepDefinitions {
 	 * SavePosition cucumber feature
 	 * Ensures that the file <filename> does not exist in game saves directory
 	 */
-	@Given("No file \"{string}\" exists in the filesystem")
+	@Given("No file {string} exists in the filesystem")
 	public void noFileFilenameExistsInTheFileSystem(String filename) {
 		File file = new File( SaveConfig.getSaveFilePath(filename) );
 		if (file.exists())	{	file.delete();	}
@@ -148,7 +148,7 @@ public class CucumberStepDefinitions {
 	 * It actually writes into the file gibberish for later comparative use.
 	 * At most one megabyte of all of the file's data is stored for this purpose.
 	 */
-	@Given("File \"{string}\" exists in the filesystem")
+	@Given("File {string} exists in the filesystem")
 	public void fileFilenameExistsInTheFilesystem(String filename) {
 		//First put in our control as the existing file for our test.
 		File file = new File( SaveConfig.getSaveFilePath(filename) );
@@ -170,7 +170,7 @@ public class CucumberStepDefinitions {
 	 * SavePosition cucumber feature
 	 * Initiates controller method to save the game in game saves directory
 	 */
-	@When("The user initiates to save the game with name \"{string}\"")
+	@When("The user initiates to save the game with name {string}")
 	public void theUserInitiatesToSaveTheGameWithNameFilename(String filename) {
 		try {
 			QuoridorController.saveGame(filename,QuoridorApplication.getQuoridor().getCurrentGame());
@@ -212,7 +212,7 @@ public class CucumberStepDefinitions {
 	 * SavePosition cucumber feature
 	 * Asserts that a file with name <filename> now exists in game saves directory
 	 */
-	@Then("A file with \"([^\"]*)\" is created in the filesystem")
+	@Then("A file with {string} is created in the filesystem")
 	public void aFileWithFilenameIsCreatedInTheFilesystem(String filename) {
 		File file = new File( SaveConfig.getSaveFilePath(filename) );
 		assert(file.exists());
@@ -223,7 +223,7 @@ public class CucumberStepDefinitions {
 	 * SavePosition cucumber feature
 	 * Asserts that the file of name <filename> has been updated.
 	 */
-	@Then("File with \"{string}\" is updated in the filesystem")
+	@Then("File with {string} is updated in the filesystem")
 	public void fileWithFilenameIsUpdatedInTheFileSystem(String filename) {
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
 		assert( Arrays.equals(refFileData, curFileData) == false );
@@ -234,7 +234,7 @@ public class CucumberStepDefinitions {
 	 * SavePosition cucumber feature
 	 * Asserts that the file of name <filename> has not been changed.
 	 */
-	@Then("File \"{string}\" is not changed in the filesystem")
+	@Then("File {string} is not changed in the filesystem")
 	public void fileWithFilenameIsNotChangedInTheFileSystem(String filename) {
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
 		assert( Arrays.equals(refFileData, curFileData) );
