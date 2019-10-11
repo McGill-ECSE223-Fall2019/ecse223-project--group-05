@@ -1,11 +1,15 @@
 package ca.mcgill.ecse223.quoridor.features;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
+import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -22,9 +26,14 @@ import ca.mcgill.ecse223.quoridor.model.WallMove;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class CucumberStepDefinitions {
 
+	private WallMove wallMoveCandidate = null;
+	
+	
 	// ***********************************************
 	// Background step definitions
 	// ***********************************************
@@ -108,14 +117,122 @@ public class CucumberStepDefinitions {
 	// Scenario and scenario outline step definitions
 	// ***********************************************
 
-	/*
-	 * TODO Insert your missing step definitions here
-	 * 
-	 * Call the methods of the controller that will manipulate the model once they
-	 * are implemented
-	 * 
+	///ROTATE WALL
+	/**
+	 * @author matthias
+	 * @param dir
+	 * @param row
+	 * @param col
+	 * @throws UnsupportedOperationException
 	 */
+	@Given("A wall move candidate exists with {string} at position \\({int}, {int})")
+	public void aWallMoveCandidateExistsWithDirAtPosition(String dir, int row, int col) throws UnsupportedOperationException {
+		wallMoveCandidate = QuoridorController.GetWallMoveCandidate(dir, row, col);
+	}
+	
+	/**
+	 * @author matthias
+	 * @throws UnsupportedOperationException
+	 */
+	@When("I try to flip the wall")
+	public void iTryToFlipTheWall() throws UnsupportedOperationException {
+		QuoridorController.flipWallCandidate();
+	}
+	/**
+	 * @author matthias
+	 * @throws UnsupportedOperationException
+	 */
+	@Then("The wall shall be rotated over the board to {string}")
+	public void theWallShallBeRotatedOverTheBoardToString(String newDir) throws Throwable{
+		// GUI-related feature -- TODO for later
+	}
+	
+	/**
+	 * @author matthias
+	 * @param newDir
+	 * @param row
+	 * @param col
+	 * @throws UnsupportedOperationException
+	 */
+	@And("A wall move candidate shall exist with {string} at position \\({int}, {int})")
+	public void aWallMoveCandidateShallExistWithNewDirAtPosition(String newDir, int row, int col) throws Throwable {
+		Tile t = wallMoveCandidate.getTargetTile();
+		assertEquals(t.getColumn(), col);
+		assertEquals(t.getRow(), row);
+		assertEquals(wallMoveCandidate.getWallDirection(), Direction.valueOf(newDir));	
+	}
+	
+	
+	///LOAD POSITION
+	@When("I initiate to load a saved game {string}")
+	public void iInitiateToLoadASavedGame(String fileName) {
+		QuoridorController.loadSavedGame(fileName);
+	}
+	
+	@And("The position to load is valid")
+	public void thePositionToLoadIsValid() throws UnsupportedOperationException{
+		Boolean positionIsValid = QuoridorController.CheckThatPositionIsValid();
+		if (!positionIsValid)
+			throw new UnsupportedOperationException("position is invalid"); //not sure if this is correct
+	}
+	
+	@And("It shall be {string}'s turn")
+	public void itShallBePlayer_s_Turn(String player) {
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		Player currentPlayer = quoridor.getCurrentGame().getWhitePlayer();
+		assertEquals(player, currentPlayer.getUser().getName());
+	}
+	
+	
+	@And("{string} shall be at {int}:{int}")
+	public void PlayerShallBeAtRowCol(String player, int pRow, int pCol) {
+		QuoridorController.setPlayerPosition(player, pRow, pCol);//do not set position; check position
+	}
 
+	@And("{string} shall have a {string} wall at {int}:{int}")
+	public void playerShallHaveAWallWithOrientationAtPosition(String player, String wallOrientation, int row, int col) throws UnsupportedOperationException{
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		Player currentPlayer = quoridor.getCurrentGame().getWhitePlayer();
+		Direction d = Direction.valueOf(wallOrientation);
+		for (Wall w : currentPlayer.getWalls()) {
+			if (w.getMove().getWallDirection() == d &&
+				w.getMove().getTargetTile().getColumn() == col 
+				&& 	w.getMove().getTargetTile().getRow() == row)
+				return;
+		}
+		fail();
+	}
+	
+	@And("Both players shall have {int} in their stacks")
+	public void bothPlayersShallHaveRemainingWallsInTheirStacks(int remainingWalls) {
+		Game g = QuoridorApplication.getQuoridor().getCurrentGame();
+		assertEquals(remainingWalls, g.getBlackPlayer().numberOfWalls());
+		assertEquals(remainingWalls, g.getWhitePlayer().numberOfWalls());
+	}
+	
+	//LOAD INVALID POSITION
+	@And("The position to load is invalid")
+	public void thePositionToLoadIsInvalid() throws UnsupportedOperationException{
+		Boolean positionIsValid = QuoridorController.CheckThatPositionIsValid();
+		if (positionIsValid)
+			throw new UnsupportedOperationException("Position is valid, aborting");
+	}
+	
+	@Then("The load shall return an error")
+	public void theLoadShallReturnAnError() throws UnsupportedOperationException{
+		throw new UnsupportedOperationException("Invalid position"); //check for error instead of throwing a new one
+		//assertEqual(true, QuoridorController.sendLoadError());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// ***********************************************
 	// Clean up
 	// ***********************************************
