@@ -284,7 +284,6 @@ public class QuoridorController {
         throw new java.lang.UnsupportedOperationException("Not yet implemented");
     }
 
-
     /***
      * Method to set existing username to player
      * @param userName username to set to player
@@ -326,18 +325,6 @@ public class QuoridorController {
         throw new java.lang.UnsupportedOperationException("Not yet implemented");
 
         //get all existing userNames and check to see if new userNAme is unique and available or in use
-    }
-
-    /***
-     * This method is to provide a list of existing user names on the UI when at the quoridor menu to see a list of
-     * existing usernames and select one
-     * @return List of UserNames in Quoridor
-     * @author Alex Masciotra
-     */
-    public List <String> provideExistingUserNames(){
-
-        throw new java.lang.UnsupportedOperationException("Not yet implemented");
-
     }
 }
 
