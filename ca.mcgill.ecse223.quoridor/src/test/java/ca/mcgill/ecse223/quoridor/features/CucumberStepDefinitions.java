@@ -51,7 +51,6 @@ public class CucumberStepDefinitions {
 		createAndStartGame(createUsersAndPlayers);
 	}
 	
-
 	@And("^It is my turn to move$")
 	public void itIsMyTurnToMove() throws Throwable {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -836,5 +835,6 @@ public class CucumberStepDefinitions {
 			Wall wall = Wall.getWithId(j + 10);
 			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeBlackWallsInStock(wall);
 		}
-	}
+    }
+
 }
