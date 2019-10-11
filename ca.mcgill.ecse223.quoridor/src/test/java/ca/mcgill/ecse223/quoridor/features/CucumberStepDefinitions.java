@@ -584,6 +584,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("No file {string} exists in the filesystem")
 	public void noFileFilenameExistsInTheFileSystem(String filename) {
+		SaveConfig.createFileSavesFolder();
 		File file = new File( SaveConfig.getSaveFilePath(filename) );
 		if (file.exists())	{	file.delete();	}
 		this.saveFilename = filename;
@@ -598,6 +599,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("File {string} exists in the filesystem")
 	public void fileFilenameExistsInTheFilesystem(String filename) {
+		SaveConfig.createFileSavesFolder();
 		//First put in our control as the existing file for our test.
 		File file = new File( SaveConfig.getSaveFilePath(filename) );
 		file.delete();
@@ -620,6 +622,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The user initiates to save the game with name {string}")
 	public void theUserInitiatesToSaveTheGameWithNameFilename(String filename) {
+		SaveConfig.createFileSavesFolder();
 		try {
 			QuoridorController.saveGame(filename,QuoridorController.getCurrentGame());
 		} catch(IOException e) {
@@ -634,6 +637,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The user confirms to overwrite existing file")
 	public void theUserConfirmsToOverwriteExistingFile() {
+		SaveConfig.createFileSavesFolder();
 		try {
 			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), true);
 		} catch(IOException e) {
@@ -648,6 +652,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The user cancels to overwrite existing file")
 	public void theUserCancelsToOverwriteExistingFile() {
+		SaveConfig.createFileSavesFolder();
 		try {
 			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), false);
 		} catch(IOException e) {
@@ -660,10 +665,11 @@ public class CucumberStepDefinitions {
 	 * SavePosition cucumber feature
 	 * Asserts that a file with name <filename> now exists in game saves directory
 	 */
-	@Then("A file with {string} is created in the filesystem")
+	@Then("A file with {string} shall be created in the filesystem")
 	public void aFileWithFilenameIsCreatedInTheFilesystem(String filename) {
+		SaveConfig.createFileSavesFolder();
 		File file = new File( SaveConfig.getSaveFilePath(filename) );
-		assert(file.exists());
+		assertEquals(file.exists(),true);
 	}
 	
 	/**
@@ -671,10 +677,11 @@ public class CucumberStepDefinitions {
 	 * SavePosition cucumber feature
 	 * Asserts that the file of name <filename> has been updated.
 	 */
-	@Then("File with {string} is updated in the filesystem")
+	@Then("File with {string} shall be updated in the filesystem")
 	public void fileWithFilenameIsUpdatedInTheFileSystem(String filename) {
+		SaveConfig.createFileSavesFolder();
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
-		assert( Arrays.equals(refFileData, curFileData) == false );
+		assertEquals( Arrays.equals(refFileData, curFileData), false );
 	}
 	
 	/**
@@ -682,10 +689,11 @@ public class CucumberStepDefinitions {
 	 * SavePosition cucumber feature
 	 * Asserts that the file of name <filename> has not been changed.
 	 */
-	@Then("File {string} is not changed in the filesystem")
+	@Then("File {string} shall not be changed in the filesystem")
 	public void fileWithFilenameIsNotChangedInTheFileSystem(String filename) {
+		SaveConfig.createFileSavesFolder();
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
-		assert( Arrays.equals(refFileData, curFileData) );
+		assertEquals( Arrays.equals(refFileData, curFileData), true );
 	}
 	
 	
@@ -1260,6 +1268,8 @@ public class CucumberStepDefinitions {
 			}
 		}
 		// Clear out file data memories, used for SavePosition features.
+		File file = new File( SaveConfig.getSaveFilePath(this.saveFilename) );
+		file.delete();
 		this.saveFilename = "";
 		for( int i = 0 ; i < refFileData.length ; i++ ) {
 			this.refFileData[i] = 0;

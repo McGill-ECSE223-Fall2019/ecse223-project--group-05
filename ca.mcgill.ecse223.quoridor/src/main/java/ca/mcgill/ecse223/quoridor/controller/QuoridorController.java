@@ -4,6 +4,7 @@ import java.util.List;
 import java.io.IOException;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
+import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
 import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
@@ -368,6 +369,9 @@ public class QuoridorController {
 	 * @throws IOException
 	 */
 	public static SavingStatus saveGame(String filename, Game game) throws IOException{
+		if( SaveConfig.createFileSavesFolder() == false ) {
+			return SavingStatus.failed;
+		}
 		return SavingStatus.failed;
 	}
 	/**
@@ -383,6 +387,9 @@ public class QuoridorController {
 	 * @throws IOException
 	 */
 	public static SavingStatus saveGame(String filename, Game game, boolean overwrite) throws IOException{
+		if( SaveConfig.createFileSavesFolder() == false ) {
+			return SavingStatus.failed;
+		}
 		return SavingStatus.failed;
 	}
 	
