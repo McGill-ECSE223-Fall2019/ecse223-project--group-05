@@ -13,7 +13,7 @@ public class QuoridorController {
 	 * Gherkin feature: Initialize Board
 	 * This controller method is responsible for creating a game object (current game) and player objects. Then is sets the current player to move to the white player. 
 	 * It also assigns the white and the black pawn to their initial position and assigns 10 walls to each 
-	 * player. Finally, it starts the white player's timer (thinking time). This controller method shall also set the create a game position and set the currentGamePosition.
+	 * player. Finally, it starts the white player's timer (thinking time). 
 	 * 
 	 * @author             Thomas Philippon
 	 * @param Quoridor      - Quoridor application 

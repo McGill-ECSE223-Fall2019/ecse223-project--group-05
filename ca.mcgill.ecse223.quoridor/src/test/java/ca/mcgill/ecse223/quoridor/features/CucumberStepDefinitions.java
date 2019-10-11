@@ -34,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CucumberStepDefinitions {
 
-	public Boolean bool;
 	// ***********************************************
 	// Background step definitions
 	// ***********************************************
