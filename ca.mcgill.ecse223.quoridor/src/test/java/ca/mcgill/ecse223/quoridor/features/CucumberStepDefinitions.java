@@ -25,8 +25,11 @@ import ca.mcgill.ecse223.quoridor.model.Tile;
 import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
+import com.sun.org.apache.xpath.internal.operations.Quo;
 import io.cucumber.java.After;
 import io.cucumber.java.en.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CucumberStepDefinitions {
 
@@ -47,7 +50,6 @@ public class CucumberStepDefinitions {
 		createAndStartGame(createUsersAndPlayers);
 	}
 	
-
 	@And("^It is my turn to move$")
 	public void itIsMyTurnToMove() throws Throwable {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -259,134 +261,323 @@ public class CucumberStepDefinitions {
 	@And("I shall have no walls in my hand")
 	public void iShallHaveNoWallsInMyHand() throws Throwable{
 		//GUI related step, to implemented later. TODO
-	}
-	
-	
-	/*
-	 * TODO Insert your missing step definitions here
-	 * 
-	 * Call the methods of the controller that will manipulate the model once they
-	 * are implemented
-	 * 
-	 */
-	@Given("Next player to set user name is {string}")
-	public void nextPlayerToSetUserNameIs(String color) {
-		
-		//TODO:model in here
-		
-	}
-	
-	@And("There is existing user {string}")
-	public void thereIsExistingUser(String username) {
-		
-		//TODO:model in here
-	}
-	
-	@And("There is no existing user {string}")
-	public void thereIsNoExistingUser(String username) {
-		
-		//TODO:model in here
-	}
-	
-	@When("The player selects existing {string}")
-	public void thePlayerSelectsExisting(String username) {
-		
-		//TODO:controller method select existing user name
-	}
-	
-	@When("The player provides new user name: {string}")
-	public void thePlayerProvidesNewUserName(String username) {
-		
-		//TODO: controller method create new user name
-	}
-	
-	@Then("The name of player {string} in the new game shall be {string}")
-	public void theNameOfPlayerInTheNewGameShallBe(String username, String color) {
-		
-		//TODO: assert that user name and color are set properly
-	}
-	
-	@Then("The player shall be warned that {string} already exists")
-	public void thePlayerShallBeWarnedThatAlreadyExists(String username) {
-		
-		//TODO: assert that user name is already in use???
-	}
+    }
+    
+     /**
+     * @param color
+     * @author Alex Masciotra
+     */
+    @Given("Next player to set user name is {string}")
+    public void nextPlayerToSetUserNameIs(String color) {
 
-	@And("Next player to set user name shall be {string}")
-		public void nextPlayerToSetUserNameShallBe(String color){
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
 
-		//TODO: assert
+        Player nextPlayerWhite = game.getWhitePlayer();
+        Player nextPlayerBlack = game.getBlackPlayer();
 
-		}
+        // i am calling getWhitePlayer and assigning the nextPlayer to either white or black depending what color i need
+        // the player to be, this way i can "persist" in the model which color to apply the username to
+        if (color.equals("white")) {
 
-	@Given("The wall move candidate with {string} at position \\({int}, {int}) is valid")
-	public void theWallMoveCandidateWithAtPosition(String dir, Integer row, Integer col){
+            game.getWhitePlayer().setNextPlayer(nextPlayerWhite);
 
-		//TODO:model in here
+        } else if (color.equals("black")) {
 
-	}
+            game.getWhitePlayer().setNextPlayer(nextPlayerBlack);
+        } else {
 
-	@Given("The wall move candidate with {string} at position \\({int}, {int}) is invalid")
-	public void theWallMoveCandidateWithAtPositionIsInvalid(String dir, Integer row, Integer col){
+            throw new IllegalArgumentException("Unsupported color was provided");
+        }
+    }
 
-		//TODO:model
-	}
+    /**
+     * @author Alex Masciotra
+     */
+    @And("There is existing user {string}")
+    public void thereIsExistingUser(String username) {
 
-	@When("I release the wall in my hand")
-	public void iReleaseTheWallInMyHand(){
+        QuoridorApplication.getQuoridor().addUser(username);
+        //TODO:model in here
+    }
 
-		//TODO: controller release wall;
-	}
+    /**
+     * @param username
+     * @author Alex Masciotra
+     */
+    @And("There is no existing user {string}")
+    public void thereIsNoExistingUser(String username) {
+        QuoridorApplication.getQuoridor().addUser(username);
+        List<User> userList = QuoridorApplication.getQuoridor().getUsers();
+        for (User user : userList) {
 
-	@Then("A wall move shall be registered with {string} at position \\({int}, {int})")
-	public void aWallMoveShallBeRegisteredWithAtPosition(String color, Integer row, Integer col){
+            if (user.getName().equals(username)) {
+                QuoridorApplication.getQuoridor().removeUser(user);
+            }
+        }
+    }
 
-		//TODO:Assert position
-	}
+    /**
+     * @param username
+     * @author Alex Masciotra
+     */
+    @When("The player selects existing {string}")
+    public void thePlayerSelectsExisting(String username) {
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
 
-	@Then("I shall be notified that my wall move is invalid")
-	public void iShallBeNotifiedThatMyWallMoveIsInvalid(){
+        QuoridorController.selectExistingUserName(username, game);
 
-		//TODO:assert invalid move
-	}
+        //TODO:controller method select existing user name
+    }
 
-	@And("It shall be my turn to move")
-	public void itShallBeMyTurnToMove(){
+    /**
+     * @param username
+     * @author Alex Masciotra
+     */
+    @When("The player provides new user name: {string}")
+    public void thePlayerProvidesNewUserName(String username) {
 
-		//TODO:assert still my turn
-	}
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
 
-	@And("I shall not have a wall in my hand")
-	public void iShallNotHaveAWallInMyHand(){
+        QuoridorController.selectNewUserName(username, game);
+        //TODO: controller method create new user name
+    }
 
-		//TODO:Assert wall is indeed dropped
-	}
+    /**
+     * @param color
+     * @param username
+     * @author Alex Masciotra
+     */
+    @Then("The name of player {string} in the new game shall be {string}")
+    public void theNameOfPlayerInTheNewGameShallBe(String color, String username) {
 
-	@And("My move shall be completed")
-	public void myMoveShallBeCompleted(){
+//		if(color.equals("white")){
+//			assertEquals(username, QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getUser().getName());
+//		}
+//		else if(color.equals("black")){
+//			assertEquals(username, QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getUser().getName());
+//		}
 
-		//TODO:Assert move completed
-	}
+        assertEquals(username, QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getNextPlayer().getUser().getName());
 
-	@And("It shall not be my turn to move")
-	public void iTShallNotBeMyTurnToMove(){
+        //TODO: assert that user name and color are set properly
+    }
 
-		//TODO:Assert which turn it is
-	}
+    /**
+     * @param username
+     * @author Alex Masciotra
+     */
+    @Then("The player shall be warned that {string} already exists")
+    public void thePlayerShallBeWarnedThatAlreadyExists(String username) {
 
-	@But("No wall move shall be registered with {string} at position \\({int}, {int})")
-	public void noWallMoveShallBeRegisteredWithAtPosition(String dir, Integer row, Integer col){
+        assertEquals(username, QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getNextPlayer().getUser().getName());
 
-		//TODO:assert move is not registered
-	}
+        //GUI notification that username is already existing and he will be that username
+        //TODO: assert that user name is already in use???
+    }
+
+    /**
+     * @param color
+     * @author Alex Masciotra
+     */
+    @And("Next player to set user name shall be {string}")
+    public void nextPlayerToSetUserNameShallBe(String color) {
+
+        //shall be same player
+        Player currentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getNextPlayer();
+
+        //checking to see if the next player is white or black, and to see if it matches with what it should be
+        if (currentPlayer.hasGameAsWhite()) {
+
+            assertEquals(color, "white");
+        } else if (currentPlayer.hasGameAsBlack()) {
+            assertEquals(color, "black");
+        }
 
 
+        //currentPlayer
+
+        //TODO: assert
+
+    }
+
+    /**
+     * @param dir
+     * @param row
+     * @param col
+     * @author Alex Masciotra
+     */
+    @Given("The wall move candidate with {string} at position \\({int}, {int}) is valid")
+    public void theWallMoveCandidateWithAtPositionIsValid(String dir, Integer row, Integer col) {
+
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+
+        Board board = QuoridorApplication.getQuoridor().getBoard();
+
+        Player currentPlayer = game.getCurrentPosition().getPlayerToMove();
+
+//		int wallsInStock = game.getCurrentPosition().numberOfWhiteWallsInStock();
+//        Wall wallPlaced = currentPlayer.getWall(10 - wallsInStock);
+
+        //hardcoding wall instock as there is bug in whitewallsinstock, currently 10, should be 9 after init)
+        Wall wallPlaced = currentPlayer.getWall(3);
 
 
+        Direction wallMoveDirection;
+
+        if (dir.equals("horizontal")) {
+            wallMoveDirection = Direction.Horizontal;
+        } else if (dir.equals("vertical")) {
+            wallMoveDirection = Direction.Vertical;
+        } else {
+            throw new IllegalArgumentException("Unsupported wall direction was provided");
+        }
+
+        //Tile tile = new Tile(row, col, QuoridorApplication.getQuoridor().getBoard());
+
+        Tile tile = board.getTile((row - 1) * 9 + col - 1);
+
+        WallMove wallMoveCandidate = new WallMove(1, 1, currentPlayer, tile, game, wallMoveDirection, wallPlaced);
+
+        game.setWallMoveCandidate(wallMoveCandidate);
+
+        //TODO:model in here
+    }
+
+    /**
+     * same method as valid, controller will decide if its invalid or not with its return clause
+     *
+     * @param dir
+     * @param row
+     * @param col
+     * @author Alex Masciotra
+     */
+    @Given("The wall move candidate with {string} at position \\({int}, {int}) is invalid")
+    public void theWallMoveCandidateWithAtPositionIsInvalid(String dir, Integer row, Integer col) {
+        theWallMoveCandidateWithAtPositionIsValid(dir, row, col);
+
+        //TODO:model
+    }
+
+    /**
+     * @author Alex Masciotra
+     */
+    @When("I release the wall in my hand")
+    public void iReleaseTheWallInMyHand() {
+
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+        //Board board = QuoridorApplication.getQuoridor().getBoard();
+
+        QuoridorController.releaseWall(game);
+
+        //TODO: controller release wall;
+    }
+
+    /**
+     * @param dir
+     * @param row
+     * @param col
+     * @author Alex Masciotra
+     */
+    @Then("A wall move shall be registered with {string} at position \\({int}, {int})")
+    public void aWallMoveShallBeRegisteredWithAtPosition(String dir, Integer row, Integer col) {
+
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+        int indexOfMove = game.getMoves().size();
+        int wallIndex = game.getCurrentPosition().numberOfWhiteWallsOnBoard();
+
+        assertEquals(row, game.getMove(indexOfMove).getTargetTile().getRow());
+        assertEquals(col, game.getMove(indexOfMove).getTargetTile().getColumn());
+        assertEquals(dir, game.getCurrentPosition().getWhiteWallsOnBoard(wallIndex).getMove().getWallDirection().toString());
+
+        //TODO:Assert position
+    }
+
+   /**
+    * @author Alex Masciotra
+    * @throws Throwable
+    */
+    @Then("I shall be notified that my wall move is invalid")
+    public void iShallBeNotifiedThatMyWallMoveIsInvalid() throws Throwable {
+
+        //GUI related TODO
+    }
+
+    /**
+     * @author Alex Masciotra
+     */
+    @And("It shall be my turn to move")
+    public void itShallBeMyTurnToMove() {
+
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+        //we know whiteplayers turn from it is my turn
+        assertEquals(game.getWhitePlayer(), game.getCurrentPosition().getPlayerToMove());
+        //TODO:assert still my turn
+    }
+
+    /**
+     * @author Alex Masciotra
+     * @throws Throwable
+     */
+    @And("I shall not have a wall in my hand")
+    public void iShallNotHaveAWallInMyHand() throws Throwable {
+
+        //TODO:GUI
+    }
+
+    /**
+     * @author Alex Masciotra
+     */
+    @And("My move shall be completed")
+    public void myMoveShallBeCompleted() {
+
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+
+        int indexOfMove = game.getMoves().size();
+        assertEquals(1, indexOfMove);
 
 
-	
-	
+        //I set the move number to 1 and ruond number to 1, 1 was move before so checking if move was not registered in
+        // the list of moves
+        assertEquals(1, game.getMove(indexOfMove).getMoveNumber());
+        assertEquals(1, game.getMove(indexOfMove).getRoundNumber());
+
+        //check move list size to see if it grew in size from 0 to 1
+
+
+        //TODO:Assert move completed
+    }
+
+    /**
+     * @author Alex Masciotra
+     */
+    @And("It shall not be my turn to move")
+    public void iTShallNotBeMyTurnToMove() {
+
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+
+        //we know it was white turn before check to see blackturn now
+        assertEquals(game.getBlackPlayer(), game.getCurrentPosition().getPlayerToMove());
+        //TODO:Assert which turn it is black turn
+    }
+
+    /**
+     * @author Alex Masciotra
+     * @param dir
+     * @param row
+     * @param col
+     */
+    @But("No wall move shall be registered with {string} at position \\({int}, {int})")
+    public void noWallMoveShallBeRegisteredWithAtPosition(String dir, Integer row, Integer col) {
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+
+        int indexOfMove = game.getMoves().size();
+        //I set the move number to 1 and ruond number to 1, 0 was move before so checking if move was not registered in
+        // the list of moves
+        assertEquals(0, game.getMove(indexOfMove).getMoveNumber());
+        assertEquals(1, game.getMove(indexOfMove).getRoundNumber());
+
+        //TODO:assert move is not registered
+    }
 
 
 	// ***********************************************
@@ -494,7 +685,8 @@ public class CucumberStepDefinitions {
 		}
 
 		game.setCurrentPosition(gamePosition);
-	}
+    }
+    
 	private  void removeWalls() {
 		
 		int whiteWallNo = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size();
@@ -508,5 +700,6 @@ public class CucumberStepDefinitions {
 			Wall wall = Wall.getWithId(j + 10);
 			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeBlackWallsInStock(wall);
 		}
-	}
+    }
+
 }
