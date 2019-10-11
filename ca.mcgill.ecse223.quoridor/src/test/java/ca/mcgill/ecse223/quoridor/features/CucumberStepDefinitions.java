@@ -34,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CucumberStepDefinitions {
 
-	public Boolean bool;
 	// ***********************************************
 	// Background step definitions
 	// ***********************************************
@@ -280,7 +279,7 @@ public class CucumberStepDefinitions {
 	@And("The wall in my hand shall disappear from my stock")
 	public void theWallInMyHandShallDisappearFromMyStock() {
 		//The current player is assigned to the white player in the step definition of "It is my turn to move".
-		assertEquals(9, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size());
+		assertEquals(9, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().numberOfWhiteWallsInStock());
 	}
 
 	/**
