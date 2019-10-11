@@ -1,11 +1,14 @@
 package ca.mcgill.ecse223.quoridor.features;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
+import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -22,6 +25,8 @@ import ca.mcgill.ecse223.quoridor.model.WallMove;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class CucumberStepDefinitions {
 
@@ -122,6 +127,55 @@ public class CucumberStepDefinitions {
 	 * are implemented
 	 * 
 	 */
+	@Given("A wall move candidate exists with {string} at position \\({int}, {int})")
+	public void wallMoveCandidateExists(String dir, int row, int column) throws Throwable{
+		QuoridorController.getWallMove(dir, row, column);
+		
+	}
+	@And("The wall candidate is not at the {string} edge of the board")
+	public void wallIsNotAtEdge(String side) throws Throwable{
+		assertEquals(false, QuoridorController.wallIsAtEdge(side));
+	}
+	@When("I try to move the wall {string}")
+	public void tryToMoveWall(String side) throws Throwable{
+		QuoridorController.moveWall(side);
+	}
+	@Then("The wall shall be moved over the board to position \\({int}, {int})")
+	public void thisWallIsAtPosition(int row, int column) throws Throwable{
+		// GUI-related feature -- TODO for later
+	}
+	@And("A wall move candidate shall exist with {string} at position \\({int}, {int})")
+	public void wallMoveCandidateExistsAt(String dir, int row, int column) {
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		Tile tile = quoridor.getCurrentGame().getWallMoveCandidate().getTargetTile();
+		
+		assertEquals(Direction.valueOf(dir), quoridor.getCurrentGame().getWallMoveCandidate().getWallDirection());
+		assertEquals(row, tile.getRow());
+		assertEquals(column,tile.getColumn() );
+	}
+	@And("The wall candidate is at the {string} edge of the board")
+	public void wallIsAtEdge(String side) throws Throwable{
+		assertEquals(true, QuoridorController.wallIsAtEdge(side));
+	}
+	@Then("I shall be notified that my move is illegal")
+	public void testIllegalMoveNotification() {
+		assertEquals(true, QuoridorController.isIllegalMoveNotificationDisplayed());
+	}
+	
+	
+	///SET TOTAL THINKING TIME
+	@When("{int}:{int} is set as the thinking time")
+	public void setThinkingTime(int min, int sec) {
+		QuoridorController.setThinkingTime(min,sec);
+	}
+	@Then("Both players shall have {int}:{int} remaining time left")
+	public void checkRemainingTime(int min, int sec) {
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		int totalSeconds = min*60+sec;
+		assertEquals(totalSeconds, quoridor.getCurrentGame().getWhitePlayer().getRemainingTime());
+		assertEquals(totalSeconds, quoridor.getCurrentGame().getBlackPlayer().getRemainingTime());
+		
+	}
 
 	// ***********************************************
 	// Clean up
