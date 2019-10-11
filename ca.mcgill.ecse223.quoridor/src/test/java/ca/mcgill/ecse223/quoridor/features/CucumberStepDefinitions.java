@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CucumberStepDefinitions {
 
+	public Boolean bool;
 	// ***********************************************
 	// Background step definitions
 	// ***********************************************
@@ -221,10 +222,13 @@ public class CucumberStepDefinitions {
 		QuoridorController.grabWall(QuoridorApplication.getQuoridor().getCurrentGame());	
 	}
 	
-	@And("The wall in my hand should disappear from my stock")
-	public void theWallInMyHandShoulDisappearFromMyStock() {
-		//I think this is a GUI related step
-		//assertEquals(9, game.getCurrentPosition().getWhiteWallsInStock().size());
+	/**
+	 * @author Thomas Philippon
+	 */
+	@And("The wall in my hand shall disappear from my stock")
+	public void theWallInMyHandShallDisappearFromMyStock() {
+		//The current player is assigned to the white player in the step definition of "It is my turn to move".
+		assertEquals(9, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size());
 	}
 	/**
 	 * common method
@@ -818,5 +822,19 @@ public class CucumberStepDefinitions {
 
 	private void removeWallInStock(Player player) {
 		//TODO;
+	}
+	private  void removeWalls() {
+		
+		int whiteWallNo = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size();
+		int blackWallNo = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackWallsInStock().size();
+		
+		for (int j = 0; j < whiteWallNo; j++) {
+			Wall wall = Wall.getWithId(j);
+			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeWhiteWallsInStock(wall);
+		}
+		for (int j = 0; j < blackWallNo; j++) {
+			Wall wall = Wall.getWithId(j + 10);
+			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeBlackWallsInStock(wall);
+		}
 	}
 }
