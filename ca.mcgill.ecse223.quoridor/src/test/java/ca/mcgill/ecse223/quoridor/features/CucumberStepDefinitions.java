@@ -98,7 +98,7 @@ public class CucumberStepDefinitions {
 		System.out.println();
 
 	}
-
+	
 	@And("I do not have a wall in my hand")
 	public void iDoNotHaveAWallInMyHand() {
 		// GUI-related feature -- TODO for later
@@ -127,23 +127,54 @@ public class CucumberStepDefinitions {
 	 * are implemented
 	 * 
 	 */
+	/**checks that a wall move candidate exists, otherwise create one and link to appropriate tile
+	 * @author David
+	 * @param dir orientation of wall
+	 * @param row
+	 * @param column
+	 * @throws Throwable
+	 */
 	@Given("A wall move candidate exists with {string} at position \\({int}, {int})")
 	public void wallMoveCandidateExists(String dir, int row, int column) throws Throwable{
 		QuoridorController.getWallMove(dir, row, column);
 		
 	}
+	/**we will check the test cases provided to make sure it is true that they are not at the edge of the board
+	 * @author David
+	 * @param side
+	 * @throws Throwable
+	 */
 	@And("The wall candidate is not at the {string} edge of the board")
 	public void wallIsNotAtEdge(String side) throws Throwable{
 		assertEquals(false, QuoridorController.wallIsAtEdge(side));
 	}
+	/**moves the wall one tile toward the direction specified. An illegal move notification will be shown
+	 *  if such a move in illegal. This involves linking wallMove object to a new target tile
+	 * @author David
+	 * @param side
+	 * @throws Throwable
+	 */
 	@When("I try to move the wall {string}")
 	public void tryToMoveWall(String side) throws Throwable{
 		QuoridorController.moveWall(side);
 	}
+	/**communicates to View to verify that the wall is indeed moved to a new position
+	 * @author David
+	 * @param row
+	 * @param column
+	 * @throws Throwable
+	 */
 	@Then("The wall shall be moved over the board to position \\({int}, {int})")
 	public void thisWallIsAtPosition(int row, int column) throws Throwable{
-		// GUI-related feature -- TODO for later
+		// GUI-related feature
+		assertEquals(true, QuoridorController.thisWallIsAtPosition(row, column));
 	}
+	/**we obtain the current wallMove object and checks its direction, row, and column
+	 * @author David
+	 * @param dir
+	 * @param row
+	 * @param column
+	 */
 	@And("A wall move candidate shall exist with {string} at position \\({int}, {int})")
 	public void wallMoveCandidateExistsAt(String dir, int row, int column) {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -153,10 +184,18 @@ public class CucumberStepDefinitions {
 		assertEquals(row, tile.getRow());
 		assertEquals(column,tile.getColumn() );
 	}
+	/**we check the test case provided to see that it is indeed at the specified edge of the board
+	 * @author David
+	 * @param side
+	 * @throws Throwable
+	 */
 	@And("The wall candidate is at the {string} edge of the board")
 	public void wallIsAtEdge(String side) throws Throwable{
 		assertEquals(true, QuoridorController.wallIsAtEdge(side));
 	}
+	/**asks the controller if a illegal move notification has been displayed
+	 * @author David
+	 */
 	@Then("I shall be notified that my move is illegal")
 	public void testIllegalMoveNotification() {
 		assertEquals(true, QuoridorController.isIllegalMoveNotificationDisplayed());
@@ -164,16 +203,26 @@ public class CucumberStepDefinitions {
 	
 	
 	///SET TOTAL THINKING TIME
+	/**set total thinking time for both players
+	 * @author David
+	 * @param min
+	 * @param sec
+	 */
 	@When("{int}:{int} is set as the thinking time")
 	public void setThinkingTime(int min, int sec) {
 		QuoridorController.setThinkingTime(min,sec);
 	}
+	/**get the current players from the model and check that they indeed have the specified remaining time
+	 * @author David
+	 * @param min
+	 * @param sec
+	 */
 	@Then("Both players shall have {int}:{int} remaining time left")
 	public void checkRemainingTime(int min, int sec) {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
-		int totalSeconds = min*60+sec;
-		assertEquals(totalSeconds, quoridor.getCurrentGame().getWhitePlayer().getRemainingTime());
-		assertEquals(totalSeconds, quoridor.getCurrentGame().getBlackPlayer().getRemainingTime());
+		int totalMiliSeconds = (min*60+sec)*1000;//converts to miliseconds
+		assertEquals(totalMiliSeconds, quoridor.getCurrentGame().getWhitePlayer().getRemainingTime().getTime());
+		assertEquals(totalMiliSeconds, quoridor.getCurrentGame().getBlackPlayer().getRemainingTime().getTime());
 		
 	}
 
