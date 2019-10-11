@@ -33,7 +33,6 @@ import io.cucumber.java.en.When;
 
 public class CucumberStepDefinitions {
 
-	public Boolean bool;
 	// ***********************************************
 	// Background step definitions
 	// ***********************************************
@@ -190,7 +189,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("It shall be shown that this is White's turn")
 	public void itShallBeShownThatThisIsWhitesTurn() {
-		//GUI step, will be implemented later on TODO
+		//GUI step, will be implemented later on. TODO
 	}
 	
 	//Grab wall feature
@@ -199,7 +198,9 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("I have more walls on stock")
 	public void iHaveMoreWallsOnStock() {
-		//10 walls are in stock for all players
+		//10 walls are in stock for all players,
+		//I implemented a query method in the controller that returns the number of walls in stock for both players
+		//that query method can be used when refreshing the UI page to display the right amount of walls in stock 
 	}
 	
 	/**
@@ -207,7 +208,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("I have no more walls on stock")
 	public void iHaveNoMoreWallsOnStock() {
-		removeWalls();
+		removeWalls(); //helper method
 	}
 	
 	/**
@@ -215,8 +216,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("I try to grab a wall from my stock")
 	public void iTryToGrabAWallFromMyStock() {
-		bool = QuoridorController.grabWall(QuoridorApplication.getQuoridor().getCurrentGame());
-		
+		QuoridorController.grabWall(QuoridorApplication.getQuoridor().getCurrentGame());	
 	}
 	
 	/**
@@ -234,7 +234,7 @@ public class CucumberStepDefinitions {
 	@And("The wall in my hand shall disappear from my stock")
 	public void theWallInMyHandShallDisappearFromMyStock() {
 		//The current player is assigned to the white player in the step definition of "It is my turn to move".
-		assertEquals(9, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size());
+		assertEquals(9, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().numberOfWhiteWallsInStock());
 	}
 
 	/**
@@ -252,8 +252,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("I shall be notified that I have no more walls")
 	public void iShouldBeNotifiedThatIHaveNoMoreWalls() {
-		//the controller method "grabWall" returns 0 if the player has no more walls in stock
-		assertEquals(0, bool);
+		//GUI related step, TODO
 	}
 	
 	/**
