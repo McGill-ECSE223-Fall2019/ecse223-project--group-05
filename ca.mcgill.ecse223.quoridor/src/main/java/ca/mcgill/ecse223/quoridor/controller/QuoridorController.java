@@ -261,6 +261,7 @@ public class QuoridorController {
 
     //Getter for gamestate
 	public static WallMove GetWallMoveCandidate(String dir, int row, int col) throws UnsupportedOperationException {
+	public static Boolean GetWallMoveCandidate(String dir, int row, int col) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException("GetWallMoveCandidate Error");
 	}
 
