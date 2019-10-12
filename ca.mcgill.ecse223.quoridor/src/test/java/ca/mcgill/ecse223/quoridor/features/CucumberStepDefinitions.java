@@ -933,6 +933,8 @@ public class CucumberStepDefinitions {
 	 */
 	@And("A wall move candidate shall exist with {string} at position \\({int}, {int})")
 	public void aWallMoveCandidateShallExistWithNewDirAtPosition(String newDir, int row, int col) {
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		WallMove wallMoveCandidate = quoridor.getCurrentGame().getWallMoveCandidate();
 		Tile t = wallMoveCandidate.getTargetTile();
 		assertEquals(t.getColumn(), col);
 		assertEquals(t.getRow(), row);
@@ -950,6 +952,7 @@ public class CucumberStepDefinitions {
 	public void iInitiateToLoadASavedGame(String fileName) {
 		QuoridorController.loadSavedGame(fileName);
 	}
+	
 	/**
 	 * Ensures that the loaded positions are valid and legal/playable.
 	 * @author Matthias Arabian
@@ -969,9 +972,9 @@ public class CucumberStepDefinitions {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
 		if (player.equals("black"))
-			assertEquals(true, currentPlayer.getGameAsBlack());
+			assertEquals(null, currentPlayer.getGameAsWhite());
 		else
-			assertEquals(true, currentPlayer.getGameAsWhite());
+			assertEquals(null, currentPlayer.getGameAsBlack());
 		
 	}
 	
@@ -1004,12 +1007,13 @@ public class CucumberStepDefinitions {
 			currentPlayer = quoridor.getCurrentGame().getBlackPlayer();
 		else
 			currentPlayer = quoridor.getCurrentGame().getWhitePlayer();
+		
 		String cap = wallOrientation.substring(0, 1).toUpperCase() + wallOrientation.substring(1).toLowerCase();
 		Direction d = Direction.valueOf(cap);
 		
 		Boolean errorFlag = true;
 		for (Wall w : currentPlayer.getWalls()) {
-			if (w.getMove().getWallDirection() == d &&
+			if (w.getMove() != null && w.getMove().getWallDirection() == d &&
 				w.getMove().getTargetTile().getColumn() == col 
 				&& 	w.getMove().getTargetTile().getRow() == row)
 			{
