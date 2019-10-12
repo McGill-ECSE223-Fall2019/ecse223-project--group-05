@@ -143,7 +143,7 @@ public class QuoridorController {
 	 * @param 	bool takes the return from Player.setRemainingTime
 	 * @return 	true if the thinking time is set and false if not
 	 */
-	public static Boolean thinkingTimeIsSet(boolean bool) {
+	public static Boolean thinkingTimeIsSet(Game game) {
 		throw new java.lang.UnsupportedOperationException();
 	}
 	
@@ -265,10 +265,10 @@ public class QuoridorController {
     }
 	/**
 	 * @author 	Daniel Wu
-	 * @param	
-	 * @return	
+	 * @param	game checks the currentgame to see if the move was a 
+	 * @return	"ok" if the validation good and "error" if it's no good
 	 */
-	public static String validatePosition(Game.MoveMode move) {
+	public static Boolean validatePosition(Game game) {
 		throw new java.lang.UnsupportedOperationException();
 	}
 	

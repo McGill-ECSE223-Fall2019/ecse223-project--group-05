@@ -32,7 +32,6 @@ import io.cucumber.java.en.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CucumberStepDefinitions {
-	boolean timeSet = true;	//Used to check whether or not time was set
 	boolean boardInitialized = true; //Used to check whether or not board was initialized
 
 	// ***********************************************
@@ -134,6 +133,7 @@ public class CucumberStepDefinitions {
 	 */
     @When("A new game is being initialized")
     public void aNewGameIsBeingInitializing() throws java.lang.UnsupportedOperationException{
+    	
     	QuoridorController.isGameInitializing(QuoridorApplication.getQuoridor().getCurrentGame());
     }
     
@@ -164,7 +164,8 @@ public class CucumberStepDefinitions {
 	 */
     @And("Total thinking time is set")
     public void totalThinkingTimeIsSet()  throws java.lang.UnsupportedOperationException{
-    	QuoridorController.thinkingTimeIsSet(timeSet);
+    	Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+    	QuoridorController.thinkingTimeIsSet(game);
     }
     
     /**
@@ -791,7 +792,7 @@ public class CucumberStepDefinitions {
   	@When("I start the clock")
   	public void iStartTheClock() throws java.lang.UnsupportedOperationException {
   		Player whitePlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer();
-  		Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
+  		Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
   		QuoridorController.startClock(whitePlayer, blackPlayer);
   	}
   	
@@ -822,13 +823,21 @@ public class CucumberStepDefinitions {
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate pawn position
 	 */
-  	/*@Given("A game position is supplied with pawn coordinate {int}:{int}")
+  	@Given("A game position is supplied with pawn coordinate {int}:{int}")
   	public void aGamePositionIsSuppliedWithPawnCoordinate(int row, int col) {
-  		GamePosition currentPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition();
-  		int id = currentPosition.getId() + 1;
-  		GamePosition gameposition = new GamePosition(id, );
-  		QuoridorApplication.getQuoridor().getCurrentGame()
-  	}*/
+  		Quoridor quoridor = QuoridorApplication.getQuoridor();
+  		GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
+  		Tile pawnCoord = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
+  		Player player = currentGamePosition.getPlayerToMove();
+  		PlayerPosition playerPosition = new PlayerPosition(player, pawnCoord);
+  		if(player.hasGameAsBlack()) {
+  			currentGamePosition.setBlackPosition(playerPosition);
+  		}
+  		else if(player.hasGameAsWhite()) {
+  			currentGamePosition.setWhitePosition(playerPosition);
+  		}
+  		quoridor.getCurrentGame().setMoveMode(Game.MoveMode.PlayerMove);
+  	}
   	
   	/**
 	 * @author Daniel Wu
@@ -837,18 +846,25 @@ public class CucumberStepDefinitions {
 	 */
   	@When("Validation of the position is initiated")
   	public void validationOfThePositionIsInitiated() {
-  		
+  		Game game = QuoridorApplication.getQuoridor ().getCurrentGame();
   	}
   	
   	/**
 	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
-	 * Scenario: Validate pawn position
+	 * Scenario: Validate pawn position and Validate wall position
 	 */
     @Then("The position shall be <result>")
     public void thePositionShallBeResult(String result) {
-    	PlayerPosition playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
-    	assertEquals(result, );
+    	Game game = QuoridorApplication.getQuoridor ().getCurrentGame();
+    	Boolean check = QuoridorController.validatePosition(game);
+    	String myResult = "";
+    	if (check.equals(true)) {
+    		myResult = "ok";
+    	} else if (check.equals(false)) {
+    		myResult = "error";
+    	}
+    	assertEquals(result, myResult);
     }
     
     /**
@@ -857,18 +873,25 @@ public class CucumberStepDefinitions {
 	 * Scenario: Validate wall position
 	 */
     @Given("A game position is supplied with wall coordinate <row>:<col>-<dir>")
-    public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, Direction dir]) {
+    public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, Direction dir) {
+    	Quoridor quoridor = QuoridorApplication.getQuoridor();
+    	Game game = quoridor.getCurrentGame();
+    	Tile tile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
+    	WallMove wallMoveCandidate = new WallMove(0, 0, game.getWhitePlayer(), tile, game, dir, game.getCurrentPosition().getWhiteWallsInStock(0));
+    	game.setMoveMode(Game.MoveMode.WallMove);
+    }
+    
+    @Then("The position shall be valid")
+    public void thePositionShallBeValid() {
+    	Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+    	assertEquals(QuoridorController.validatePosition(game), true);
     	
     }
     
-    /**
-	 * @author Daniel Wu
-	 * ValidatePosition.feature - ValidatePosition
-	 * Scenario: Validate wall position
-	 */
-    @Then("The position shall be {string}")
-    public void thePositionShallBe() {
-    	
+    @Then("The position shall be invalid")
+    public void thePositionShallBeInvalid() {
+    	Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+    	assertEquals(QuoridorController.validatePosition(game), false);
     }
 
 	// ***********************************************
