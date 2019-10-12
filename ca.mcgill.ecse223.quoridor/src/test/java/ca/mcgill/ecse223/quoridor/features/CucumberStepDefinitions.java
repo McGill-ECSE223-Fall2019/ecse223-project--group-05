@@ -854,7 +854,7 @@ public class CucumberStepDefinitions {
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate pawn position and Validate wall position
 	 */
-    @Then("The position shall be <result>")
+    @Then("The position shall be {string}")
     public void thePositionShallBeResult(String result) {
     	Game game = QuoridorApplication.getQuoridor ().getCurrentGame();
     	Boolean check = QuoridorController.validatePosition(game);
@@ -872,12 +872,18 @@ public class CucumberStepDefinitions {
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate wall position
 	 */
-    @Given("A game position is supplied with wall coordinate <row>:<col>-<dir>")
-    public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, Direction dir) {
+    @Given("A game position is supplied with wall coordinate {int}:{int}-{string}")
+    public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, String dir) {
+    	Direction myDir = Direction.Horizontal;
+    	if (dir.equals("Horizontal")) {
+    		myDir = Direction.Horizontal;
+    	}else if(dir.equals("Vertical")) {
+    		myDir = Direction.Vertical;
+    	}
     	Quoridor quoridor = QuoridorApplication.getQuoridor();
     	Game game = quoridor.getCurrentGame();
     	Tile tile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
-    	WallMove wallMoveCandidate = new WallMove(0, 0, game.getWhitePlayer(), tile, game, dir, game.getCurrentPosition().getWhiteWallsInStock(0));
+    	WallMove wallMoveCandidate = new WallMove(0, 0, game.getWhitePlayer(), tile, game, myDir, game.getCurrentPosition().getWhiteWallsInStock(0));
     	game.setMoveMode(Game.MoveMode.WallMove);
     }
     
