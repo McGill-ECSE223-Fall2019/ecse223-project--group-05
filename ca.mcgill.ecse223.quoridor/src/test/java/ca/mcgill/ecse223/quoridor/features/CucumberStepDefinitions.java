@@ -136,6 +136,11 @@ public class CucumberStepDefinitions {
 	// ***********************************************
 
 	
+	
+	/*
+	 * 				SAVE POSITION FEATURE STEPS
+	 */
+	
 	/**
 	 * @Author Edwin Pan
 	 * SavePosition cucumber feature
@@ -175,7 +180,7 @@ public class CucumberStepDefinitions {
 	}
 	
 	/**
-	 * @Author Edwin Pan
+	 * @author Edwin Pan
 	 * SavePosition cucumber feature
 	 * Initiates controller method to save the game in game saves directory
 	 */
@@ -188,7 +193,7 @@ public class CucumberStepDefinitions {
 			System.out.println(e.toString());
 		}
 	}
-	
+
 	/**
 	 * @author Edwin Pan
 	 * SavePosition cucumber feature
@@ -202,6 +207,7 @@ public class CucumberStepDefinitions {
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
+		
 	}
 	
 	/**
@@ -220,7 +226,7 @@ public class CucumberStepDefinitions {
 	}
 	
 	/**
-	 * @Author Edwin Pan
+	 * @author Edwin Pan
 	 * SavePosition cucumber feature
 	 * Asserts that a file with name <filename> now exists in game saves directory
 	 */
@@ -240,7 +246,7 @@ public class CucumberStepDefinitions {
 	public void fileWithFilenameIsUpdatedInTheFileSystem(String filename) {
 		SaveConfig.createFileSavesFolder();
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
-		assertEquals( Arrays.equals(refFileData, curFileData), false );
+		assertEquals( Arrays.equals(refFileData, curFileData), false );	
 	}
 	
 	/**
@@ -254,6 +260,104 @@ public class CucumberStepDefinitions {
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
 		assertEquals( Arrays.equals(refFileData, curFileData), true );
 	}
+	
+	
+	
+	/*
+	 * 				SWITCH CURRENT PLAYER FEATURE STEPS
+	 */
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Sets up test preconditions such that the player whose turn it is to player is the provided player.
+	 */
+	@Given("The player to move is {string}")
+	public void thePlayerToMoveIsPlayer(String playerColorAsString){
+		//Complete the other player's turn. The method should not do anything if the other player's turn
+		//is already "complete"; and if it is not complete, it will make it complete, thereby making it
+		//the desired player's turn.
+		Player providedPlayer = QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString);
+		Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
+		Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
+		if( providedPlayer.equals(blackPlayer) ) {
+			QuoridorController.completePlayerTurn(whitePlayer);	//If it's WhitePlayer's turn, end it. If not, nothing changes.
+		} else {
+			QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
+		}
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Sets up test preconditions such that the clock of the player whose turn it is to play is running
+	 */
+	@Given("The clock of {string} is running")
+	public void theClockOfPlayerIsRunning(String playerColorAsString){
+		QuoridorController.continuePlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
+	}
+
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Sets up test preconditions such that the clock of the player whose turn it is not to play is stopped
+	 */
+	@Given("The clock of {string} is stopped")
+	public void theClockOfOtherIsStopped(String playerColorAsString){
+		QuoridorController.stopPlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
+	}
+
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Makes the selected player complete their move.
+	 */
+	@When("Player {string} completes his move")
+	public void playerPlayerCompletesHisMove(String playerColorAsString){
+		QuoridorController.completePlayerTurn( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
+	}
+
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that is now the specified player's turn.
+	 */
+	@Then("The user interface shall be showing it is {string} turn")
+	public void theUserInterfaceShallBeShowingItIsOtherTurn(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that the specified player's timer is stopped.
+	 */
+	@Then("The clock of {string} shall be stopped")
+	public void theClockOfPlayerShallBeStopped(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerTimerRunning( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , false );
+	}
+
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that the specified player's timer is running.
+	 */
+	@Then("The clock of {string} shall be running")
+	public void theClockOfOtherShallBeRunning(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerTimerRunning( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
+	}
+	
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that the next move belongs to the specified player.
+	 */
+	@Then("The next player to move shall be {string}")
+	public void theNextPlayerToMoveShallBeOther(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
+	}
+	
 	
 	
 
@@ -377,7 +481,8 @@ public class CucumberStepDefinitions {
 	/**
 	 * @author Edwin Pan
 	 * @param filename
-	 * @param dataDestination
+	 * @param dataDestination character array
+	 * Read in a file in the game saves directory into the character array. Useful for comparing contents of two saves.
 	 */
 	private void readInFileFilenameInFileSystem(String filename, char [] dataDestination) {
 		try {
