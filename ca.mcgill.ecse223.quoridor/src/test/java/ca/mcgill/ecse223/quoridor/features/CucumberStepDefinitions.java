@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
-import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
+import ca.mcgill.ecse223.quoridor.controller.*;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -34,8 +34,8 @@ public class CucumberStepDefinitions {
 	boolean boardInitialized = true; //Used to check whether or not board was initialized
 
 	private WallMove wallMoveCandidate = null;
-	
-	
+
+
 	// ***********************************************
 	// Background step definitions
 	// ***********************************************
@@ -371,6 +371,7 @@ public class CucumberStepDefinitions {
 	}
 	/**we obtain the current wallMove object and checks its direction, row, and column
 	 * @author David
+     * @author Matthias Arabian
 	 * @param dir
 	 * @param row
 	 * @param column
@@ -460,7 +461,6 @@ public class CucumberStepDefinitions {
     public void thereIsExistingUser(String username) {
 
         QuoridorApplication.getQuoridor().addUser(username);
-        //TODO:model in here
     }
 
     /**
@@ -489,7 +489,6 @@ public class CucumberStepDefinitions {
 
         QuoridorController.selectExistingUserName(username, game);
 
-        //TODO:controller method select existing user name
     }
 
     /**
@@ -502,7 +501,6 @@ public class CucumberStepDefinitions {
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
 
         QuoridorController.selectNewUserName(username, game);
-        //TODO: controller method create new user name
     }
 
     /**
@@ -522,7 +520,6 @@ public class CucumberStepDefinitions {
 
         assertEquals(username, QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getNextPlayer().getUser().getName());
 
-        //TODO: assert that user name and color are set properly
     }
 
     /**
@@ -535,7 +532,6 @@ public class CucumberStepDefinitions {
         assertEquals(username, QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getNextPlayer().getUser().getName());
 
         //GUI notification that username is already existing and he will be that username
-        //TODO: assert that user name is already in use???
     }
 
     /**
@@ -555,12 +551,6 @@ public class CucumberStepDefinitions {
         } else if (currentPlayer.hasGameAsBlack()) {
             assertEquals(color, "black");
         }
-
-
-        //currentPlayer
-
-        //TODO: assert
-
     }
 
     /**
@@ -603,7 +593,6 @@ public class CucumberStepDefinitions {
 
         game.setWallMoveCandidate(wallMoveCandidate);
 
-        //TODO:model in here
     }
 
     /**
@@ -618,7 +607,6 @@ public class CucumberStepDefinitions {
     public void theWallMoveCandidateWithAtPositionIsInvalid(String dir, Integer row, Integer col) {
         theWallMoveCandidateWithAtPositionIsValid(dir, row, col);
 
-        //TODO:model
     }
 
     /**
@@ -631,8 +619,6 @@ public class CucumberStepDefinitions {
         //Board board = QuoridorApplication.getQuoridor().getBoard();
 
         QuoridorController.releaseWall(game);
-
-        //TODO: controller release wall;
     }
 
     /**
@@ -741,30 +727,6 @@ public class CucumberStepDefinitions {
 
         //TODO:assert move is not registered
     }
-    /**
-	 * @author Daniel Wu
-	 * StartNewGame.feature - StartNewGame
-	 * Scenario: Start clock
-	 *//*
-  	@Given("The game is ready to start")
-  		
-  	}*/
-  	
-  	/**
-	 * @author Daniel Wu
-	 * StartNewGame.feature - StartNewGame
-	 * Scenario: Start clock
-	 *//*
-  	@Then("The game is running")
-  	public void theGameIsRunning() {
-  		
-  	}*/
-  	
-  	/**
-	 * @author Daniel Wu
-	 * StartNewGame.feature - StartNewGame
-	 * Scenario: Start clock
-	 */
 
     /**
 	 * @author Daniel Wu
@@ -840,6 +802,7 @@ public class CucumberStepDefinitions {
   	@When("Validation of the position is initiated")
   	public void validationOfThePositionIsInitiated() {
   		Game game = QuoridorApplication.getQuoridor ().getCurrentGame();
+        QuoridorController.validatePosition(game);
   	}
   	
   	/**
@@ -893,17 +856,18 @@ public class CucumberStepDefinitions {
     	assertEquals(QuoridorController.validatePosition(game), false);
     }
 	///ROTATE WALL
-	/**
-	 * Calls the controller to ensure that a wall move candidate exists in the current game.
-	 * If no wall move candidate exists with parameters [dir, row, col], create it.
-	 * Then, assert that the controller function has succeeded.
-	 * 
-	 * @author Matthias Arabian
-	 */
-	@Given("A wall move candidate exists with {string} at position \\({int}, {int})")
-	public void aWallMoveCandidateExistsWithDirAtPosition(String dir, int row, int col) {
-		assertEquals(true, QuoridorController.GetWallMoveCandidate(dir, row, col));
-	}
+    // DUPLICATE METHOD LEAVING HERE FOR INDIVIDUAL MARKING
+//	/**
+//	 * Calls the controller to ensure that a wall move candidate exists in the current game.
+//	 * If no wall move candidate exists with parameters [dir, row, col], create it.
+//	 * Then, assert that the controller function has succeeded.
+//	 *
+//	 * @author Matthias Arabian
+//	 */
+//	@Given("A wall move candidate exists with {string} at position \\({int}, {int})")
+//	public void aWallMoveCandidateExistsWithDirAtPosition(String dir, int row, int col) {
+//		assertEquals(true, QuoridorController.GetWallMoveCandidate(dir, row, col));
+//	}
 	
 	/**
 	 * Calls a controller method to change the direction of the wall move candidate
@@ -926,21 +890,22 @@ public class CucumberStepDefinitions {
 	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
 		// GUI-related feature -- TODO for later
 	}
-	
-	/**
-	 * This function ensures that the wall has been rotated and that no other parameter has been altered
-	 * @author Matthias Arabian
-	 */
-	@And("A wall move candidate shall exist with {string} at position \\({int}, {int})")
-	public void aWallMoveCandidateShallExistWithNewDirAtPosition(String newDir, int row, int col) {
-		Quoridor quoridor = QuoridorApplication.getQuoridor();
-		WallMove wallMoveCandidate = quoridor.getCurrentGame().getWallMoveCandidate();
-		Tile t = wallMoveCandidate.getTargetTile();
-		assertEquals(t.getColumn(), col);
-		assertEquals(t.getRow(), row);
-		assertEquals(wallMoveCandidate.getWallDirection(), Direction.valueOf(newDir));	
-	}
-	
+
+	// DUPLICATE METHOD
+//	/**
+//	 * This function ensures that the wall has been rotated and that no other parameter has been altered
+//	 * @author Matthias Arabian
+//	 */
+//	@And("A wall move candidate shall exist with {string} at position \\({int}, {int})")
+//	public void aWallMoveCandidateShallExistWithNewDirAtPosition(String newDir, int row, int col) {
+//		Quoridor quoridor = QuoridorApplication.getQuoridor();
+//		WallMove wallMoveCandidate = quoridor.getCurrentGame().getWallMoveCandidate();
+//		Tile t = wallMoveCandidate.getTargetTile();
+//		assertEquals(t.getColumn(), col);
+//		assertEquals(t.getRow(), row);
+//		assertEquals(wallMoveCandidate.getWallDirection(), Direction.valueOf(newDir));
+//	}
+
 	
 	///LOAD POSITION
 	/**

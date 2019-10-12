@@ -141,10 +141,6 @@ public class QuoridorController {
         throw new java.lang.UnsupportedOperationException();
     }
 
-    public static void startClock() {
-
-    }
-
     /**
      * Communicates to View to check if a Illegal Move Notification is being displayed (feature: move wall)
      *
