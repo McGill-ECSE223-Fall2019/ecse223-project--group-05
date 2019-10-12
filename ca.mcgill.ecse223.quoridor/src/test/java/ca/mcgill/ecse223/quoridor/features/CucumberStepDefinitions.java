@@ -1,6 +1,5 @@
 package ca.mcgill.ecse223.quoridor.features;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -109,33 +108,11 @@ public class CucumberStepDefinitions {
 		// GUI-related feature -- TODO for later
 	}
 
-	
 	@And("^I have a wall in my hand over the board$")
 	public void iHaveAWallInMyHandOverTheBoard() throws Throwable {
 		// GUI-related feature -- TODO for later
 	}
 
-	@And("^I have a wall in my hand over the board$")
-	public void iHaveAWallInMyHandOverTheBoard() throws Throwable {
-		// GUI-related feature -- TODO for later
-	}
-	
-
-	    Game game = QuoridorApplication.getQuoridor().getCurrentGame();
-	    Enum gameStatus = game.getGameStatus();
-
-
-		
-		//TODO:model in here
-	}
-	
-	
-	@Given("A new game is initializing")
-	public void theGameIsInitializing() {
-		
-		//TODO:model in here
-	}
-	
 	@Given("^A new game is initializing$")
 	public void aNewGameIsInitializing() throws Throwable {
 		initQuoridorAndBoard();
@@ -239,17 +216,7 @@ public class CucumberStepDefinitions {
 	public void iTryToGrabAWallFromMyStock() {
 		QuoridorController.grabWall(QuoridorApplication.getQuoridor().getCurrentGame());	
 	}
-	
-	/**
-	 * common method
-	 * @author Thomas Philippon
-	 * @author Alex Masciotra 
-	 */
-	@And("The wall in my hand shall disappear from my stock")
-	public void theWallInMyHandShallDisappearFromMyStock() {
-		//The current player is assigned to the white player in the step definition of "It is my turn to move".
-		assertEquals(9, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size());
-	}
+
 	/**
 	 * common method
 	 * @author Thomas Philippon
@@ -260,26 +227,7 @@ public class CucumberStepDefinitions {
 		//As this is a GUI related step, it will be implemented later on
 		//TODO 
 	}
-	
-	/**
-	 * @author Thomas Philippon
-	 */
-	@And("The wall in my hand shall disappear from my stock")
-	public void theWallInMyHandShallDisappearFromMyStock() {
-		//The current player is assigned to the white player in the step definition of "It is my turn to move".
-		assertEquals(9, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().numberOfWhiteWallsInStock());
-	}
-	/**
-	 * common method
-	 * @author Thomas Philippon
-	 * @author Alex Masciotra 
-	 */
-	@Then("I shall have a wall in my hand over the board")
-	public void iShallHaveAWallInMyHandOverTheBoard() throws Throwable{
-		//As this is a GUI related step, it will be implemented later on
-		//TODO 
-	}
-	
+
 	/**
 	 * @author Thomas Philippon
 	 */
@@ -862,22 +810,5 @@ public class CucumberStepDefinitions {
 	private void removeWallInStock(Player player) {
 		//TODO;
 	}
-	private  void removeWalls() {
-		
-		int whiteWallNo = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size();
-		int blackWallNo = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackWallsInStock().size();
-		
-		for (int j = 0; j < whiteWallNo; j++) {
-			Wall wall = Wall.getWithId(j);
-			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeWhiteWallsInStock(wall);
-		}
-		for (int j = 0; j < blackWallNo; j++) {
-			Wall wall = Wall.getWithId(j + 10);
-			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeBlackWallsInStock(wall);
-		}
-    }
 
-	private void removeWallInStock(Player player) {
-		//TODO;
-	}
 }
