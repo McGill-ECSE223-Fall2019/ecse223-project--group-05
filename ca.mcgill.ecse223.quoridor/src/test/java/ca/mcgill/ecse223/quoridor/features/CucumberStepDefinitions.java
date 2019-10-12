@@ -222,7 +222,7 @@ public class CucumberStepDefinitions {
 	 * @author Matthias Arabian
 	 */
 	//@And("^\"([^\"]*)\" shall have a \"([^\"]*)\" wall at [0-9]:[0-9]$")
-	@And("{string} shall have a {string} wall at {int}:{int}")
+	@And("{string} shall have a {} wall at {int}:{int}")
 	public void playerShallHaveAWallWithOrientationAtPosition(String player, String wallOrientation, int row, int col){
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		Player currentPlayer = null;
