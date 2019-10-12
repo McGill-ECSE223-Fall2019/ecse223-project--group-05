@@ -751,16 +751,6 @@ public class CucumberStepDefinitions {
 	 * @author Daniel Wu
 	 * StartNewGame.feature - StartNewGame
 	 * Scenario: Start clock
-	 */
-  	@When("I start the clock")
-  	public void iStartTheClock() {
-  		
-  	}
-  	
-  	/**
-	 * @author Daniel Wu
-	 * StartNewGame.feature - StartNewGame
-	 * Scenario: Start clock
 	 *//*
   	@Then("The game is running")
   	public void theGameIsRunning() {
