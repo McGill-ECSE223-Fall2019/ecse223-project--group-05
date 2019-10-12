@@ -5,13 +5,22 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.controller.*;
+import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
+import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -25,16 +34,25 @@ import ca.mcgill.ecse223.quoridor.model.Tile;
 import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
+import cucumber.api.PendingException;
 import io.cucumber.java.After;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.cucumber.java.en.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class CucumberStepDefinitions {
+	
 	boolean boardInitialized = true; //Used to check whether or not board was initialized
 
 	private WallMove wallMoveCandidate = null;
-
+	
+	//Instance Variables for SavePosition tests
+	private String saveFilename = "";
+	private final int fileDataLength = 1000000;
+	private char [] refFileData = new char [fileDataLength];	//Memory for storing data of one file for comparison.
+	private char [] curFileData = new char [fileDataLength];	//Memory for storing data of another file for comparison.
 
 	// ***********************************************
 	// Background step definitions
@@ -320,13 +338,6 @@ public class CucumberStepDefinitions {
 		//GUI related step, to implemented later. TODO
 	}
 	
-	/*
-	 * TODO Insert your missing step definitions here
-	 * 
-	 * Call the methods of the controller that will manipulate the model once they
-	 * are implemented
-	 * 
-	 */
 	/**checks that a wall move candidate exists, otherwise create one and link to appropriate tile
 	 * @author David
 	 * @param dir orientation of wall
@@ -497,9 +508,7 @@ public class CucumberStepDefinitions {
      */
     @When("The player provides new user name: {string}")
     public void thePlayerProvidesNewUserName(String username) {
-
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
-
         QuoridorController.selectNewUserName(username, game);
     }
 
@@ -553,16 +562,240 @@ public class CucumberStepDefinitions {
         }
     }
 
-    /**
-     * @param dir
-     * @param row
-     * @param col
-     * @author Alex Masciotra
-     */
-    @Given("The wall move candidate with {string} at position \\({int}, {int}) is valid")
-    public void theWallMoveCandidateWithAtPositionIsValid(String dir, Integer row, Integer col) {
 
-        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+	/*
+	 * 				SAVE POSITION FEATURE STEPS
+	 */
+	
+	/**
+	 * @Author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Ensures that the file <filename> does not exist in game saves directory
+	 */
+	@Given("No file {string} exists in the filesystem")
+	public void noFileFilenameExistsInTheFileSystem(String filename) {
+		SaveConfig.createFileSavesFolder();
+		File file = new File( SaveConfig.getSaveFilePath(filename) );
+		if (file.exists())	{	file.delete();	}
+		this.saveFilename = filename;
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Ensures that the file <filename> currently exists in game saves directory.
+	 * It actually writes into the file gibberish for later comparative use.
+	 * At most one megabyte of all of the file's data is stored for this purpose.
+	 */
+	@Given("File {string} exists in the filesystem")
+	public void fileFilenameExistsInTheFilesystem(String filename) {
+		SaveConfig.createFileSavesFolder();
+		//First put in our control as the existing file for our test.
+		File file = new File( SaveConfig.getSaveFilePath(filename) );
+		file.delete();
+		try {
+			String str = "myhelicoptergoessoisoisoisoisoisoisosiosoisoisoisoisoisoisoisoisoisoisoi"; //should do as something that should not ever appear in the text file in regular use.
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+			bufferedWriter.write(str);
+			bufferedWriter.close();
+		} catch(IOException e) {
+			System.out.println(e.toString());
+		}
+		//Now we keep in memory the contents of our existing file.
+		this.readInFileFilenameInFileSystem(filename, this.refFileData);
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Initiates controller method to save the game in game saves directory
+	 */
+	@When("The user initiates to save the game with name {string}")
+	public void theUserInitiatesToSaveTheGameWithNameFilename(String filename) {
+		SaveConfig.createFileSavesFolder();
+		try {
+			QuoridorController.saveGame(filename,QuoridorController.getCurrentGame());
+		} catch(IOException e) {
+			System.out.println(e.toString());
+		}
+	}
+
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Forces saving the game. Used to test canceling the overwriting of an existing file.
+	 */
+	@When("The user confirms to overwrite existing file")
+	public void theUserConfirmsToOverwriteExistingFile() {
+		SaveConfig.createFileSavesFolder();
+		try {
+			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), true);
+		} catch(IOException e) {
+			System.out.println(e.toString());
+		}
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Does not force saving the game. Used to test canceling the overwriting of an existing file.
+	 */
+	@When("The user cancels to overwrite existing file")
+	public void theUserCancelsToOverwriteExistingFile() {
+		SaveConfig.createFileSavesFolder();
+		try {
+			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), false);
+		} catch(IOException e) {
+			System.out.println(e.toString());
+		}
+	}
+	
+	/**
+	 * @Author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Asserts that a file with name <filename> now exists in game saves directory
+	 */
+	@Then("A file with {string} shall be created in the filesystem")
+	public void aFileWithFilenameIsCreatedInTheFilesystem(String filename) {
+		SaveConfig.createFileSavesFolder();
+		File file = new File( SaveConfig.getSaveFilePath(filename) );
+		assertEquals(file.exists(),true);
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Asserts that the file of name <filename> has been updated.
+	 */
+	@Then("File with {string} shall be updated in the filesystem")
+	public void fileWithFilenameIsUpdatedInTheFileSystem(String filename) {
+		SaveConfig.createFileSavesFolder();
+		this.readInFileFilenameInFileSystem(filename, this.curFileData);
+		assertEquals( Arrays.equals(refFileData, curFileData), false );	
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * SavePosition cucumber feature
+	 * Asserts that the file of name <filename> has not been changed.
+	 */
+	@Then("File {string} shall not be changed in the filesystem")
+	public void fileWithFilenameIsNotChangedInTheFileSystem(String filename) {
+		SaveConfig.createFileSavesFolder();
+		this.readInFileFilenameInFileSystem(filename, this.curFileData);
+		assertEquals( Arrays.equals(refFileData, curFileData), true );
+	}
+	
+	
+	
+	/*
+	 * 				SWITCH CURRENT PLAYER FEATURE STEPS
+	 */
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Sets up test preconditions such that the player whose turn it is to player is the provided player.
+	 */
+	@Given("The player to move is {string}")
+	public void thePlayerToMoveIsPlayer(String playerColorAsString){
+		//Complete the other player's turn. The method should not do anything if the other player's turn
+		//is already "complete"; and if it is not complete, it will make it complete, thereby making it
+		//the desired player's turn.
+		Player providedPlayer = QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString);
+		Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
+		Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
+		if( providedPlayer.equals(blackPlayer) ) {
+			QuoridorController.completePlayerTurn(whitePlayer);	//If it's WhitePlayer's turn, end it. If not, nothing changes.
+		} else {
+			QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
+		}
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Sets up test preconditions such that the clock of the player whose turn it is to play is running
+	 */
+	@Given("The clock of {string} is running")
+	public void theClockOfPlayerIsRunning(String playerColorAsString){
+		QuoridorController.continuePlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
+	}
+
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Sets up test preconditions such that the clock of the player whose turn it is not to play is stopped
+	 */
+	@Given("The clock of {string} is stopped")
+	public void theClockOfOtherIsStopped(String playerColorAsString){
+		QuoridorController.stopPlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
+	}
+
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Makes the selected player complete their move.
+	 */
+	@When("Player {string} completes his move")
+	public void playerPlayerCompletesHisMove(String playerColorAsString){
+		QuoridorController.completePlayerTurn( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
+	}
+
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that the specified player's timer is stopped.
+	 */
+	@Then("The clock of {string} shall be stopped")
+	public void theClockOfPlayerShallBeStopped(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerTimerRunning( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , false );
+	}
+
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that the specified player's timer is running.
+	 */
+	@Then("The clock of {string} shall be running")
+	public void theClockOfOtherShallBeRunning(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerTimerRunning( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
+	}
+	
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that the next move belongs to the specified player.
+	 */
+	@Then("The next player to move shall be {string}")
+	public void theNextPlayerToMoveShallBeOther(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
+	}
+	
+	/**
+	 * @author Edwin Pan
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that is now the specified player's turn.
+	 */
+	@Then("The user interface shall be showing it is {string} turn")
+	public void theUserInterfaceShallBeShowingItIsOtherTurn(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
+	}
+
+	
+	
+	
+	/**
+	 * @param dir
+	 * @param row
+	 * @param col
+	 * @author Alex Masciotra
+	 */
+	@Given("The wall move candidate with {string} at position \\({int}, {int}) is valid")
+	public void theWallMoveCandidateWithAtPositionIsValid(String dir, Integer row, Integer col) {
+
+		Game game = QuoridorApplication.getQuoridor().getCurrentGame();
 
         Board board = QuoridorApplication.getQuoridor().getBoard();
 
@@ -890,6 +1123,8 @@ public class CucumberStepDefinitions {
 	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
 		// GUI-related feature -- TODO for later
 	}
+	
+	
 
 	// DUPLICATE METHOD
 //	/**
@@ -1042,6 +1277,16 @@ public class CucumberStepDefinitions {
 				wall.delete();
 			}
 		}
+		// Clear out file data memories, used for SavePosition features.
+		File file = new File( SaveConfig.getSaveFilePath(this.saveFilename) );
+		file.delete();
+		this.saveFilename = "";
+		for( int i = 0 ; i < refFileData.length ; i++ ) {
+			this.refFileData[i] = 0;
+		}
+		for( int i = 0 ; i < curFileData.length ; i++ ) {
+			this.curFileData[i] = 0;
+		}
 	}
 
 	// ***********************************************
@@ -1144,4 +1389,22 @@ public class CucumberStepDefinitions {
 			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeBlackWallsInStock(wall);
 		}
     }
+	
+	/**
+	 * @author Edwin Pan
+	 * @param filename
+	 * @param dataDestination character array
+	 * Read in a file in the game saves directory into the character array. Useful for comparing contents of two saves.
+	 */
+	private void readInFileFilenameInFileSystem(String filename, char [] dataDestination) {
+		try {
+			File file = new File( SaveConfig.getSaveFilePath(filename) );
+			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+			bufferedReader.read(dataDestination, 0, dataDestination.length);
+			bufferedReader.close();
+		}catch(IOException e) {
+			System.out.println(e.toString());
+		}
+	}
+	
 }
