@@ -32,6 +32,7 @@ import io.cucumber.java.en.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CucumberStepDefinitions {
+	boolean boardInitialized = true; //Used to check whether or not board was initialized
 
 	// ***********************************************
 	// Background step definitions
@@ -122,6 +123,60 @@ public class CucumberStepDefinitions {
 	// ***********************************************
 	// Scenario and scenario outline step definitions
 	// ***********************************************
+	
+//	Scenario:<Initiate a new game>
+	
+	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Initiate a new game
+	 */
+    @When("A new game is being initialized")
+    public void aNewGameIsBeingInitializing() throws java.lang.UnsupportedOperationException{
+    	
+    	QuoridorController.isGameInitializing(QuoridorApplication.getQuoridor().getCurrentGame());
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Initiate a new game
+	 */
+    @And("White player chooses a username")
+    public void whitePlayerChosesAUsername() throws java.lang.UnsupportedOperationException{
+    	QuoridorController.playerChoseUsername(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer());
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Initiate a new game
+	 */
+    @And("Black player chooses a username")
+    public void blackPlayerChoosesAUsername() throws java.lang.UnsupportedOperationException{
+    	QuoridorController.playerChoseUsername(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer());
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Initiate a new game
+	 */
+    @And("Total thinking time is set")
+    public void totalThinkingTimeIsSet()  throws java.lang.UnsupportedOperationException{
+    	Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+    	QuoridorController.thinkingTimeIsSet(game);
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Initiate a new game
+	 */
+    @Then("The game shall become ready to start")
+    public void theGameShallBecomeReadyToStart() {
+    	assertEquals(Game.GameStatus.ReadyToStart, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
+    }
 
 	//Initialize board feature
 	/**
@@ -129,7 +184,6 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The initialization of the board is initiated")
 	public void initializationOfBoardInitiated(){
-		QuoridorController.initializeBoard(QuoridorApplication.getQuoridor());
 	}
 	
 	/**
@@ -684,13 +738,163 @@ public class CucumberStepDefinitions {
 
         //TODO:assert move is not registered
     }
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 *//*
+  	@Given("The game is ready to start")
+  		
+  	}*/
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 *//*
+  	@Then("The game is running")
+  	public void theGameIsRunning() {
+  		
+  	}*/
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 */
+
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 */
+  	@Given("The game is ready to start")
+  	public void theGameIsReadyToStart() {
+  		QuoridorApplication.getQuoridor().getCurrentGame().setGameStatus(Game.GameStatus.ReadyToStart);
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 * starts the clock
+	 */
+  	@When("I start the clock")
+  	public void iStartTheClock() throws java.lang.UnsupportedOperationException {
+  		Player whitePlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer();
+  		Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
+  		QuoridorController.startClock(whitePlayer, blackPlayer);
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 * check if the game is running
+	 */
+  	@Then("The game shall be running")
+  	public void theGameShallBeRunning() {
+    	assertEquals(Game.GameStatus.Running, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 * check if the board is initialized
+	 */
+  	@And("The board shall be initialized")
+  	public void theBoardShallBeInitialized() {
+  		assertEquals(true, boardInitialized);
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * ValidatePosition.feature - ValidatePosition
+	 * Scenario: Validate pawn position
+	 */
+  	@Given("A game position is supplied with pawn coordinate {int}:{int}")
+  	public void aGamePositionIsSuppliedWithPawnCoordinate(int row, int col) {
+  		Quoridor quoridor = QuoridorApplication.getQuoridor();
+  		GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
+  		Tile pawnCoord = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
+  		Player player = currentGamePosition.getPlayerToMove();
+  		PlayerPosition playerPosition = new PlayerPosition(player, pawnCoord);
+  		if(player.hasGameAsBlack()) {
+  			currentGamePosition.setBlackPosition(playerPosition);
+  		}
+  		else if(player.hasGameAsWhite()) {
+  			currentGamePosition.setWhitePosition(playerPosition);
+  		}
+  		quoridor.getCurrentGame().setMoveMode(Game.MoveMode.PlayerMove);
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * ValidatePosition.feature - ValidatePosition
+	 * Scenario: Validate pawn position and Validate wall position
+	 */
+  	@When("Validation of the position is initiated")
+  	public void validationOfThePositionIsInitiated() {
+  		Game game = QuoridorApplication.getQuoridor ().getCurrentGame();
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * ValidatePosition.feature - ValidatePosition
+	 * Scenario: Validate pawn position and Validate wall position
+	 */
+    @Then("The position shall be {string}")
+    public void thePositionShallBeResult(String result) {
+    	Game game = QuoridorApplication.getQuoridor ().getCurrentGame();
+    	Boolean check = QuoridorController.validatePosition(game);
+    	String myResult = "";
+    	if (check.equals(true)) {
+    		myResult = "ok";
+    	} else if (check.equals(false)) {
+    		myResult = "error";
+    	}
+    	assertEquals(result, myResult);
+    }
+    
+    /**
+	 * @author Daniel Wu
+	 * ValidatePosition.feature - ValidatePosition
+	 * Scenario: Validate wall position
+	 */
+    @Given("A game position is supplied with wall coordinate {int}:{int}-{string}")
+    public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, String dir) {
+    	Direction myDir = Direction.Horizontal;
+    	if (dir.equals("Horizontal")) {
+    		myDir = Direction.Horizontal;
+    	}else if(dir.equals("Vertical")) {
+    		myDir = Direction.Vertical;
+    	}
+    	Quoridor quoridor = QuoridorApplication.getQuoridor();
+    	Game game = quoridor.getCurrentGame();
+    	Tile tile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
+    	WallMove wallMoveCandidate = new WallMove(0, 0, game.getWhitePlayer(), tile, game, myDir, game.getCurrentPosition().getWhiteWallsInStock(1));
+    	game.setMoveMode(Game.MoveMode.WallMove);
+    }
+    
+    @Then("The position shall be valid")
+    public void thePositionShallBeValid() {
+    	Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+    	assertEquals(QuoridorController.validatePosition(game), true);
+    	
+    }
+    
+    @Then("The position shall be invalid")
+    public void thePositionShallBeInvalid() {
+    	Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+    	assertEquals(QuoridorController.validatePosition(game), false);
+    }
 
 	// ***********************************************
 	// Clean up
 	// ***********************************************
 
 	// After each scenario, the test model is discarded
-	@After
 	public void tearDown() {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		// Avoid null pointer for step definitions that are not yet implemented.
