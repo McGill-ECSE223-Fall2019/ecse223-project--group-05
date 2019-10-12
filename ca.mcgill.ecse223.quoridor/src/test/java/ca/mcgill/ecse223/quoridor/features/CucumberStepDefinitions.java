@@ -883,7 +883,7 @@ public class CucumberStepDefinitions {
     	Quoridor quoridor = QuoridorApplication.getQuoridor();
     	Game game = quoridor.getCurrentGame();
     	Tile tile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
-    	WallMove wallMoveCandidate = new WallMove(0, 0, game.getWhitePlayer(), tile, game, myDir, game.getCurrentPosition().getWhiteWallsInStock(0));
+    	WallMove wallMoveCandidate = new WallMove(0, 0, game.getWhitePlayer(), tile, game, myDir, game.getCurrentPosition().getWhiteWallsInStock(1));
     	game.setMoveMode(Game.MoveMode.WallMove);
     }
     

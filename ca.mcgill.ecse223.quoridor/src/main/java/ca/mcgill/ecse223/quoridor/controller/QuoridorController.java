@@ -266,7 +266,7 @@ public class QuoridorController {
 	/**
 	 * @author 	Daniel Wu
 	 * @param	game checks the currentgame to see if the move was a 
-	 * @return	"ok" if the validation good and "error" if it's no good
+	 * @return	true, if the move is valid, false if not
 	 */
 	public static Boolean validatePosition(Game game) {
 		throw new java.lang.UnsupportedOperationException();
