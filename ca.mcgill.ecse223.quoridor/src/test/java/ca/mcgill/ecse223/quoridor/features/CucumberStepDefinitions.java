@@ -25,7 +25,6 @@ import ca.mcgill.ecse223.quoridor.model.Tile;
 import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
-import com.sun.org.apache.xpath.internal.operations.Quo;
 import io.cucumber.java.After;
 import io.cucumber.java.en.*;
 
@@ -184,6 +183,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The initialization of the board is initiated")
 	public void initializationOfBoardInitiated(){
+		QuoridorController.initializeBoard(QuoridorApplication.getQuoridor());
 	}
 	
 	/**
@@ -895,6 +895,7 @@ public class CucumberStepDefinitions {
 	// ***********************************************
 
 	// After each scenario, the test model is discarded
+    @After
 	public void tearDown() {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		// Avoid null pointer for step definitions that are not yet implemented.
@@ -1010,9 +1011,4 @@ public class CucumberStepDefinitions {
 			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeBlackWallsInStock(wall);
 		}
     }
-
-	private void removeWallInStock(Player player) {
-		//TODO;
-	}
-
 }
