@@ -516,82 +516,92 @@ public class CucumberStepDefinitions {
 	
 	/**
 	 * @author Edwin Pan
-	 * @param player1
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the player whose turn it is to player is the provided player.
 	 */
-	@Given("The player to move is \"Player\"")
-	public void thePlayerToMoveIsPlayer(Player player1){
-		//TODO
+	@Given("The player to move is {string}")
+	public void thePlayerToMoveIsPlayer(String playerColorAsString){
+		//Complete the other player's turn. The method should not do anything if the other player's turn
+		//is already "complete"; and if it is not complete, it will make it complete, thereby making it
+		//the desired player's turn.
+		Player providedPlayer = QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString);
+		Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
+		Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
+		if( providedPlayer.equals(blackPlayer) ) {
+			QuoridorController.completePlayerTurn(whitePlayer);	//If it's WhitePlayer's turn, end it. If not, nothing changes.
+		} else {
+			QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
+		}
 	}
 	
 	/**
 	 * @author Edwin Pan
-	 * @param player1
-	 * Sets up test preconditions such that the clock of theplayer whose turn it is to play is running
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Sets up test preconditions such that the clock of the player whose turn it is to play is running
 	 */
-	@Given("The clock of \"<player>\" is running")
-	public void theClockOfPlayerIsRunning(Player player1){
-		//TODO
+	@Given("The clock of {string} is running")
+	public void theClockOfPlayerIsRunning(String playerColorAsString){
+		QuoridorController.continuePlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
 	}
 
 	/**
 	 * @author Edwin Pan
-	 * @param player2
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the clock of the player whose turn it is not to play is stopped
 	 */
-	@Given("The clock of \"<other>\" is stopped")
-	public void theClockOfOtherIsStopped(Player player2){
-		//TODO
+	@Given("The clock of {string} is stopped")
+	public void theClockOfOtherIsStopped(String playerColorAsString){
+		QuoridorController.stopPlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
 	}
 	
 	/**
 	 * @author Edwin Pan
-	 * @param player1
-	 * Makes player 1 complete his move
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Makes the selected player complete their move.
 	 */
-	@When("Player \"<player>\" completes his move")
-	public void playerPlayerCompletesHisMove(Player player1){
-		//TODO
+	@When("Player {string} completes his move")
+	public void playerPlayerCompletesHisMove(String playerColorAsString){
+		QuoridorController.completePlayerTurn( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
 	}
 	
 	/**
 	 * @author Edwin Pan
-	 * @param player2
-	 * Asserts that the user interface now shows that it is player 2's turn
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that is now the specified player's turn.
 	 */
-	@Then("The user interface shall be showing it is \"<other>\" turn")
-	public void theUserInterfaceShallBeShowingItIsOtherTurn(Player player2){
-		//TODO
+	@Then("The user interface shall be showing it is {string} turn")
+	public void theUserInterfaceShallBeShowingItIsOtherTurn(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
 	}
 	
 	/**
 	 * @author Edwin Pan
-	 * @param player1
-	 * Asserts that the user interface now shows that player 1's clock is stopped
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that the specified player's timer is stopped.
 	 */
-	@Then("The clock of \"<player>\" shall be stopped")
-	public void theClockOfPlayerShallBeStopped(Player player1){
-		//TODO
+	@Then("The clock of {string} shall be stopped")
+	public void theClockOfPlayerShallBeStopped(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerTimerRunning( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , false );
 	}
 	
 	/**
 	 * @author Edwin Pan
-	 * @param player2
-	 * Asserts that the user interface now shows that player 1's clock is running
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that the specified player's timer is running.
 	 */
-	@Then("The clock of \"<other>\" shall be running")
-	public void theClockOfOtherShallBeRunning(Player player2){
-		//TODO
+	@Then("The clock of {string} shall be running")
+	public void theClockOfOtherShallBeRunning(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerTimerRunning( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
 	}
 	
 	/**
 	 * @author Edwin Pan
-	 * @param player2
-	 * Asserts that the user interface now shows that the next move belongs to player 2.
+	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * Asserts that the user interface now shows that the next move belongs to the specified player.
 	 */
-	@Then("The next player to move shall be \"<other>\"")
-	public void theNextPlayerToMoveShallBeOther(Player player2){
-		//TODO
+	@Then("The next player to move shall be {string}")
+	public void theNextPlayerToMoveShallBeOther(String playerColorAsString){
+		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
 	}
 	
 	
