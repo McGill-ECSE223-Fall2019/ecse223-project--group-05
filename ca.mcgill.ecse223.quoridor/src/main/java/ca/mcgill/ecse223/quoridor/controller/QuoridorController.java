@@ -4,7 +4,7 @@ import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.model.*;
 
 public class QuoridorController {
-	public static WallMove GetWallMoveCandidate(String dir, int row, int col) throws UnsupportedOperationException {
+	public static Boolean GetWallMoveCandidate(String dir, int row, int col) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException("GetWallMoveCandidate Error");
 	}
 

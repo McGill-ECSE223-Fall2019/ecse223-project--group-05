@@ -119,43 +119,45 @@ public class CucumberStepDefinitions {
 
 	///ROTATE WALL
 	/**
-	 * @author matthias
-	 * @param dir
-	 * @param row
-	 * @param col
-	 * @throws UnsupportedOperationException
+	 * Calls the controller to ensure that a wall move candidate exists in the current game.
+	 * If no wall move candidate exists with parameters [dir, row, col], create it.
+	 * Then, assert that the controller function has succeeded.
+	 * 
+	 * @author Matthias Arabian
 	 */
 	@Given("A wall move candidate exists with {string} at position \\({int}, {int})")
-	public void aWallMoveCandidateExistsWithDirAtPosition(String dir, int row, int col) throws UnsupportedOperationException {
-		wallMoveCandidate = QuoridorController.GetWallMoveCandidate(dir, row, col);
+	public void aWallMoveCandidateExistsWithDirAtPosition(String dir, int row, int col) {
+		assertEquals(true, QuoridorController.GetWallMoveCandidate(dir, row, col));
 	}
 	
 	/**
-	 * @author matthias
-	 * @throws UnsupportedOperationException
+	 * Calls a controller method to change the direction of the wall move candidate
+	 * Before		|	after
+	 * horizontal	|	vertical
+	 * vertical		|	horizontal
+	 * 
+	 * @author Matthias Arabian
 	 */
 	@When("I try to flip the wall")
-	public void iTryToFlipTheWall() throws UnsupportedOperationException {
+	public void iTryToFlipTheWall() {
 		QuoridorController.flipWallCandidate();
 	}
+	
 	/**
-	 * @author matthias
-	 * @throws UnsupportedOperationException
+	 * This function calls for the GUI to update its wall move object to match its new direction
+	 * @author Matthias Arabian
 	 */
 	@Then("The wall shall be rotated over the board to {string}")
-	public void theWallShallBeRotatedOverTheBoardToString(String newDir) throws Throwable{
+	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
 		// GUI-related feature -- TODO for later
 	}
 	
 	/**
-	 * @author matthias
-	 * @param newDir
-	 * @param row
-	 * @param col
-	 * @throws UnsupportedOperationException
+	 * This function ensures that the wall has been rotated and that no other parameter has been altered
+	 * @author Matthias Arabian
 	 */
 	@And("A wall move candidate shall exist with {string} at position \\({int}, {int})")
-	public void aWallMoveCandidateShallExistWithNewDirAtPosition(String newDir, int row, int col) throws Throwable {
+	public void aWallMoveCandidateShallExistWithNewDirAtPosition(String newDir, int row, int col) {
 		Tile t = wallMoveCandidate.getTargetTile();
 		assertEquals(t.getColumn(), col);
 		assertEquals(t.getRow(), row);
@@ -164,18 +166,30 @@ public class CucumberStepDefinitions {
 	
 	
 	///LOAD POSITION
+	/**
+	 * This function calls a controller function loadSavedGame("filename").
+	 * Loads data from file, initiates the creation of a game and sets positions according to loaded data.
+	 * @author Matthias Arabian
+	 */
 	@When("I initiate to load a saved game {string}")
 	public void iInitiateToLoadASavedGame(String fileName) {
 		QuoridorController.loadSavedGame(fileName);
 	}
-	
+	/**
+	 * Ensures that the loaded positions are valid and legal/playable.
+	 * @author Matthias Arabian
+	 */
 	@And("The position to load is valid")
-	public void thePositionToLoadIsValid() throws UnsupportedOperationException{
-		Boolean positionIsValid = true;//QuoridorController.CheckThatPositionIsValid();
+	public void thePositionToLoadIsValid(){
+		Boolean positionIsValid = QuoridorController.CheckThatPositionIsValid();
 		assertEquals(true, positionIsValid);
 	}
 	
-	@And("It shall be {string}'s turn")
+	/**
+	 * Ensures that the player whose turn it is to play is the right player.
+	 * @author Matthias Arabian
+	 */
+	@Then("It shall be {string}'s turn")
 	public void itShallBePlayer_s_Turn(String player) {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
@@ -186,7 +200,10 @@ public class CucumberStepDefinitions {
 		
 	}
 	
-	
+	/**
+	 * Verifies that the player is at the correct position.
+	 * @author Matthias Arabian
+	 */
 	@And("{string} shall be at {int}:{int}")
 	public void PlayerShallBeAtRowCol(String player, int pRow, int pCol) {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -199,9 +216,13 @@ public class CucumberStepDefinitions {
 		assertEquals(currentPlayer.getTile().getRow(), pRow);
 	}
 	
+	/**
+	 * Verifies that player walls have been properly loaded and positioned.
+	 * @author Matthias Arabian
+	 */
 	//@And("^\"([^\"]*)\" shall have a \"([^\"]*)\" wall at [0-9]:[0-9]$")
 	@And("{string} shall have a {string} wall at {int}:{int}")
-	public void playerShallHaveAWallWithOrientationAtPosition(String player, String wallOrientation, int row, int col) throws Throwable{
+	public void playerShallHaveAWallWithOrientationAtPosition(String player, String wallOrientation, int row, int col){
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		Player currentPlayer = null;
 		if (player.equals("black"))
@@ -224,6 +245,10 @@ public class CucumberStepDefinitions {
 		assertEquals(false, errorFlag);
 	}
 	
+	/**
+	 * Ensures that both players have the same number of walls in stock (which doesn't really make sense....?)
+	 * @author Matthias Arabian
+	 */
 	@And("Both players shall have {int} in their stacks")
 	public void bothPlayersShallHaveRemainingWallsInTheirStacks(int remainingWalls) {
 		Game g = QuoridorApplication.getQuoridor().getCurrentGame();
@@ -232,12 +257,21 @@ public class CucumberStepDefinitions {
 	}
 	
 	//LOAD INVALID POSITION
+	/**
+	 * This function is called when an invalid position is loaded.
+	 * It verifies that the position is indeed invalid.
+	 * @author Matthias Arabian
+	 */
 	@And("The position to load is invalid")
-	public void thePositionToLoadIsInvalid() throws UnsupportedOperationException{
+	public void thePositionToLoadIsInvalid(){
 		Boolean positionIsValid = QuoridorController.CheckThatPositionIsValid();
 		assertEquals(false, positionIsValid);
 	}
 	
+	/**
+	 * This function ensures that an error is sent out about the load position being invalid.
+	 * @author Matthias Arabian
+	 */
 	@Then("The load shall return an error")
 	public void theLoadShallReturnAnError() throws Throwable{
 		assertEquals(true, QuoridorController.sendLoadError());
