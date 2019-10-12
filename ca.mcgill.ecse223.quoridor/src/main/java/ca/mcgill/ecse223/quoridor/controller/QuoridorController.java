@@ -285,6 +285,10 @@ public class QuoridorController {
 		throw new UnsupportedOperationException("Failed to set player position");
 		
 	}
+
+	public static Boolean sendLoadError() throws UnsupportedOperationException{
+		throw new UnsupportedOperationException("sendLoadError");
+	}
 }
 
 
