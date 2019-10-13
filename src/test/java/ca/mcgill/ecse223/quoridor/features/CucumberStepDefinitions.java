@@ -44,8 +44,6 @@ import io.cucumber.java.en.*;
 
 public class CucumberStepDefinitions {
 	
-	boolean boardInitialized = true; //Used to check whether or not board was initialized
-
 	private WallMove wallMoveCandidate = null;
 	
 	//Instance Variables for SavePosition tests
@@ -144,7 +142,9 @@ public class CucumberStepDefinitions {
 	// Scenario and scenario outline step definitions
 	// ***********************************************
 	
-//	Scenario:<Initiate a new game>
+	/*
+	 * Start new game step definition
+	 */
 	
 	/**
 	 * @author Daniel Wu
@@ -198,6 +198,74 @@ public class CucumberStepDefinitions {
     	assertEquals(Game.GameStatus.ReadyToStart, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
     }
 
+    /**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 */
+  	@Given("The game is ready to start")
+  	public void theGameIsReadyToStart() {
+//  		tearDown();
+  		
+  		
+  		//This is no good, tells me there are duplicate walls, so i can't actually create new players
+  		//I need to just take the already existing players and put them in game
+  		//I was thinking of just using tearDown() to just get rid of everything and redo things as if game is running
+  		ArrayList<Player> players = createUsersAndPlayers("player1", "player2");
+//  		createAndStartGame(players);
+  		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		// There are total 36 tiles in the first four rows and
+		// indexing starts from 0 -> tiles with indices 36 and 36+8=44 are the starting
+		// positions
+		Tile player1StartPos = quoridor.getBoard().getTile(36);
+		Tile player2StartPos = quoridor.getBoard().getTile(44);
+		
+		Game game = new Game(GameStatus.Running, MoveMode.PlayerMove, players.get(0), players.get(1), quoridor);
+
+		PlayerPosition player1Position = new PlayerPosition(quoridor.getCurrentGame().getWhitePlayer(), player1StartPos);
+		PlayerPosition player2Position = new PlayerPosition(quoridor.getCurrentGame().getBlackPlayer(), player2StartPos);
+
+		GamePosition gamePosition = new GamePosition(0, player1Position, player2Position, players.get(0), game);
+  		QuoridorApplication.getQuoridor().getCurrentGame();
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 * starts the clock
+	 */
+  	@When("I start the clock")
+  	public void iStartTheClock() throws java.lang.UnsupportedOperationException {
+  		Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
+  		Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
+  		QuoridorController.startClock(whitePlayer, blackPlayer);
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 * check if the game is running
+	 */
+  	@Then("The game shall be running")
+  	public void theGameShallBeRunning() {
+    	assertEquals(Game.GameStatus.Running, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
+  	}
+  	
+  	/**
+	 * @author Daniel Wu
+	 * StartNewGame.feature - StartNewGame
+	 * Scenario: Start clock
+	 * check if the board is initialized
+	 */
+  	@Then("The board shall be initialized")
+  	public void theBoardShallBeInitialized() {
+  		Quoridor quoridor = QuoridorApplication.getQuoridor();
+  		boolean boardInitialized = quoridor.getBoard() != null;
+  		assertEquals(true, boardInitialized);
+  	}
+    
 	//Initialize board feature
 	/**
 	 * @author Thomas Philippon
@@ -782,8 +850,6 @@ public class CucumberStepDefinitions {
 	public void theUserInterfaceShallBeShowingItIsOtherTurn(String playerColorAsString){
 		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
 	}
-
-	
 	
 	
 	/**
@@ -960,51 +1026,10 @@ public class CucumberStepDefinitions {
 
         //TODO:assert move is not registered
     }
-
-    /**
-	 * @author Daniel Wu
-	 * StartNewGame.feature - StartNewGame
-	 * Scenario: Start clock
-	 */
-  	@Given("The game is ready to start")
-  	public void theGameIsReadyToStart() {
-  		QuoridorApplication.getQuoridor().getCurrentGame().setGameStatus(Game.GameStatus.ReadyToStart);
-  	}
-  	
-  	/**
-	 * @author Daniel Wu
-	 * StartNewGame.feature - StartNewGame
-	 * Scenario: Start clock
-	 * starts the clock
-	 */
-  	@When("I start the clock")
-  	public void iStartTheClock() throws java.lang.UnsupportedOperationException {
-  		Player whitePlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer();
-  		Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
-  		QuoridorController.startClock(whitePlayer, blackPlayer);
-  	}
-  	
-  	/**
-	 * @author Daniel Wu
-	 * StartNewGame.feature - StartNewGame
-	 * Scenario: Start clock
-	 * check if the game is running
-	 */
-  	@Then("The game shall be running")
-  	public void theGameShallBeRunning() {
-    	assertEquals(Game.GameStatus.Running, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
-  	}
-  	
-  	/**
-	 * @author Daniel Wu
-	 * StartNewGame.feature - StartNewGame
-	 * Scenario: Start clock
-	 * check if the board is initialized
-	 */
-  	@And("The board shall be initialized")
-  	public void theBoardShallBeInitialized() {
-  		assertEquals(true, boardInitialized);
-  	}
+    
+    /*
+     * Validate Position step definiton
+     */
   	
   	/**
 	 * @author Daniel Wu
@@ -1071,8 +1096,13 @@ public class CucumberStepDefinitions {
     	}
     	Quoridor quoridor = QuoridorApplication.getQuoridor();
     	Game game = quoridor.getCurrentGame();
+    	GamePosition gamePosition = game.getCurrentPosition();
     	Tile tile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
-    	WallMove wallMoveCandidate = new WallMove(0, 0, game.getWhitePlayer(), tile, game, myDir, game.getCurrentPosition().getWhiteWallsInStock(1));
+    	WallMove wallMove = new WallMove(0, 0, game.getWhitePlayer(), tile, game, myDir, game.getCurrentPosition().getWhiteWallsInStock(1));
+    	Wall wall = gamePosition.getWhiteWallsInStock(0);
+    	wall.setMove(wallMove);
+    	gamePosition.getWhiteWallsInStock().remove(wall);
+    	gamePosition.getWhiteWallsOnBoard().add(wall);
     	game.setMoveMode(Game.MoveMode.WallMove);
     }
     

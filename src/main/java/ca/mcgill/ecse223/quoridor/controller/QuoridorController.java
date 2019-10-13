@@ -110,7 +110,7 @@ public class QuoridorController {
      * @return true if gamestate is initializing and false if not
      * @author Daniel Wu
      */
-    public static Boolean isGameInitializing(Game game) {
+    public static boolean isGameInitializing(Game game) {
         throw new java.lang.UnsupportedOperationException();
     }
 
@@ -119,7 +119,7 @@ public class QuoridorController {
      * @return true if the player chose a username and false if not
      * @author Daniel Wu
      */
-    public static Boolean playerChoseUsername(Player player) {
+    public static boolean playerChoseUsername(Player player) {
         throw new java.lang.UnsupportedOperationException();
     }
 
@@ -128,7 +128,7 @@ public class QuoridorController {
      * @return true if the thinking time is set and false if not
      * @author Daniel Wu
      */
-    public static Boolean thinkingTimeIsSet(Game game) {
+    public static boolean thinkingTimeIsSet(Game game) {
         throw new java.lang.UnsupportedOperationException();
     }
 
@@ -138,8 +138,26 @@ public class QuoridorController {
      * @return true if the clock is started for both players
      * @author Daniel Wu
      */
-    public static Boolean startClock(Player whitePlayer, Player blackPlayer) {
+    public static boolean startClock(Player whitePlayer, Player blackPlayer) {
         throw new java.lang.UnsupportedOperationException();
+    }
+    
+    /**
+     * @return the current gamestatus 
+     * @author Daniel Wu
+     */
+    public static Game.GameStatus getGameStatus() {
+    	return QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus();
+    }
+    
+    /**
+     * @param gameStatus the gameStatus we want to set the current game to
+     * @return true if the gamestatus was correctly updated and false if not
+     * @author Daniel Wu
+     */
+    public static boolean setGameStatus(Game.GameStatus gameStatus) {
+    	getCurrentGame().setGameStatus(gameStatus);
+    	return getGameStatus().equals(gameStatus);
     }
 
     /**
