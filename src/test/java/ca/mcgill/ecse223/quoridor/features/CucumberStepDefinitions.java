@@ -1435,6 +1435,11 @@ public class CucumberStepDefinitions {
 		game.setCurrentPosition(gamePosition);
     }
     
+	
+	/**
+	 * Removes the wall in stock for both players
+	 * @author Thomas Philippon
+	 */
 	private  void removeWalls() {
 		
 		int whiteWallNo = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size();
