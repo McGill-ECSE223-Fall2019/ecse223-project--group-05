@@ -1,0 +1,1461 @@
+Feature: Drop Wall
+K  As a player, I wish to drop a wall after I navigated it to a designated 
+M  (valid) target position in order to register my wall placement as my move.
+
+  Scenario Outline: Valid wall placement [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:14[0m
+\    [36mGiven The wall move candidate with "<dir>" at position (<row>, <col>) is valid[0m
+0    [36mWhen I release the wall in my hand[0m
+Z    [36mThen A wall move shall be registered with "<dir>" at position (<row>, <col>)[0m
+4    [36mAnd I shall not have a wall in my hand[0m
+,    [36mAnd My move shall be completed[0m
+1    [36mAnd It shall not be my turn to move[0m
+
+    Examples: 
+
+Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:5[0m
+x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+á    [32mGiven [0m[32mThe following walls exist:[0m            [90m# CucumberStepDefinitions.theFollowingWallsExist(DataTable)[0m
+x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+
+¶  Scenario Outline: Valid wall placement                                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:24[0m
+â    [32mGiven [0m[32mThe wall move candidate with [0m[32m[1m"horizontal"[0m[32m at position ([0m[32m[1m3[0m[32m, [0m[32m[1m2[0m[32m) is valid[0m [90m# CucumberStepDefinitions.theWallMoveCandidateWithAtPositionIsValid(String,Integer,Integer)[0m
+ü    [31mWhen [0m[31mI release the wall in my hand[0m                                          [90m# CucumberStepDefinitions.iReleaseTheWallInMyHand()[0m
+I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+g	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.releaseWall(QuoridorController.java:218)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iReleaseTheWallInMyHand(CucumberStepDefinitions.java:927)
+v	at ?.I release the wall in my hand(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:16)
+[0m
+à    [36mThen [0m[36mA wall move shall be registered with [0m[36m[1m"horizontal"[0m[36m at position ([0m[36m[1m3[0m[36m, [0m[36m[1m2[0m[36m)[0m   [90m# CucumberStepDefinitions.aWallMoveShallBeRegisteredWithAtPosition(String,Integer,Integer)[0m
+¢    [36mAnd [0m[36mI shall not have a wall in my hand[0m                                      [90m# CucumberStepDefinitions.iShallNotHaveAWallInMyHand()[0m
+û    [36mAnd [0m[36mMy move shall be completed[0m                                              [90m# CucumberStepDefinitions.myMoveShallBeCompleted()[0m
+†    [36mAnd [0m[36mIt shall not be my turn to move[0m                                         [90m# CucumberStepDefinitions.iTShallNotBeMyTurnToMove()[0m
+
+Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:5[0m
+x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+á    [32mGiven [0m[32mThe following walls exist:[0m            [90m# CucumberStepDefinitions.theFollowingWallsExist(DataTable)[0m
+x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+
+§  Scenario Outline: Valid wall placement                                      [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:25[0m
+á    [32mGiven [0m[32mThe wall move candidate with [0m[32m[1m"vertical"[0m[32m at position ([0m[32m[1m5[0m[32m, [0m[32m[1m6[0m[32m) is valid[0m [90m# CucumberStepDefinitions.theWallMoveCandidateWithAtPositionIsValid(String,Integer,Integer)[0m
+ù    [31mWhen [0m[31mI release the wall in my hand[0m                                        [90m# CucumberStepDefinitions.iReleaseTheWallInMyHand()[0m
+I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+g	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.releaseWall(QuoridorController.java:218)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iReleaseTheWallInMyHand(CucumberStepDefinitions.java:927)
+v	at ?.I release the wall in my hand(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:16)
+[0m
+Ü    [36mThen [0m[36mA wall move shall be registered with [0m[36m[1m"vertical"[0m[36m at position ([0m[36m[1m5[0m[36m, [0m[36m[1m6[0m[36m)[0m   [90m# CucumberStepDefinitions.aWallMoveShallBeRegisteredWithAtPosition(String,Integer,Integer)[0m
+†    [36mAnd [0m[36mI shall not have a wall in my hand[0m                                    [90m# CucumberStepDefinitions.iShallNotHaveAWallInMyHand()[0m
+ú    [36mAnd [0m[36mMy move shall be completed[0m                                            [90m# CucumberStepDefinitions.myMoveShallBeCompleted()[0m
+û    [36mAnd [0m[36mIt shall not be my turn to move[0m                                       [90m# CucumberStepDefinitions.iTShallNotBeMyTurnToMove()[0m
+
+Å  Scenario Outline: Invalid wall placement [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:27[0m
+^    [36mGiven The wall move candidate with "<dir>" at position (<row>, <col>) is invalid[0m
+0    [36mWhen I release the wall in my hand[0m
+C    [36mThen I shall be notified that my wall move is invalid[0m
+?    [36mAnd I shall have a wall in my hand over the board[0m
+-    [36mAnd It shall be my turn to move[0m
+Z    [36mBut No wall move shall be registered with "<dir>" at position (<row>, <col>)[0m
+
+    Examples: 
+
+Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:5[0m
+x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+á    [32mGiven [0m[32mThe following walls exist:[0m            [90m# CucumberStepDefinitions.theFollowingWallsExist(DataTable)[0m
+x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+
+¶  Scenario Outline: Invalid wall placement                                      [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:37[0m
+ã    [32mGiven [0m[32mThe wall move candidate with [0m[32m[1m"vertical"[0m[32m at position ([0m[32m[1m1[0m[32m, [0m[32m[1m1[0m[32m) is invalid[0m [90m# CucumberStepDefinitions.theWallMoveCandidateWithAtPositionIsInvalid(String,Integer,Integer)[0m
+ü    [31mWhen [0m[31mI release the wall in my hand[0m                                          [90m# CucumberStepDefinitions.iReleaseTheWallInMyHand()[0m
+I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+g	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.releaseWall(QuoridorController.java:218)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iReleaseTheWallInMyHand(CucumberStepDefinitions.java:927)
+v	at ?.I release the wall in my hand(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:29)
+[0m
+Ø    [36mThen [0m[36mI shall be notified that my wall move is invalid[0m                       [90m# CucumberStepDefinitions.iShallBeNotifiedThatMyWallMoveIsInvalid()[0m
+´    [36mAnd [0m[36mI shall have a wall in my hand over the board[0m                           [90m# CucumberStepDefinitions.iShallHaveAWallInMyHandOverTheBoard()[0m
+ù    [36mAnd [0m[36mIt shall be my turn to move[0m                                             [90m# CucumberStepDefinitions.itShallBeMyTurnToMove()[0m
+â    [36mBut [0m[36mNo wall move shall be registered with [0m[36m[1m"vertical"[0m[36m at position ([0m[36m[1m1[0m[36m, [0m[36m[1m1[0m[36m)[0m     [90m# CucumberStepDefinitions.noWallMoveShallBeRegisteredWithAtPosition(String,Integer,Integer)[0m
+
+Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:5[0m
+x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+á    [32mGiven [0m[32mThe following walls exist:[0m            [90m# CucumberStepDefinitions.theFollowingWallsExist(DataTable)[0m
+x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+
+®  Scenario Outline: Invalid wall placement                                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:38[0m
+ç    [32mGiven [0m[32mThe wall move candidate with [0m[32m[1m"horizontal"[0m[32m at position ([0m[32m[1m1[0m[32m, [0m[32m[1m2[0m[32m) is invalid[0m [90m# CucumberStepDefinitions.theWallMoveCandidateWithAtPositionIsInvalid(String,Integer,Integer)[0m
+°    [31mWhen [0m[31mI release the wall in my hand[0m                                            [90m# CucumberStepDefinitions.iReleaseTheWallInMyHand()[0m
+I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+g	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.releaseWall(QuoridorController.java:218)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iReleaseTheWallInMyHand(CucumberStepDefinitions.java:927)
+v	at ?.I release the wall in my hand(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:29)
+[0m
+±    [36mThen [0m[36mI shall be notified that my wall move is invalid[0m                         [90m# CucumberStepDefinitions.iShallBeNotifiedThatMyWallMoveIsInvalid()[0m
+≠    [36mAnd [0m[36mI shall have a wall in my hand over the board[0m                             [90m# CucumberStepDefinitions.iShallHaveAWallInMyHandOverTheBoard()[0m
+ü    [36mAnd [0m[36mIt shall be my turn to move[0m                                               [90m# CucumberStepDefinitions.itShallBeMyTurnToMove()[0m
+ã    [36mBut [0m[36mNo wall move shall be registered with [0m[36m[1m"horizontal"[0m[36m at position ([0m[36m[1m1[0m[36m, [0m[36m[1m2[0m[36m)[0m     [90m# CucumberStepDefinitions.noWallMoveShallBeRegisteredWithAtPosition(String,Integer,Integer)[0m
+
+Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:5[0m
+x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+á    [32mGiven [0m[32mThe following walls exist:[0m            [90m# CucumberStepDefinitions.theFollowingWallsExist(DataTable)[0m
+x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+
+®  Scenario Outline: Invalid wall placement                                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:39[0m
+ç    [32mGiven [0m[32mThe wall move candidate with [0m[32m[1m"horizontal"[0m[32m at position ([0m[32m[1m7[0m[32m, [0m[32m[1m4[0m[32m) is invalid[0m [90m# CucumberStepDefinitions.theWallMoveCandidateWithAtPositionIsInvalid(String,Integer,Integer)[0m
+°    [31mWhen [0m[31mI release the wall in my hand[0m                                            [90m# CucumberStepDefinitions.iReleaseTheWallInMyHand()[0m
+I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+g	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.releaseWall(QuoridorController.java:218)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iReleaseTheWallInMyHand(CucumberStepDefinitions.java:927)
+v	at ?.I release the wall in my hand(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:29)
+[0m
+±    [36mThen [0m[36mI shall be notified that my wall move is invalid[0m                         [90m# CucumberStepDefinitions.iShallBeNotifiedThatMyWallMoveIsInvalid()[0m
+≠    [36mAnd [0m[36mI shall have a wall in my hand over the board[0m                             [90m# CucumberStepDefinitions.iShallHaveAWallInMyHandOverTheBoard()[0m
+ü    [36mAnd [0m[36mIt shall be my turn to move[0m                                               [90m# CucumberStepDefinitions.itShallBeMyTurnToMove()[0m
+ã    [36mBut [0m[36mNo wall move shall be registered with [0m[36m[1m"horizontal"[0m[36m at position ([0m[36m[1m7[0m[36m, [0m[36m[1m4[0m[36m)[0m     [90m# CucumberStepDefinitions.noWallMoveShallBeRegisteredWithAtPosition(String,Integer,Integer)[0m
+
+Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:5[0m
+x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+á    [32mGiven [0m[32mThe following walls exist:[0m            [90m# CucumberStepDefinitions.theFollowingWallsExist(DataTable)[0m
+x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+
+¶  Scenario Outline: Invalid wall placement                                      [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:40[0m
+ã    [32mGiven [0m[32mThe wall move candidate with [0m[32m[1m"vertical"[0m[32m at position ([0m[32m[1m6[0m[32m, [0m[32m[1m6[0m[32m) is invalid[0m [90m# CucumberStepDefinitions.theWallMoveCandidateWithAtPositionIsInvalid(String,Integer,Integer)[0m
+ü    [31mWhen [0m[31mI release the wall in my hand[0m                                          [90m# CucumberStepDefinitions.iReleaseTheWallInMyHand()[0m
+I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+g	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.releaseWall(QuoridorController.java:218)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iReleaseTheWallInMyHand(CucumberStepDefinitions.java:927)
+v	at ?.I release the wall in my hand(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/DropWall.feature:29)
+[0m
+Ø    [36mThen [0m[36mI shall be notified that my wall move is invalid[0m                       [90m# CucumberStepDefinitions.iShallBeNotifiedThatMyWallMoveIsInvalid()[0m
+´    [36mAnd [0m[36mI shall have a wall in my hand over the board[0m                           [90m# CucumberStepDefinitions.iShallHaveAWallInMyHandOverTheBoard()[0m
+ù    [36mAnd [0m[36mIt shall be my turn to move[0m                                             [90m# CucumberStepDefinitions.itShallBeMyTurnToMove()[0m
+â    [36mBut [0m[36mNo wall move shall be registered with [0m[36m[1m"vertical"[0m[36m at position ([0m[36m[1m6[0m[36m, [0m[36m[1m6[0m[36m)[0m     [90m# CucumberStepDefinitions.noWallMoveShallBeRegisteredWithAtPosition(String,Integer,Integer)[0m
+
+Feature: Grab Wall
+;  As a player, I want to grab one of my walls in my stock 
+(  to initiate wall placement as a move.
+
+}  Background:                           [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/GrabWall.feature:5[0m
+p    [32mGiven [0m[32mThe game is running[0m           [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+p    [32mAnd [0m[32mIt is my turn to move[0m           [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+w    [32mAnd [0m[32mI do not have a wall in my hand[0m [90m# CucumberStepDefinitions.iDoNotHaveAWallInMyHand()[0m
+
+ö  Scenario: Start wall placement                                    [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/GrabWall.feature:10[0m
+ë    [32mGiven [0m[32mI have more walls on stock[0m                                [90m# CucumberStepDefinitions.iHaveMoreWallsOnStock()[0m
+ñ    [31mWhen [0m[31mI try to grab a wall from my stock[0m                         [90m# CucumberStepDefinitions.iTryToGrabAWallFromMyStock()[0m
+c      [31mjava.lang.UnsupportedOperationException: This controller method is not implemented yet
+d	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.grabWall(QuoridorController.java:196)
+~	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iTryToGrabAWallFromMyStock(CucumberStepDefinitions.java:367)
+{	at ?.I try to grab a wall from my stock(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/GrabWall.feature:12)
+[0m
+≠    [36mThen [0m[36mA wall move candidate shall be created at initial position[0m [90m# CucumberStepDefinitions.aWallMoveCandidateShallBeCreatedAtInitialPosition()[0m
+ü    [36mAnd [0m[36mI shall have a wall in my hand over the board[0m               [90m# CucumberStepDefinitions.iShallHaveAWallInMyHandOverTheBoard()[0m
+§    [36mAnd [0m[36mThe wall in my hand shall disappear from my stock[0m           [90m# CucumberStepDefinitions.theWallInMyHandShallDisappearFromMyStock()[0m
+	
+	}  Background:                           [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/GrabWall.feature:5[0m
+	p    [32mGiven [0m[32mThe game is running[0m           [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+	p    [32mAnd [0m[32mIt is my turn to move[0m           [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+	w    [32mAnd [0m[32mI do not have a wall in my hand[0m [90m# CucumberStepDefinitions.iDoNotHaveAWallInMyHand()[0m
+	
+	ç  Scenario: No more walls in stock                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/GrabWall.feature:17[0m
+	Ü    [32mGiven [0m[32mI have no more walls on stock[0m                [90m# CucumberStepDefinitions.iHaveNoMoreWallsOnStock()[0m
+	â    [31mWhen [0m[31mI try to grab a wall from my stock[0m            [90m# CucumberStepDefinitions.iTryToGrabAWallFromMyStock()[0m
+	c      [31mjava.lang.UnsupportedOperationException: This controller method is not implemented yet
+	d	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.grabWall(QuoridorController.java:196)
+	~	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iTryToGrabAWallFromMyStock(CucumberStepDefinitions.java:367)
+	{	at ?.I try to grab a wall from my stock(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/GrabWall.feature:19)
+	[0m
+	î    [36mThen [0m[36mI shall be notified that I have no more walls[0m [90m# CucumberStepDefinitions.iShouldBeNotifiedThatIHaveNoMoreWalls()[0m
+	à    [36mAnd [0m[36mI shall have no walls in my hand[0m               [90m# CucumberStepDefinitions.iShallHaveNoWallsInMyHand()[0m
+
+
+
+Feature: Initialize Board
+
+M  As a player, I want to see the Quoridor board in its initial position and 
+
+3  my stock of walls and my clock is counting down 
+
+)  so that I can start playing the game. 
+
+
+
+í  Scenario: Initialize board                          [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/InitializeBoard.feature:6[0m
+
+å    [31mWhen [0m[31mThe initialization of the board is initiated[0m [90m# CucumberStepDefinitions.initializationOfBoardInitiated()[0m
+
+c      [31mjava.lang.UnsupportedOperationException: This controller method is not implemented yet
+
+j	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.initializeBoard(QuoridorController.java:25)
+
+Ç	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.initializationOfBoardInitiated(CucumberStepDefinitions.java:282)
+
+ã	at ?.The initialization of the board is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/InitializeBoard.feature:7)
+
+[0m
+
+à    [36mThen [0m[36mIt shall be white player to move[0m             [90m# CucumberStepDefinitions.itShallBeWhitePlayerToMove()[0m
+
+ì    [36mAnd [0m[36mWhite's pawn shall be in its initial position[0m [90m# CucumberStepDefinitions.whitesPawnShallBeInItsInitialPosition()[0m
+
+ì    [36mAnd [0m[36mBlack's pawn shall be in its initial position[0m [90m# CucumberStepDefinitions.blacksPawnshallBeInItsInitialPosition()[0m
+
+å    [36mAnd [0m[36mAll of White's walls shall be in stock[0m        [90m# CucumberStepDefinitions.allOfWhitesWallsShallBeInStock()[0m
+
+å    [36mAnd [0m[36mAll of Black's walls shall be in stock[0m        [90m# CucumberStepDefinitions.allOfBlacksWallsShallBeInStock()[0m
+
+å    [36mAnd [0m[36mWhite's clock shall be counting down[0m          [90m# CucumberStepDefinitions.whitesClockShallBeCountingDown()[0m
+
+ê    [36mAnd [0m[36mIt shall be shown that this is White's turn[0m   [90m# CucumberStepDefinitions.itShallBeShownThatThisIsWhitesTurn()[0m
+
+Feature: Load Position
+á  As a player, I want to continue a game from a given position as if this position were the current (starting) position of a new game.
+
+{  Scenario Outline: Load position [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:7[0m
+?    [36mWhen I initiate to load a saved game "<filename>"[0m
+/    [36mAnd The position to load is valid[0m
+0    [36mThen It shall be "<player>"'s turn[0m
+8    [36mAnd "<player>" shall be at <p_row>:<p_col>[0m
+:    [36mAnd "<opponent>" shall be at <o_row>:<o_col>[0m
+T    [36mAnd "<player>" shall have a <pw_orientation> wall at <pw_row>:<pw_col>[0m
+V    [36mAnd "<opponent>" shall have a <ow_orientation> wall at <ow_row>:<ow_col>[0m
+K    [36mAnd Both players shall have <remaining_walls> in their stacks[0m
+/    [36mAnd It shall be "<player>"'s turn[0m
+
+    Examples: 
+
+{  Background:                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:4[0m
+m    [32mGiven [0m[32mThe game is not running[0m [90m# CucumberStepDefinitions.theGameIsNotRunning()[0m
+
+û  Scenario Outline: Load position                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:20[0m
+®    [31mWhen [0m[31mI initiate to load a saved game [0m[31m[1m"quoridor_test_game_1.dat"[0m [90m# CucumberStepDefinitions.iInitiateToLoadASavedGame(String)[0m
+N      [31mjava.lang.UnsupportedOperationException: Game could not be loaded
+i	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:326)
+~	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1206)
+ñ	at ?.I initiate to load a saved game "quoridor_test_game_1.dat"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:8)
+[0m
+î    [36mAnd [0m[36mThe position to load is valid[0m                               [90m# CucumberStepDefinitions.thePositionToLoadIsValid()[0m
+Æ    [36mThen [0m[36mIt shall be [0m[36m[1m"black"[0m[36m's turn[0m                                 [90m# CucumberStepDefinitions.itShallBePlayer_s_Turn(String)[0m
+ÿ    [36mAnd [0m[36m[0m[36m[1m"black"[0m[36m shall be at [0m[36m[1m3[0m[36m:[0m[36m[1m3[0m                                     [90m# CucumberStepDefinitions.PlayerShallBeAtRowCol(String,int,int)[0m
+ÿ    [36mAnd [0m[36m[0m[36m[1m"white"[0m[36m shall be at [0m[36m[1m7[0m[36m:[0m[36m[1m7[0m                                     [90m# CucumberStepDefinitions.PlayerShallBeAtRowCol(String,int,int)[0m
+ç    [36mAnd [0m[36m[0m[36m[1m"black"[0m[36m shall have a [0m[36m[1mvertical[0m[36m wall at [0m[36m[1m5[0m[36m:[0m[36m[1m5[0m                   [90m# CucumberStepDefinitions.playerShallHaveAWallWithOrientationAtPosition(String,String,int,int)[0m
+ç    [36mAnd [0m[36m[0m[36m[1m"white"[0m[36m shall have a [0m[36m[1mhorizontal[0m[36m wall at [0m[36m[1m1[0m[36m:[0m[36m[1m1[0m                 [90m# CucumberStepDefinitions.playerShallHaveAWallWithOrientationAtPosition(String,String,int,int)[0m
+ƒ    [36mAnd [0m[36mBoth players shall have [0m[36m[1m9[0m[36m in their stacks[0m                   [90m# CucumberStepDefinitions.bothPlayersShallHaveRemainingWallsInTheirStacks(int)[0m
+Æ    [36mAnd [0m[36mIt shall be [0m[36m[1m"black"[0m[36m's turn[0m                                  [90m# CucumberStepDefinitions.itShallBePlayer_s_Turn(String)[0m
+
+Ñ  Scenario Outline: Load invalid position [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:22[0m
+?    [36mWhen I initiate to load a saved game "<filename>"[0m
+1    [36mAnd The position to load is invalid[0m
+1    [36mThen The load shall return an error[0m
+
+    Examples: 
+
+{  Background:                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:4[0m
+m    [32mGiven [0m[32mThe game is not running[0m [90m# CucumberStepDefinitions.theGameIsNotRunning()[0m
+
+©  Scenario Outline: Load invalid position                                      [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:29[0m
+≥    [31mWhen [0m[31mI initiate to load a saved game [0m[31m[1m"quoridor_test_game_invalid_pawn.dat"[0m [90m# CucumberStepDefinitions.iInitiateToLoadASavedGame(String)[0m
+N      [31mjava.lang.UnsupportedOperationException: Game could not be loaded
+i	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:326)
+~	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1206)
+¢	at ?.I initiate to load a saved game "quoridor_test_game_invalid_pawn.dat"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:23)
+[0m
+°    [36mAnd [0m[36mThe position to load is invalid[0m                                        [90m# CucumberStepDefinitions.thePositionToLoadIsInvalid()[0m
+†    [36mThen [0m[36mThe load shall return an error[0m                                        [90m# CucumberStepDefinitions.theLoadShallReturnAnError()[0m
+
+{  Background:                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:4[0m
+m    [32mGiven [0m[32mThe game is not running[0m [90m# CucumberStepDefinitions.theGameIsNotRunning()[0m
+
+≤  Scenario Outline: Load invalid position                                               [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:30[0m
+º    [31mWhen [0m[31mI initiate to load a saved game [0m[31m[1m"quoridor_test_game_invalid_wall_overlap_.dat"[0m [90m# CucumberStepDefinitions.iInitiateToLoadASavedGame(String)[0m
+N      [31mjava.lang.UnsupportedOperationException: Game could not be loaded
+i	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:326)
+~	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1206)
+´	at ?.I initiate to load a saved game "quoridor_test_game_invalid_wall_overlap_.dat"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:23)
+[0m
+™    [36mAnd [0m[36mThe position to load is invalid[0m                                                 [90m# CucumberStepDefinitions.thePositionToLoadIsInvalid()[0m
+©    [36mThen [0m[36mThe load shall return an error[0m                                                 [90m# CucumberStepDefinitions.theLoadShallReturnAnError()[0m
+
+{  Background:                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:4[0m
+m    [32mGiven [0m[32mThe game is not running[0m [90m# CucumberStepDefinitions.theGameIsNotRunning()[0m
+
+∂  Scenario Outline: Load invalid position                                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:31[0m
+¿    [31mWhen [0m[31mI initiate to load a saved game [0m[31m[1m"quoridor_test_game_invalid_wall_out-of-track.dat"[0m [90m# CucumberStepDefinitions.iInitiateToLoadASavedGame(String)[0m
+N      [31mjava.lang.UnsupportedOperationException: Game could not be loaded
+i	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:326)
+~	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1206)
+Ø	at ?.I initiate to load a saved game "quoridor_test_game_invalid_wall_out-of-track.dat"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:23)
+[0m
+Æ    [36mAnd [0m[36mThe position to load is invalid[0m                                                     [90m# CucumberStepDefinitions.thePositionToLoadIsInvalid()[0m
+≠    [36mThen [0m[36mThe load shall return an error[0m                                                     [90m# CucumberStepDefinitions.theLoadShallReturnAnError()[0m
+
+Feature: Move Player
+  As a player
+)  I want to move to a neighboring tile. 
+
+y  Scenario Outline: Move one tile [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:8[0m
+4    [36mGiven The player to move is "<player>"[0m
+6    [36mAnd The player is located at <row>:<col>[0m
+E    [36mAnd There are no "<dir>" walls "<side>" from the player[0m
+>    [36mAnd The opponent is not "<side>" from the player[0m
+?    [36mWhen Player "<player>" initiates to move "<side>"[0m
+8    [36mThen The move "<side>" shall be "<status>"[0m
+>    [36mAnd Player's new position shall be <nrow>:<ncol>[0m
+B    [36mAnd The next player to move shall become "<nplayer>"[0m
+
+    Examples: 
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ï  Scenario Outline: Move one tile                            [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:19[0m
+ü    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                      [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+w	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:9)
+[0m
+_    [33mAnd [0m[33mThe player is located at 3:3[0m                         [90m# null[0m
+_    [33mAnd [0m[33mThere are no "vertical" walls "left" from the player[0m [90m# null[0m
+_    [33mAnd [0m[33mThe opponent is not "left" from the player[0m           [90m# null[0m
+_    [33mWhen [0m[33mPlayer "white" initiates to move "left"[0m             [90m# null[0m
+_    [33mThen [0m[33mThe move "left" shall be "success"[0m                  [90m# null[0m
+_    [33mAnd [0m[33mPlayer's new position shall be 3:2[0m                   [90m# null[0m
+_    [33mAnd [0m[33mThe next player to move shall become "black"[0m         [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ï  Scenario Outline: Move one tile                            [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:20[0m
+ü    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                      [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+w	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:9)
+[0m
+_    [33mAnd [0m[33mThe player is located at 3:1[0m                         [90m# null[0m
+_    [33mAnd [0m[33mThere are no "vertical" walls "left" from the player[0m [90m# null[0m
+_    [33mAnd [0m[33mThe opponent is not "left" from the player[0m           [90m# null[0m
+_    [33mWhen [0m[33mPlayer "white" initiates to move "left"[0m             [90m# null[0m
+_    [33mThen [0m[33mThe move "left" shall be "illegal"[0m                  [90m# null[0m
+_    [33mAnd [0m[33mPlayer's new position shall be 3:1[0m                   [90m# null[0m
+_    [33mAnd [0m[33mThe next player to move shall become "white"[0m         [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ñ  Scenario Outline: Move one tile                             [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:21[0m
+†    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                       [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+w	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:9)
+[0m
+`    [33mAnd [0m[33mThe player is located at 6:6[0m                          [90m# null[0m
+`    [33mAnd [0m[33mThere are no "vertical" walls "right" from the player[0m [90m# null[0m
+`    [33mAnd [0m[33mThe opponent is not "right" from the player[0m           [90m# null[0m
+`    [33mWhen [0m[33mPlayer "white" initiates to move "right"[0m             [90m# null[0m
+`    [33mThen [0m[33mThe move "right" shall be "success"[0m                  [90m# null[0m
+`    [33mAnd [0m[33mPlayer's new position shall be 6:7[0m                    [90m# null[0m
+`    [33mAnd [0m[33mThe next player to move shall become "black"[0m          [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ñ  Scenario Outline: Move one tile                             [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:22[0m
+†    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                       [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+w	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:9)
+[0m
+`    [33mAnd [0m[33mThe player is located at 6:9[0m                          [90m# null[0m
+`    [33mAnd [0m[33mThere are no "vertical" walls "right" from the player[0m [90m# null[0m
+`    [33mAnd [0m[33mThe opponent is not "right" from the player[0m           [90m# null[0m
+`    [33mWhen [0m[33mPlayer "white" initiates to move "right"[0m             [90m# null[0m
+`    [33mThen [0m[33mThe move "right" shall be "illegal"[0m                  [90m# null[0m
+`    [33mAnd [0m[33mPlayer's new position shall be 6:9[0m                    [90m# null[0m
+`    [33mAnd [0m[33mThe next player to move shall become "white"[0m          [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ï  Scenario Outline: Move one tile                            [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:23[0m
+ü    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                      [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+w	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:9)
+[0m
+_    [33mAnd [0m[33mThe player is located at 3:3[0m                         [90m# null[0m
+_    [33mAnd [0m[33mThere are no "horizontal" walls "up" from the player[0m [90m# null[0m
+_    [33mAnd [0m[33mThe opponent is not "up" from the player[0m             [90m# null[0m
+_    [33mWhen [0m[33mPlayer "white" initiates to move "up"[0m               [90m# null[0m
+_    [33mThen [0m[33mThe move "up" shall be "success"[0m                    [90m# null[0m
+_    [33mAnd [0m[33mPlayer's new position shall be 2:3[0m                   [90m# null[0m
+_    [33mAnd [0m[33mThe next player to move shall become "black"[0m         [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ï  Scenario Outline: Move one tile                            [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:24[0m
+ü    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                      [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+w	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:9)
+[0m
+_    [33mAnd [0m[33mThe player is located at 1:3[0m                         [90m# null[0m
+_    [33mAnd [0m[33mThere are no "horizontal" walls "up" from the player[0m [90m# null[0m
+_    [33mAnd [0m[33mThe opponent is not "up" from the player[0m             [90m# null[0m
+_    [33mWhen [0m[33mPlayer "white" initiates to move "up"[0m               [90m# null[0m
+_    [33mThen [0m[33mThe move "up" shall be "illegal"[0m                    [90m# null[0m
+_    [33mAnd [0m[33mPlayer's new position shall be 1:3[0m                   [90m# null[0m
+_    [33mAnd [0m[33mThe next player to move shall become "white"[0m         [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ó  Scenario Outline: Move one tile                              [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:25[0m
+°    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                        [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+w	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:9)
+[0m
+a    [33mAnd [0m[33mThe player is located at 6:6[0m                           [90m# null[0m
+a    [33mAnd [0m[33mThere are no "horizontal" walls "down" from the player[0m [90m# null[0m
+a    [33mAnd [0m[33mThe opponent is not "down" from the player[0m             [90m# null[0m
+a    [33mWhen [0m[33mPlayer "white" initiates to move "down"[0m               [90m# null[0m
+a    [33mThen [0m[33mThe move "down" shall be "success"[0m                    [90m# null[0m
+a    [33mAnd [0m[33mPlayer's new position shall be 7:6[0m                     [90m# null[0m
+a    [33mAnd [0m[33mThe next player to move shall become "black"[0m           [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ï  Scenario Outline: Move one tile                            [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:26[0m
+ü    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                      [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+w	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:9)
+[0m
+_    [33mAnd [0m[33mThe player is located at 9:6[0m                         [90m# null[0m
+_    [33mAnd [0m[33mThere are no "horizontal" walls "up" from the player[0m [90m# null[0m
+_    [33mAnd [0m[33mThe opponent is not "up" from the player[0m             [90m# null[0m
+_    [33mWhen [0m[33mPlayer "white" initiates to move "up"[0m               [90m# null[0m
+_    [33mThen [0m[33mThe move "up" shall be "illegal"[0m                    [90m# null[0m
+_    [33mAnd [0m[33mPlayer's new position shall be 9:6[0m                   [90m# null[0m
+_    [33mAnd [0m[33mThe next player to move shall become "white"[0m         [90m# null[0m
+
+ã  Scenario Outline: Move of player blocked by wall [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:29[0m
+4    [36mGiven The player to move is "<player>"[0m
+6    [36mAnd The player is located at <row>:<col>[0m
+B    [36mAnd There is a "<dir>" wall "<side>" from the player[0m
+=    [36mAnd My opponent is not "<side>" from the player[0m
+?    [36mWhen Player "<player>" initiates to move "<side>"[0m
+8    [36mThen The move "<side>" shall be "<status>"[0m
+>    [36mAnd Player's new position shall be <nrow>:<ncol>[0m
+B    [36mAnd The next player to move shall become "<nplayer>"[0m
+
+    Examples: 
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+í  Scenario Outline: Move of player blocked by wall        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:40[0m
+ú    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                   [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+x	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:30)
+[0m
+\    [33mAnd [0m[33mThe player is located at 3:3[0m                      [90m# null[0m
+\    [33mAnd [0m[33mThere is a "vertical" wall "left" from the player[0m [90m# null[0m
+\    [33mAnd [0m[33mMy opponent is not "left" from the player[0m         [90m# null[0m
+\    [33mWhen [0m[33mPlayer "white" initiates to move "left"[0m          [90m# null[0m
+\    [33mThen [0m[33mThe move "left" shall be "illegal"[0m               [90m# null[0m
+\    [33mAnd [0m[33mPlayer's new position shall be 3:3[0m                [90m# null[0m
+\    [33mAnd [0m[33mThe next player to move shall become "<nplayer>"[0m  [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+î  Scenario Outline: Move of player blocked by wall          [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:41[0m
+û    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                     [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+x	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:30)
+[0m
+^    [33mAnd [0m[33mThe player is located at 3:3[0m                        [90m# null[0m
+^    [33mAnd [0m[33mThere is a "horizontal" wall "left" from the player[0m [90m# null[0m
+^    [33mAnd [0m[33mMy opponent is not "left" from the player[0m           [90m# null[0m
+^    [33mWhen [0m[33mPlayer "white" initiates to move "left"[0m            [90m# null[0m
+^    [33mThen [0m[33mThe move "left" shall be "success"[0m                 [90m# null[0m
+^    [33mAnd [0m[33mPlayer's new position shall be 2:3[0m                  [90m# null[0m
+^    [33mAnd [0m[33mThe next player to move shall become "<nplayer>"[0m    [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ì  Scenario Outline: Move of player blocked by wall         [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:42[0m
+ù    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                    [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+x	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:30)
+[0m
+]    [33mAnd [0m[33mThe player is located at 3:3[0m                       [90m# null[0m
+]    [33mAnd [0m[33mThere is a "vertical" wall "right" from the player[0m [90m# null[0m
+]    [33mAnd [0m[33mMy opponent is not "right" from the player[0m         [90m# null[0m
+]    [33mWhen [0m[33mPlayer "white" initiates to move "right"[0m          [90m# null[0m
+]    [33mThen [0m[33mThe move "right" shall be "illegal"[0m               [90m# null[0m
+]    [33mAnd [0m[33mPlayer's new position shall be 3:3[0m                 [90m# null[0m
+]    [33mAnd [0m[33mThe next player to move shall become "<nplayer>"[0m   [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ï  Scenario Outline: Move of player blocked by wall           [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:43[0m
+ü    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                      [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+x	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:30)
+[0m
+_    [33mAnd [0m[33mThe player is located at 3:3[0m                         [90m# null[0m
+_    [33mAnd [0m[33mThere is a "horizontal" wall "right" from the player[0m [90m# null[0m
+_    [33mAnd [0m[33mMy opponent is not "right" from the player[0m           [90m# null[0m
+_    [33mWhen [0m[33mPlayer "white" initiates to move "right"[0m            [90m# null[0m
+_    [33mThen [0m[33mThe move "right" shall be "success"[0m                 [90m# null[0m
+_    [33mAnd [0m[33mPlayer's new position shall be 4:3[0m                   [90m# null[0m
+_    [33mAnd [0m[33mThe next player to move shall become "<nplayer>"[0m     [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+í  Scenario Outline: Move of player blocked by wall        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:44[0m
+ú    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                   [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+x	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:30)
+[0m
+\    [33mAnd [0m[33mThe player is located at 3:3[0m                      [90m# null[0m
+\    [33mAnd [0m[33mThere is a "horizontal" wall "up" from the player[0m [90m# null[0m
+\    [33mAnd [0m[33mMy opponent is not "up" from the player[0m           [90m# null[0m
+\    [33mWhen [0m[33mPlayer "white" initiates to move "up"[0m            [90m# null[0m
+\    [33mThen [0m[33mThe move "up" shall be "illegal"[0m                 [90m# null[0m
+\    [33mAnd [0m[33mPlayer's new position shall be 3:3[0m                [90m# null[0m
+\    [33mAnd [0m[33mThe next player to move shall become "<nplayer>"[0m  [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+ë  Scenario Outline: Move of player blocked by wall       [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:45[0m
+õ    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+x	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:30)
+[0m
+[    [33mAnd [0m[33mThe player is located at 3:3[0m                     [90m# null[0m
+[    [33mAnd [0m[33mThere is a "vertical" wall "up" from the player[0m  [90m# null[0m
+[    [33mAnd [0m[33mMy opponent is not "up" from the player[0m          [90m# null[0m
+[    [33mWhen [0m[33mPlayer "white" initiates to move "up"[0m           [90m# null[0m
+[    [33mThen [0m[33mThe move "up" shall be "success"[0m                [90m# null[0m
+[    [33mAnd [0m[33mPlayer's new position shall be 3:2[0m               [90m# null[0m
+[    [33mAnd [0m[33mThe next player to move shall become "<nplayer>"[0m [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+î  Scenario Outline: Move of player blocked by wall          [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:46[0m
+û    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                     [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+x	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:30)
+[0m
+^    [33mAnd [0m[33mThe player is located at 3:3[0m                        [90m# null[0m
+^    [33mAnd [0m[33mThere is a "horizontal" wall "down" from the player[0m [90m# null[0m
+^    [33mAnd [0m[33mMy opponent is not "down" from the player[0m           [90m# null[0m
+^    [33mWhen [0m[33mPlayer "white" initiates to move "down"[0m            [90m# null[0m
+^    [33mThen [0m[33mThe move "down" shall be "illegal"[0m                 [90m# null[0m
+^    [33mAnd [0m[33mPlayer's new position shall be 3:3[0m                  [90m# null[0m
+^    [33mAnd [0m[33mThe next player to move shall become "<nplayer>"[0m    [90m# null[0m
+
+u  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:5[0m
+f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+
+í  Scenario Outline: Move of player blocked by wall        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:47[0m
+ú    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                   [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+x	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePlayer.feature:30)
+[0m
+\    [33mAnd [0m[33mThe player is located at 3:3[0m                      [90m# null[0m
+\    [33mAnd [0m[33mThere is a "vertical" wall "down" from the player[0m [90m# null[0m
+\    [33mAnd [0m[33mMy opponent is not "down" from the player[0m         [90m# null[0m
+\    [33mWhen [0m[33mPlayer "white" initiates to move "down"[0m          [90m# null[0m
+\    [33mThen [0m[33mThe move "down" shall be "success"[0m               [90m# null[0m
+\    [33mAnd [0m[33mPlayer's new position shall be 3:4[0m                [90m# null[0m
+\    [33mAnd [0m[33mThe next player to move shall become "<nplayer>"[0m  [90m# null[0m
+
+Feature: Move Wall
+j  As a player who grabbed a wall, I wish to move the wall between possible rows and columns of the board 
+>  so that I could move it to its designated target position. 
+Q  I wish to get feedback from the game if a designated wall position is illegal.
+
+É  Scenario Outline: Move wall over the board [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:11[0m
+X    [36mGiven A wall move candidate exists with "<dir>" at position (<row>, <col>)[0m
+M    [36mAnd The wall candidate is not at the "<side>" edge of the board[0m
+2    [36mWhen I try to move the wall "<side>"[0m
+V    [36mThen The wall shall be moved over the board to position (<nrow>, <ncol>)[0m
+]    [36mAnd A wall move candidate shall exist with "<dir>" at position (<nrow>, <ncol>)[0m
+
+    Examples: 
+
+Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
+x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+
+£  Scenario Outline: Move wall over the board                                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:20[0m
+Ï    [31mGiven [0m[31mA wall move candidate exists with [0m[31m[1m"vertical"[0m[31m at position ([0m[31m[1m2[0m[31m, [0m[31m[1m3[0m[31m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
+4      [31mjava.lang.UnsupportedOperationException
+f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.getWallMove(QuoridorController.java:40)
+{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.wallMoveCandidateExists(CucumberStepDefinitions.java:425)
+ò	at ?.A wall move candidate exists with "vertical" at position (2, 3)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:12)
+[0m
+∞    [36mAnd [0m[36mThe wall candidate is not at the [0m[36m[1m"left"[0m[36m edge of the board[0m            [90m# CucumberStepDefinitions.wallIsNotAtEdge(String)[0m
+•    [36mWhen [0m[36mI try to move the wall [0m[36m[1m"left"[0m                                       [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
+Ã    [36mThen [0m[36mThe wall shall be moved over the board to position ([0m[36m[1m2[0m[36m, [0m[36m[1m2[0m[36m)[0m           [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
+Ó    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"vertical"[0m[36m at position ([0m[36m[1m2[0m[36m, [0m[36m[1m2[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+ 
+ Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
+ x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+ x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+ Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+ 
+ •  Scenario Outline: Move wall over the board                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:21[0m
+ Ó    [31mGiven [0m[31mA wall move candidate exists with [0m[31m[1m"horizontal"[0m[31m at position ([0m[31m[1m2[0m[31m, [0m[31m[1m3[0m[31m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
+ 4      [31mjava.lang.UnsupportedOperationException
+ f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.getWallMove(QuoridorController.java:40)
+ {	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.wallMoveCandidateExists(CucumberStepDefinitions.java:425)
+ ö	at ?.A wall move candidate exists with "horizontal" at position (2, 3)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:12)
+ [0m
+ ≤    [36mAnd [0m[36mThe wall candidate is not at the [0m[36m[1m"right"[0m[36m edge of the board[0m             [90m# CucumberStepDefinitions.wallIsNotAtEdge(String)[0m
+ ß    [36mWhen [0m[36mI try to move the wall [0m[36m[1m"right"[0m                                        [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
+ Œ    [36mThen [0m[36mThe wall shall be moved over the board to position ([0m[36m[1m2[0m[36m, [0m[36m[1m4[0m[36m)[0m             [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
+     [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"horizontal"[0m[36m at position ([0m[36m[1m2[0m[36m, [0m[36m[1m4[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+!
+!Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
+!x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+!x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+!Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+!
+!£  Scenario Outline: Move wall over the board                                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:22[0m
+!Ï    [31mGiven [0m[31mA wall move candidate exists with [0m[31m[1m"vertical"[0m[31m at position ([0m[31m[1m5[0m[31m, [0m[31m[1m6[0m[31m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
+!4      [31mjava.lang.UnsupportedOperationException
+!f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.getWallMove(QuoridorController.java:40)
+!{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.wallMoveCandidateExists(CucumberStepDefinitions.java:425)
+!ò	at ?.A wall move candidate exists with "vertical" at position (5, 6)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:12)
+![0m
+!∞    [36mAnd [0m[36mThe wall candidate is not at the [0m[36m[1m"up"[0m[36m edge of the board[0m              [90m# CucumberStepDefinitions.wallIsNotAtEdge(String)[0m
+!•    [36mWhen [0m[36mI try to move the wall [0m[36m[1m"up"[0m                                         [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
+!Ã    [36mThen [0m[36mThe wall shall be moved over the board to position ([0m[36m[1m4[0m[36m, [0m[36m[1m6[0m[36m)[0m           [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
+!Ó    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"vertical"[0m[36m at position ([0m[36m[1m4[0m[36m, [0m[36m[1m6[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+"
+"Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
+"x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+"x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+"Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+"
+"•  Scenario Outline: Move wall over the board                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:23[0m
+"Ó    [31mGiven [0m[31mA wall move candidate exists with [0m[31m[1m"horizontal"[0m[31m at position ([0m[31m[1m5[0m[31m, [0m[31m[1m6[0m[31m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
+"4      [31mjava.lang.UnsupportedOperationException
+"f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.getWallMove(QuoridorController.java:40)
+"{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.wallMoveCandidateExists(CucumberStepDefinitions.java:425)
+"ö	at ?.A wall move candidate exists with "horizontal" at position (5, 6)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:12)
+"[0m
+"≤    [36mAnd [0m[36mThe wall candidate is not at the [0m[36m[1m"down"[0m[36m edge of the board[0m              [90m# CucumberStepDefinitions.wallIsNotAtEdge(String)[0m
+"ß    [36mWhen [0m[36mI try to move the wall [0m[36m[1m"down"[0m                                         [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
+"Œ    [36mThen [0m[36mThe wall shall be moved over the board to position ([0m[36m[1m6[0m[36m, [0m[36m[1m6[0m[36m)[0m             [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
+"    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"horizontal"[0m[36m at position ([0m[36m[1m6[0m[36m, [0m[36m[1m6[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+#
+#ç  Scenario Outline: Move wall at the edge of the board [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:25[0m
+#X    [36mGiven A wall move candidate exists with "<dir>" at position (<row>, <col>)[0m
+#I    [36mAnd The wall candidate is at the "<side>" edge of the board[0m
+#2    [36mWhen I try to move the wall "<side>"[0m
+#>    [36mThen I shall be notified that my move is illegal[0m
+#]    [36mAnd A wall move candidate shall exist with "<dir>" at position (<nrow>, <ncol>)[0m
+#
+#    Examples: 
+#
+#Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
+#x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+#x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+#Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+#
+#£  Scenario Outline: Move wall at the edge of the board                       [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:34[0m
+#Ï    [31mGiven [0m[31mA wall move candidate exists with [0m[31m[1m"vertical"[0m[31m at position ([0m[31m[1m2[0m[31m, [0m[31m[1m1[0m[31m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
+#4      [31mjava.lang.UnsupportedOperationException
+#f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.getWallMove(QuoridorController.java:40)
+#{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.wallMoveCandidateExists(CucumberStepDefinitions.java:425)
+#ò	at ?.A wall move candidate exists with "vertical" at position (2, 1)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:26)
+#[0m
+#≠    [36mAnd [0m[36mThe wall candidate is at the [0m[36m[1m"left"[0m[36m edge of the board[0m                [90m# CucumberStepDefinitions.wallIsAtEdge(String)[0m
+#•    [36mWhen [0m[36mI try to move the wall [0m[36m[1m"left"[0m                                       [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
+#†    [36mThen [0m[36mI shall be notified that my move is illegal[0m                         [90m# CucumberStepDefinitions.testIllegalMoveNotification()[0m
+#Ó    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"vertical"[0m[36m at position ([0m[36m[1m2[0m[36m, [0m[36m[1m3[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+$
+$Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
+$x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+$x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+$Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+$
+$•  Scenario Outline: Move wall at the edge of the board                         [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:35[0m
+$Ó    [31mGiven [0m[31mA wall move candidate exists with [0m[31m[1m"horizontal"[0m[31m at position ([0m[31m[1m2[0m[31m, [0m[31m[1m8[0m[31m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
+$4      [31mjava.lang.UnsupportedOperationException
+$f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.getWallMove(QuoridorController.java:40)
+${	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.wallMoveCandidateExists(CucumberStepDefinitions.java:425)
+$ö	at ?.A wall move candidate exists with "horizontal" at position (2, 8)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:26)
+$[0m
+$Ø    [36mAnd [0m[36mThe wall candidate is at the [0m[36m[1m"right"[0m[36m edge of the board[0m                 [90m# CucumberStepDefinitions.wallIsAtEdge(String)[0m
+$ß    [36mWhen [0m[36mI try to move the wall [0m[36m[1m"right"[0m                                        [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
+$¢    [36mThen [0m[36mI shall be notified that my move is illegal[0m                           [90m# CucumberStepDefinitions.testIllegalMoveNotification()[0m
+$    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"horizontal"[0m[36m at position ([0m[36m[1m2[0m[36m, [0m[36m[1m8[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+%
+%Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
+%x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+%x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+%Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+%
+%£  Scenario Outline: Move wall at the edge of the board                       [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:36[0m
+%Ï    [31mGiven [0m[31mA wall move candidate exists with [0m[31m[1m"vertical"[0m[31m at position ([0m[31m[1m1[0m[31m, [0m[31m[1m6[0m[31m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
+%4      [31mjava.lang.UnsupportedOperationException
+%f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.getWallMove(QuoridorController.java:40)
+%{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.wallMoveCandidateExists(CucumberStepDefinitions.java:425)
+%ò	at ?.A wall move candidate exists with "vertical" at position (1, 6)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:26)
+%[0m
+%≠    [36mAnd [0m[36mThe wall candidate is at the [0m[36m[1m"up"[0m[36m edge of the board[0m                  [90m# CucumberStepDefinitions.wallIsAtEdge(String)[0m
+%•    [36mWhen [0m[36mI try to move the wall [0m[36m[1m"up"[0m                                         [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
+%†    [36mThen [0m[36mI shall be notified that my move is illegal[0m                         [90m# CucumberStepDefinitions.testIllegalMoveNotification()[0m
+%Ó    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"vertical"[0m[36m at position ([0m[36m[1m1[0m[36m, [0m[36m[1m6[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+&
+&Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
+&x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+&x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+&Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+&
+&•  Scenario Outline: Move wall at the edge of the board                         [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:37[0m
+&Ó    [31mGiven [0m[31mA wall move candidate exists with [0m[31m[1m"horizontal"[0m[31m at position ([0m[31m[1m8[0m[31m, [0m[31m[1m6[0m[31m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
+&4      [31mjava.lang.UnsupportedOperationException
+&f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.getWallMove(QuoridorController.java:40)
+&{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.wallMoveCandidateExists(CucumberStepDefinitions.java:425)
+&ö	at ?.A wall move candidate exists with "horizontal" at position (8, 6)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:26)
+&[0m
+&Ø    [36mAnd [0m[36mThe wall candidate is at the [0m[36m[1m"down"[0m[36m edge of the board[0m                  [90m# CucumberStepDefinitions.wallIsAtEdge(String)[0m
+&ß    [36mWhen [0m[36mI try to move the wall [0m[36m[1m"down"[0m                                         [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
+&¢    [36mThen [0m[36mI shall be notified that my move is illegal[0m                           [90m# CucumberStepDefinitions.testIllegalMoveNotification()[0m
+&    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"horizontal"[0m[36m at position ([0m[36m[1m8[0m[36m, [0m[36m[1m6[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+'
+'%Feature: Provide Or Select User Name
+'V  As a prospective player, I wish to use my unique user name when a new game starts, 
+'L  or create a new user name if the designated user name does not exist yet.
+'
+'ê  Scenario Outline: Select existing user name [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:8[0m
+'=    [36mGiven Next player to set user name is "<color>"[0m
+'5    [36mAnd There is existing user "<username>"[0m
+';    [36mWhen The player selects existing "<username>"[0m
+'U    [36mThen The name of player "<color>" in the new game shall be "<username>"[0m
+'
+'    Examples: 
+'
+'á  Background:                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:5[0m
+'s    [32mGiven [0m[32mA new game is initializing[0m [90m# CucumberStepDefinitions.aNewGameIsInitializing()[0m
+'
+'©  Scenario Outline: Select existing user name                         [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:16[0m
+'™    [32mGiven [0m[32mNext player to set user name is [0m[32m[1m"white"[0m                     [90m# CucumberStepDefinitions.nextPlayerToSetUserNameIs(String)[0m
+'§    [32mAnd [0m[32mThere is existing user [0m[32m[1m"Daniel"[0m                               [90m# CucumberStepDefinitions.thereIsExistingUser(String)[0m
+'©    [31mWhen [0m[31mThe player selects existing [0m[31m[1m"Daniel"[0m                         [90m# CucumberStepDefinitions.thePlayerSelectsExisting(String)[0m
+'I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+'r	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.selectExistingUserName(QuoridorController.java:230)
+'|	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerSelectsExisting(CucumberStepDefinitions.java:576)
+'ä	at ?.The player selects existing "Daniel"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:11)
+'[0m
+'–    [36mThen [0m[36mThe name of player [0m[36m[1m"white"[0m[36m in the new game shall be [0m[36m[1m"Daniel"[0m [90m# CucumberStepDefinitions.theNameOfPlayerInTheNewGameShallBe(String,String)[0m
+(
+(á  Background:                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:5[0m
+(s    [32mGiven [0m[32mA new game is initializing[0m [90m# CucumberStepDefinitions.aNewGameIsInitializing()[0m
+(
+(©  Scenario Outline: Select existing user name                         [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:17[0m
+(™    [32mGiven [0m[32mNext player to set user name is [0m[32m[1m"black"[0m                     [90m# CucumberStepDefinitions.nextPlayerToSetUserNameIs(String)[0m
+(§    [32mAnd [0m[32mThere is existing user [0m[32m[1m"Marton"[0m                               [90m# CucumberStepDefinitions.thereIsExistingUser(String)[0m
+(©    [31mWhen [0m[31mThe player selects existing [0m[31m[1m"Marton"[0m                         [90m# CucumberStepDefinitions.thePlayerSelectsExisting(String)[0m
+(I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+(r	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.selectExistingUserName(QuoridorController.java:230)
+(|	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerSelectsExisting(CucumberStepDefinitions.java:576)
+(ä	at ?.The player selects existing "Marton"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:11)
+([0m
+(–    [36mThen [0m[36mThe name of player [0m[36m[1m"black"[0m[36m in the new game shall be [0m[36m[1m"Marton"[0m [90m# CucumberStepDefinitions.theNameOfPlayerInTheNewGameShallBe(String,String)[0m
+)
+)å  Scenario Outline: Create new user name [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:19[0m
+)=    [36mGiven Next player to set user name is "<color>"[0m
+)8    [36mAnd There is no existing user "<username>"[0m
+)B    [36mWhen The player provides new user name: "<username>"[0m
+)U    [36mThen The name of player "<color>" in the new game shall be "<username>"[0m
+)
+)    Examples: 
+)
+)á  Background:                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:5[0m
+)s    [32mGiven [0m[32mA new game is initializing[0m [90m# CucumberStepDefinitions.aNewGameIsInitializing()[0m
+)
+)®  Scenario Outline: Create new user name                             [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:27[0m
+)©    [32mGiven [0m[32mNext player to set user name is [0m[32m[1m"white"[0m                    [90m# CucumberStepDefinitions.nextPlayerToSetUserNameIs(String)[0m
+)•    [32mAnd [0m[32mThere is no existing user [0m[32m[1m"Rijul"[0m                            [90m# CucumberStepDefinitions.thereIsNoExistingUser(String)[0m
+)¨    [31mWhen [0m[31mThe player provides new user name: [0m[31m[1m"Rijul"[0m                  [90m# CucumberStepDefinitions.thePlayerProvidesNewUserName(String)[0m
+)I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+)m	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.selectNewUserName(QuoridorController.java:246)
+)Ä	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerProvidesNewUserName(CucumberStepDefinitions.java:587)
+)ê	at ?.The player provides new user name: "Rijul"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:22)
+)[0m
+)œ    [36mThen [0m[36mThe name of player [0m[36m[1m"white"[0m[36m in the new game shall be [0m[36m[1m"Rijul"[0m [90m# CucumberStepDefinitions.theNameOfPlayerInTheNewGameShallBe(String,String)[0m
+*
+*á  Background:                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:5[0m
+*s    [32mGiven [0m[32mA new game is initializing[0m [90m# CucumberStepDefinitions.aNewGameIsInitializing()[0m
+*
+*´  Scenario Outline: Create new user name                                [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:28[0m
+*¨    [32mGiven [0m[32mNext player to set user name is [0m[32m[1m"black"[0m                       [90m# CucumberStepDefinitions.nextPlayerToSetUserNameIs(String)[0m
+*®    [32mAnd [0m[32mThere is no existing user [0m[32m[1m"Hyacinth"[0m                            [90m# CucumberStepDefinitions.thereIsNoExistingUser(String)[0m
+*Ø    [31mWhen [0m[31mThe player provides new user name: [0m[31m[1m"Hyacinth"[0m                  [90m# CucumberStepDefinitions.thePlayerProvidesNewUserName(String)[0m
+*I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+*m	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.selectNewUserName(QuoridorController.java:246)
+*Ä	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerProvidesNewUserName(CucumberStepDefinitions.java:587)
+*ì	at ?.The player provides new user name: "Hyacinth"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:22)
+*[0m
+*“    [36mThen [0m[36mThe name of player [0m[36m[1m"black"[0m[36m in the new game shall be [0m[36m[1m"Hyacinth"[0m [90m# CucumberStepDefinitions.theNameOfPlayerInTheNewGameShallBe(String,String)[0m
++
++ê  Scenario Outline: User name already exists [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:30[0m
++=    [36mGiven Next player to set user name is "<color>"[0m
++5    [36mAnd There is existing user "<username>"[0m
++B    [36mWhen The player provides new user name: "<username>"[0m
++N    [36mThen The player shall be warned that "<username>" already exists[0m
++A    [36mAnd Next player to set user name shall be "<color>"[0m
++
++    Examples: 
++
++á  Background:                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:5[0m
++s    [32mGiven [0m[32mA new game is initializing[0m [90m# CucumberStepDefinitions.aNewGameIsInitializing()[0m
++
++§  Scenario Outline: User name already exists                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:39[0m
++•    [32mGiven [0m[32mNext player to set user name is [0m[32m[1m"white"[0m                [90m# CucumberStepDefinitions.nextPlayerToSetUserNameIs(String)[0m
++ü    [32mAnd [0m[32mThere is existing user [0m[32m[1m"Daniel"[0m                          [90m# CucumberStepDefinitions.thereIsExistingUser(String)[0m
++®    [31mWhen [0m[31mThe player provides new user name: [0m[31m[1m"Daniel"[0m             [90m# CucumberStepDefinitions.thePlayerProvidesNewUserName(String)[0m
++I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
++m	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.selectNewUserName(QuoridorController.java:246)
++Ä	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerProvidesNewUserName(CucumberStepDefinitions.java:587)
++ë	at ?.The player provides new user name: "Daniel"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:33)
++[0m
++º    [36mThen [0m[36mThe player shall be warned that [0m[36m[1m"Daniel"[0m[36m already exists[0m [90m# CucumberStepDefinitions.thePlayerShallBeWarnedThatAlreadyExists(String)[0m
++™    [36mAnd [0m[36mNext player to set user name shall be [0m[36m[1m"white"[0m            [90m# CucumberStepDefinitions.nextPlayerToSetUserNameShallBe(String)[0m
+,
+,á  Background:                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:5[0m
+,s    [32mGiven [0m[32mA new game is initializing[0m [90m# CucumberStepDefinitions.aNewGameIsInitializing()[0m
+,
+,§  Scenario Outline: User name already exists                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:40[0m
+,•    [32mGiven [0m[32mNext player to set user name is [0m[32m[1m"black"[0m                [90m# CucumberStepDefinitions.nextPlayerToSetUserNameIs(String)[0m
+,ü    [32mAnd [0m[32mThere is existing user [0m[32m[1m"Marton"[0m                          [90m# CucumberStepDefinitions.thereIsExistingUser(String)[0m
+,®    [31mWhen [0m[31mThe player provides new user name: [0m[31m[1m"Marton"[0m             [90m# CucumberStepDefinitions.thePlayerProvidesNewUserName(String)[0m
+,I      [31mjava.lang.UnsupportedOperationException: Not yet implemented
+,m	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.selectNewUserName(QuoridorController.java:246)
+,Ä	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerProvidesNewUserName(CucumberStepDefinitions.java:587)
+,ë	at ?.The player provides new user name: "Marton"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ProvideSelectUserName.feature:33)
+,[0m
+,º    [36mThen [0m[36mThe player shall be warned that [0m[36m[1m"Marton"[0m[36m already exists[0m [90m# CucumberStepDefinitions.thePlayerShallBeWarnedThatAlreadyExists(String)[0m
+,™    [36mAnd [0m[36mNext player to set user name shall be [0m[36m[1m"black"[0m            [90m# CucumberStepDefinitions.nextPlayerToSetUserNameShallBe(String)[0m
+-
+-Feature: Rotate Wall
+-K  As a player who grabbed a wall, I want to rotate the wall by 90 degrees 
+-X  (from horizontal to vertical or vice versa) to adjust its designated target position.
+-
+-†  Scenario Outline: Flip wall from horizontal to vertical or vice versa [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/RotateWall.feature:10[0m
+-X    [36mGiven A wall move candidate exists with "<dir>" at position (<row>, <col>)[0m
+-)    [36mWhen I try to flip the wall[0m
+-I    [36mThen The wall shall be rotated over the board to "<newdir>"[0m
+-^    [36mAnd A wall move candidate shall exist with "<newdir>" at position (<row>, <col>)[0m
+-
+-    Examples: 
+-
+-á  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/RotateWall.feature:5[0m
+-x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+-x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+-Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+-
+-•  Scenario Outline: Flip wall from horizontal to vertical or vice versa      [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/RotateWall.feature:18[0m
+-Ï    [31mGiven [0m[31mA wall move candidate exists with [0m[31m[1m"horizontal"[0m[31m at position ([0m[31m[1m3[0m[31m, [0m[31m[1m2[0m[31m)[0m  [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
+-4      [31mjava.lang.UnsupportedOperationException
+-f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.getWallMove(QuoridorController.java:40)
+-{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.wallMoveCandidateExists(CucumberStepDefinitions.java:425)
+-ú	at ?.A wall move candidate exists with "horizontal" at position (3, 2)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/RotateWall.feature:11)
+-[0m
+-ñ    [36mWhen [0m[36mI try to flip the wall[0m                                              [90m# CucumberStepDefinitions.iTryToFlipTheWall()[0m
+-¡    [36mThen [0m[36mThe wall shall be rotated over the board to [0m[36m[1m"vertical"[0m              [90m# CucumberStepDefinitions.theWallShallBeRotatedOverTheBoardToString(String)[0m
+-Ó    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"vertical"[0m[36m at position ([0m[36m[1m3[0m[36m, [0m[36m[1m2[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+.
+.á  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/RotateWall.feature:5[0m
+.x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+.x    [32mAnd [0m[32mIt is my turn to move[0m                   [90m# CucumberStepDefinitions.itIsMyTurnToMove()[0m
+.Ü    [32mAnd [0m[32mI have a wall in my hand over the board[0m [90m# CucumberStepDefinitions.iHaveAWallInMyHandOverTheBoard()[0m
+.
+.ß  Scenario Outline: Flip wall from horizontal to vertical or vice versa        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/RotateWall.feature:19[0m
+.Ó    [31mGiven [0m[31mA wall move candidate exists with [0m[31m[1m"vertical"[0m[31m at position ([0m[31m[1m5[0m[31m, [0m[31m[1m6[0m[31m)[0m      [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
+.4      [31mjava.lang.UnsupportedOperationException
+.f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.getWallMove(QuoridorController.java:40)
+.{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.wallMoveCandidateExists(CucumberStepDefinitions.java:425)
+.ö	at ?.A wall move candidate exists with "vertical" at position (5, 6)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/RotateWall.feature:11)
+.[0m
+.ò    [36mWhen [0m[36mI try to flip the wall[0m                                                [90m# CucumberStepDefinitions.iTryToFlipTheWall()[0m
+.√    [36mThen [0m[36mThe wall shall be rotated over the board to [0m[36m[1m"horizontal"[0m              [90m# CucumberStepDefinitions.theWallShallBeRotatedOverTheBoardToString(String)[0m
+.    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"horizontal"[0m[36m at position ([0m[36m[1m5[0m[36m, [0m[36m[1m6[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+/
+/Feature: Save Position
+/û  As a player, I want to be able to save the actual position during a Quoridor game so that I can continue the game at a later stage from the exact position.
+/
+/{  Scenario Outline: Save position [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:7[0m
+/A    [36mGiven No file "<filename>" exists in the filesystem[0m
+/M    [36mWhen The user initiates to save the game with name "<filename>"[0m
+/N    [36mThen A file with "<filename>" shall be created in the filesystem[0m
+/
+/    Examples: 
+/
+/w  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:4[0m
+/f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+/
+/ß  Scenario Outline: Save position                                            [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:14[0m
+/ƒ    [32mGiven [0m[32mNo file [0m[32m[1m"save_game_test.dat"[0m[32m exists in the filesystem[0m              [90m# CucumberStepDefinitions.noFileFilenameExistsInTheFileSystem(String)[0m
+/≈    [31mWhen [0m[31mThe user initiates to save the game with name [0m[31m[1m"save_game_test.dat"[0m  [90m# CucumberStepDefinitions.theUserInitiatesToSaveTheGameWithNameFilename(String)[0m
+/u      [31mjava.lang.UnsupportedOperationException: QuoridorController.saveGame(filename,game) not yet implemented.
+/d	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.saveGame(QuoridorController.java:365)
+/ë	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.theUserInitiatesToSaveTheGameWithNameFilename(CucumberStepDefinitions.java:692)
+/û	at ?.The user initiates to save the game with name "save_game_test.dat"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:9)
+/[0m
+/     [36mThen [0m[36mA file with [0m[36m[1m"save_game_test.dat"[0m[36m shall be created in the filesystem[0m [90m# CucumberStepDefinitions.aFileWithFilenameIsCreatedInTheFilesystem(String)[0m
+0
+0î  Scenario Outline: Save position with existing file name [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:16[0m
+0>    [36mGiven File "<filename>" exists in the filesystem[0m
+0M    [36mWhen The user initiates to save the game with name "<filename>"[0m
+0>    [36mAnd The user confirms to overwrite existing file[0m
+0L    [36mThen File with "<filename>" shall be updated in the filesystem[0m
+0
+0    Examples: 
+0
+0w  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:4[0m
+0f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+0
+0¶  Scenario Outline: Save position with existing file name                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:24[0m
+0¡    [32mGiven [0m[32mFile [0m[32m[1m"save_game_test.dat"[0m[32m exists in the filesystem[0m                [90m# CucumberStepDefinitions.fileFilenameExistsInTheFilesystem(String)[0m
+0ƒ    [31mWhen [0m[31mThe user initiates to save the game with name [0m[31m[1m"save_game_test.dat"[0m [90m# CucumberStepDefinitions.theUserInitiatesToSaveTheGameWithNameFilename(String)[0m
+0u      [31mjava.lang.UnsupportedOperationException: QuoridorController.saveGame(filename,game) not yet implemented.
+0d	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.saveGame(QuoridorController.java:365)
+0ë	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.theUserInitiatesToSaveTheGameWithNameFilename(CucumberStepDefinitions.java:692)
+0ü	at ?.The user initiates to save the game with name "save_game_test.dat"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:18)
+0[0m
+0™    [36mAnd [0m[36mThe user confirms to overwrite existing file[0m                        [90m# CucumberStepDefinitions.theUserConfirmsToOverwriteExistingFile()[0m
+0»    [36mThen [0m[36mFile with [0m[36m[1m"save_game_test.dat"[0m[36m shall be updated in the filesystem[0m  [90m# CucumberStepDefinitions.fileWithFilenameIsUpdatedInTheFileSystem(String)[0m
+1
+1†  Scenario Outline: Save position cancelled due to existing file name [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:26[0m
+1>    [36mGiven File "<filename>" exists in the filesystem[0m
+1M    [36mWhen The user initiates to save the game with name "<filename>"[0m
+1=    [36mAnd The user cancels to overwrite existing file[0m
+1K    [36mThen File "<filename>" shall not be changed in the filesystem[0m
+1
+1    Examples: 
+1
+1w  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:4[0m
+1f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+1
+1¶  Scenario Outline: Save position cancelled due to existing file name       [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:34[0m
+1¡    [32mGiven [0m[32mFile [0m[32m[1m"save_game_test.dat"[0m[32m exists in the filesystem[0m                [90m# CucumberStepDefinitions.fileFilenameExistsInTheFilesystem(String)[0m
+1ƒ    [31mWhen [0m[31mThe user initiates to save the game with name [0m[31m[1m"save_game_test.dat"[0m [90m# CucumberStepDefinitions.theUserInitiatesToSaveTheGameWithNameFilename(String)[0m
+1u      [31mjava.lang.UnsupportedOperationException: QuoridorController.saveGame(filename,game) not yet implemented.
+1d	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.saveGame(QuoridorController.java:365)
+1ë	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.theUserInitiatesToSaveTheGameWithNameFilename(CucumberStepDefinitions.java:692)
+1ü	at ?.The user initiates to save the game with name "save_game_test.dat"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/SavePosition.feature:28)
+1[0m
+1©    [36mAnd [0m[36mThe user cancels to overwrite existing file[0m                         [90m# CucumberStepDefinitions.theUserCancelsToOverwriteExistingFile()[0m
+1À    [36mThen [0m[36mFile [0m[36m[1m"save_game_test.dat"[0m[36m shall not be changed in the filesystem[0m   [90m# CucumberStepDefinitions.fileWithFilenameIsNotChangedInTheFileSystem(String)[0m
+2
+2!Feature: Set Total Thinking Time
+2L  As a player, I wish to set the total thinking time (minutes and seconds) 
+2I  enforced for both players to ensure that a game does not last forever 
+2  before the game starts.
+2
+2ì  Scenario Outline: Set thinking time for players [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SetTotalThinkingTime.feature:9[0m
+2:    [36mWhen <min>:<sec> is set as the thinking time[0m
+2J    [36mThen Both players shall have <min>:<sec> remaining time left[0m
+2
+2    Examples: 
+2
+2Ü  Background:                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SetTotalThinkingTime.feature:6[0m
+2s    [32mGiven [0m[32mA new game is initializing[0m [90m# CucumberStepDefinitions.aNewGameIsInitializing()[0m
+2
+2ú  Scenario Outline: Set thinking time for players         [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SetTotalThinkingTime.feature:15[0m
+2¥    [31mWhen [0m[31m[0m[31m[1m5[0m[31m:[0m[31m[1m13[0m[31m is set as the thinking time[0m                 [90m# CucumberStepDefinitions.setThinkingTime(int,int)[0m
+24      [31mjava.lang.UnsupportedOperationException
+2j	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.setThinkingTime(QuoridorController.java:77)
+2s	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.setThinkingTime(CucumberStepDefinitions.java:500)
+2Ö	at ?.5:13 is set as the thinking time(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/SetTotalThinkingTime.feature:10)
+2[0m
+2∑    [36mThen [0m[36mBoth players shall have [0m[36m[1m5[0m[36m:[0m[36m[1m13[0m[36m remaining time left[0m [90m# CucumberStepDefinitions.checkRemainingTime(int,int)[0m
+3
+3Ü  Background:                        [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SetTotalThinkingTime.feature:6[0m
+3s    [32mGiven [0m[32mA new game is initializing[0m [90m# CucumberStepDefinitions.aNewGameIsInitializing()[0m
+3
+3ù  Scenario Outline: Set thinking time for players          [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SetTotalThinkingTime.feature:16[0m
+3µ    [31mWhen [0m[31m[0m[31m[1m10[0m[31m:[0m[31m[1m00[0m[31m is set as the thinking time[0m                 [90m# CucumberStepDefinitions.setThinkingTime(int,int)[0m
+34      [31mjava.lang.UnsupportedOperationException
+3j	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.setThinkingTime(QuoridorController.java:77)
+3s	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.setThinkingTime(CucumberStepDefinitions.java:500)
+3Ü	at ?.10:00 is set as the thinking time(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/SetTotalThinkingTime.feature:10)
+3[0m
+3∏    [36mThen [0m[36mBoth players shall have [0m[36m[1m10[0m[36m:[0m[36m[1m00[0m[36m remaining time left[0m [90m# CucumberStepDefinitions.checkRemainingTime(int,int)[0m
+4
+4Feature: Start New Game
+4W  As a Quoridor player, I want to start a new game of Quoridor against some opponent. 
+4
+4{  Background:                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/StartNewGame.feature:4[0m
+4m    [32mGiven [0m[32mThe game is not running[0m [90m# CucumberStepDefinitions.theGameIsNotRunning()[0m
+4
+4á  Scenario: Initiate a new game               [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/StartNewGame.feature:7[0m
+4Å    [31mWhen [0m[31mA new game is being initialized[0m      [90m# CucumberStepDefinitions.aNewGameIsBeingInitializing()[0m
+44      [31mjava.lang.UnsupportedOperationException
+4n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.isGameInitializing(QuoridorController.java:113)
+4	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.aNewGameIsBeingInitializing(CucumberStepDefinitions.java:161)
+4{	at ?.A new game is being initialized(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/StartNewGame.feature:8)
+4[0m
+4Ä    [36mAnd [0m[36mWhite player chooses a username[0m       [90m# CucumberStepDefinitions.whitePlayerChosesAUsername()[0m
+4Å    [36mAnd [0m[36mBlack player chooses a username[0m       [90m# CucumberStepDefinitions.blackPlayerChoosesAUsername()[0m
+4|    [36mAnd [0m[36mTotal thinking time is set[0m            [90m# CucumberStepDefinitions.totalThinkingTimeIsSet()[0m
+4Ñ    [36mThen [0m[36mThe game shall become ready to start[0m [90m# CucumberStepDefinitions.theGameShallBecomeReadyToStart()[0m
+5
+5{  Background:                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/StartNewGame.feature:4[0m
+5m    [32mGiven [0m[32mThe game is not running[0m [90m# CucumberStepDefinitions.theGameIsNotRunning()[0m
+5
+5Å  Scenario: Start clock                [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/StartNewGame.feature:14[0m
+5t    [32mGiven [0m[32mThe game is ready to start[0m   [90m# CucumberStepDefinitions.theGameIsReadyToStart()[0m
+5m    [31mWhen [0m[31mI start the clock[0m             [90m# CucumberStepDefinitions.iStartTheClock()[0m
+54      [31mjava.lang.UnsupportedOperationException
+5f	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.startClock(QuoridorController.java:141)
+5r	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iStartTheClock(CucumberStepDefinitions.java:249)
+5n	at ?.I start the clock(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/StartNewGame.feature:16)
+5[0m
+5t    [36mThen [0m[36mThe game shall be running[0m     [90m# CucumberStepDefinitions.theGameShallBeRunning()[0m
+5y    [36mAnd [0m[36mThe board shall be initialized[0m [90m# CucumberStepDefinitions.theBoardShallBeInitialized()[0m
+6
+6Feature: Switch Current Player
+6;  As a player, I wish to know when it is my turn to move. 
+6B  My clock shall be counting down then. Once my move is finished,
+6@  my clock shall be stopped and it shall be my opponent's turn.
+6
+6ä  Scenario Outline: Switch current player [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SwitchCurrentPlayer.feature:9[0m
+64    [36mGiven The player to move is "<player>"[0m
+64    [36mAnd The clock of "<player>" is running[0m
+63    [36mAnd The clock of "<other>" is stopped[0m
+67    [36mWhen Player "<player>" completes his move[0m
+6K    [36mThen The user interface shall be showing it is "<other>" turn[0m
+6:    [36mAnd The clock of "<player>" shall be stopped[0m
+69    [36mAnd The clock of "<other>" shall be running[0m
+6<    [36mAnd The next player to move shall be "<other>"[0m
+6
+6    Examples: 
+6
+6~  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SwitchCurrentPlayer.feature:6[0m
+6f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+6
+6°  Scenario Outline: Switch current player                       [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SwitchCurrentPlayer.feature:21[0m
+6¢    [31mGiven [0m[31mThe player to move is [0m[31m[1m"white"[0m                         [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+6Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+6n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+6{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:786)
+6Å	at ?.The player to move is "white"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/SwitchCurrentPlayer.feature:10)
+6[0m
+6≠    [36mAnd [0m[36mThe clock of [0m[36m[1m"white"[0m[36m is running[0m                         [90m# CucumberStepDefinitions.theClockOfPlayerIsRunning(String)[0m
+6¨    [36mAnd [0m[36mThe clock of [0m[36m[1m"black"[0m[36m is stopped[0m                         [90m# CucumberStepDefinitions.theClockOfOtherIsStopped(String)[0m
+6∞    [36mWhen [0m[36mPlayer [0m[36m[1m"white"[0m[36m completes his move[0m                      [90m# CucumberStepDefinitions.playerPlayerCompletesHisMove(String)[0m
+6ø    [36mThen [0m[36mThe user interface shall be showing it is [0m[36m[1m"black"[0m[36m turn[0m [90m# CucumberStepDefinitions.theUserInterfaceShallBeShowingItIsOtherTurn(String)[0m
+6≤    [36mAnd [0m[36mThe clock of [0m[36m[1m"white"[0m[36m shall be stopped[0m                   [90m# CucumberStepDefinitions.theClockOfPlayerShallBeStopped(String)[0m
+6±    [36mAnd [0m[36mThe clock of [0m[36m[1m"black"[0m[36m shall be running[0m                   [90m# CucumberStepDefinitions.theClockOfOtherShallBeRunning(String)[0m
+6™    [36mAnd [0m[36mThe next player to move shall be [0m[36m[1m"black"[0m                [90m# CucumberStepDefinitions.theNextPlayerToMoveShallBeOther(String)[0m
+7
+7~  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SwitchCurrentPlayer.feature:6[0m
+7f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+7
+7°  Scenario Outline: Switch current player                       [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/SwitchCurrentPlayer.feature:22[0m
+7¢    [31mGiven [0m[31mThe player to move is [0m[31m[1m"black"[0m                         [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
+7Å      [31mjava.lang.UnsupportedOperationException: QuoridorController.completePlayerturn(player) is not currently implemented!
+7n	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.completePlayerTurn(QuoridorController.java:453)
+7{	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thePlayerToMoveIsPlayer(CucumberStepDefinitions.java:784)
+7Å	at ?.The player to move is "black"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/SwitchCurrentPlayer.feature:10)
+7[0m
+7≠    [36mAnd [0m[36mThe clock of [0m[36m[1m"black"[0m[36m is running[0m                         [90m# CucumberStepDefinitions.theClockOfPlayerIsRunning(String)[0m
+7¨    [36mAnd [0m[36mThe clock of [0m[36m[1m"white"[0m[36m is stopped[0m                         [90m# CucumberStepDefinitions.theClockOfOtherIsStopped(String)[0m
+7∞    [36mWhen [0m[36mPlayer [0m[36m[1m"black"[0m[36m completes his move[0m                      [90m# CucumberStepDefinitions.playerPlayerCompletesHisMove(String)[0m
+7ø    [36mThen [0m[36mThe user interface shall be showing it is [0m[36m[1m"white"[0m[36m turn[0m [90m# CucumberStepDefinitions.theUserInterfaceShallBeShowingItIsOtherTurn(String)[0m
+7≤    [36mAnd [0m[36mThe clock of [0m[36m[1m"black"[0m[36m shall be stopped[0m                   [90m# CucumberStepDefinitions.theClockOfPlayerShallBeStopped(String)[0m
+7±    [36mAnd [0m[36mThe clock of [0m[36m[1m"white"[0m[36m shall be running[0m                   [90m# CucumberStepDefinitions.theClockOfOtherShallBeRunning(String)[0m
+7™    [36mAnd [0m[36mThe next player to move shall be [0m[36m[1m"white"[0m                [90m# CucumberStepDefinitions.theNextPlayerToMoveShallBeOther(String)[0m
+8
+8Feature: Validate Position
+8I  As a player, I want to check if a given position is invalid with e.g. 
+8<  overlapping walls or out-of-track pawn or wall positions.
+8
+8à  Scenario Outline: Validate pawn position [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:8[0m
+8P    [36mGiven A game position is supplied with pawn coordinate <row>:<col>[0m
+8:    [36mWhen Validation of the position is initiated[0m
+83    [36mThen The position shall be "<result>"[0m
+8
+8    Examples: 
+8
+8{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+8f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+8
+8ù  Scenario Outline: Validate pawn position                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:15[0m
+8     [32mGiven [0m[32mA game position is supplied with pawn coordinate [0m[32m[1m1[0m[32m:[0m[32m[1m1[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithPawnCoordinate(int,int)[0m
+8ô    [31mWhen [0m[31mValidation of the position is initiated[0m               [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+84      [31mjava.lang.UnsupportedOperationException
+8l	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+8á	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+8à	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:10)
+8[0m
+8¢    [36mThen [0m[36mThe position shall be [0m[36m[1m"ok"[0m                            [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+9
+9{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+9f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+9
+9ù  Scenario Outline: Validate pawn position                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:16[0m
+9     [32mGiven [0m[32mA game position is supplied with pawn coordinate [0m[32m[1m9[0m[32m:[0m[32m[1m9[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithPawnCoordinate(int,int)[0m
+9ô    [31mWhen [0m[31mValidation of the position is initiated[0m               [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+94      [31mjava.lang.UnsupportedOperationException
+9l	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+9á	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+9à	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:10)
+9[0m
+9¢    [36mThen [0m[36mThe position shall be [0m[36m[1m"ok"[0m                            [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+:
+:{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+:f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+:
+:ù  Scenario Outline: Validate pawn position                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:17[0m
+:     [32mGiven [0m[32mA game position is supplied with pawn coordinate [0m[32m[1m4[0m[32m:[0m[32m[1m2[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithPawnCoordinate(int,int)[0m
+:ô    [31mWhen [0m[31mValidation of the position is initiated[0m               [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+:4      [31mjava.lang.UnsupportedOperationException
+:l	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+:á	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+:à	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:10)
+:[0m
+:¢    [36mThen [0m[36mThe position shall be [0m[36m[1m"ok"[0m                            [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+;
+;{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+;f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+;
+;ù  Scenario Outline: Validate pawn position                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:18[0m
+;     [32mGiven [0m[32mA game position is supplied with pawn coordinate [0m[32m[1m0[0m[32m:[0m[32m[1m3[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithPawnCoordinate(int,int)[0m
+;ô    [31mWhen [0m[31mValidation of the position is initiated[0m               [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+;4      [31mjava.lang.UnsupportedOperationException
+;l	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+;á	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+;à	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:10)
+;[0m
+;¢    [36mThen [0m[36mThe position shall be [0m[36m[1m"error"[0m                         [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+<
+<{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+<f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+<
+<û  Scenario Outline: Validate pawn position                      [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:19[0m
+<À    [32mGiven [0m[32mA game position is supplied with pawn coordinate [0m[32m[1m-1[0m[32m:[0m[32m[1m4[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithPawnCoordinate(int,int)[0m
+<ö    [31mWhen [0m[31mValidation of the position is initiated[0m                [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+<4      [31mjava.lang.UnsupportedOperationException
+<l	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+<á	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+<à	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:10)
+<[0m
+<£    [36mThen [0m[36mThe position shall be [0m[36m[1m"error"[0m                          [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+=
+={  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+=f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+=
+=ù  Scenario Outline: Validate pawn position                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:20[0m
+=     [32mGiven [0m[32mA game position is supplied with pawn coordinate [0m[32m[1m3[0m[32m:[0m[32m[1m0[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithPawnCoordinate(int,int)[0m
+=ô    [31mWhen [0m[31mValidation of the position is initiated[0m               [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+=4      [31mjava.lang.UnsupportedOperationException
+=l	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+=á	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+=à	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:10)
+=[0m
+=¢    [36mThen [0m[36mThe position shall be [0m[36m[1m"error"[0m                         [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+>
+>{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+>f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+>
+>û  Scenario Outline: Validate pawn position                      [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:21[0m
+>À    [32mGiven [0m[32mA game position is supplied with pawn coordinate [0m[32m[1m4[0m[32m:[0m[32m[1m-1[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithPawnCoordinate(int,int)[0m
+>ö    [31mWhen [0m[31mValidation of the position is initiated[0m                [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+>4      [31mjava.lang.UnsupportedOperationException
+>l	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+>á	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+>à	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:10)
+>[0m
+>£    [36mThen [0m[36mThe position shall be [0m[36m[1m"error"[0m                          [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+?
+?{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+?f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+?
+?û  Scenario Outline: Validate pawn position                      [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:22[0m
+?À    [32mGiven [0m[32mA game position is supplied with pawn coordinate [0m[32m[1m10[0m[32m:[0m[32m[1m5[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithPawnCoordinate(int,int)[0m
+?ö    [31mWhen [0m[31mValidation of the position is initiated[0m                [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+?4      [31mjava.lang.UnsupportedOperationException
+?l	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+?á	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+?à	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:10)
+?[0m
+?£    [36mThen [0m[36mThe position shall be [0m[36m[1m"error"[0m                          [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+@
+@{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+@f    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+@
+@û  Scenario Outline: Validate pawn position                      [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:23[0m
+@À    [32mGiven [0m[32mA game position is supplied with pawn coordinate [0m[32m[1m5[0m[32m:[0m[32m[1m10[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithPawnCoordinate(int,int)[0m
+@ö    [31mWhen [0m[31mValidation of the position is initiated[0m                [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+@4      [31mjava.lang.UnsupportedOperationException
+@l	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+@á	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+@à	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:10)
+@[0m
+@£    [36mThen [0m[36mThe position shall be [0m[36m[1m"error"[0m                          [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+A
+Aâ  Scenario Outline: Validate wall position [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:25[0m
+AX    [36mGiven A game position is supplied with wall coordinate <row>:<col>-"<dir>"[0m
+A:    [36mWhen Validation of the position is initiated[0m
+A3    [36mThen The position shall be "<result>"[0m
+A
+A    Examples: 
+A
+A{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+Af    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+A
+A™  Scenario Outline: Validate wall position                                  [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:32[0m
+AÙ    [32mGiven [0m[32mA game position is supplied with wall coordinate [0m[32m[1m1[0m[32m:[0m[32m[1m1[0m[32m-[0m[32m[1m"horizontal"[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithWallCoordinate(int,int,String)[0m
+A¶    [31mWhen [0m[31mValidation of the position is initiated[0m                            [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+A4      [31mjava.lang.UnsupportedOperationException
+Al	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:283)
+Aá	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1082)
+Aà	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:27)
+A[0m
+AØ    [36mThen [0m[36mThe position shall be [0m[36m[1m"ok"[0m                                         [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+B
+B{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+Bf    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+B
+B®  Scenario Outline: Validate wall position                                [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:33[0m
+BÚ    [32mGiven [0m[32mA game position is supplied with wall coordinate [0m[32m[1m8[0m[32m:[0m[32m[1m8[0m[32m-[0m[32m[1m"vertical"[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithWallCoordinate(int,int,String)[0m
+B§    [31mWhen [0m[31mValidation of the position is initiated[0m                          [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+B4      [31mjava.lang.UnsupportedOperationException
+Bl	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:283)
+Bá	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1082)
+Bà	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:27)
+B[0m
+B≠    [36mThen [0m[36mThe position shall be [0m[36m[1m"ok"[0m                                       [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+C
+C{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+Cf    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+C
+C™  Scenario Outline: Validate wall position                                  [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:34[0m
+CÙ    [32mGiven [0m[32mA game position is supplied with wall coordinate [0m[32m[1m4[0m[32m:[0m[32m[1m2[0m[32m-[0m[32m[1m"horizontal"[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithWallCoordinate(int,int,String)[0m
+C¶    [31mWhen [0m[31mValidation of the position is initiated[0m                            [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+C4      [31mjava.lang.UnsupportedOperationException
+Cl	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:283)
+Cá	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1082)
+Cà	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:27)
+C[0m
+CØ    [36mThen [0m[36mThe position shall be [0m[36m[1m"ok"[0m                                         [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+D
+D{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+Df    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+D
+D®  Scenario Outline: Validate wall position                                [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:35[0m
+DÚ    [32mGiven [0m[32mA game position is supplied with wall coordinate [0m[32m[1m0[0m[32m:[0m[32m[1m3[0m[32m-[0m[32m[1m"vertical"[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithWallCoordinate(int,int,String)[0m
+D§    [31mWhen [0m[31mValidation of the position is initiated[0m                          [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+D4      [31mjava.lang.UnsupportedOperationException
+Dl	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:283)
+Dá	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1082)
+Dà	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:27)
+D[0m
+D≠    [36mThen [0m[36mThe position shall be [0m[36m[1m"error"[0m                                    [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+E
+E{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+Ef    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+E
+E™  Scenario Outline: Validate wall position                                  [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:36[0m
+EÙ    [32mGiven [0m[32mA game position is supplied with wall coordinate [0m[32m[1m3[0m[32m:[0m[32m[1m0[0m[32m-[0m[32m[1m"horizontal"[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithWallCoordinate(int,int,String)[0m
+E¶    [31mWhen [0m[31mValidation of the position is initiated[0m                            [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+E4      [31mjava.lang.UnsupportedOperationException
+El	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:283)
+Eá	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1082)
+Eà	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:27)
+E[0m
+EØ    [36mThen [0m[36mThe position shall be [0m[36m[1m"error"[0m                                      [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+F
+F{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+Ff    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+F
+F®  Scenario Outline: Validate wall position                                [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:37[0m
+FÚ    [32mGiven [0m[32mA game position is supplied with wall coordinate [0m[32m[1m9[0m[32m:[0m[32m[1m5[0m[32m-[0m[32m[1m"vertical"[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithWallCoordinate(int,int,String)[0m
+F§    [31mWhen [0m[31mValidation of the position is initiated[0m                          [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+F4      [31mjava.lang.UnsupportedOperationException
+Fl	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:283)
+Fá	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1082)
+Fà	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:27)
+F[0m
+F≠    [36mThen [0m[36mThe position shall be [0m[36m[1m"error"[0m                                    [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+G
+G{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+Gf    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+G
+G™  Scenario Outline: Validate wall position                                  [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:38[0m
+GÙ    [32mGiven [0m[32mA game position is supplied with wall coordinate [0m[32m[1m5[0m[32m:[0m[32m[1m9[0m[32m-[0m[32m[1m"horizontal"[0m [90m# CucumberStepDefinitions.aGamePositionIsSuppliedWithWallCoordinate(int,int,String)[0m
+G¶    [31mWhen [0m[31mValidation of the position is initiated[0m                            [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+G4      [31mjava.lang.UnsupportedOperationException
+Gl	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:283)
+Gá	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1082)
+Gà	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:27)
+G[0m
+GØ    [36mThen [0m[36mThe position shall be [0m[36m[1m"error"[0m                                      [90m# CucumberStepDefinitions.thePositionShallBeResult(String)[0m
+H
+H{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+Hf    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+H
+Hë  Scenario: Validate overlapping walls (all valid) [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:40[0m
+H
+Hä    [32mGiven [0m[32mThe following walls exist:[0m               [90m# CucumberStepDefinitions.theFollowingWallsExist(DataTable)[0m
+Hç    [31mWhen [0m[31mValidation of the position is initiated[0m   [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+H4      [31mjava.lang.UnsupportedOperationException
+Hl	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+Há	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+Hà	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:45)
+H[0m
+HÇ    [36mThen [0m[36mThe position shall be valid[0m               [90m# CucumberStepDefinitions.thePositionShallBeValid()[0m
+I
+I{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+If    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+I
+Ië  Scenario: Validate overlapping walls (invalid-1) [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:48[0m
+I
+Iä    [32mGiven [0m[32mThe following walls exist:[0m               [90m# CucumberStepDefinitions.theFollowingWallsExist(DataTable)[0m
+Iç    [31mWhen [0m[31mValidation of the position is initiated[0m   [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+I4      [31mjava.lang.UnsupportedOperationException
+Il	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+Iá	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+Ià	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:53)
+I[0m
+IÑ    [36mThen [0m[36mThe position shall be invalid[0m             [90m# CucumberStepDefinitions.thePositionShallBeInvalid()[0m
+J
+J{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+Jf    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+J
+Jë  Scenario: Validate overlapping walls (invalid-2) [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:56[0m
+J
+Jä    [32mGiven [0m[32mThe following walls exist:[0m               [90m# CucumberStepDefinitions.theFollowingWallsExist(DataTable)[0m
+Jç    [31mWhen [0m[31mValidation of the position is initiated[0m   [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+J4      [31mjava.lang.UnsupportedOperationException
+Jl	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+Já	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+Jà	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:61)
+J[0m
+JÑ    [36mThen [0m[36mThe position shall be invalid[0m             [90m# CucumberStepDefinitions.thePositionShallBeInvalid()[0m
+K
+K{  Background:                 [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:5[0m
+Kf    [32mGiven [0m[32mThe game is running[0m [90m# CucumberStepDefinitions.theGameIsRunning()[0m
+K
+Kë  Scenario: Validate overlapping walls (invalid-3) [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:64[0m
+K
+Kä    [32mGiven [0m[32mThe following walls exist:[0m               [90m# CucumberStepDefinitions.theFollowingWallsExist(DataTable)[0m
+Kç    [31mWhen [0m[31mValidation of the position is initiated[0m   [90m# CucumberStepDefinitions.validationOfThePositionIsInitiated()[0m
+K4      [31mjava.lang.UnsupportedOperationException
+Kl	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.validatePosition(QuoridorController.java:272)
+Ká	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.validationOfThePositionIsInitiated(CucumberStepDefinitions.java:1080)
+Kà	at ?.Validation of the position is initiated(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/ValidatePosition.feature:69)
+K[0m
+KÑ    [36mThen [0m[36mThe position shall be invalid[0m             [90m# CucumberStepDefinitions.thePositionShallBeInvalid()[0m
+ 
+ VThere were undefined steps. You can implement missing steps with the snippets below:
+ 
+ /@Given("The player is located at {int}:{int}")
+ Cpublic void the_player_is_located_at(Integer int1, Integer int2) {
+ I    // Write code here that turns the phrase above into concrete actions
+ /    throw new cucumber.api.PendingException();
+ }
+ 
+ ?@Given("There are no {string} walls {string} from the player")
+ Ppublic void there_are_no_walls_from_the_player(String string, String string2) {
+ I    // Write code here that turns the phrase above into concrete actions
+ /    throw new cucumber.api.PendingException();
+ }
+ 
+ 7@Given("The opponent is not {string} from the player")
+ Apublic void the_opponent_is_not_from_the_player(String string) {
+ I    // Write code here that turns the phrase above into concrete actions
+ /    throw new cucumber.api.PendingException();
+ }
+ 
+ 4@When("Player {string} initiates to move {string}")
+ Fpublic void player_initiates_to_move(String string, String string2) {
+ I    // Write code here that turns the phrase above into concrete actions
+ /    throw new cucumber.api.PendingException();
+ }
+ 
+ -@Then("The move {string} shall be {string}")
+ ?public void the_move_shall_be(String string, String string2) {
+ I    // Write code here that turns the phrase above into concrete actions
+ /    throw new cucumber.api.PendingException();
+ }
+ 
+ 4@Then("Player's new position shall be {int}:{int}")
+ Ipublic void player_s_new_position_shall_be(Integer int1, Integer int2) {
+ I    // Write code here that turns the phrase above into concrete actions
+ /    throw new cucumber.api.PendingException();
+ }
+ 
+ 7@Then("The next player to move shall become {string}")
+ Bpublic void the_next_player_to_move_shall_become(String string) {
+ I    // Write code here that turns the phrase above into concrete actions
+ /    throw new cucumber.api.PendingException();
+ }
+ 
+ <@Given("There is a {string} wall {string} from the player")
+ Mpublic void there_is_a_wall_from_the_player(String string, String string2) {
+ I    // Write code here that turns the phrase above into concrete actions
+ /    throw new cucumber.api.PendingException();
+ }
+ 
+ 6@Given("My opponent is not {string} from the player")
+ @public void my_opponent_is_not_from_the_player(String string) {
+ I    // Write code here that turns the phrase above into concrete actions
+ /    throw new cucumber.api.PendingException();
+ }
+ 
