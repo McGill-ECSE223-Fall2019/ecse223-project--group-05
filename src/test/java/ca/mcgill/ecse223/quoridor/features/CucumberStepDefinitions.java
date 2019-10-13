@@ -45,6 +45,7 @@ import io.cucumber.java.en.*;
 public class CucumberStepDefinitions {
 	
 	private WallMove wallMoveCandidate = null;
+	ArrayList<Player> myPlayers; //Used for rea
 	
 	//Instance Variables for SavePosition tests
 	private String saveFilename = "";
@@ -59,7 +60,7 @@ public class CucumberStepDefinitions {
 	@Given("^The game is not running$")
 	public void theGameIsNotRunning() {
 		initQuoridorAndBoard();
-		createUsersAndPlayers("user1", "user2");
+		myPlayers = createUsersAndPlayers("user1", "user2");
 	}
 
 	@Given("^The game is running$")
@@ -205,28 +206,31 @@ public class CucumberStepDefinitions {
 	 */
   	@Given("The game is ready to start")
   	public void theGameIsReadyToStart() {
-//  		tearDown();
-  		
-  		
-  		//This is no good, tells me there are duplicate walls, so i can't actually create new players
-  		//I need to just take the already existing players and put them in game
-  		//I was thinking of just using tearDown() to just get rid of everything and redo things as if game is running
-  		ArrayList<Player> players = createUsersAndPlayers("player1", "player2");
-//  		createAndStartGame(players);
+  		//Code is taken from createAndStartGame(Arraylist<Player>) except with GameStatus.Running replaced with GameStatus.ReadyToStart
   		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		// There are total 36 tiles in the first four rows and
-		// indexing starts from 0 -> tiles with indices 36 and 36+8=44 are the starting
+  		// indexing starts from 0 -> tiles with indices 36 and 36+8=44 are the starting
 		// positions
 		Tile player1StartPos = quoridor.getBoard().getTile(36);
 		Tile player2StartPos = quoridor.getBoard().getTile(44);
-		
-		Game game = new Game(GameStatus.Running, MoveMode.PlayerMove, players.get(0), players.get(1), quoridor);
+	
+		Game game = new Game(GameStatus.ReadyToStart, MoveMode.PlayerMove, myPlayers.get(0), myPlayers.get(1), quoridor);
 
 		PlayerPosition player1Position = new PlayerPosition(quoridor.getCurrentGame().getWhitePlayer(), player1StartPos);
 		PlayerPosition player2Position = new PlayerPosition(quoridor.getCurrentGame().getBlackPlayer(), player2StartPos);
 
-		GamePosition gamePosition = new GamePosition(0, player1Position, player2Position, players.get(0), game);
-  		QuoridorApplication.getQuoridor().getCurrentGame();
+		GamePosition gamePosition = new GamePosition(0, player1Position, player2Position, myPlayers.get(0), game);
+		// Add the walls as in stock for the players
+		for (int j = 0; j < 10; j++) {
+			Wall wall = Wall.getWithId(j);
+			gamePosition.addWhiteWallsInStock(wall);
+		}
+		for (int j = 0; j < 10; j++) {
+			Wall wall = Wall.getWithId(j + 10);
+			gamePosition.addBlackWallsInStock(wall);
+			}
+		
+		game.setCurrentPosition(gamePosition);
   	}
   	
   	/**
@@ -1098,7 +1102,7 @@ public class CucumberStepDefinitions {
     	Game game = quoridor.getCurrentGame();
     	GamePosition gamePosition = game.getCurrentPosition();
     	Tile tile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
-    	WallMove wallMove = new WallMove(0, 0, game.getWhitePlayer(), tile, game, myDir, game.getCurrentPosition().getWhiteWallsInStock(1));
+    	WallMove wallMove = new WallMove(0, 0, game.getWhitePlayer(), tile, game, myDir, game.getCurrentPosition().getWhiteWallsInStock(4));
     	Wall wall = gamePosition.getWhiteWallsInStock(0);
     	wall.setMove(wallMove);
     	gamePosition.getWhiteWallsInStock().remove(wall);
