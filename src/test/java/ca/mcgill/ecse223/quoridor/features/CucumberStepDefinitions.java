@@ -45,7 +45,10 @@ import io.cucumber.java.en.*;
 public class CucumberStepDefinitions {
 	
 	private WallMove wallMoveCandidate = null;
-	ArrayList<Player> myPlayers; //Used for rea
+	ArrayList<Player> myPlayers; //Used when trying to set the gameStatus to ReadyToStart as the players are not accessible
+	int[] myCoordinate = {0,0}; //Used to store the row and column input from the given scenario
+	String myDirection = ""; //Used to store the direction input from the given scenario
+	boolean positionIsValid = false; //Used to check if the position was valid or not
 	
 	//Instance Variables for SavePosition tests
 	private String saveFilename = "";
@@ -1042,18 +1045,28 @@ public class CucumberStepDefinitions {
 	 */
   	@Given("A game position is supplied with pawn coordinate {int}:{int}")
   	public void aGamePositionIsSuppliedWithPawnCoordinate(int row, int col) {
-  		Quoridor quoridor = QuoridorApplication.getQuoridor();
-  		GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
-  		Tile pawnCoord = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
-  		Player player = currentGamePosition.getPlayerToMove();
-  		PlayerPosition playerPosition = new PlayerPosition(player, pawnCoord);
-  		if(player.hasGameAsBlack()) {
-  			currentGamePosition.setBlackPosition(playerPosition);
-  		}
-  		else if(player.hasGameAsWhite()) {
-  			currentGamePosition.setWhitePosition(playerPosition);
-  		}
-  		quoridor.getCurrentGame().setMoveMode(Game.MoveMode.PlayerMove);
+  		//This code does not allow incorrect inputs to be used for the following steps
+  		//.getTile throws an indexoutofbound and the gameposition is therefore not created
+//  		Quoridor quoridor = QuoridorApplication.getQuoridor();
+//  		GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
+//  		if (((row - 1) * 9 + col - 1) <= 0 || ((row - 1) * 9 + col - 1) >= 81){
+//  			throw new IndexOutOfBoundsException();
+//  		}
+//  		Tile pawnCoord = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
+//  		Player player = currentGamePosition.getPlayerToMove();
+//  		PlayerPosition playerPosition = new PlayerPosition(player, pawnCoord);
+//  		if(player.hasGameAsBlack()) {
+//  			currentGamePosition.setBlackPosition(playerPosition);
+//  		}
+//  		else if(player.hasGameAsWhite()) {
+//  			currentGamePosition.setWhitePosition(playerPosition);
+//  		}
+//  		quoridor.getCurrentGame().setMoveMode(Game.MoveMode.PlayerMove);
+  		
+  		//Alternative
+  		//Simply store the input for use later
+  		myCoordinate[0] = row;
+  		myCoordinate[1] = col;
   	}
   	
   	/**
@@ -1063,8 +1076,11 @@ public class CucumberStepDefinitions {
 	 */
   	@When("Validation of the position is initiated")
   	public void validationOfThePositionIsInitiated() {
-  		Game game = QuoridorApplication.getQuoridor ().getCurrentGame();
-        QuoridorController.validatePosition(game);
+  		if (myDirection.equals("")) {
+  			positionIsValid = QuoridorController.validatePosition(myCoordinate[0], myCoordinate[1]);  			
+  		} else {
+  			positionIsValid = QuoridorController.validatePosition(myCoordinate[0], myCoordinate[1], myDirection);
+  		}
   	}
   	
   	/**
@@ -1074,12 +1090,10 @@ public class CucumberStepDefinitions {
 	 */
     @Then("The position shall be {string}")
     public void thePositionShallBeResult(String result) {
-    	Game game = QuoridorApplication.getQuoridor ().getCurrentGame();
-    	Boolean check = QuoridorController.validatePosition(game);
     	String myResult = "";
-    	if (check.equals(true)) {
+    	if (positionIsValid == true) {
     		myResult = "ok";
-    	} else if (check.equals(false)) {
+    	} else if (positionIsValid == false) {
     		myResult = "error";
     	}
     	assertEquals(result, myResult);
@@ -1092,35 +1106,40 @@ public class CucumberStepDefinitions {
 	 */
     @Given("A game position is supplied with wall coordinate {int}:{int}-{string}")
     public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, String dir) {
-    	Direction myDir = Direction.Horizontal;
-    	if (dir.equals("Horizontal")) {
-    		myDir = Direction.Horizontal;
-    	}else if(dir.equals("Vertical")) {
-    		myDir = Direction.Vertical;
-    	}
-    	Quoridor quoridor = QuoridorApplication.getQuoridor();
-    	Game game = quoridor.getCurrentGame();
-    	GamePosition gamePosition = game.getCurrentPosition();
-    	Tile tile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
-    	WallMove wallMove = new WallMove(0, 0, game.getWhitePlayer(), tile, game, myDir, game.getCurrentPosition().getWhiteWallsInStock(4));
-    	Wall wall = gamePosition.getWhiteWallsInStock(0);
-    	wall.setMove(wallMove);
-    	gamePosition.getWhiteWallsInStock().remove(wall);
-    	gamePosition.getWhiteWallsOnBoard().add(wall);
-    	game.setMoveMode(Game.MoveMode.WallMove);
+    	//This code does not allow incorrect inputs to be used for the following steps
+  		//.getTile throws an indexoutofbound and the gameposition is therefore not created
+//    	Direction myDir = Direction.Horizontal;
+//    	if (dir.equals("Horizontal")) {
+//    		myDir = Direction.Horizontal;
+//    	}else if(dir.equals("Vertical")) {
+//    		myDir = Direction.Vertical;
+//    	}
+//    	Quoridor quoridor = QuoridorApplication.getQuoridor();
+//    	Game game = quoridor.getCurrentGame();
+//    	GamePosition gamePosition = game.getCurrentPosition();
+//    	Tile tile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
+//    	WallMove wallMove = new WallMove(0, 0, game.getWhitePlayer(), tile, game, myDir, game.getCurrentPosition().getWhiteWallsInStock(4));
+//    	Wall wall = gamePosition.getWhiteWallsInStock(0);
+//    	wall.setMove(wallMove);
+//    	gamePosition.getWhiteWallsInStock().remove(wall);
+//    	gamePosition.getWhiteWallsOnBoard().add(wall);
+//    	game.setMoveMode(Game.MoveMode.WallMove);
+    	//Alternative
+  		//Simply store the input for use later
+  		myCoordinate[0] = row;
+  		myCoordinate[1] = col;
+  		myDirection = dir;
     }
     
     @Then("The position shall be valid")
     public void thePositionShallBeValid() {
-    	Game game = QuoridorApplication.getQuoridor().getCurrentGame();
-    	assertEquals(QuoridorController.validatePosition(game), true);
+    	assertEquals(positionIsValid, true);
     	
     }
     
     @Then("The position shall be invalid")
     public void thePositionShallBeInvalid() {
-    	Game game = QuoridorApplication.getQuoridor().getCurrentGame();
-    	assertEquals(QuoridorController.validatePosition(game), false);
+    	assertEquals(positionIsValid, false);
     }
 	///ROTATE WALL
     // DUPLICATE METHOD LEAVING HERE FOR INDIVIDUAL MARKING
@@ -1321,6 +1340,13 @@ public class CucumberStepDefinitions {
 		for( int i = 0 ; i < curFileData.length ; i++ ) {
 			this.curFileData[i] = 0;
 		}
+		
+		//reset these variables for use
+		myCoordinate[0] = 0;
+		myCoordinate[1] = 0;
+		myDirection = "";
+		boolean positionValidated = false;
+		
 	}
 
 	// ***********************************************

@@ -266,11 +266,23 @@ public class QuoridorController {
     }
 
     /**
-     * @param game checks the currentgame to see if the move was a
-     * @return true, if the move is valid, false if not
+     * @param row
+     * @param col
+     * @return true, if the pawn position with the parameters is valid, false if not
      * @author Daniel Wu
      */
-    public static Boolean validatePosition(Game game) {
+    public static Boolean validatePosition(int row, int col) {
+        throw new java.lang.UnsupportedOperationException();
+    }
+    
+    /**
+     * @param row
+     * @param col
+     * @param dir
+     * @return true, if the wall position with the parameters is valid, false if not
+     * @author Daniel Wu
+     */
+    public static Boolean validatePosition(int row, int col, String dir) {
         throw new java.lang.UnsupportedOperationException();
     }
 
