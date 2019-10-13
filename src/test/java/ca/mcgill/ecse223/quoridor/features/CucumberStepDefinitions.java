@@ -880,7 +880,6 @@ public class CucumberStepDefinitions {
         //hardcoding wall instock as there is bug in whitewallsinstock, currently 10, should be 9 after init)
         Wall wallPlaced = currentPlayer.getWall(3);
 
-
         Direction wallMoveDirection;
 
         if (dir.equals("horizontal")) {
@@ -943,8 +942,6 @@ public class CucumberStepDefinitions {
         assertEquals(row, game.getMove(indexOfMove).getTargetTile().getRow());
         assertEquals(col, game.getMove(indexOfMove).getTargetTile().getColumn());
         assertEquals(dir, game.getCurrentPosition().getWhiteWallsOnBoard(wallIndex).getMove().getWallDirection().toString());
-
-        //TODO:Assert position
     }
 
    /**
@@ -966,7 +963,6 @@ public class CucumberStepDefinitions {
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
         //we know whiteplayers turn from it is my turn
         assertEquals(game.getWhitePlayer(), game.getCurrentPosition().getPlayerToMove());
-        //TODO:assert still my turn
     }
 
     /**
@@ -990,16 +986,12 @@ public class CucumberStepDefinitions {
         int indexOfMove = game.getMoves().size();
         assertEquals(1, indexOfMove);
 
-
         //I set the move number to 1 and ruond number to 1, 1 was move before so checking if move was not registered in
         // the list of moves
         assertEquals(1, game.getMove(indexOfMove).getMoveNumber());
         assertEquals(1, game.getMove(indexOfMove).getRoundNumber());
 
         //check move list size to see if it grew in size from 0 to 1
-
-
-        //TODO:Assert move completed
     }
 
     /**
@@ -1012,7 +1004,6 @@ public class CucumberStepDefinitions {
 
         //we know it was white turn before check to see blackturn now
         assertEquals(game.getBlackPlayer(), game.getCurrentPosition().getPlayerToMove());
-        //TODO:Assert which turn it is black turn
     }
 
     /**
@@ -1030,8 +1021,6 @@ public class CucumberStepDefinitions {
         // the list of moves
         assertEquals(0, game.getMove(indexOfMove).getMoveNumber());
         assertEquals(1, game.getMove(indexOfMove).getRoundNumber());
-
-        //TODO:assert move is not registered
     }
     
     /*

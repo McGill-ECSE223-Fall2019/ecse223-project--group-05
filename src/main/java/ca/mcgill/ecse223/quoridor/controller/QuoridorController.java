@@ -250,7 +250,7 @@ public class QuoridorController {
     }
 
     /***
-     * This method is to provide a list of existing user names on the UI when at the quoridor menu to see a list of
+     * This method is to provide a list of existing user names on the GUI when at the quoridor menu to see a list of
      * existing usernames and select one
      * @return List of UserNames in Quoridor
      * @author Alex Masciotra
