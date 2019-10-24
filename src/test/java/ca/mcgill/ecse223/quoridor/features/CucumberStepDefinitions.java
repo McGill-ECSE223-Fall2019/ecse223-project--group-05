@@ -140,7 +140,7 @@ public class CucumberStepDefinitions {
 	public void aNewGameIsInitializing() throws Throwable {
 		initQuoridorAndBoard();
 		ArrayList<Player> players = createUsersAndPlayers("user1", "user2");
-		new Game(GameStatus.Initializing, MoveMode.PlayerMove, players.get(0), players.get(1), QuoridorApplication.getQuoridor());
+		new Game(GameStatus.Initializing, MoveMode.PlayerMove, QuoridorApplication.getQuoridor());
 	}
 	// ***********************************************
 	// Scenario and scenario outline step definitions
@@ -217,7 +217,7 @@ public class CucumberStepDefinitions {
 		Tile player1StartPos = quoridor.getBoard().getTile(36);
 		Tile player2StartPos = quoridor.getBoard().getTile(44);
 	
-		Game game = new Game(GameStatus.ReadyToStart, MoveMode.PlayerMove, myPlayers.get(0), myPlayers.get(1), quoridor);
+		Game game = new Game(GameStatus.ReadyToStart, MoveMode.PlayerMove, quoridor);
 
 		PlayerPosition player1Position = new PlayerPosition(quoridor.getCurrentGame().getWhitePlayer(), player1StartPos);
 		PlayerPosition player2Position = new PlayerPosition(quoridor.getCurrentGame().getBlackPlayer(), player2StartPos);
@@ -1404,7 +1404,9 @@ public class CucumberStepDefinitions {
 		Tile player1StartPos = quoridor.getBoard().getTile(36);
 		Tile player2StartPos = quoridor.getBoard().getTile(44);
 		
-		Game game = new Game(GameStatus.Running, MoveMode.PlayerMove, players.get(0), players.get(1), quoridor);
+		Game game = new Game(GameStatus.Running, MoveMode.PlayerMove, quoridor);
+		game.setWhitePlayer(players.get(0));
+		game.setBlackPlayer(players.get(1));
 
 		PlayerPosition player1Position = new PlayerPosition(quoridor.getCurrentGame().getWhitePlayer(), player1StartPos);
 		PlayerPosition player2Position = new PlayerPosition(quoridor.getCurrentGame().getBlackPlayer(), player2StartPos);
