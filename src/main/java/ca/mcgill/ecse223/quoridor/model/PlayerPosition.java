@@ -2,10 +2,12 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.quoridor.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 95 "../../../../../QuoridorGame.ump"
-public class PlayerPosition
+// line 70 "../../../../../QuoridorGamePersistence.ump"
+// line 96 "../../../../../QuoridorGame.ump"
+public class PlayerPosition implements Serializable
 {
 
   //------------------------
@@ -163,5 +165,13 @@ public class PlayerPosition
       existingBlackInGame.delete();
     }
   }
+  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 73 "../../../../../QuoridorGamePersistence.ump"
+  private static final long serialVersionUID = 0L ;
 
+  
 }
