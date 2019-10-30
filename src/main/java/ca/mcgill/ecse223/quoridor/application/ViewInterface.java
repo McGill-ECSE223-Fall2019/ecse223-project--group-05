@@ -5,18 +5,12 @@
 //<?import java.util.ArrayList?>
 
 
-package application;
+package ca.mcgill.ecse223.quoridor.application;
 
 import java.util.List;
-import java.util.ArrayList;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 public class ViewInterface {
 	

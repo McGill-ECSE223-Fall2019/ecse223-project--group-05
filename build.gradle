@@ -7,7 +7,7 @@ targetCompatibility = 8
 wrapper.gradleVersion = '5.6.2'
 
 plugins {
-  id 'application'
+  id 'ca.mcgill.ecse223.quoridor.application'
   id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 

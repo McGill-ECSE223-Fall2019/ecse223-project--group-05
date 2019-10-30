@@ -18,7 +18,7 @@ public class QuoridorController {
      * It also sets the white and the black pawn to their initial position and assigns 10 walls in stock to each
      * player. Finally, it starts the white player's timer (thinking time).
      *
-     * @param quoridor - Quoridor application
+     * @param quoridor - Quoridor ca.mcgill.ecse223.quoridor.application
      * @return void
      * @author Thomas Philippon
      */
@@ -446,7 +446,7 @@ public class QuoridorController {
     }
 
     /**
-     * Simple query method for obtaining the application's current game instance.
+     * Simple query method for obtaining the ca.mcgill.ecse223.quoridor.application's current game instance.
      * Creates one if there isn't one.
      *
      * @return game
