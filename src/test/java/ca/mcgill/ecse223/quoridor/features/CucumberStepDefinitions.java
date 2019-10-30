@@ -1045,9 +1045,11 @@ public class CucumberStepDefinitions {
      */
   	
   	/**
-	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate pawn position
+	 * @param row
+	 * @param col
+	 * @author Daniel Wu
 	 */
   	@Given("A game position is supplied with pawn coordinate {int}:{int}")
   	public void aGamePositionIsSuppliedWithPawnCoordinate(int row, int col) {
@@ -1076,9 +1078,9 @@ public class CucumberStepDefinitions {
   	}
   	
   	/**
-	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate pawn position and Validate wall position
+	 * @author Daniel Wu
 	 */
   	@When("Validation of the position is initiated")
   	public void validationOfThePositionIsInitiated() {
@@ -1090,9 +1092,10 @@ public class CucumberStepDefinitions {
   	}
   	
   	/**
-	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate pawn position and Validate wall position
+	 * @param result 
+	 * @author Daniel Wu
 	 */
     @Then("The position shall be {string}")
     public void thePositionShallBeResult(String result) {
@@ -1106,9 +1109,11 @@ public class CucumberStepDefinitions {
     }
     
     /**
-	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate wall position
+	 * @param row
+	 * @param col
+	 * @author Daniel Wu
 	 */
     @Given("A game position is supplied with wall coordinate {int}:{int}-{string}")
     public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, String dir) {

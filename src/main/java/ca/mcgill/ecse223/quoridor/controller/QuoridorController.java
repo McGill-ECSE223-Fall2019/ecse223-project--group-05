@@ -2,6 +2,10 @@ package ca.mcgill.ecse223.quoridor.controller;
 
 import java.net.UnknownServiceException;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.io.IOException;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
@@ -370,7 +374,24 @@ public class QuoridorController {
      * @author Daniel Wu
      */
     public static Boolean validatePosition(int row, int col) {
-        throw new java.lang.UnsupportedOperationException();
+    	//Check if out of the board, this should probably throw an exception
+    	if((row > 9) || (row < 1) || (col > 9) || (col < 1)){
+    		return false;
+		}
+
+    	//Check if another player is already there, assuming we have to move then we don't have to know who's moving
+    	GamePosition currentGamePosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition();
+    	PlayerPosition whitePlayerPosition = currentGamePosition.getWhitePosition();
+		PlayerPosition blackPlayerPosition = currentGamePosition.getBlackPosition();
+		
+		if ((whitePlayerPosition.getTile().getRow() == row) && (whitePlayerPosition.getTile().getColumn() == col)) {
+			return false;
+		}
+		if ((blackPlayerPosition.getTile().getRow() == row) && (blackPlayerPosition.getTile().getColumn() == col)) {
+			return false;
+		}
+		
+		return true;
     }
 
     /**
@@ -381,7 +402,71 @@ public class QuoridorController {
      * @author Daniel Wu
      */
     public static Boolean validatePosition(int row, int col, String dir) {
-        throw new java.lang.UnsupportedOperationException();
+    	//Check if out of the board, this should probably throw an exception
+    	if((row > 8) || (row < 1) || (col > 8) || (col < 1)){
+    		return false;
+		}
+    	
+    	//Check if walls are overlapping
+    	GamePosition currentGamePosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition();
+
+
+        List<Wall> whiteWallsOnBoard = currentGamePosition.getWhiteWallsOnBoard();
+        List<Wall> blackWallsOnBoard = currentGamePosition.getBlackWallsOnBoard();
+
+//        Map<Tile, String> tileInUseByWallAndDirection = new LinkedHashMap<Tile, String>();
+
+//        List<Tile> tilesInUseByWall = new ArrayList<>();
+        
+        int numberOfWalls = whiteWallsOnBoard.size() + blackWallsOnBoard.size();
+        Tile[] tilesInUse = new Tile[numberOfWalls];
+        String[] directions = new String[numberOfWalls];
+
+        for (int i=0; i<numberOfWalls; i++) {
+        	if (i < whiteWallsOnBoard.size()) {
+        		//Adding the tiles used and their direction to their respective arrays
+        		tilesInUse[i] = whiteWallsOnBoard.get(i).getMove().getTargetTile();
+        		directions[i] = whiteWallsOnBoard.get(i).getMove().getWallDirection().toString();
+        	} else {
+        		//When we run out of white one, then to get the 0's index we need to do i - number of white walls on board
+        		tilesInUse[i] = blackWallsOnBoard.get(i - whiteWallsOnBoard.size()).getMove().getTargetTile();
+        		directions[i] = blackWallsOnBoard.get(i - whiteWallsOnBoard.size()).getMove().getWallDirection().toString();
+        	}
+        }
+
+        for (int i=0; i<numberOfWalls; i++) {
+        	//Check if same tile
+        	if ((tilesInUse[i].getRow() == row) && (tilesInUse[i].getColumn() == col)) {
+                return false;
+            }
+        	//If it's not the same tile then check directionality
+            if (directions[i].toLowerCase() == dir.toLowerCase()) {
+            	//If horizontal walls
+                if (dir.toLowerCase().equals("horizontal")) {
+                	//then check if same row
+                    if (tilesInUse[i].getRow() == row) {
+                    	//then check if too close
+                        Integer gap = java.lang.Math.abs(tilesInUse[i].getColumn() - col);
+                        if (gap == 1) {
+                            return false;
+                        }
+                    }
+                } else if (dir.toLowerCase().equals("vertical")) {
+                	//If vertical walls, then check if same column
+                    if (tilesInUse[i].getColumn() == col) {
+                    	//then check if too close
+                        Integer gap = java.lang.Math.abs(tilesInUse[i].getRow() - row);
+                        if (gap == 1) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        
+        //This will potentially also check if the wall will block the path to the other side
+    	
+    	return true;
     }
 
     //Getter for gamestate
