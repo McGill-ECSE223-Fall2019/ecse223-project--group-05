@@ -17,31 +17,18 @@ import ca.mcgill.ecse223.quoridor.model.Quoridor;
  *	Persistence class which uses object serialization rather than a coded instance-to-textfile algorithm.
  *
  */
-public class QuoridorPersistence {
-	
-	
-	private static String filename = SaveConfig.getSaveFilePath("mastersavedata.quoridor");
-	
-	private static boolean setFilename( String inputFilename ) {
-		filename = inputFilename;
-		return true;
-	}
-	
-	private static String getFilename() {
-		return filename;
-	}
-	
-	
+public class QuoridorRuntimePersistence {
+		
 	/**
 	 * Saves the provided instance of Quoridor into an serialized java object output stream.
 	 * Throws runtime errors if there is a FileNotFoundException or IOException.
 	 * @param quoridor
 	 */
-	private static void save( Quoridor quoridor ) {
+	private static void save( Quoridor quoridor , String path) {
 		
 		FileOutputStream fis; 
 		try{
-			fis = new FileOutputStream(filename);
+			fis = new FileOutputStream(path);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
@@ -64,11 +51,11 @@ public class QuoridorPersistence {
 	 * Throws runtime errors if there is a FileNotFoundException or IOException.
 	 * @return quoridor instance with data.
 	 */
-	public static Quoridor load() {
+	private static Quoridor load(String path) {
 		
 		FileInputStream fis; 
 		try{
-			fis = new FileInputStream(filename);
+			fis = new FileInputStream(path);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}
@@ -82,7 +69,7 @@ public class QuoridorPersistence {
 				ois.close();
 			} catch (ClassNotFoundException e) {
 				ois.close();
-				throw new RuntimeException("File \"" + filename + "\" was not able to be read.", e);
+				throw new RuntimeException("File \"" + path + "\" was not able to be read.", e);
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);

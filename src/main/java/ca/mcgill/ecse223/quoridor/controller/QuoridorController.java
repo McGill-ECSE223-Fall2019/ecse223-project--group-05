@@ -359,7 +359,7 @@ public class QuoridorController {
 	 * @throws IOException
 	 */
 	public static SavingStatus saveGame(String filename, Game game) throws IOException{
-		if( SaveConfig.createFileSavesFolder() == false ) {
+		if( SaveConfig.createGameSavesFolder() == false ) {
 			return SavingStatus.failed;
 		}
 		throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game) not yet implemented.");
@@ -377,7 +377,7 @@ public class QuoridorController {
 	 * @throws IOException
 	 */
 	public static SavingStatus saveGame(String filename, Game game, boolean overwrite) throws IOException{
-		if( SaveConfig.createFileSavesFolder() == false ) {
+		if( SaveConfig.createGameSavesFolder() == false ) {
 			return SavingStatus.failed;
 		}
 		throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game,overwrite) not yet implemented.");
