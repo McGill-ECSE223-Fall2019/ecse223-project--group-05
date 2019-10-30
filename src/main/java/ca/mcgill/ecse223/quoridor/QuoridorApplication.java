@@ -2,6 +2,8 @@ package ca.mcgill.ecse223.quoridor;
 
 
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -24,9 +26,12 @@ public class QuoridorApplication extends Application{
 	public void start(Stage primaryStage) {
 		//load fxml file and display it in the stage
 		try {
-			FXMLLoader loader = new FXMLLoader();
-			URL url = new URL("/view/advs.fxml");
-			loader.setLocation(url);
+			File resourceFile = new File("src/main/resources/advs.fxml");
+			System.out.println(resourceFile.toString());
+			URL url = resourceFile.toURI().toURL();
+			FXMLLoader loader = new FXMLLoader(url);
+			//URL url = new URL("file:///view/advs.fxml");
+			//loader.setLocation(url);
 			Parent root = loader.load();
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
