@@ -5,7 +5,7 @@
 //<?import java.util.ArrayList?>
 
 
-package ca.mcgill.ecse223.quoridor.application;
+package ca.mcgill.ecse223.quoridor.view;
 
 import java.util.List;
 
