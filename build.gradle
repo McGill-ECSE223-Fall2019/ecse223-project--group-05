@@ -6,6 +6,16 @@ targetCompatibility = 8
 // Versioning of dependencies
 wrapper.gradleVersion = '5.6.2'
 
+plugins {
+  id 'application'
+  id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+javafx {
+    version = "11.0.2"
+    modules = [ 'javafx.controls' ]
+}
+
 repositories {
     jcenter()
     mavenCentral()
