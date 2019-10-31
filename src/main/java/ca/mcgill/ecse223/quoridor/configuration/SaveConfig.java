@@ -15,12 +15,12 @@ public class SaveConfig {
 	 * ==================================================================================================================
 	 */
 	
-	public static final String userAppDataDir 		= "\\Saves Games\\Quoridor\\appdata\\";		//Folder for things the user shouldn't ever touch
-	public static final String userGameSavesDir 	= "\\Saved Games\\Quoridor\\saves\\";		//Folder of the saves that the user can use to reinstantiate games
-	public static final String appDataExtension 	= ".qdata";									//Extension for serialized runtime data
-	public static final String gameSaveExtension 	= ".qsave";									//Extension for data of individual games
-	public static final String usersDataFilename	= "users" + appDataExtension;				//Name of file which contains serialized Quoridor, User, Board, and Tiles.
-	public static final String autosaveFilename		= "snapshot" + appDataExtension;			//Name of file which contains a complete serialized dataset of the full quoridor application automatically.
+	public static final String userAppDataDir 			= "\\Saves Games\\Quoridor\\appdata\\";		//Folder for things the user shouldn't ever touch
+	public static final String userGameSavesDir 		= "\\Saved Games\\Quoridor\\saves\\";		//Folder of the saves that the user can use to reinstantiate games
+	public static final String appDataExtension 		= ".qdata";									//Extension for serialized runtime data
+	public static final String gameSaveExtension 		= ".qsave";									//Extension for data of individual games
+	public static final String usersDatabaseFilename	= "users" + appDataExtension;				//Name of file which contains serialized Quoridor, User, Board, and Tiles.
+	public static final String autosaveFilename			= "snapshot" + appDataExtension;			//Name of file which contains a complete serialized dataset of the full quoridor application automatically.
 	
 	
 	/*
@@ -45,21 +45,21 @@ public class SaveConfig {
 	 */
 	
 	/**
-	 * Produces the path to the folder for runtime data.
+	 * Produces the path to the folder for runtime model data.
 	 * @return String of the from-root path to the appdata folder.
 	 */
 	public static String getAppDataFolderPath() {
 		return ( System.getProperty("user.home") + userAppDataDir );
 	}
 	/**
-	 * Produces the path to the application's runtime data file containing data about the users, quoridor itself, but not of particular games.
+	 * Produces the path to the application's runtime model data file containing data about the users, quoridor itself, but not of particular games.
 	 * @return String of the from-root path to the users.qdata file.
 	 */
-	public static String getAppDataFilePath() {
-		return ( SaveConfig.getAppDataFolderPath() + usersDataFilename );
+	public static String getUserDatabaseFilePath() {
+		return ( SaveConfig.getAppDataFolderPath() + usersDatabaseFilename );
 	}
 	/**
-	 * Produces the path to the application's autosave data, which contains a snapshott of the application's full system at a particular moment.
+	 * Produces the path to the application's autosave model data, which contains a snapshott of the application's full system at a particular moment.
 	 * @return String of the from-root path to the snapshot.qdata file.
 	 */
 	public static String getAutosaveFilePath() {
@@ -83,7 +83,7 @@ public class SaveConfig {
 		if( SaveConfig.checkAppDataFolderExists() ) {
 			return true;
 		} else {
-			File file = new File( SaveConfig.getAppDataFilePath() );
+			File file = new File( SaveConfig.getUserDatabaseFilePath() );
 			return file.mkdir();
 		}
 	}
