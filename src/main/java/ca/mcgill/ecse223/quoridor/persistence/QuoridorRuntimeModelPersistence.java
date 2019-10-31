@@ -22,7 +22,7 @@ import ca.mcgill.ecse223.quoridor.model.User;
  * @author Edwin Pan
  *
  */
-public class QuoridorRuntimePersistence {
+public class QuoridorRuntimeModelPersistence {
 		
 	/*
 	 * ==================================================================================================

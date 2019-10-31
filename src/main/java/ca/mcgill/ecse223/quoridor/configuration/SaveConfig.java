@@ -21,6 +21,7 @@ public class SaveConfig {
 	public static final String gameSaveExtension 		= ".qsave";									//Extension for data of individual games
 	public static final String usersDatabaseFilename	= "users" + appDataExtension;				//Name of file which contains serialized Quoridor, User, Board, and Tiles.
 	public static final String autosaveFilename			= "snapshot" + appDataExtension;			//Name of file which contains a complete serialized dataset of the full quoridor application automatically.
+	public static final String localSettingsFilename	= "settings" + appDataExtension;			//Name of file which contains peripheral data to do with non-model related settings, such as the GUI.
 	
 	
 	/*
@@ -51,6 +52,7 @@ public class SaveConfig {
 	public static String getAppDataFolderPath() {
 		return ( System.getProperty("user.home") + userAppDataDir );
 	}
+	
 	/**
 	 * Produces the path to the application's runtime model data file containing data about the users, quoridor itself, but not of particular games.
 	 * @return String of the from-root path to the users.qdata file.
@@ -58,12 +60,21 @@ public class SaveConfig {
 	public static String getUserDatabaseFilePath() {
 		return ( SaveConfig.getAppDataFolderPath() + usersDatabaseFilename );
 	}
+	
 	/**
 	 * Produces the path to the application's autosave model data, which contains a snapshott of the application's full system at a particular moment.
 	 * @return String of the from-root path to the snapshot.qdata file.
 	 */
 	public static String getAutosaveFilePath() {
 		return ( SaveConfig.getAppDataFolderPath() + autosaveFilename );
+	}
+	
+	/**
+	 * Produces the path to the application's application settings file.
+	 * @return String of the from-root path to the settings.qdata file.
+	 */
+	public static String getAppSettingsFilePath() {
+		return ( SaveConfig.getAppDataFolderPath() + localSettingsFilename );
 	}
 	
 	/**
