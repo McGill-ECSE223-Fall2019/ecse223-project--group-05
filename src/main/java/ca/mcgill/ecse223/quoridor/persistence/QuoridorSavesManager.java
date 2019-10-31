@@ -15,6 +15,7 @@ import ca.mcgill.ecse223.quoridor.model.Game;
 import ca.mcgill.ecse223.quoridor.model.GamePosition;
 import ca.mcgill.ecse223.quoridor.model.Move;
 import ca.mcgill.ecse223.quoridor.model.Player;
+import ca.mcgill.ecse223.quoridor.model.PlayerPosition;
 import ca.mcgill.ecse223.quoridor.model.Tile;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
@@ -78,9 +79,11 @@ public class QuoridorSavesManager {
 	 * @throws FileNotFoundException, IOException
 	 */
 	public static Game loadGamePawnsAndWalls( String filename, Game game ) throws FileNotFoundException, IOException {
-		//Read setup
-		String line1;
-		String line2;
+		
+		/*
+		 * Read Setup
+		 */
+		String[] lines = new String [2];
 		File file = new File(filename);
 		FileReader fileReader;
 		try{
@@ -88,19 +91,109 @@ public class QuoridorSavesManager {
 		} catch (FileNotFoundException e) {
 			throw e;
 		}
-		//Reading
+		
+		
+		
+		/*
+		 * Reading
+		 */
 		try {
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			line1 = bufferedReader.readLine();
-			line2 = bufferedReader.readLine();	//While hardcoding line1 and line2 isn't good for scalability, much of this code is going to be scrapped anyways once phase 2 begins. This is a temporary measure.
+			lines[0] = bufferedReader.readLine();
+			lines[1] = bufferedReader.readLine();	//While hardcoding line1 and line2 isn't good for scalability, much of this code is going to be scrapped anyways once phase 2 begins. This is a temporary measure.
 			bufferedReader.close(); 
 		} catch (IOException e) {
 			throw e;
 		}
-		//Parsing
-		boolean blackIsNextToPlay = line1.charAt(0) == 'B';
-		throw new UnsupportedOperationException();
-		//TODO
+		
+		
+		
+		/*
+		 * PARSING SECTION
+		 * Line 0 is for player 0; Line 1 is for player 1. By index, of course.
+		 */
+		
+		//Shortcut variable instantiation
+		boolean blackIsNextToPlay = lines[0].charAt(0) == 'B';
+		Player[] 			players 			=	new Player[2];
+		PlayerPosition[] 	playerPositions 	= 	new PlayerPosition[2];
+		List<List<Wall>>	playerWallsInStock	=	new ArrayList<List<Wall>>();
+		List<List<Wall>>	playerWallsOnBoard	=	new ArrayList<List<Wall>>();
+		if(blackIsNextToPlay) {
+			players[0]	=			game.getBlackPlayer();
+			players[1]	=			game.getWhitePlayer();
+			playerPositions[0]	=	game.getCurrentPosition().getBlackPosition();
+			playerPositions[1]	=	game.getCurrentPosition().getWhitePosition();
+			playerWallsInStock.add(	game.getCurrentPosition().getBlackWallsInStock() );
+			playerWallsInStock.add(	game.getCurrentPosition().getWhiteWallsInStock() );
+			playerWallsOnBoard.add(	game.getCurrentPosition().getBlackWallsOnBoard() );
+			playerWallsOnBoard.add(	game.getCurrentPosition().getWhiteWallsOnBoard() );
+		} else {
+			players[0]	=			game.getWhitePlayer();
+			players[1]	=			game.getBlackPlayer();
+			playerPositions[0]	=	game.getCurrentPosition().getWhitePosition();
+			playerPositions[1]	=	game.getCurrentPosition().getBlackPosition();
+			playerWallsInStock.add(	game.getCurrentPosition().getWhiteWallsInStock() );
+			playerWallsInStock.add(	game.getCurrentPosition().getBlackWallsInStock() );
+			playerWallsOnBoard.add(	game.getCurrentPosition().getWhiteWallsOnBoard() );
+			playerWallsOnBoard.add(	game.getCurrentPosition().getBlackWallsOnBoard() );
+		}
+		
+		//Parsing into data for each player (0: first player; 1: second player)
+			//For reference, consider:	W: e9, e3v, d3v
+			//			tens indices	000000000011111
+			//			ones indices	012345678901234
+		for( int i = 0 ; i < 2 ; i ++ ) {
+			int playerPositionRow = lines[i].charAt(4) - '0' + 1;
+			int playerPositionCol = lines[i].charAt(3) - 'a' + 1;
+			playerPositions[0].setTile( game.getQuoridor().getBoard().getTile( getTileId(playerPositionRow, playerPositionCol) ) );
+			int wallsPlaced = (lines[i].length()-5)/5;
+			for( int j = 0 ; j < wallsPlaced ; j++ ) {
+				
+				//Get previous wallMove for reference. It must be the most recent.
+				Move prevMove;
+				if( game.getMoves().size() == 0 ) {
+					prevMove = null;
+				} else {
+					List<Move> allWallMoves = game.getMoves();
+					prevMove = game.getMove( game.getMoves().size() - 1 );
+					for( Move m : allWallMoves ) {
+						if( m.getMoveNumber() > prevMove.getMoveNumber() ) {
+							prevMove = m;
+						}
+					}
+				}
+				
+				//Read in the j'th wall word for constructing the new WallMove
+				int			wallCol = lines[i].charAt( 7 + 5*j ) - 'a' + 1;
+				int			wallRow = lines[i].charAt( 8 + 5*j ) - '0' + 1;
+				Direction	wallDir = lines[i].charAt( 9 + 5*j ) == 'v' ? Direction.Vertical : Direction.Horizontal;
+				//Collect remaining data for constructing the new WallMove
+				int 		newMoveNumber 	= prevMove != null ? prevMove.getMoveNumber() + 1 : 1 ;
+				int			newRoundNumber	= j + 1;
+				Player		player			= players[i];
+				Tile		targetTile		= game.getQuoridor().getBoard().getTile( getTileId(wallRow, wallCol) );
+				//Move around walls so that a wall is taken from the stock and put into the on-the-board list for input as a placed wall in constructor.
+				Wall		wall			= playerWallsInStock.get(i).remove( playerWallsInStock.get(i).size() -1 );
+				playerWallsOnBoard.get(i).add(wall);
+				//Create the new WallMove
+				WallMove newWallMove = new WallMove( newMoveNumber, newRoundNumber, player, targetTile, game, wallDir, wall);
+				//Add the new WallMove into the game's moves
+				if(prevMove != null) {
+					prevMove.setNextMove(newWallMove);
+				}
+				newWallMove.setPrevMove(prevMove);
+				game.addMove(newWallMove);
+				
+			}
+		}
+		
+		
+		
+		/*
+		 * Data now parsed in. Return the game.
+		 */
+		return game;
 	}
 	
 	/**
@@ -138,7 +231,7 @@ public class QuoridorSavesManager {
 		positionThenWalls = "" + playerTile.getRow() + columnIntToChar(playerTile.getColumn()) +",";
 		//Writing all of the player's wall coordinates and orientation.
 		for( Wall wall : playerWalls ) {
-			positionThenWalls = positionThenWalls + " " + wall.getMove().getTargetTile().getRow() + columnIntToChar(wall.getMove().getTargetTile().getColumn()) + ( wall.getMove().getWallDirection() == Direction.Horizontal ? "h" : "v" ) + "," ;
+			positionThenWalls = positionThenWalls + " " + columnIntToChar(wall.getMove().getTargetTile().getColumn()) + wall.getMove().getTargetTile().getRow() + ( wall.getMove().getWallDirection() == Direction.Horizontal ? "h" : "v" ) + "," ;
 		}
 		positionThenWalls = positionThenWalls.trim();
 		//Getting rid of the extra ',' at the end, if present
@@ -257,5 +350,14 @@ public class QuoridorSavesManager {
 		return blackMoves;
 	}
 	
+	/**
+	 * Returns TileId for a tile in the quoridor board given the row and col in integers.
+	 * @param row
+	 * @param col
+	 * @return
+	 */
+	private static int getTileId( int row, int col ) {
+		return (row-1)*9+col-1 ;
+	}
 	
 }
