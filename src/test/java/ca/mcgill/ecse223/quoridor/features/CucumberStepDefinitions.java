@@ -2,8 +2,6 @@ package ca.mcgill.ecse223.quoridor.features;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
-import ca.mcgill.ecse223.quoridor.controller.*;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.model.Board;
@@ -34,7 +31,6 @@ import ca.mcgill.ecse223.quoridor.model.Tile;
 import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
-import cucumber.api.PendingException;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -44,7 +40,7 @@ import io.cucumber.java.en.*;
 
 public class CucumberStepDefinitions {
 	
-	private WallMove wallMoveCandidate = null;
+	//private WallMove wallMoveCandidate = null; //dead code; never used.
 	ArrayList<Player> myPlayers; //Used when trying to set the gameStatus to ReadyToStart as the players are not accessible
 	int[] myCoordinate = {0,0}; //Used to store the row and column input from the given scenario
 	String myDirection = ""; //Used to store the direction input from the given scenario
@@ -139,7 +135,7 @@ public class CucumberStepDefinitions {
 	@Given("^A new game is initializing$")
 	public void aNewGameIsInitializing() throws Throwable {
 		initQuoridorAndBoard();
-		ArrayList<Player> players = createUsersAndPlayers("user1", "user2");
+		//ArrayList<Player> players = createUsersAndPlayers("user1", "user2"); // dead code
 		new Game(GameStatus.Initializing, MoveMode.PlayerMove, QuoridorApplication.getQuoridor());
 	}
 	// ***********************************************
@@ -1334,7 +1330,7 @@ public class CucumberStepDefinitions {
 		myCoordinate[0] = 0;
 		myCoordinate[1] = 0;
 		myDirection = "";
-		boolean positionValidated = false;
+		//boolean positionValidated = false;//dead code
 		
 	}
 

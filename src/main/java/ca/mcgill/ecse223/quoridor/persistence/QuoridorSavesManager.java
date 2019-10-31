@@ -12,7 +12,6 @@ import java.util.List;
 
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
-import ca.mcgill.ecse223.quoridor.model.GamePosition;
 import ca.mcgill.ecse223.quoridor.model.Move;
 import ca.mcgill.ecse223.quoridor.model.Player;
 import ca.mcgill.ecse223.quoridor.model.PlayerPosition;
@@ -273,81 +272,13 @@ public class QuoridorSavesManager {
 		}
 	}
 	
+	/**
+	 * Checks if the game's currentPlayerToMove is black.
+	 * @param game
+	 * @return
+	 */
 	private static boolean currentPlayerIsBlack( Game game ) {
 		return game.getCurrentPosition().getPlayerToMove().equals( game.getBlackPlayer() );
-	}
-	
-	/**
-	 * Returns whether or not the Black Player is first based on moves.
-	 * If no moves have been made in the game, without GUI elements there is no way
-	 * to tell who is the first player to move in that game. As such, we default to the
-	 * chess standard - that is, the White Player moves first and the Black Player moves second.
-	 * @param game
-	 * @return
-	 */
-	private static boolean firstPlayerIsBlack( Game game ) {
-		GamePosition firstGamePosition = game.getPositions().get(0);
-		for( GamePosition position : game.getPositions() ) {
-			if( position.getId() < firstGamePosition.getId() ) {
-				firstGamePosition = position;
-			}
-		}
-		return firstGamePosition.getBlackPosition().getPlayer().equals( firstGamePosition.getPlayerToMove());
-	}
-	
-	/**
-	 * Returns the move with move number 1, which should be the first.
-	 * If there have been no moves, then it returns null.
-	 * @param game
-	 * @return
-	 */
-	private static Move getFirstMove( Game game ) {
-		List<Move> allMoves = game.getMoves();
-		if( allMoves.size() == 0 ) {
-			return null;
-		}
-		for( Move move : allMoves ) {
-			if( move.getMoveNumber() == 1 ) {
-				return move;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Returns an ArrayList of all of the White Player's moves.
-	 * @param game
-	 * @return
-	 */
-	private static ArrayList<Move> getWhitePlayerMoves( Game game ) {
-		Player whitePlayer = game.getWhitePlayer();
-		ArrayList<Move> whiteMoves = new ArrayList<Move>();
-		Move movePosition = getFirstMove(game);
-		while( movePosition != null ) {
-			if( movePosition.getPlayer().getUser().getName().equals( whitePlayer.getUser().getName() ) ) {
-				whiteMoves.add(movePosition);
-			}
-			movePosition = movePosition.getNextMove();
-		}
-		return whiteMoves;
-	}
-	
-	/**
-	 * Returns an ArrayList of all of the Black Player's moves.
-	 * @param game
-	 * @return
-	 */
-	private static ArrayList<Move> getBlackPlayerMoves( Game game ) {
-		Player blackPlayer = game.getBlackPlayer();
-		ArrayList<Move> blackMoves = new ArrayList<Move>();
-		Move movePosition = getFirstMove(game);
-		while( movePosition != null ) {
-			if( movePosition.getPlayer().getUser().getName().equals( blackPlayer.getUser().getName() ) ) {
-				blackMoves.add(movePosition);
-			}
-			movePosition = movePosition.getNextMove();
-		}
-		return blackMoves;
 	}
 	
 	/**
