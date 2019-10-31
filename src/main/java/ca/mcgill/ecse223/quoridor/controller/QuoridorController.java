@@ -239,13 +239,14 @@ public class QuoridorController {
 
         if(isValid){
 
-
             if (currentPlayer.hasGameAsWhite()){
+                currentGamePosition.addWhiteWallsOnBoard(wallMoveCandidate.getWallPlaced());
                 currentGamePosition.setPlayerToMove(getCurrentBlackPlayer());
             } else {
+                currentGamePosition.addBlackWallsOnBoard(wallMoveCandidate.getWallPlaced());
                 currentGamePosition.setPlayerToMove(getCurrentWhitePlayer());
             }
-        } else{
+        } else {
             if(currentPlayer.hasGameAsWhite()){
                 currentGamePosition.setPlayerToMove(getCurrentWhitePlayer());
             } else{

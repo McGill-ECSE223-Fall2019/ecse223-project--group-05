@@ -40,13 +40,13 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.*;
 
 public class CucumberStepDefinitions {
-	
+
 	private WallMove wallMoveCandidate = null;
 	ArrayList<Player> myPlayers; //Used when trying to set the gameStatus to ReadyToStart as the players are not accessible
 	int[] myCoordinate = {0,0}; //Used to store the row and column input from the given scenario
 	String myDirection = ""; //Used to store the direction input from the given scenario
 	boolean positionIsValid = false; //Used to check if the position was valid or not
-	
+
 	//Instance Variables for SavePosition tests
 	private String saveFilename = "";
 	private final int fileDataLength = 1000000;
@@ -978,7 +978,9 @@ public class CucumberStepDefinitions {
     public void itShallBeMyTurnToMove() {
 
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+
         //we know whiteplayers turn from it is my turn
+
         assertEquals(game.getWhitePlayer(), game.getCurrentPosition().getPlayerToMove());
     }
 
