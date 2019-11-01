@@ -1,21 +1,60 @@
-apply plugin: 'java'
-//apply plugin: 'junit-platform-gradle-plugin'
-sourceCompatibility = 8
-targetCompatibility = 8
+////apply plugin: 'java'
+//plugins {
+//    id 'java'
+//    id 'org.openjfx.javafxplugin' version '0.0.8'
+//}
+////apply plugin: 'junit-platform-gradle-plugin'
+//sourceCompatibility = 8
+//targetCompatibility = 8
+//
+//// Versioning of dependencies
+//wrapper.gradleVersion = '5.6.2'
+//
+//javafx {
+//    version = "8"
+//    modules = [ 'javafx.controls' ]
+//}
+//
+//repositories {
+//    jcenter()
+//    mavenCentral()
+//}
+//
+//dependencies {
+//    testImplementation "io.cucumber:cucumber-java:4.7.2"
+//    testImplementation "io.cucumber:cucumber-junit:4.7.2"
+//    testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.0"
+//
+//    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.5.0"
+//    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.5.0"
+//}
+//
+//test {
+//    useJUnitPlatform()
+//}
+plugins {
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'java'
+    id 'application'
+}
 
-// Versioning of dependencies
-wrapper.gradleVersion = '5.6.2'
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
-    jcenter()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+    mavenLocal()
     mavenCentral()
 }
+
 
 dependencies {
     testImplementation "io.cucumber:cucumber-java:4.7.2"
     testImplementation "io.cucumber:cucumber-junit:4.7.2"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.0"
-    
+
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.5.0"
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.5.0"
 }
@@ -23,3 +62,10 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+javafx {
+    version = '11'
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+mainClassName = 'ca.mcgill.ecse223.quoridor.QuoridorApplication'

@@ -12,10 +12,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.controller.*;
@@ -139,7 +136,7 @@ public class CucumberStepDefinitions {
 	@Given("^A new game is initializing$")
 	public void aNewGameIsInitializing() throws Throwable {
 		initQuoridorAndBoard();
-		ArrayList<Player> players = createUsersAndPlayers("user1", "user2");
+		//ArrayList<Player> players = createUsersAndPlayers("user1", "user2");
 		new Game(GameStatus.Initializing, MoveMode.PlayerMove, QuoridorApplication.getQuoridor());
 	}
 	// ***********************************************
@@ -522,6 +519,11 @@ public class CucumberStepDefinitions {
 
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
 
+        ArrayList<Player> newPlayers = createUsersAndPlayers("user1", "user2");
+
+        game.setWhitePlayer(newPlayers.get(0));
+        game.setBlackPlayer(newPlayers.get(1));
+
         Player nextPlayerWhite = game.getWhitePlayer();
         Player nextPlayerBlack = game.getBlackPlayer();
 
@@ -530,7 +532,6 @@ public class CucumberStepDefinitions {
         if (color.equals("white")) {
 
             game.getWhitePlayer().setNextPlayer(nextPlayerWhite);
-
         } else if (color.equals("black")) {
 
             game.getWhitePlayer().setNextPlayer(nextPlayerBlack);
@@ -557,12 +558,21 @@ public class CucumberStepDefinitions {
     public void thereIsNoExistingUser(String username) {
         QuoridorApplication.getQuoridor().addUser(username);
         List<User> userList = QuoridorApplication.getQuoridor().getUsers();
-        for (User user : userList) {
+        List<Integer> removeUserList = new ArrayList<Integer>();
 
+		int index = 0;
+        for (User user : userList) {
             if (user.getName().equals(username)) {
-                QuoridorApplication.getQuoridor().removeUser(user);
+                removeUserList.add(index);
             }
+            index++;
         }
+
+        if(removeUserList.size() > 0){
+        	for(Integer i : removeUserList){
+        		QuoridorApplication.getQuoridor().getUser(i).delete();
+			}
+		}
     }
 
     /**
@@ -571,9 +581,9 @@ public class CucumberStepDefinitions {
      */
     @When("The player selects existing {string}")
     public void thePlayerSelectsExisting(String username) {
-        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
 
-        QuoridorController.selectExistingUserName(username, game);
+        QuoridorController.selectExistingUserName(username, quoridor);
 
     }
 
@@ -583,8 +593,10 @@ public class CucumberStepDefinitions {
      */
     @When("The player provides new user name: {string}")
     public void thePlayerProvidesNewUserName(String username) {
-        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
-        QuoridorController.selectNewUserName(username, game);
+
+    	Quoridor quoridor = QuoridorApplication.getQuoridor();
+        //Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+        QuoridorController.selectNewUserName(username, quoridor);
     }
 
     /**
@@ -613,7 +625,7 @@ public class CucumberStepDefinitions {
     @Then("The player shall be warned that {string} already exists")
     public void thePlayerShallBeWarnedThatAlreadyExists(String username) {
 
-        assertEquals(username, QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getNextPlayer().getUser().getName());
+        //assertEquals(username, QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getNextPlayer().getUser().getName());
 
         //GUI notification that username is already existing and he will be that username
     }
@@ -874,11 +886,16 @@ public class CucumberStepDefinitions {
 
         Player currentPlayer = game.getCurrentPosition().getPlayerToMove();
 
-//		int wallsInStock = game.getCurrentPosition().numberOfWhiteWallsInStock();
-//        Wall wallPlaced = currentPlayer.getWall(10 - wallsInStock);
+		Integer wallsInStock = 0;
 
+		if(currentPlayer.hasGameAsWhite()) {
+			wallsInStock = game.getCurrentPosition().getWhiteWallsInStock().size();
+		}
+		else if(currentPlayer.hasGameAsBlack()) {
+			wallsInStock = game.getCurrentPosition().getBlackWallsInStock().size();
+		}
         //hardcoding wall instock as there is bug in whitewallsinstock, currently 10, should be 9 after init)
-        Wall wallPlaced = currentPlayer.getWall(3);
+        Wall wallPlaced = currentPlayer.getWall(wallsInStock - 1);
 
         Direction wallMoveDirection;
 
@@ -894,7 +911,7 @@ public class CucumberStepDefinitions {
 
         Tile tile = board.getTile((row - 1) * 9 + col - 1);
 
-        WallMove wallMoveCandidate = new WallMove(1, 1, currentPlayer, tile, game, wallMoveDirection, wallPlaced);
+        WallMove wallMoveCandidate = new WallMove(game.getMoves().size() + 1, game.getCurrentPosition().getId(), currentPlayer, tile, game, wallMoveDirection, wallPlaced);
 
         game.setWallMoveCandidate(wallMoveCandidate);
 
@@ -920,10 +937,10 @@ public class CucumberStepDefinitions {
     @When("I release the wall in my hand")
     public void iReleaseTheWallInMyHand() {
 
-        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
         //Board board = QuoridorApplication.getQuoridor().getBoard();
 
-        QuoridorController.releaseWall(game);
+        QuoridorController.releaseWall(quoridor);
     }
 
     /**
