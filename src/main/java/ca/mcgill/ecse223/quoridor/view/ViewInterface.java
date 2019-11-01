@@ -7,6 +7,7 @@
 
 package ca.mcgill.ecse223.quoridor.view;
 
+import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import java.util.List;
 
 import java.io.File;
@@ -29,6 +30,7 @@ import ca.mcgill.ecse223.quoridor.controller.*;
 
 public class ViewInterface {
 	public Timer timer;
+
 	//these are the pages that the user can travel to/interact with
 	private enum Page {
 		TOP_BUTTONS,
