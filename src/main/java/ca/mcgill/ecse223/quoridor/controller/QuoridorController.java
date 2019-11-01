@@ -8,6 +8,7 @@ import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
 import ca.mcgill.ecse223.quoridor.timer.PlayerTimer;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -343,6 +344,66 @@ public class QuoridorController {
         return isValid;
     }
 
+    /**
+     * Helper Method to set the username to the correct color
+     *
+     * @param color    of player
+     * @param quoridor object
+     * @author Alex Masciotra
+     */
+    public static void assignPlayerColorToUserName(String color, Quoridor quoridor) {
+
+        Player whitePlayer = quoridor.getCurrentGame().getWhitePlayer();
+        Player blackPlayer = quoridor.getCurrentGame().getBlackPlayer();
+
+        if (color.equals("white")) {
+
+            quoridor.getCurrentGame().getWhitePlayer().setNextPlayer(whitePlayer);
+        } else if (color.equals("black")) {
+
+            quoridor.getCurrentGame().getWhitePlayer().setNextPlayer(blackPlayer);
+        } else {
+
+            throw new IllegalArgumentException("Unsupported color was provided");
+        }
+    }
+
+    /**
+     * method to insure no nullpointerExceptions occur when getting items from the model
+     *
+     * @param quoridor game object
+     * @author Alex Masciotra
+     */
+    public static void initializeQuoridor(Quoridor quoridor) {
+        //part of method is taken from given code in the stepDefinitions
+
+        User user1 = quoridor.addUser("user1");
+        User user2 = quoridor.addUser("user2");
+
+        int thinkingTime = 10; //placeholder
+        Player player1 = new Player(new Time(thinkingTime), user1, 9, Direction.Horizontal);
+        Player player2 = new Player(new Time(thinkingTime), user2, 1, Direction.Horizontal);
+
+        Player[] players = { player1, player2 };
+
+        // Create all walls. Walls with lower ID belong to player1,
+        // while the second half belongs to player 2
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 10; j++) {
+                new Wall(i * 10 + j, players[i]);
+            }
+        }
+
+        new Game(GameStatus.Initializing, Game.MoveMode.PlayerMove, quoridor);
+
+        quoridor.getCurrentGame().setWhitePlayer(player1);
+        quoridor.getCurrentGame().setBlackPlayer(player2);
+
+    }
+
+
+
+
     /***
      * Method to set existing username to player
      * @param userName username to set to player
@@ -514,6 +575,7 @@ public class QuoridorController {
 
     /**
      * This version is used when trying to validate the gamePosition, it checks if all the moves are valid
+     *
      * @param gamePosition
      * @return true, if the GamePosition is valid, false if not
      * @author Daniel Wu
@@ -544,7 +606,7 @@ public class QuoridorController {
         }
 
         for (int i = 0; i < numberOfWalls; i++) {
-            for (int j=i+1; j<numberOfWalls; j++) {
+            for (int j = i + 1; j < numberOfWalls; j++) {
                 // Check with every single wall on the board
                 // Check if same tile
                 if ((tilesInUse[i].getRow() == tilesInUse[j].getRow()) && (tilesInUse[i].getColumn() == tilesInUse[j].getColumn())) {
