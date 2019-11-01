@@ -779,9 +779,9 @@ public class CucumberStepDefinitions {
 	 */
 	
 	/**
-	 * @author Edwin Pan
+	 * @author Matthias Arabian
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
-	 * Sets up test preconditions such that the player whose turn it is to player is the provided player.
+	 * Sets up test preconditions such that the player whose turn it is to play is the provided player.
 	 */
 	@Given("The player to move is {string}")
 	public void thePlayerToMoveIsPlayer(String playerColorAsString){
@@ -803,6 +803,7 @@ public class CucumberStepDefinitions {
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the clock of the player whose turn it is to play is running
 	 */
+//TODO MATTHIAS	
 	@Given("The clock of {string} is running")
 	public void theClockOfPlayerIsRunning(String playerColorAsString){
 		QuoridorController.continuePlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
@@ -813,6 +814,7 @@ public class CucumberStepDefinitions {
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the clock of the player whose turn it is not to play is stopped
 	 */
+//TODO MATTHIAS
 	@Given("The clock of {string} is stopped")
 	public void theClockOfOtherIsStopped(String playerColorAsString){
 		QuoridorController.stopPlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString), timer );
@@ -823,28 +825,42 @@ public class CucumberStepDefinitions {
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Makes the selected player complete their move.
 	 */
+//TODO MATTHIAS
 	@When("Player {string} completes his move")
 	public void playerPlayerCompletesHisMove(String playerColorAsString){
 		QuoridorController.completePlayerTurn( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
 	}
-
+	
+	/**
+	 * @author Matthias Arabian
+	 */
+//TODO MATTHIAS	
+	@Then("The user interface shall be showing it is {string} turn")
+	public void theUserInterfaceShallBeShowingItIs__Turn(String name) {
+		
+	}
+	
+	
 	/**
 	 * @author Edwin Pan
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Asserts that the user interface now shows that the specified player's timer is stopped.
 	 */
-	@Then("The clock of {string} shall be stopped")
-	public void theClockOfPlayerShallBeStopped(String playerColorAsString){
+	//TODO MATTHIAS
+	@And("The clock of {string} shall be stopped")
+	public void andTheClockOfPlayerShallBeStopped(String playerColorAsString){
 		assertEquals( QuoridorController.getPlayerTimerRunning( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , false );
 	}
 
+	
 	/**
 	 * @author Edwin Pan
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Asserts that the user interface now shows that the specified player's timer is running.
 	 */
-	@Then("The clock of {string} shall be running")
-	public void theClockOfOtherShallBeRunning(String playerColorAsString){
+	//TODO MATTHIAS
+	@And("The clock of {string} shall be running")
+	public void andTheClockOfOtherShallBeRunning(String playerColorAsString){
 		assertEquals( QuoridorController.getPlayerTimerRunning( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
 	}
 	
@@ -854,18 +870,9 @@ public class CucumberStepDefinitions {
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Asserts that the user interface now shows that the next move belongs to the specified player.
 	 */
-	@Then("The next player to move shall be {string}")
+//TODO MATTHIAS
+	@And("The next player to move shall be {string}")
 	public void theNextPlayerToMoveShallBeOther(String playerColorAsString){
-		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
-	}
-	
-	/**
-	 * @author Edwin Pan
-	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
-	 * Asserts that the user interface now shows that is now the specified player's turn.
-	 */
-	@Then("The user interface shall be showing it is {string} turn")
-	public void theUserInterfaceShallBeShowingItIsOtherTurn(String playerColorAsString){
 		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
 	}
 	
@@ -1188,6 +1195,7 @@ public class CucumberStepDefinitions {
 	 * This function calls for the GUI to update its wall move object to match its new direction
 	 * @author Matthias Arabian
 	 */
+//TODO MATTHIAS
 	@Then("The wall shall be rotated over the board to {string}")
 	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
 		// GUI-related feature -- TODO for later
