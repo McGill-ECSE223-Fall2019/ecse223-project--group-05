@@ -468,7 +468,7 @@ public class QuoridorController {
                 return false;
             }
         	//If it's not the same tile then check directionality
-            if (directions[i].toLowerCase() == dir.toLowerCase()) {
+            if (directions[i].toLowerCase().equals(dir.toLowerCase())) {
             	//If horizontal walls
                 if (dir.toLowerCase().equals("horizontal")) {
                 	//then check if same row
