@@ -25,12 +25,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import ca.mcgill.ecse223.quoridor.QuoridorApplication;
-import ca.mcgill.ecse223.quoridor.controller.*;
+
 
 
 public class ViewInterface {
-	public Timer timer;
 
     private static Quoridor quoridor = QuoridorApplication.getQuoridor();
 
@@ -275,7 +273,6 @@ public class ViewInterface {
 	 * initializes the FXML components. this code runs once the application is launched but before the GUI is displayed.
 	 */
 	public void initialize() {
-		timer = new Timer();
 
 		ComboBox_username1.setItems(FXCollections.observableArrayList(
 			    "A", "B", "C", "D"));
