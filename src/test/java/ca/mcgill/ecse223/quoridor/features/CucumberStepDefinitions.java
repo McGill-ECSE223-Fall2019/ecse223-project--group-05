@@ -53,6 +53,8 @@ public class CucumberStepDefinitions {
 	private char [] refFileData = new char [fileDataLength];	//Memory for storing data of one file for comparison.
 	private char [] curFileData = new char [fileDataLength];	//Memory for storing data of another file for comparison.
 
+	//Timer object for starting and stopping the player clock
+	Timer timer = new Timer();
 	// ***********************************************
 	// Background step definitions
 	// ***********************************************
@@ -225,9 +227,10 @@ public class CucumberStepDefinitions {
 	 */
   	@When("I start the clock")
   	public void iStartTheClock() throws java.lang.UnsupportedOperationException {
+
   		Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
   		Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
-  		QuoridorController.startClock(whitePlayer, blackPlayer);
+  		QuoridorController.startPlayerTimer(whitePlayer, timer);
   	}
   	
   	/**
@@ -260,7 +263,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The initialization of the board is initiated")
 	public void initializationOfBoardInitiated(){
-		QuoridorController.initializeBoard(QuoridorApplication.getQuoridor());
+		QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
 	}
 	
 	/**
@@ -276,15 +279,15 @@ public class CucumberStepDefinitions {
 	 */
 	@And("White's pawn shall be in its initial position")
 	public void whitesPawnShallBeInItsInitialPosition() {
-		assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(36),QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile());
+		assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(4),QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile());
 	}
 	
 	/**
 	 * @author Thomas Philippon
 	 */
 	@And("Black's pawn shall be in its initial position")
-	public void blacksPawnshallBeInItsInitialPosition() {
-		assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(44), QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile());
+	public void blacksPawnShallBeInItsInitialPosition() {
+		assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(76), QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile());
 	}
 	
 	/**
@@ -310,7 +313,14 @@ public class CucumberStepDefinitions {
 	 */
 	@And("White's clock shall be counting down")
 	public void whitesClockShallBeCountingDown() {
-		assertNotEquals("19:00:00", QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());	
+		//wait to let the counter counting down 2 seconds
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertNotEquals("19:00:00", QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
 	}
 	
 	/**
@@ -345,7 +355,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("I try to grab a wall from my stock")
 	public void iTryToGrabAWallFromMyStock() {
-		QuoridorController.grabWall(QuoridorApplication.getQuoridor().getCurrentGame());	
+		QuoridorController.grabWall(QuoridorApplication.getQuoridor());
 	}
 
 	/**
@@ -374,8 +384,8 @@ public class CucumberStepDefinitions {
 	@And("A wall move candidate shall be created at initial position")
 	public void aWallMoveCandidateShallBeCreatedAtInitialPosition() {
 		//Here is assume that the initial position is the tile located at (0,0)
-		assertEquals(0,QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().getTargetTile().getRow());
-		assertEquals(0,QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().getTargetTile().getColumn());
+		assertEquals(1,QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().getTargetTile().getRow());
+		assertEquals(1,QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().getTargetTile().getColumn());
 	}
 	
 	/**
@@ -800,7 +810,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("The clock of {string} is stopped")
 	public void theClockOfOtherIsStopped(String playerColorAsString){
-		QuoridorController.stopPlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
+		QuoridorController.stopPlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString), timer );
 	}
 
 	/**
@@ -1413,8 +1423,8 @@ public class CucumberStepDefinitions {
 		// There are total 36 tiles in the first four rows and
 		// indexing starts from 0 -> tiles with indices 36 and 36+8=44 are the starting
 		// positions
-		Tile player1StartPos = quoridor.getBoard().getTile(36);
-		Tile player2StartPos = quoridor.getBoard().getTile(44);
+		Tile player1StartPos = quoridor.getBoard().getTile(4);
+		Tile player2StartPos = quoridor.getBoard().getTile(76);
 		
 		Game game = new Game(GameStatus.Running, MoveMode.PlayerMove, quoridor);
 		game.setWhitePlayer(players.get(0));
