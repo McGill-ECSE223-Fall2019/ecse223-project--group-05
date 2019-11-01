@@ -421,6 +421,74 @@ public class QuoridorController {
         return true;
     }
 
+    /**
+     * This version is used when trying to validate the gamePosition, it checks if all the moves are valid
+     * @param gamePosition
+     * @return true, if the GamePosition is valid, false if not
+     * @author Daniel Wu
+     */
+    public static Boolean validatePosition(GamePosition gamePosition) {
+        //This is obsolete as the gamePosition wouldn't exist in the first place, so I'm skipping whether or not the move is on the board
+//    	if ((gamePosition.getBlackPosition().getTile().getRow() >9) || (gamePosition.getBlackPosition().getTile().getRow() <1)
+//    			|| (gamePosition.getBlackPosition().getTile().getColumn() >9) || (gamePosition.getBlackPosition().getTile().getColumn() <1));
+
+        List<Wall> whiteWallsOnBoard = gamePosition.getWhiteWallsOnBoard();
+        List<Wall> blackWallsOnBoard = gamePosition.getBlackWallsOnBoard();
+
+        int numberOfWalls = whiteWallsOnBoard.size() + blackWallsOnBoard.size();
+        Tile[] tilesInUse = new Tile[numberOfWalls];
+        String[] directions = new String[numberOfWalls];
+
+        for (int i = 0; i < numberOfWalls; i++) {
+            if (i < whiteWallsOnBoard.size()) {
+                // Adding the tiles used and their direction to their respective arrays
+                tilesInUse[i] = whiteWallsOnBoard.get(i).getMove().getTargetTile();
+                directions[i] = whiteWallsOnBoard.get(i).getMove().getWallDirection().toString();
+            } else {
+                // When we run out of white one, then to get the 0's index we need to do i -
+                // number of white walls on board
+                tilesInUse[i] = blackWallsOnBoard.get(i - whiteWallsOnBoard.size()).getMove().getTargetTile();
+                directions[i] = blackWallsOnBoard.get(i - whiteWallsOnBoard.size()).getMove().getWallDirection().toString();
+            }
+        }
+
+        for (int i = 0; i < numberOfWalls; i++) {
+            for (int j=i+1; j<numberOfWalls; j++) {
+                // Check with every single wall on the board
+                // Check if same tile
+                if ((tilesInUse[i].getRow() == tilesInUse[j].getRow()) && (tilesInUse[i].getColumn() == tilesInUse[j].getColumn())) {
+                    return false;
+                }
+                // If it's not the same tile then check directionality
+                if (directions[i].toLowerCase().equals(directions[j].toLowerCase())) {
+                    // If horizontal walls
+                    if (directions[i].toLowerCase().equals("horizontal")) {
+                        // then check if same row
+                        if (tilesInUse[i].getRow() == tilesInUse[j].getRow()) {
+                            // then check if too close
+                            Integer gap = java.lang.Math.abs(tilesInUse[i].getColumn() - tilesInUse[j].getColumn());
+                            if (gap == 1) {
+                                return false;
+                            }
+                        }
+                    } else if (directions[i].toLowerCase().equals("vertical")) {
+                        // If vertical walls, then check if same column
+                        if (tilesInUse[i].getColumn() == tilesInUse[j].getColumn()) {
+                            // then check if too close
+                            Integer gap = java.lang.Math.abs(tilesInUse[i].getRow() - tilesInUse[j].getRow());
+                            if (gap == 1) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+
     //Getter for gamestate
 
     /**
