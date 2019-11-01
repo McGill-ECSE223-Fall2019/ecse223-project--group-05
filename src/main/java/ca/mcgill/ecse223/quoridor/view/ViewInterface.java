@@ -7,6 +7,7 @@
 
 package ca.mcgill.ecse223.quoridor.view;
 
+import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Timer;
 
-import ca.mcgill.ecse223.quoridor.QuoridorApplication;
+import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import javafx.collections.FXCollections;
 
 import javafx.fxml.FXML;
@@ -30,6 +31,8 @@ import ca.mcgill.ecse223.quoridor.controller.*;
 
 public class ViewInterface {
 	public Timer timer;
+
+    private static Quoridor quoridor = QuoridorApplication.getQuoridor();
 
 	//these are the pages that the user can travel to/interact with
 	private enum Page {
@@ -278,5 +281,81 @@ public class ViewInterface {
 			    "A", "B", "C", "D"));
 		ComboBox_username2.setItems(FXCollections.observableArrayList(
 			    "A", "B", "C", "D"));
+
+		QuoridorController.initializeQuoridor(quoridor);
 	}
+
+    /**
+     * @author Alex Masciotra
+     * method to display the existingusernames in quoridor when arrow is pressed
+     */
+	public void displayExistingUserNames(){
+	    //for testing purposes manually adding usernames
+
+        //when the arrow is pressed
+        List<String> existingUserNames = QuoridorController.provideExistingUserNames(quoridor);
+
+        //this comboBox is for whiteUserChooseFromExistingArrow
+        ComboBox_username1.setItems(FXCollections.observableList(existingUserNames));
+
+        //this comboBox is for blackUserChooseFromExistingArrow
+        ComboBox_username2.setItems(FXCollections.observableList(existingUserNames));
+
+    }
+
+    /**
+     * @author Alex Masciotra
+     * method to selectAnExistingUserNAme when arrow is pressed to view
+     */
+	public void selectExistingUserNameFromDropDownList(){
+
+	    //when user selects one of the usernames from the drop downlist
+        //check if the event is coming from selecting from the white or black combobox username
+
+        /*
+        // the if and else conditions is more, if the event is coming from the whiteplayer, or if its coming from black
+        if(ComboBox_username1.toString().toLowerCase().contains("white")){
+            QuoridorController.assignPlayerColorToUserName("white", quoridor);
+            QuoridorController.selectExistingUserName(ComboBox_username1.getContentOfBoxAsString, quoridor);
+        } else if (ComboBox_username2.toString().toLowerCase().contains("black")){
+            QuoridorController.assignPlayerColorToUserName("black", quoridor);
+            QuoridorController.selectExistingUserName(ComboBox_username2.getContentOfBoxAsString, quoridor);
+        }
+
+         */
+
+    }
+
+    /**
+     * @author Alex Masciotra
+     * Method to create a new username
+     */
+    public void createNewUserName(){
+
+        /*
+        Boolean IsValid;
+        //here comboBox should be like newWhiteUserName or newBlackUserName
+	    if(ComboBox_username1.toString().toLowerCase().contains("white")){
+	        QuoridorController.assignPlayerColorToUserName("white", quoridor);
+
+	        isValid = QuoridorController.selectNewUserName(ComboBox_username1.getContentOfBoxAsString, quoridor);
+
+	        if (isValid == false){
+
+	            //THROW POPUP SAYING USERNAME ALREADY IN USE AND SELECT A NEW ONE AND RECALL THIS METHOD
+            }
+
+        } else if (ComboBox_username2.toString().toLowerCase().contains("black")){
+            QuoridorController.assignPlayerColorToUserName("black", quoridor);
+
+            isValid = QuoridorController.selectNewUserName(ComboBox_username2.getContentOfBoxAsString, quoridor);
+
+            if (isValid == false){
+
+                //THROW POPUP SAYING USERNAME ALREADY IN USE AND SELECT A NEW ONE AND RECALL THIS METHOD
+            }
+        }
+
+	    */
+    }
 }
