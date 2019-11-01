@@ -40,13 +40,13 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.*;
 
 public class CucumberStepDefinitions {
-	
+
 	private WallMove wallMoveCandidate = null;
 	ArrayList<Player> myPlayers; //Used when trying to set the gameStatus to ReadyToStart as the players are not accessible
 	int[] myCoordinate = {0,0}; //Used to store the row and column input from the given scenario
 	String myDirection = ""; //Used to store the direction input from the given scenario
 	boolean positionIsValid = false; //Used to check if the position was valid or not
-	
+
 	//Instance Variables for SavePosition tests
 	private String saveFilename = "";
 	private final int fileDataLength = 1000000;
@@ -894,8 +894,9 @@ public class CucumberStepDefinitions {
 		else if(currentPlayer.hasGameAsBlack()) {
 			wallsInStock = game.getCurrentPosition().getBlackWallsInStock().size();
 		}
-        //hardcoding wall instock as there is bug in whitewallsinstock, currently 10, should be 9 after init)
-        Wall wallPlaced = currentPlayer.getWall(wallsInStock - 1);
+        //hardcoding wall instock as there is bug in whitewallsinstock, currently 10, should be 9 after init), originally
+		//wall 0 is set, so taking wall 1 for the test
+        Wall wallPlaced = currentPlayer.getWall(1);
 
         Direction wallMoveDirection;
 
@@ -953,12 +954,17 @@ public class CucumberStepDefinitions {
     public void aWallMoveShallBeRegisteredWithAtPosition(String dir, Integer row, Integer col) {
 
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
-        int indexOfMove = game.getMoves().size();
-        int wallIndex = game.getCurrentPosition().numberOfWhiteWallsOnBoard();
+        int indexOfMove = (game.getMoves().size() - 1);
 
-        assertEquals(row, game.getMove(indexOfMove).getTargetTile().getRow());
-        assertEquals(col, game.getMove(indexOfMove).getTargetTile().getColumn());
-        assertEquals(dir, game.getCurrentPosition().getWhiteWallsOnBoard(wallIndex).getMove().getWallDirection().toString());
+		//assert that the wallOnBoard that i grabbed from my stock in the given statement is on the board at right position
+        assertEquals(row, game.getCurrentPosition().getWhiteWallsOnBoard(1).getMove().getTargetTile().getRow());
+        assertEquals(col, game.getCurrentPosition().getWhiteWallsOnBoard(1).getMove().getTargetTile().getColumn());
+        assertEquals(dir, game.getCurrentPosition().getWhiteWallsOnBoard(1).getMove().getWallDirection().toString().toLowerCase());
+
+        //assert that the move that was created is indeed this wall being put on the board
+		assertEquals(row, game.getMove(indexOfMove).getTargetTile().getRow());
+		assertEquals(col, game.getMove(indexOfMove).getTargetTile().getColumn());
+		assertEquals(dir, game.getCurrentPosition().getWhiteWallsOnBoard(1).getMove().getWallDirection().toString().toLowerCase());
     }
 
    /**
@@ -978,7 +984,9 @@ public class CucumberStepDefinitions {
     public void itShallBeMyTurnToMove() {
 
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+
         //we know whiteplayers turn from it is my turn
+
         assertEquals(game.getWhitePlayer(), game.getCurrentPosition().getPlayerToMove());
     }
 
@@ -1001,14 +1009,9 @@ public class CucumberStepDefinitions {
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
 
         int indexOfMove = game.getMoves().size();
+        //if size is greater than 0, my move was registered and it is persisted in the model, as before my turn it was
+		//not, the size was 0
         assertEquals(1, indexOfMove);
-
-        //I set the move number to 1 and ruond number to 1, 1 was move before so checking if move was not registered in
-        // the list of moves
-        assertEquals(1, game.getMove(indexOfMove).getMoveNumber());
-        assertEquals(1, game.getMove(indexOfMove).getRoundNumber());
-
-        //check move list size to see if it grew in size from 0 to 1
     }
 
     /**
@@ -1034,10 +1037,14 @@ public class CucumberStepDefinitions {
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
 
         int indexOfMove = game.getMoves().size();
-        //I set the move number to 1 and ruond number to 1, 0 was move before so checking if move was not registered in
-        // the list of moves
-        assertEquals(0, game.getMove(indexOfMove).getMoveNumber());
-        assertEquals(1, game.getMove(indexOfMove).getRoundNumber());
+
+        //i assert that the moves List is still size 0 for the wallMoveCandidate that is set, and assert that it was
+		//for the given wallMoveCandiate that was invalid
+
+        assertEquals(0, indexOfMove);
+        assertEquals(row, game.getWallMoveCandidate().getTargetTile().getRow());
+        assertEquals(col, game.getWallMoveCandidate().getTargetTile().getColumn());
+        assertEquals(dir, game.getWallMoveCandidate().getWallDirection().toString().toLowerCase());
     }
     
     /*
@@ -1045,9 +1052,11 @@ public class CucumberStepDefinitions {
      */
   	
   	/**
-	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate pawn position
+	 * @param row
+	 * @param col
+	 * @author Daniel Wu
 	 */
   	@Given("A game position is supplied with pawn coordinate {int}:{int}")
   	public void aGamePositionIsSuppliedWithPawnCoordinate(int row, int col) {
@@ -1076,9 +1085,9 @@ public class CucumberStepDefinitions {
   	}
   	
   	/**
-	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate pawn position and Validate wall position
+	 * @author Daniel Wu
 	 */
   	@When("Validation of the position is initiated")
   	public void validationOfThePositionIsInitiated() {
@@ -1090,9 +1099,10 @@ public class CucumberStepDefinitions {
   	}
   	
   	/**
-	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate pawn position and Validate wall position
+	 * @param result 
+	 * @author Daniel Wu
 	 */
     @Then("The position shall be {string}")
     public void thePositionShallBeResult(String result) {
@@ -1106,9 +1116,11 @@ public class CucumberStepDefinitions {
     }
     
     /**
-	 * @author Daniel Wu
 	 * ValidatePosition.feature - ValidatePosition
 	 * Scenario: Validate wall position
+	 * @param row
+	 * @param col
+	 * @author Daniel Wu
 	 */
     @Given("A game position is supplied with wall coordinate {int}:{int}-{string}")
     public void aGamePositionIsSuppliedWithWallCoordinate(int row, int col, String dir) {

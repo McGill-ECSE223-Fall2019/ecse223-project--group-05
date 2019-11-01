@@ -1,14 +1,14 @@
 package ca.mcgill.ecse223.quoridor.controller;
 
-import java.net.UnknownServiceException;
-import java.util.*;
-import java.io.IOException;
-
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
 import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuoridorController {
 
@@ -216,80 +216,40 @@ public class QuoridorController {
      * @author Alex Masciotra
      */
     public static Boolean releaseWall(Quoridor quoridor) {
-        Boolean wasSuccessful = true;
+        Boolean isValid;
 
         WallMove wallMoveCandidate = quoridor.getCurrentGame().getWallMoveCandidate();
-
         GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
 
 
-        List<Wall> whiteWallsOnBoard = currentGamePosition.getWhiteWallsOnBoard();
-        List<Wall> blackWallsOnBoard = currentGamePosition.getBlackWallsOnBoard();
+        int targetRow = wallMoveCandidate.getTargetTile().getRow();
+        int targetCol = wallMoveCandidate.getTargetTile().getColumn();
+        String targetDir = wallMoveCandidate.getWallDirection().toString();
 
-        Map<Tile, String> tileInUseByWallAndDirection = new LinkedHashMap<Tile, String>();
+        isValid = validatePosition(targetRow, targetCol, targetDir);
+        //if successful complete my move and change turn to next player, if not successful, do not change turn cause still my turn
 
-        List<Tile> tilesInUseByWall = new ArrayList<>();
+        Player currentPlayer = currentGamePosition.getPlayerToMove();
 
-        for (Wall wallOnBoard : whiteWallsOnBoard) {
+        if (isValid) {
 
-            Tile tempTile = wallOnBoard.getMove().getTargetTile();
-            String Direction = wallOnBoard.getMove().getWallDirection().toString();
-            tileInUseByWallAndDirection.put(tempTile, Direction);
-            //tilesInUseByWall.add(wallOnBoard.getMove().getTargetTile());
-        }
-
-        for (Wall wallOnBoard : blackWallsOnBoard) {
-
-            Tile tempTile = wallOnBoard.getMove().getTargetTile();
-            String Direction = wallOnBoard.getMove().getWallDirection().toString();
-            tileInUseByWallAndDirection.put(tempTile, Direction);
-            //tilesInUseByWall.add(wallOnBoard.getMove().getTargetTile());
-
-        }
-
-        for (Map.Entry element : tileInUseByWallAndDirection.entrySet()) {
-
-            Tile tileInUse = (Tile) element.getKey();
-            String Direction = (String) element.getValue();
-            if (tileInUse.equals(wallMoveCandidate.getTargetTile())) {
-                wasSuccessful = false;
-                break;
+            quoridor.getCurrentGame().addMove(wallMoveCandidate);
+            if (currentPlayer.hasGameAsWhite()) {
+                currentGamePosition.addWhiteWallsOnBoard(wallMoveCandidate.getWallPlaced());
+                currentGamePosition.setPlayerToMove(getCurrentBlackPlayer());
+            } else {
+                currentGamePosition.addBlackWallsOnBoard(wallMoveCandidate.getWallPlaced());
+                currentGamePosition.setPlayerToMove(getCurrentWhitePlayer());
             }
-            if (Direction.equals(wallMoveCandidate.getWallDirection().toString())) {
-                Integer colInUse = tileInUse.getColumn();
-                Integer rowInUse = tileInUse.getRow();
-                Integer targetCol = wallMoveCandidate.getTargetTile().getColumn();
-                Integer targetRow = wallMoveCandidate.getTargetTile().getRow();
-                if (Direction.equals("Horizontal")) {
-                    if (rowInUse.equals(targetRow)) {
-                        Integer gap = java.lang.Math.abs(targetCol - colInUse);
-                        if (gap == 1) {
-                            wasSuccessful = false;
-                            break;
-                        }
-                    }
-                } else if (Direction.equals("Vertical")) {
-                    if (colInUse.equals(targetCol)) {
-                        Integer gap = java.lang.Math.abs(targetRow - rowInUse);
-                        if (gap == 1) {
-                            wasSuccessful = false;
-                            break;
-                        }
-                    }
-                }
+        } else {
+            if (currentPlayer.hasGameAsWhite()) {
+                currentGamePosition.setPlayerToMove(getCurrentWhitePlayer());
+            } else {
+                currentGamePosition.setPlayerToMove(getCurrentBlackPlayer());
             }
         }
-//		for(Tile tile : tilesInUseByWall){
-//
-//			if(tile.equals(wallMoveCandidate.getTargetTile())){
-//				wasSuccessful = false;
-//				break;
-//			}
-//		}
 
-		//if successful complete my move and change turn to next player, if not successful, do not change turn cause still my turn
-
-        return wasSuccessful;
+        return isValid;
     }
 
     /***
@@ -346,7 +306,7 @@ public class QuoridorController {
      * This method is to provide a list of existing user names on the GUI when at the quoridor menu to see a list of
      * existing usernames and select one
      * @return List of UserNames in Quoridor
-     * @param game game instance to get list of usernames
+     * @param quoridor quoridor instance to get list of usernames
      * @author Alex Masciotra
      */
     public static List<String> provideExistingUserNames(Quoridor quoridor) {
@@ -370,7 +330,20 @@ public class QuoridorController {
      * @author Daniel Wu
      */
     public static Boolean validatePosition(int row, int col) {
-        throw new java.lang.UnsupportedOperationException();
+        //Check if out of the board, this should probably throw an exception
+        if ((row > 9) || (row < 1) || (col > 9) || (col < 1)) {
+            return false;
+        }
+
+        //Check if another player is already there, assuming we have to move then we don't have to know who's moving
+        GamePosition currentGamePosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition();
+        PlayerPosition whitePlayerPosition = currentGamePosition.getWhitePosition();
+        PlayerPosition blackPlayerPosition = currentGamePosition.getBlackPosition();
+
+        if ((whitePlayerPosition.getTile().getRow() == row) && (whitePlayerPosition.getTile().getColumn() == col)) {
+            return false;
+        }
+        return (blackPlayerPosition.getTile().getRow() != row) || (blackPlayerPosition.getTile().getColumn() != col);
     }
 
     /**
@@ -381,7 +354,71 @@ public class QuoridorController {
      * @author Daniel Wu
      */
     public static Boolean validatePosition(int row, int col, String dir) {
-        throw new java.lang.UnsupportedOperationException();
+        //Check if out of the board, this should probably throw an exception
+        if ((row > 8) || (row < 1) || (col > 8) || (col < 1)) {
+            return false;
+        }
+
+        //Check if walls are overlapping
+        GamePosition currentGamePosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition();
+
+
+        List<Wall> whiteWallsOnBoard = currentGamePosition.getWhiteWallsOnBoard();
+        List<Wall> blackWallsOnBoard = currentGamePosition.getBlackWallsOnBoard();
+
+//        Map<Tile, String> tileInUseByWallAndDirection = new LinkedHashMap<Tile, String>();
+
+//        List<Tile> tilesInUseByWall = new ArrayList<>();
+
+        int numberOfWalls = whiteWallsOnBoard.size() + blackWallsOnBoard.size();
+        Tile[] tilesInUse = new Tile[numberOfWalls];
+        String[] directions = new String[numberOfWalls];
+
+        for (int i = 0; i < numberOfWalls; i++) {
+            if (i < whiteWallsOnBoard.size()) {
+                //Adding the tiles used and their direction to their respective arrays
+                tilesInUse[i] = whiteWallsOnBoard.get(i).getMove().getTargetTile();
+                directions[i] = whiteWallsOnBoard.get(i).getMove().getWallDirection().toString();
+            } else {
+                //When we run out of white one, then to get the 0's index we need to do i - number of white walls on board
+                tilesInUse[i] = blackWallsOnBoard.get(i - whiteWallsOnBoard.size()).getMove().getTargetTile();
+                directions[i] = blackWallsOnBoard.get(i - whiteWallsOnBoard.size()).getMove().getWallDirection().toString();
+            }
+        }
+
+        for (int i = 0; i < numberOfWalls; i++) {
+            //Check if same tile
+            if ((tilesInUse[i].getRow() == row) && (tilesInUse[i].getColumn() == col)) {
+                return false;
+            }
+            //If it's not the same tile then check directionality
+            if (directions[i].toLowerCase().equals(dir.toLowerCase())) {
+                //If horizontal walls
+                if (dir.toLowerCase().equals("horizontal")) {
+                    //then check if same row
+                    if (tilesInUse[i].getRow() == row) {
+                        //then check if too close
+                        Integer gap = java.lang.Math.abs(tilesInUse[i].getColumn() - col);
+                        if (gap == 1) {
+                            return false;
+                        }
+                    }
+                } else if (dir.toLowerCase().equals("vertical")) {
+                    //If vertical walls, then check if same column
+                    if (tilesInUse[i].getColumn() == col) {
+                        //then check if too close
+                        Integer gap = java.lang.Math.abs(tilesInUse[i].getRow() - row);
+                        if (gap == 1) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        //This will potentially also check if the wall will block the path to the other side
+
+        return true;
     }
 
     //Getter for gamestate
