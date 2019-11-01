@@ -45,10 +45,17 @@ public class QuoridorRuntimeModelPersistence {
 	
 	/**
 	 * Returns the saved quicksave application snapshot in instantiated Quoridor form.
+	 * If the file cannot be accessed for whatever reasons, returns empty Quoridor.
 	 * @return quoridor
 	 */
 	public static Quoridor quickload() {
-		return load( SaveConfig.getAutosaveFilePath() );
+		Quoridor quoridor;
+		try {
+			quoridor = QuoridorRuntimeModelPersistence.load( SaveConfig.getAutosaveFilePath() );
+		} catch (Exception e) {
+			quoridor = new Quoridor();
+		}
+		return quoridor;
 	}
 	
 
@@ -77,7 +84,13 @@ public class QuoridorRuntimeModelPersistence {
 	 * @return
 	 */
 	public static Quoridor loadUserData() {
-		return load( SaveConfig.getUserDatabaseFilePath() );
+		Quoridor quoridor;
+		try {
+			quoridor = QuoridorRuntimeModelPersistence.load( SaveConfig.getUserDatabaseFilePath() );
+		} catch (Exception e) {
+			quoridor = new Quoridor();
+		}
+		return quoridor;
 	}
 	
 	

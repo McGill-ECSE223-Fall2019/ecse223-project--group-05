@@ -39,6 +39,15 @@ public class SaveConfig {
 	}
 	
 	
+	
+	/*
+	 * ==================================================================================================================
+	 *	DEBUG SWITCH
+	 * ==================================================================================================================
+	 */
+	public static boolean enableDebugging = false;
+	
+	
 	/*
 	 * ==================================================================================================================
 	 *	APPLICATION DATA QUERIES AND MODIFIERS
@@ -92,9 +101,17 @@ public class SaveConfig {
 	 */
 	public static boolean createAppDataFolder() {
 		if( SaveConfig.checkAppDataFolderExists() ) {
+			if(enableDebugging)	System.out.println("createAppDataFolder() succesfully executed: found that folder already exists and returning true.");
 			return true;
 		} else {
-			File file = new File( SaveConfig.getUserDatabaseFilePath() );
+			if(enableDebugging) System.out.println("createAppDataFolder() detected the folder is not pre-existing.");
+			File file = new File( SaveConfig.getAppDataFolderPath() );
+			if(enableDebugging) System.out.println("createAppDataFolder() instantiated File instance of directory " + file.getAbsolutePath());
+			if(enableDebugging) {
+				boolean success = file.mkdir();
+				System.out.println("outputing if createAppDataFolder() was able to turn this File instance into a real directory : " + success );
+				return success;
+			}
 			return file.mkdir();
 		}
 	}
@@ -105,6 +122,14 @@ public class SaveConfig {
 	 * 	INDIVIDUAL SAVES DATA QUERIES AND MODIFIERS
 	 * ==================================================================================================================
 	 */
+	
+	/**
+	 * Produces the complete path for the folder for game save files
+	 * @return
+	 */
+	private static String getGameSavesFolder() {
+		return (System.getProperty("user.home") + userGameSavesDir);
+	}
 	
 	/**
 	 * Produces the complete path for a save file, including the name of the save file itself.
@@ -131,10 +156,18 @@ public class SaveConfig {
 	 */
 	public static boolean createGameSavesFolder() {
 		if( SaveConfig.checkGameSavesFolderExists() ) {
+			if(enableDebugging)	System.out.println("createGameSavesFolder() succesfully executed: found that folder already exists and returning true.");
 			return true;
 		}
 		else {
-			File file = new File( SaveConfig.getGameSaveFilePath("") );
+			if(enableDebugging) System.out.println("createGameSavesFolder() detected the folder is not pre-existing.");
+			File file = new File( SaveConfig.getGameSavesFolder() );
+			if(enableDebugging) System.out.println("createGameSavesFolder() instantiated File instance of directory " + file.getAbsolutePath() + ".");
+			if(enableDebugging) {
+				boolean success = file.mkdir();
+				System.out.println("outputing if createGameSavesFolder() was able to turn this File instance into a real directory : " + success );
+				return success;
+			}
 			return file.mkdir();
 		}
 	}
