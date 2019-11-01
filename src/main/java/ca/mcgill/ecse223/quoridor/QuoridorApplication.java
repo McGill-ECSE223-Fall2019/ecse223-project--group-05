@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import application.ViewInterface;
+import ca.mcgill.ecse223.quoridor.view.ViewInterface;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -30,7 +30,6 @@ public class QuoridorApplication extends Application{
 		//load fxml file and display it in the stage
 		try {
 			File resourceFile = new File("src/main/resources/advs.fxml");
-			System.out.println(resourceFile.toString());
 			URL url = resourceFile.toURI().toURL();
 			FXMLLoader loader = new FXMLLoader(url);
 			Parent root = loader.load();
@@ -39,7 +38,9 @@ public class QuoridorApplication extends Application{
 	        primaryStage.setScene(scene);
 	        
 	        //set the icon and title of window
-	        primaryStage.getIcons().add(new Image("src/main/resources/logo_icon.png"));
+			File imageFile = new File("src/main/resources/logo_icon.png");
+			URL imageUrl = imageFile.toURI().toURL();
+	        primaryStage.getIcons().add(new Image(String.valueOf(imageUrl)));
 	        primaryStage.setTitle("Quoridor game. Group 5");
 	        
 	        primaryStage.show();
