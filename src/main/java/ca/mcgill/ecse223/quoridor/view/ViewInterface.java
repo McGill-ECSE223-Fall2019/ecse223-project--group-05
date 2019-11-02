@@ -9,6 +9,8 @@ package ca.mcgill.ecse223.quoridor.view;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
+
+import java.sql.Time;
 import java.util.List;
 
 import java.io.File;
@@ -16,6 +18,7 @@ import java.io.FilenameFilter;
 import java.util.Timer;
 
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
+import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 
 import javafx.fxml.FXML;
@@ -30,7 +33,7 @@ import javafx.stage.Stage;
 public class ViewInterface {
 
     private static Quoridor quoridor = QuoridorApplication.getQuoridor();
-
+	public Timer timer;
 	//these are the pages that the user can travel to/interact with
 	private enum Page {
 		TOP_BUTTONS,
@@ -59,10 +62,12 @@ public class ViewInterface {
 	private int counter = 0;
 	
 	
-	
 //Load Game Page
 	@FXML private Label lbl_directory;
-	
+
+	//Game Session Page
+	@FXML private Label whiteTimer;
+	@FXML private Label blackTimer;
 	
 	
 	public void addToLoadedGameList() {
@@ -121,8 +126,7 @@ public class ViewInterface {
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 * Disables and turns the past page invisible.
 	 */
-	public void Goto_Choose_Opponent_Page() {
-		Goto_Page(Page.CHOOSE_OPPONENT_PAGE);
+	public void Goto_Choose_Opponent_Page() { Goto_Page(Page.CHOOSE_OPPONENT_PAGE);
 	}
 	
 	/**
@@ -132,7 +136,15 @@ public class ViewInterface {
 	 */
 	public void Goto_Game_Session_Page() {
 
-		QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
+		try {
+			QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
+		}
+		catch(Exception e){
+			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
+		}
+		whiteTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
+		//blackTimer.textProperty().bindBidirectional((Property<String>) QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getRemainingTime());
+
 		Goto_Page(Page.GAME_SESSION_PAGE);
 	}
 	
@@ -281,7 +293,9 @@ public class ViewInterface {
 		ComboBox_username2.setItems(FXCollections.observableArrayList(
 			    "A", "B", "C", "D"));
 
-		QuoridorController.initializeQuoridor(quoridor);
+		QuoridorController.initializeQuoridor(QuoridorApplication.getQuoridor());
+
+		timer = new Timer();
 	}
 
     /**
@@ -331,8 +345,7 @@ public class ViewInterface {
      */
     public void createNewUserName(){
 
-        /*
-        Boolean IsValid;
+        /*        Boolean IsValid;
         //here comboBox should be like newWhiteUserName or newBlackUserName
 	    if(ComboBox_username1.toString().toLowerCase().contains("white")){
 	        QuoridorController.assignPlayerColorToUserName("white", quoridor);
