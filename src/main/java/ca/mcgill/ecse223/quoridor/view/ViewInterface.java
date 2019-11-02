@@ -106,12 +106,7 @@ public class ViewInterface {
 	public void GrabWall(MouseEvent mouseEvent) {
 		//TODO : Call the get number of remaining walls method
 		//Get the wall po
-		try {
-			QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
-		}
-		catch(Exception e){
-			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
-		}
+
 		Rectangle wall = (Rectangle) mouseEvent.getSource();
 		wallXPosition = mouseEvent.getSceneX();
 		wallYPosition = mouseEvent.getSceneY();
