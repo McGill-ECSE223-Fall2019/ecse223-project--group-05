@@ -15,7 +15,6 @@ import java.sql.Time;
 import java.util.*;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
-import ca.mcgill.ecse223.quoridor.controller.*;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.model.Board;
@@ -31,16 +30,12 @@ import ca.mcgill.ecse223.quoridor.model.Tile;
 import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
-import ca.mcgill.ecse223.quoridor.view.ViewInterface;
-import cucumber.api.PendingException;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.*;
-
-import javax.swing.text.View;
 
 public class CucumberStepDefinitions {
 
@@ -160,7 +155,7 @@ public class CucumberStepDefinitions {
     @When("A new game is being initialized")
     public void aNewGameIsBeingInitializing() throws java.lang.UnsupportedOperationException{
     	
-    	QuoridorController.InitializeGame(QuoridorApplication.getQuoridor());
+    	QuoridorController.initializeGame(QuoridorApplication.getQuoridor());
     }
     
     /**
