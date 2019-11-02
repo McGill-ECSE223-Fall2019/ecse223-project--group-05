@@ -61,17 +61,17 @@
                               </ImageView>
                               <VBox layoutX="25.0" layoutY="88.0" prefHeight="244.0" prefWidth="150.0">
                                  <children>
-                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="Player 1">
+                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="White Player">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
                                     <Separator prefHeight="24.0" prefWidth="150.0" visible="false" />
-                                    <ComboBox fx:id="whiteExistingName" prefWidth="150.0" promptText="&lt;select username&gt;" />
+                                    <ComboBox fx:id="whiteExistingName" onAction="#whitePlayerSelectsExistingUserName" onMouseClicked="#displayExistingUserNames" prefWidth="150.0" promptText="&lt;select username&gt;" />
                                     <HBox prefHeight="26.0" prefWidth="150.0">
                                        <children>
                                           <TextField fx:id="whiteNewName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
-                                          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
+                                          <Button mnemonicParsing="false" onMouseClicked="#whitePlayerSelectsNewUserName" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
                                        </children>
                                     </HBox>
                                     <Separator prefHeight="31.0" prefWidth="150.0" visible="false" />
@@ -81,17 +81,17 @@
                               </VBox>
                               <VBox layoutX="412.0" layoutY="88.0" prefHeight="244.0" prefWidth="150.0">
                                  <children>
-                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="Player 2">
+                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="Black Player">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
                                     <Separator prefHeight="24.0" prefWidth="150.0" visible="false" />
-                                    <ComboBox fx:id="blackExistingName" prefWidth="150.0" promptText="&lt;select username&gt;" />
+                                    <ComboBox fx:id="blackExistingName" onAction="#blackPlayerSelectsExistingUserName" prefWidth="150.0" promptText="&lt;select username&gt;" />
                                     <HBox prefHeight="26.0" prefWidth="150.0">
                                        <children>
                                           <TextField fx:id="blackNewName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
-                                          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
+                                          <Button mnemonicParsing="false" onMouseClicked="#blackPlayerSelectsNewUserName" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
                                        </children>
                                     </HBox>
                                     <Separator prefHeight="31.0" prefWidth="150.0" visible="false" />

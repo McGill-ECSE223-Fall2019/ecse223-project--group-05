@@ -20,6 +20,8 @@ import java.util.Timer;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -40,7 +42,6 @@ import javafx.stage.Stage;
 
 
 public class ViewInterface {
-
 
 
 	//these are the pages that the user can travel to/interact with
@@ -370,11 +371,6 @@ public class ViewInterface {
 			}
 		}
 
-		whiteExistingName.setItems(FXCollections.observableArrayList(
-				"A", "B", "C", "D"));
-		blackExistingName.setItems(FXCollections.observableArrayList(
-				"A", "B", "C", "D"));
-
 		quoridor =QuoridorApplication.getQuoridor();
 		QuoridorController.initializeQuoridor(quoridor);
 		timer = new Timer();
@@ -382,15 +378,21 @@ public class ViewInterface {
 		timer = new Timer();
 	}
 
-    /**
-     * @author Alex Masciotra
-     * method to display the existingusernames in quoridor when arrow is pressed
-     */
-	public void displayExistingUserNames(){
-	    //for testing purposes manually adding usernames
+	/**
+	 * Method to display ExistingUserNames
+	 * @author Alex Masciotra
+	 * @param mouseEvent when arrow is pressed
+	 */
+    public void displayExistingUserNames(MouseEvent mouseEvent) {
 
-        //when the arrow is pressed
-        List<String> existingUserNames = QuoridorController.provideExistingUserNames(quoridor);
+		//when the arrow is pressed
+
+		List<String> existingUserNames = null;
+		try {
+			existingUserNames = QuoridorController.provideExistingUserNames(quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to display Existing UserNames");
+		}
 
 		//this comboBox is for whiteUserChooseFromExistingArrow
 		whiteExistingName.setItems(FXCollections.observableList(existingUserNames));
@@ -398,60 +400,102 @@ public class ViewInterface {
 		//this comboBox is for blackUserChooseFromExistingArrow
 		blackExistingName.setItems(FXCollections.observableList(existingUserNames));
 
-    }
+	}
 
-    /**
-     * @author Alex Masciotra
-     * method to selectAnExistingUserNAme when arrow is pressed to view
-     */
-	public void selectExistingUserNameFromDropDownList(){
+	/**
+	 * Method to select existing username for white player from dropdownList
+	 * @author Alex Masciotra
+	 * @param actionEvent name selected
+	 */
+	public void whitePlayerSelectsExistingUserName(ActionEvent actionEvent) {
 
-	    //when user selects one of the usernames from the drop downlist
-        //check if the event is coming from selecting from the white or black combobox username
+		try {
+			QuoridorController.assignPlayerColorToUserName("white", quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
+		}
+		String userNameToSet = whiteExistingName.getValue().toString();
 
-        /*
-        // the if and else conditions is more, if the event is coming from the whiteplayer, or if its coming from black
-        if(ComboBox_username1.toString().toLowerCase().contains("white")){
-            QuoridorController.assignPlayerColorToUserName("white", quoridor);
-            QuoridorController.selectExistingUserName(ComboBox_username1.getContentOfBoxAsString, quoridor);
-        } else if (ComboBox_username2.toString().toLowerCase().contains("black")){
-            QuoridorController.assignPlayerColorToUserName("black", quoridor);
-            QuoridorController.selectExistingUserName(ComboBox_username2.getContentOfBoxAsString, quoridor);
-        }
+		try {
+			QuoridorController.selectExistingUserName(userNameToSet, quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to select Existing UserName");
+		}
+	}
 
-         */
+	/**
+	 * Method to select existing username for black player from dropDownList
+	 * @author Alex Masciotra
+	 * @param actionEvent name selected
+	 */
+	public void blackPlayerSelectsExistingUserName(ActionEvent actionEvent) {
 
-    }
+		try {
+			QuoridorController.assignPlayerColorToUserName("black", quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
+		}
+		String userNameToSet = blackExistingName.getValue().toString();
 
-    /**
-     * @author Alex Masciotra
-     * Method to create a new username
-     */
-    public void createNewUserName(){
+		try {
+			QuoridorController.selectExistingUserName(userNameToSet, quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to select Existing UserName");
+		}
+	}
 
-        /*        Boolean IsValid;
-        //here comboBox should be like newWhiteUserName or newBlackUserName
-	    if(ComboBox_username1.toString().toLowerCase().contains("white")){
-	        QuoridorController.assignPlayerColorToUserName("white", quoridor);
+	/**
+	 * Method to create new username for white player
+	 * @author Alex Masciotra
+	 * @param mouseEvent when done is pressed
+	 */
+	public void whitePlayerSelectsNewUserName(MouseEvent mouseEvent) {
 
-	        isValid = QuoridorController.selectNewUserName(ComboBox_username1.getContentOfBoxAsString, quoridor);
+		Boolean isValid = true;
 
-	        if (isValid == false){
+		try {
+			QuoridorController.assignPlayerColorToUserName("white", quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
+		}
+		String userNameToSet = whiteNewName.getText();
 
-	            //THROW POPUP SAYING USERNAME ALREADY IN USE AND SELECT A NEW ONE AND RECALL THIS METHOD
-            }
+		try {
+			isValid = QuoridorController.selectNewUserName(userNameToSet, quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to select New UserName");
+		}
 
-        } else if (ComboBox_username2.toString().toLowerCase().contains("black")){
-            QuoridorController.assignPlayerColorToUserName("black", quoridor);
+		if (!isValid){
+			//throw popup invalid username provided, already exists
+		}
+	}
 
-            isValid = QuoridorController.selectNewUserName(ComboBox_username2.getContentOfBoxAsString, quoridor);
+	/**
+	 * Method to create new username for black player
+	 * @author Alex Masciotra
+	 * @param mouseEvent when done is pressed
+	 */
+	public void blackPlayerSelectsNewUserName(MouseEvent mouseEvent) {
 
-            if (isValid == false){
+		Boolean isValid = true;
 
-                //THROW POPUP SAYING USERNAME ALREADY IN USE AND SELECT A NEW ONE AND RECALL THIS METHOD
-            }
-        }
+		try {
+			QuoridorController.assignPlayerColorToUserName("black", quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
+		}
 
-	    */
-    }
+		String userNameToSet = whiteNewName.getText();
+
+		try {
+			isValid = QuoridorController.selectNewUserName(userNameToSet, quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to select New UserName");
+		}
+
+		if (!isValid){
+			//throw popup invalid username provided, already exists
+		}
+	}
 }
