@@ -86,7 +86,15 @@ public class ViewInterface {
 //Game Session Page
 	@FXML private GridPane Game_Board;
 	@FXML private Rectangle aWall;
+	@FXML private Label lbl_blackTimer;
+	@FXML private Label lbl_whiteTimer;
 	
+	
+	/**
+	 * @author Matthias Arabian
+	 * Prompts user to select a directory in which game files are stored.
+	 * Detects valid files and adds them to the GUI.
+	 */
 	public void addToLoadedGameList() {
             	Stage stage = new Stage();
             	DirectoryChooser fileChooser = new DirectoryChooser();
@@ -102,6 +110,13 @@ public class ViewInterface {
                 }
 	}
 	
+	/**
+	 * @author Matthias Arabian
+	 * @param file directory path to parse through
+	 * Goes through the directory <file> in search of game files. 
+	 * Fills the GUI element loadedGameList with the discovered game files.
+	 * 
+	 */
 	private void detectGameFiles(File file) {
 		File[] gameFiles = file.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -339,8 +354,7 @@ public class ViewInterface {
 	blackExistingName.setItems(FXCollections.observableArrayList(
 			    "A", "B", "C", "D"));
 
-		QuoridorController.initializeQuoridor(quoridor);
-
+		
 	}
 
     /**
@@ -415,4 +429,11 @@ public class ViewInterface {
 
 	    */
     }
+
+	public Label getWhiteTimer() {
+		return lbl_whiteTimer;
+	}
+	public Label getBlackTimer() {
+		return lbl_blackTimer;
+	}
 }
