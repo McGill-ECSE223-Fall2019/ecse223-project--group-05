@@ -154,12 +154,32 @@ public class QuoridorController {
 
 
     /**
-     * @param game is the current game
-     * @return true if gamestate is initializing and false if not
+     * @param quoridor
+     * @return true if game is initialized and false if not
      * @author Daniel Wu
      */
-    public static boolean isGameInitializing(Game game) {
-        throw new java.lang.UnsupportedOperationException();
+    public static boolean InitializeGame(Quoridor quoridor) {
+       //could have a false, if there is currently a game running
+        /*if (isGameRunning(quoridor.getCurrentGame())){
+            return false;
+            //or have a popup showup to tell the player if they are sure or something
+        }*/
+        Game game = new Game(GameStatus.Initializing, Game.MoveMode.PlayerMove, quoridor);
+        Player player1 = new Player(null, null, 9, Direction.Horizontal);
+        Player player2 = new Player(null, null, 1, Direction.Horizontal);
+
+        Player[] players = { player1, player2 };
+        // Create all walls. Walls with lower ID belong to player1,
+        // while the second half belongs to player 2
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 10; j++) {
+                new Wall(i * 10 + j, players[i]);
+            }
+        }
+
+        game.setWhitePlayer(player1);
+        game.setBlackPlayer(player2);
+        return true;
     }
 
     /**
@@ -168,7 +188,11 @@ public class QuoridorController {
      * @author Daniel Wu
      */
     public static boolean playerChoseUsername(Player player) {
-        throw new java.lang.UnsupportedOperationException();
+        //This returns false if the player didn't, choose a username, but a player can't exist without a username??!?!??!
+        if (player.getUser() != null){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -181,18 +205,18 @@ public class QuoridorController {
     }
 
     /**
-     * @param A game Player
+     * @param player
+     * @param timer
      * @return void
      * @author Daniel Wu
      */
     public static void startPlayerTimer(Player player, Timer timer) {
-        // throw new java.lang.UnsupportedOperationException();
         PlayerTimer playerTimer = new PlayerTimer(player);
         timer.schedule(playerTimer,0, 1000); //the playerTimer task will be executed every 1 second
     }
 
     /**
-     * @return the current gamestatus
+     * @return the current GameStatus
      * @author Daniel Wu
      */
     public static Game.GameStatus getGameStatus() {

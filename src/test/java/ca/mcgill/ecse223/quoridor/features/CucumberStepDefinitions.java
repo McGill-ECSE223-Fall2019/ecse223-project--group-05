@@ -160,7 +160,7 @@ public class CucumberStepDefinitions {
     @When("A new game is being initialized")
     public void aNewGameIsBeingInitializing() throws java.lang.UnsupportedOperationException{
     	
-    	QuoridorController.isGameInitializing(QuoridorApplication.getQuoridor().getCurrentGame());
+    	QuoridorController.InitializeGame(QuoridorApplication.getQuoridor());
     }
     
     /**
@@ -169,7 +169,7 @@ public class CucumberStepDefinitions {
 	 * Scenario: Initiate a new game
 	 */
     @And("White player chooses a username")
-    public void whitePlayerChosesAUsername() throws java.lang.UnsupportedOperationException{
+    public void whitePlayerChoosesAUsername() throws java.lang.UnsupportedOperationException{
     	QuoridorController.playerChoseUsername(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer());
     }
     
@@ -201,7 +201,7 @@ public class CucumberStepDefinitions {
 	 */
     @Then("The game shall become ready to start")
     public void theGameShallBecomeReadyToStart() {
-    	assertEquals(Game.GameStatus.ReadyToStart, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
+    	assertEquals(Game.GameStatus.ReadyToStart, QuoridorController.getGameStatus());
     }
 
     /**
@@ -229,11 +229,13 @@ public class CucumberStepDefinitions {
 	 * starts the clock
 	 */
   	@When("I start the clock")
-  	public void iStartTheClock() throws java.lang.UnsupportedOperationException {
+  	public void iStartTheClock(){
+  		Player player = QuoridorController.getCurrentWhitePlayer();
+		if(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove().hasGameAsBlack()){
+			player = QuoridorController.getCurrentWhitePlayer();
+		}
+		QuoridorController.startPlayerTimer(player, timer);
 
-  		Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
-  		Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
-  		QuoridorController.startPlayerTimer(whitePlayer, timer);
   	}
   	
   	/**
