@@ -177,10 +177,17 @@ public class ViewInterface {
 	}
 	
 	/**
-	 * @author Matthias Arabian
+	 * @author Daniel Wu
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
-	public void Goto_Choose_Opponent_Page() { Goto_Page(Page.CHOOSE_OPPONENT_PAGE);
+	public void Goto_Choose_Opponent_Page() {
+		Goto_Page(Page.CHOOSE_OPPONENT_PAGE);
+
+		try {
+			QuoridorController.initializeGame(quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Cannot initialize the Game");
+		}
 	}
 	
 	/**
@@ -350,9 +357,6 @@ public class ViewInterface {
 		}
 
 		quoridor =QuoridorApplication.getQuoridor();
-		QuoridorController.initializeQuoridor(quoridor);
-		timer = new Timer();
-
 		timer = new Timer();
 	}
 
