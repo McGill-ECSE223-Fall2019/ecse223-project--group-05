@@ -19,9 +19,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import java.util.ArrayList?>
 
-<Pane xmlns="http://javafx.com/javafx/8.8.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
+<?import java.util.ArrayList?>
+<Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
       <AnchorPane id="Application_Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3d6b99;">
          <children>
@@ -47,17 +47,6 @@
                   </AnchorPane>
                   <StackPane id="Stacked_Pages" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="356.0" prefWidth="600.0">
                      <children>
-                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
-                           <children>
-                              <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
-                              <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@logo.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </AnchorPane>
                         <AnchorPane id="New_Game_Page" fx:id="New_Game_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0" visible="false">
                            <children>
                               <Button fx:id="Create_New_Game_btn_StartGame" layoutX="247.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#Goto_Game_Session_Page" style="-fx-background-color: #ffd800;" text="Start Game">
@@ -100,6 +89,17 @@
                                     <TextField promptText="00:00" style="-fx-background-color: #ffd800;" />
                                  </children>
                               </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
+                           <children>
+                              <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
+                              <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@logo.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                         <AnchorPane id="Rules_Page" fx:id="Rules_Page" disable="true" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -172,16 +172,7 @@
                                           <Label text="[BLACK PAWN PLAYER NAME]" />
                                           <HBox prefHeight="72.0" prefWidth="167.0" />
                                           <Label text="BLACK PAWN's TURN!" textFill="#e5b75b" />
-                                          <VBox alignment="TOP_CENTER">
-                                             <children>
-                                                <Label text="XX" textFill="#e5b75b">
-                                                   <font>
-                                                      <Font name="System Bold" size="48.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label text="SECONDS REMAINING" textFill="#e5b75b" />
-                                             </children>
-                                          </VBox>
+                                          <Label fx:id="blackTimer" prefHeight="77.0" prefWidth="84.0" />
                                           <Button mnemonicParsing="false" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="END TURN" textFill="#735c2d" />
                                        </children></VBox>
                                     <VBox prefHeight="356.0" prefWidth="300.0">
@@ -216,18 +207,8 @@
                                        <children>
                                           <Separator prefHeight="93.0" prefWidth="167.0" visible="false" />
                                           <Label text="AWAITING MOVE" textFill="#5ba0e5" />
-                                          <VBox alignment="TOP_CENTER">
-                                             <children>
-                                                <Label text="XX" textFill="#5ba0e5">
-                                                   <font>
-                                                      <Font name="System Bold" size="48.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label text="SECONDS REMAINING" textFill="#5ba0e5" />
-                                             </children>
-                                          </VBox>
                                           <Button mnemonicParsing="false" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
-                                          <HBox prefHeight="72.0" prefWidth="167.0" />
+                                          <Label fx:id="whiteTimer" prefHeight="96.0" prefWidth="83.0" text="Label" />
                                           <Label text="[WHITE PAWN PLAYER NAME]" />
                                        </children></VBox>
                                  </children></HBox>
@@ -284,17 +265,17 @@
                         </AnchorPane>
                      </children>
                      <fx:define>
-      				    <ArrayList fx:id="pageList">
-      				    	<fx:reference source="Top_Buttons" />
-      				        <fx:reference source="Main_Page" />
-      				        <fx:reference source="New_Game_Page" /> 
-      				        <fx:reference source="Rules_Page" /> 
-      				        <fx:reference source="Load_Game_Page" /> 
-      				        <fx:reference source="Select_Host_Page" /> 
-      				        <fx:reference source="Game_Session_Page" /> 
-      				        <fx:reference source="Choose_Opponent_Page" /> 
-      				    </ArrayList>
-      				</fx:define>
+                        <ArrayList fx:id="pageList">
+                           <fx:reference source="Top_Buttons" />
+                           <fx:reference source="Main_Page" />
+                           <fx:reference source="New_Game_Page" />
+                           <fx:reference source="Rules_Page" />
+                           <fx:reference source="Load_Game_Page" />
+                           <fx:reference source="Select_Host_Page" />
+                           <fx:reference source="Game_Session_Page" />
+                           <fx:reference source="Choose_Opponent_Page" />
+                        </ArrayList>
+                     </fx:define>
                   </StackPane>
                </children>
             </Pane>

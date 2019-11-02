@@ -266,8 +266,6 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The initialization of the board is initiated")
 	public void initializationOfBoardInitiated(){
-	  ViewInterface view =  QuoridorApplication.getViewInterface();
-	  view.initialize();
         QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
 	}
 	
@@ -284,6 +282,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("White's pawn shall be in its initial position")
 	public void whitesPawnShallBeInItsInitialPosition() {
+		//the initial tile for the white player is the tile 4
 		assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(4),QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile());
 	}
 	
@@ -292,6 +291,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("Black's pawn shall be in its initial position")
 	public void blacksPawnShallBeInItsInitialPosition() {
+		//the initial tile for the black player is the tile 76
 		assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(76), QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile());
 	}
 	
@@ -300,7 +300,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("All of White's walls shall be in stock")
 	public void allOfWhitesWallsShallBeInStock() {
-		//ask mentor about this one
+		//the white player should have 10 walls in stock
 		assertEquals(10, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size());
 	}
 	
@@ -309,7 +309,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("All of Black's walls shall be in stock")
 	public void allOfBlacksWallsShallBeInStock() {
-		//ask mentor about this one too
+		//the black player should have 10 walls in stock
 		assertEquals(10, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackWallsInStock().size());
 	}
 	
