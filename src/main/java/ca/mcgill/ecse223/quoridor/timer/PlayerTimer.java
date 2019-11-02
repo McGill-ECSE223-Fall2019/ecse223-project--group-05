@@ -3,13 +3,16 @@ package ca.mcgill.ecse223.quoridor.timer;
 import java.sql.Time;
 import java.util.TimerTask;
 import ca.mcgill.ecse223.quoridor.model.*;
+import javafx.scene.control.Label;
 
 public class PlayerTimer extends TimerTask{
 
     private Player player;
-
-    public PlayerTimer(Player player) {
+    private Label GUIlabel;
+    
+    public PlayerTimer(Player player, Label lbl) {
         this.player = player;
+        GUIlabel = lbl;
     }
 
     @Override
@@ -24,5 +27,6 @@ public class PlayerTimer extends TimerTask{
         Time updatedTime = new Time(timeRemaining);
         //System.out.println(updatedTime);
         player.setRemainingTime(updatedTime);
+        GUIlabel.setText(updatedTime.toString());
     }
 }

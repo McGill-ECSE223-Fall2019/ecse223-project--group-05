@@ -20,6 +20,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import java.util.ArrayList?>
+
 <Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
       <AnchorPane id="Application_Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3d6b99;">
@@ -186,7 +187,7 @@
                                           <Label text="BLACK PAWN's TURN!" textFill="#e5b75b" />
                                           <VBox alignment="TOP_CENTER">
                                              <children>
-                                                <Label text="XX" textFill="#e5b75b">
+                                                <Label id="black timer" fx:id="lbl_blackTimer" text="XX" textFill="#e5b75b">
                                                    <font>
                                                       <Font name="System Bold" size="48.0" />
                                                    </font>
@@ -246,7 +247,7 @@
                                           <Label text="AWAITING MOVE" textFill="#5ba0e5" />
                                           <VBox alignment="TOP_CENTER">
                                              <children>
-                                                <Label text="XX" textFill="#5ba0e5">
+                                                <Label id="white timer" fx:id="lbl_whiteTimer" text="XX" textFill="#5ba0e5">
                                                    <font>
                                                       <Font name="System Bold" size="48.0" />
                                                    </font>
