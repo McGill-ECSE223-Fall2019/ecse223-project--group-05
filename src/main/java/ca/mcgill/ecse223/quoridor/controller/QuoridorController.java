@@ -436,12 +436,10 @@ public class QuoridorController {
     public static void initializeQuoridor(Quoridor quoridor) {
         //part of method is taken from given code in the stepDefinitions
 
-        User user1 = quoridor.addUser("user1");
-        User user2 = quoridor.addUser("user2");
 
         int thinkingTime = 10; //placeholder
-        Player player1 = new Player(new Time(thinkingTime), user1, 9, Direction.Horizontal);
-        Player player2 = new Player(new Time(thinkingTime), user2, 1, Direction.Horizontal);
+        Player player1 = new Player(null, null, 9, Direction.Horizontal);
+        Player player2 = new Player(null, null, 1, Direction.Horizontal);
 
         Player[] players = { player1, player2 };
 

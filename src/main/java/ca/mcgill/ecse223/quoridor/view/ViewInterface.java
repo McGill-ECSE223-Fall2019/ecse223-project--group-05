@@ -25,6 +25,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -430,7 +431,6 @@ public class ViewInterface {
     public void displayExistingUserNames(MouseEvent mouseEvent) {
 
 		//when the arrow is pressed
-
 
 		List<String> existingUserNames = null;
 		try {
