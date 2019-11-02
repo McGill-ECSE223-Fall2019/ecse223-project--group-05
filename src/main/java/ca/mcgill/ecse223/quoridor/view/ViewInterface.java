@@ -35,7 +35,6 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 
-
 public class ViewInterface {
 
     private static Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -134,7 +133,8 @@ public class ViewInterface {
 	public void Goto_New_Game_Page() {
 		Goto_Page(Page.NEW_GAME_PAGE);
 	}
-	
+
+
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Main Page.
@@ -156,6 +156,8 @@ public class ViewInterface {
 	 * Changes the GUI CurrentPage to the Game Session Page.
 	 */
 	public void Goto_Game_Session_Page() {
+
+		QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
 		Goto_Page(Page.GAME_SESSION_PAGE);
 	}
 	
