@@ -660,12 +660,15 @@ public class QuoridorController {
      * Changes the WallMoveCandidate's direction from Horizontal to Vertical
      * and vice versa
      *
-     * @throws UnsupportedOperationException
      * @author Matthias Arabian
      * @returns true if the wall was successfully flipped. false otherwise
      */
-    public static Boolean flipWallCandidate() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("flipWallCandidate Error");
+    public static Boolean flipWallCandidate() {
+        Quoridor q = QuoridorApplication.getQuoridor();
+        Direction d = q.getCurrentGame().getWallMoveCandidate().getWallDirection();
+        return q.getCurrentGame().getWallMoveCandidate().setWallDirection(
+        		d.equals(Direction.Horizontal) ? Direction.Vertical : Direction.Horizontal
+        );
     }
 
     /**
@@ -813,16 +816,22 @@ public class QuoridorController {
     }
 
     /**
-     * PENDING IMPLEMENTATION
      * Completes the turn of the provided player. Aborts (and thereby returns false) if
      * the current turn does not belong to the provided player.
      *
      * @param player
      * @return
-     * @author Edwin Pan
+     * @author Matthias Arabian
      */
     public static boolean completePlayerTurn(Player player) {
-        throw new UnsupportedOperationException("QuoridorController.completePlayerturn(player) is not currently implemented!");
+    	Quoridor quoridor = QuoridorApplication.getQuoridor();
+    	Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
+    	if (currentPlayer.equals(player)) {
+    		quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(currentPlayer.getNextPlayer());
+    		return true;
+    	}
+    	else
+    		return false;
     }
 
     /**
