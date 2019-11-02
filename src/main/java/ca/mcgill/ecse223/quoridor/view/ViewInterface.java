@@ -21,11 +21,20 @@ import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.List;
+
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -55,8 +64,12 @@ public class ViewInterface {
 	private Page currentState = Page.MAIN_PAGE;
 	AnchorPane CurrentPage = null;
 
-	@FXML private ComboBox ComboBox_username1;
-	@FXML private ComboBox ComboBox_username2;
+	@FXML private ComboBox whiteExistingName;
+	@FXML private ComboBox blackExistingName;
+	@FXML private TextField whiteNewName;
+	@FXML private TextField blackNewName;
+	@FXML private TextField whiteTimerField;
+	@FXML private TextField blackTimerField;
 	
 	@FXML ListView loadedGameList;
 	private int counter = 0;
@@ -69,6 +82,10 @@ public class ViewInterface {
 	@FXML private Label whiteTimer;
 	@FXML private Label blackTimer;
 	
+	
+//Game Session Page
+	@FXML private GridPane Game_Board;
+	@FXML private Rectangle aWall;
 	
 	public void addToLoadedGameList() {
             	Stage stage = new Stage();
@@ -88,8 +105,7 @@ public class ViewInterface {
 	private void detectGameFiles(File file) {
 		File[] gameFiles = file.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
-		    	return name.endsWith("txt");
-		        //return name.startsWith("temp") && name.endsWith("txt");
+		    	return name.endsWith("dat");
 		    }
 		});
 		System.out.println(gameFiles);
@@ -98,6 +114,7 @@ public class ViewInterface {
 			loadedGameList.getItems().add(f.toString());
 	}
 
+	
 	public void gotSelected() {
 		System.out.println(loadedGameList.getSelectionModel().getSelectedItem());
 	}
@@ -105,7 +122,6 @@ public class ViewInterface {
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Create New Game Page.
-	 * Disables and turns the past page invisible.
 	 */
 	public void Goto_New_Game_Page() {
 		Goto_Page(Page.NEW_GAME_PAGE);
@@ -115,7 +131,6 @@ public class ViewInterface {
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Main Page.
-	 * Disables and turns the past page invisible.
 	 */
 	public void Goto_Main_Page() {
 		Goto_Page(Page.MAIN_PAGE);
@@ -124,7 +139,6 @@ public class ViewInterface {
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
-	 * Disables and turns the past page invisible.
 	 */
 	public void Goto_Choose_Opponent_Page() { Goto_Page(Page.CHOOSE_OPPONENT_PAGE);
 	}
@@ -132,7 +146,6 @@ public class ViewInterface {
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Game Session Page.
-	 * Disables and turns the past page invisible.
 	 */
 	public void Goto_Game_Session_Page() {
 
@@ -151,7 +164,6 @@ public class ViewInterface {
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Load Game Page.
-	 * Disables and turns the past page invisible.
 	 */
 	public void Goto_Load_Game_Page() {
 		Goto_Page(Page.LOAD_GAME_PAGE);
@@ -160,7 +172,6 @@ public class ViewInterface {
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Select Host Page.
-	 * Disables and turns the past page invisible.
 	 */
 	public void Goto_Select_Host_Page() {
 		Goto_Page(Page.SELECT_HOST_PAGE);
@@ -172,6 +183,7 @@ public class ViewInterface {
 	 * Changes the GUI CurrentPage to the page defined by the parameter p
 	 * This function is called by every other Goto_ functions
 	 * and serves as a generalized template for page travel.
+	 * Disables and turns the past page invisible.
 	 */
 	private void Goto_Page(Page p) {
 		CurrentPage = getCurrentPage();
@@ -286,6 +298,7 @@ public class ViewInterface {
 	 * @author Matthias Arabian
 	 * initializes the FXML components. this code runs once the application is launched but before the GUI is displayed.
 	 */
+	@SuppressWarnings("deprecation")
 	public void initialize() {
 
 		ComboBox_username1.setItems(FXCollections.observableArrayList(
@@ -296,6 +309,29 @@ public class ViewInterface {
 		QuoridorController.initializeQuoridor(QuoridorApplication.getQuoridor());
 
 		timer = new Timer();
+		//Populate game board with colorful tiles
+		for (int row = 0; row < 17; row+=2) {
+			for (int col = 0; col < 17; col+=2) {
+				AnchorPane tmp = new AnchorPane();
+				tmp.setStyle("-fx-background-color: #ffffff");
+				Game_Board.add(tmp , row, col);
+			}
+		}
+		
+	aWall.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            System.out.println("mouse click detected! "+event.getSource());
+        }
+    });
+	aWall.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+        	((Rectangle)event.getSource()).prefWidth(event.getScreenX());
+            ((Rectangle)event.getSource()).setX(event.getScreenX());
+            ((Rectangle)event.getSource()).setY(event.getScreenY());
+        }
+    });
 	}
 
     /**
