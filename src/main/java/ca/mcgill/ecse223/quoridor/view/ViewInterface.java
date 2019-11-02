@@ -10,14 +10,16 @@ package ca.mcgill.ecse223.quoridor.view;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
-import ca.mcgill.ecse223.quoridor.model.Quoridor;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Timer;
 
 import java.io.File;
 import java.io.FilenameFilter;
 
+import ca.mcgill.ecse223.quoridor.model.Quoridor;
+import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 
@@ -78,10 +80,12 @@ public class ViewInterface {
 	@FXML private Label blackTimer;
 	
 	
-//Game Session Page
-	@FXML private GridPane Game_Board;
-	@FXML private Rectangle aWall;
 	
+	/**
+	 * @author Matthias Arabian
+	 * Prompts user to select a directory in which game files are stored.
+	 * Detects valid files and adds them to the GUI.
+	 */
 	public void addToLoadedGameList() {
             	Stage stage = new Stage();
             	DirectoryChooser fileChooser = new DirectoryChooser();
@@ -97,6 +101,13 @@ public class ViewInterface {
                 }
 	}
 	
+	/**
+	 * @author Matthias Arabian
+	 * @param file directory path to parse through
+	 * Goes through the directory <file> in search of game files. 
+	 * Fills the GUI element loadedGameList with the discovered game files.
+	 * 
+	 */
 	private void detectGameFiles(File file) {
 		File[] gameFiles = file.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -321,14 +332,15 @@ public class ViewInterface {
     });
 
 
-		ComboBox_username1.setItems(FXCollections.observableArrayList(
+	whiteExistingName.setItems(FXCollections.observableArrayList(
 			    "A", "B", "C", "D"));
-		ComboBox_username2.setItems(FXCollections.observableArrayList(
+	blackExistingName.setItems(FXCollections.observableArrayList(
 			    "A", "B", "C", "D"));
 
 		QuoridorController.initializeQuoridor(quoridor);
 		Timer timer = new Timer();
 
+		timer = new Timer();
 	}
 
     /**
@@ -342,10 +354,10 @@ public class ViewInterface {
         List<String> existingUserNames = QuoridorController.provideExistingUserNames(quoridor);
 
         //this comboBox is for whiteUserChooseFromExistingArrow
-        ComboBox_username1.setItems(FXCollections.observableList(existingUserNames));
+        whiteExistingName.setItems(FXCollections.observableList(existingUserNames));
 
         //this comboBox is for blackUserChooseFromExistingArrow
-        ComboBox_username2.setItems(FXCollections.observableList(existingUserNames));
+        blackExistingName.setItems(FXCollections.observableList(existingUserNames));
 
     }
 
@@ -403,4 +415,11 @@ public class ViewInterface {
 
 	    */
     }
+
+	public Label getWhiteTimer() {
+		return lbl_whiteTimer;
+	}
+	public Label getBlackTimer() {
+		return lbl_blackTimer;
+	}
 }
