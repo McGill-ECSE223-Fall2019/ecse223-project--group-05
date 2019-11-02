@@ -6,8 +6,6 @@ import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
 import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
 import ca.mcgill.ecse223.quoridor.timer.PlayerTimer;
-import javafx.scene.control.Label;
-
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -72,8 +70,7 @@ public class QuoridorController {
         quoridor.getCurrentGame().setCurrentPosition(whitePlayerPosition);
         quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(whitePlayer);
 
-        Label whiteGUIlabel = QuoridorApplication.getViewInterface().getWhiteTimer();
-        startPlayerTimer(whitePlayer, timer, whiteGUIlabel); //call the controller method "startClock"
+        startPlayerTimer(whitePlayer, timer); //call the controller method "startClock"
     }
 
 
@@ -188,9 +185,9 @@ public class QuoridorController {
      * @return void
      * @author Daniel Wu
      */
-    public static void startPlayerTimer(Player player, Timer timer, Label GUItimer) {
+    public static void startPlayerTimer(Player player, Timer timer) {
         // throw new java.lang.UnsupportedOperationException();
-        PlayerTimer playerTimer = new PlayerTimer(player, GUItimer);
+        PlayerTimer playerTimer = new PlayerTimer(player);
         timer.schedule(playerTimer,0, 1000); //the playerTimer task will be executed every 1 second
     }
 
@@ -403,9 +400,6 @@ public class QuoridorController {
         quoridor.getCurrentGame().setBlackPlayer(player2);
 
     }
-
-
-
 
     /***
      * Method to set existing username to player

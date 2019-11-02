@@ -8,11 +8,9 @@ import javafx.scene.control.Label;
 public class PlayerTimer extends TimerTask{
 
     private Player player;
-    private Label GUIlabel;
     
-    public PlayerTimer(Player player, Label lbl) {
+    public PlayerTimer(Player player) {
         this.player = player;
-        GUIlabel = lbl;
     }
 
     @Override
@@ -27,6 +25,5 @@ public class PlayerTimer extends TimerTask{
         Time updatedTime = new Time(timeRemaining);
         //System.out.println(updatedTime);
         player.setRemainingTime(updatedTime);
-        GUIlabel.setText(updatedTime.toString());
     }
 }

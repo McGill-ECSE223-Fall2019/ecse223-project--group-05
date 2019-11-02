@@ -371,7 +371,7 @@ public class CucumberStepDefinitions {
 	@Then("I shall have a wall in my hand over the board")
 	public void iShallHaveAWallInMyHandOverTheBoard() throws Throwable{
 		//As this is a GUI related step, it will be implemented later on
-		//TODO 
+		//TODO
 	}
 
 	/**
