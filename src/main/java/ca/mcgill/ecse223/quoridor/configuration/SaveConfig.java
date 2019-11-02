@@ -15,13 +15,27 @@ public class SaveConfig {
 	 * ==================================================================================================================
 	 */
 	
-	public static final String userAppDataDir 			= "\\Saves Games\\Quoridor\\appdata\\";		//Folder for things the user shouldn't ever touch
-	public static final String userGameSavesDir 		= "\\Saved Games\\Quoridor\\saves\\";		//Folder of the saves that the user can use to reinstantiate games
-	public static final String appDataExtension 		= ".qdata";									//Extension for serialized runtime data
-	public static final String gameSaveExtension 		= ".qsave";									//Extension for data of individual games
-	public static final String usersDatabaseFilename	= "users" + appDataExtension;				//Name of file which contains serialized Quoridor, User, Board, and Tiles.
-	public static final String autosaveFilename			= "snapshot" + appDataExtension;			//Name of file which contains a complete serialized dataset of the full quoridor application automatically.
-	public static final String localSettingsFilename	= "settings" + appDataExtension;			//Name of file which contains peripheral data to do with non-model related settings, such as the GUI.
+	private static final String		userHomeDir					= System.getProperty("user.home") + "\\";
+	private static final String		userDefaultSavesDir			= "Saved Games\\Quoridor\\";
+	private static final boolean	useUserHome					= false;
+	private static final String		baseDir						= useUserHome ? userHomeDir + userDefaultSavesDir : "" ;		//The "root" as far as the application is concerned during runtime.
+	private static final String		runtimeDataFolderName		= "env\\";								//Folder for things the user shouldn't ever touch
+	private static final String		gameSavesDataFolderName		= "saves\\";								//Folder of the saves that the user can use to reinstantiate games
+	public static final String		runtimeDataExtension		= ".qdata";									//Extension for serialized runtime data
+	public static final String		gameSavesDataExtension 		= ".qsave";									//Extension for data of individual games
+	public static final String		usersDatabaseFilename		= "users" + runtimeDataExtension;			//Name of file which contains serialized Quoridor, User, Board, and Tiles.
+	public static final String		autosaveFilename			= "snapshot" + runtimeDataExtension;		//Name of file which contains a complete serialized dataset of the full quoridor application automatically.
+	public static final String		localSettingsFilename		= "settings" + runtimeDataExtension;		//Name of file which contains peripheral data to do with non-model related settings, such as the GUI.
+	
+	
+	
+	/*
+	 * ==================================================================================================================
+	 *	DEBUG SWITCH
+	 * ==================================================================================================================
+	 */
+	private static final boolean enableDebugging = false;
+	
 	
 	
 	/*
@@ -35,17 +49,9 @@ public class SaveConfig {
 	 * @return
 	 */
 	public static boolean setupSaveDirectories() {
-		return createAppDataFolder() && createGameSavesFolder() ;
+		return createGameSavesFolder() && createAppDataFolder() ;
 	}
-	
-	
-	
-	/*
-	 * ==================================================================================================================
-	 *	DEBUG SWITCH
-	 * ==================================================================================================================
-	 */
-	public static boolean enableDebugging = false;
+
 	
 	
 	/*
@@ -58,8 +64,8 @@ public class SaveConfig {
 	 * Produces the path to the folder for runtime model data.
 	 * @return String of the from-root path to the appdata folder.
 	 */
-	public static String getAppDataFolderPath() {
-		return ( System.getProperty("user.home") + userAppDataDir );
+	public static String getRuntimeDataFolder() {
+		return ( baseDir + runtimeDataFolderName );
 	}
 	
 	/**
@@ -67,7 +73,7 @@ public class SaveConfig {
 	 * @return String of the from-root path to the users.qdata file.
 	 */
 	public static String getUserDatabaseFilePath() {
-		return ( SaveConfig.getAppDataFolderPath() + usersDatabaseFilename );
+		return ( SaveConfig.getRuntimeDataFolder() + usersDatabaseFilename );
 	}
 	
 	/**
@@ -75,7 +81,7 @@ public class SaveConfig {
 	 * @return String of the from-root path to the snapshot.qdata file.
 	 */
 	public static String getAutosaveFilePath() {
-		return ( SaveConfig.getAppDataFolderPath() + autosaveFilename );
+		return ( SaveConfig.getRuntimeDataFolder() + autosaveFilename );
 	}
 	
 	/**
@@ -83,7 +89,7 @@ public class SaveConfig {
 	 * @return String of the from-root path to the settings.qdata file.
 	 */
 	public static String getAppSettingsFilePath() {
-		return ( SaveConfig.getAppDataFolderPath() + localSettingsFilename );
+		return ( SaveConfig.getRuntimeDataFolder() + localSettingsFilename );
 	}
 	
 	/**
@@ -91,7 +97,7 @@ public class SaveConfig {
 	 * @return boolean
 	 */
 	public static boolean checkAppDataFolderExists() {
-		File file = new File ( SaveConfig.getAppDataFolderPath() );
+		File file = new File ( SaveConfig.getRuntimeDataFolder() );
 		return file.exists();
 	}
 	
@@ -101,15 +107,26 @@ public class SaveConfig {
 	 */
 	public static boolean createAppDataFolder() {
 		if( SaveConfig.checkAppDataFolderExists() ) {
-			if(enableDebugging)	System.out.println("createAppDataFolder() succesfully executed: found that folder already exists and returning true.");
+			if(enableDebugging)	{
+				System.out.println("createAppDataFolder() succesfully executed: found that folder already exists and returning true.");
+			}
 			return true;
 		} else {
-			if(enableDebugging) System.out.println("createAppDataFolder() detected the folder is not pre-existing.");
-			File file = new File( SaveConfig.getAppDataFolderPath() );
-			if(enableDebugging) System.out.println("createAppDataFolder() instantiated File instance of directory " + file.getAbsolutePath());
+			File file = new File( SaveConfig.getRuntimeDataFolder() );
 			if(enableDebugging) {
+				System.out.println("createAppDataFolder() detected the folder is not pre-existing.");
 				boolean success = file.mkdir();
+				System.out.println("createAppDataFolder() instantiated File instance of directory " + file.getAbsolutePath());
 				System.out.println("outputing if createAppDataFolder() was able to turn this File instance into a real directory : " + success );
+				/*
+				SecurityManager securityManager = new SecurityManager();
+				try {
+					securityManager.checkRead(SaveConfig.getRuntimeDataFolder());
+					securityManager.checkWrite(SaveConfig.getRuntimeDataFolder());
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				}
+				*/
 				return success;
 			}
 			return file.mkdir();
@@ -128,7 +145,7 @@ public class SaveConfig {
 	 * @return
 	 */
 	private static String getGameSavesFolder() {
-		return (System.getProperty("user.home") + userGameSavesDir);
+		return (baseDir + gameSavesDataFolderName);
 	}
 	
 	/**
@@ -137,7 +154,7 @@ public class SaveConfig {
 	 * @return full file path string
 	 */
 	public static String getGameSaveFilePath(String filename) {
-		return (System.getProperty("user.home")+ userGameSavesDir + filename);
+		return ( getGameSavesFolder() + filename);
 	}
 	
 	/**
@@ -156,14 +173,16 @@ public class SaveConfig {
 	 */
 	public static boolean createGameSavesFolder() {
 		if( SaveConfig.checkGameSavesFolderExists() ) {
-			if(enableDebugging)	System.out.println("createGameSavesFolder() succesfully executed: found that folder already exists and returning true.");
+			if(enableDebugging)	{
+				System.out.println("createGameSavesFolder() succesfully executed: found that folder already exists and returning true.");
+			}
 			return true;
 		}
 		else {
-			if(enableDebugging) System.out.println("createGameSavesFolder() detected the folder is not pre-existing.");
 			File file = new File( SaveConfig.getGameSavesFolder() );
-			if(enableDebugging) System.out.println("createGameSavesFolder() instantiated File instance of directory " + file.getAbsolutePath() + ".");
 			if(enableDebugging) {
+				System.out.println("createGameSavesFolder() detected the folder is not pre-existing.");
+				System.out.println("createGameSavesFolder() instantiated File instance of directory " + file.getAbsolutePath() + ".");
 				boolean success = file.mkdir();
 				System.out.println("outputing if createGameSavesFolder() was able to turn this File instance into a real directory : " + success );
 				return success;

@@ -6,3 +6,5 @@ bin
 .gradle
 .project
 .classpath
+env
+saves

@@ -16,18 +16,17 @@ public class QuoridorApplication {
 	public static Quoridor getQuoridor() {
 		if (quoridor == null) {
 			
-			/*
-			SaveConfig.enableDebugging = true;
 			//Safety behaviour: Ensures that save folders exist.
-			System.out.println(SaveConfig.setupSaveDirectories());
+			SaveConfig.setupSaveDirectories();
 			//Special behaviour: Resume previous game or user data.
 			if( QuoridorSettingsManager.checkIfToResumePreviousGame() ) {
 				quoridor = QuoridorRuntimeModelPersistence.quickload();		//If settings in appdata read that we're supposed to immediately jump into the previous game, then jump in.
 			} else {
 				quoridor = QuoridorRuntimeModelPersistence.loadUserData();	//If settings in appdata read that we are not supposed to immediately jump into the previous game, then just enter the normal game with users loaded.
 			}
-			*/
-			quoridor = new Quoridor();
+			
+			
+			//quoridor = new Quoridor();
 			
 		}
  		return quoridor;
