@@ -332,6 +332,15 @@ public class ViewInterface {
             ((Rectangle)event.getSource()).setY(event.getScreenY());
         }
     });
+
+
+	whiteExistingName.setItems(FXCollections.observableArrayList(
+			    "A", "B", "C", "D"));
+	blackExistingName.setItems(FXCollections.observableArrayList(
+			    "A", "B", "C", "D"));
+
+		QuoridorController.initializeQuoridor(quoridor);
+
 	}
 
     /**
@@ -345,10 +354,10 @@ public class ViewInterface {
         List<String> existingUserNames = QuoridorController.provideExistingUserNames(quoridor);
 
         //this comboBox is for whiteUserChooseFromExistingArrow
-        ComboBox_username1.setItems(FXCollections.observableList(existingUserNames));
+        whiteExistingName.setItems(FXCollections.observableList(existingUserNames));
 
         //this comboBox is for blackUserChooseFromExistingArrow
-        ComboBox_username2.setItems(FXCollections.observableList(existingUserNames));
+        blackExistingName.setItems(FXCollections.observableList(existingUserNames));
 
     }
 
