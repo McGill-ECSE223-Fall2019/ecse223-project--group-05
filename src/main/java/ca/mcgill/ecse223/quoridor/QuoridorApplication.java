@@ -77,6 +77,7 @@ public class QuoridorApplication extends Application{
 	}
 	
 	public static ViewInterface getViewInterface() {
+
 		return c;
 	}
 
