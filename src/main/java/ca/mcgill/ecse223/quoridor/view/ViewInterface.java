@@ -354,7 +354,9 @@ public class ViewInterface {
 	blackExistingName.setItems(FXCollections.observableArrayList(
 			    "A", "B", "C", "D"));
 
-		
+		QuoridorController.initializeQuoridor(QuoridorApplication.getQuoridor());
+
+		timer = new Timer();
 	}
 
     /**
