@@ -10,15 +10,16 @@ package ca.mcgill.ecse223.quoridor.view;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
-import ca.mcgill.ecse223.quoridor.model.Player;
-import ca.mcgill.ecse223.quoridor.model.Quoridor;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Timer;
 
 import java.io.File;
 import java.io.FilenameFilter;
 
+import ca.mcgill.ecse223.quoridor.model.Quoridor;
+import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 
@@ -35,10 +36,9 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 
-
 public class ViewInterface {
 
-    private static Quoridor quoridor = QuoridorApplication.getQuoridor();
+
 
 	//these are the pages that the user can travel to/interact with
 	private enum Page {
@@ -72,22 +72,62 @@ public class ViewInterface {
 	private int counter = 0;
 	
 	
-	
 //Load Game Page
 	@FXML private Label lbl_directory;
-	
-//Game Session Page
+
+	//Game Session Page
 	@FXML private GridPane Game_Board;
 	@FXML private Rectangle aWall;
-	@FXML private Label lbl_blackTimer;
-	@FXML private Label lbl_whiteTimer;
-	
-	
+	@FXML private Label whiteTimer;
+	@FXML private Label blackTimer;
+
+//Grab and Drad wall variables
+	double wallXPosition, wallYPosition;
+
+	private static Quoridor quoridor;
+	public Timer timer;
+
 	/**
-	 * @author Matthias Arabian
-	 * Prompts user to select a directory in which game files are stored.
-	 * Detects valid files and adds them to the GUI.
+	 * @author Thomas Philippon
+	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
+	public void GrabWall(MouseEvent mouseEvent) {
+		//TODO : Call the get number of remaining walls method
+		//Get the wall po
+
+		Rectangle wall = (Rectangle) mouseEvent.getSource();
+		wallXPosition = mouseEvent.getSceneX();
+		wallYPosition = mouseEvent.getSceneY();
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 * This method is called when the user drags the walls
+	 */
+	public void MoveWall(MouseEvent mouseEvent) {
+
+		Rectangle wall = (Rectangle) mouseEvent.getSource();
+
+			double offsetX = mouseEvent.getX();
+			double offsetY = mouseEvent.getY();
+			double newTranslateX = wall.getTranslateX() + offsetX;
+			double newTranslateY = wall.getTranslateY() + offsetY;
+
+			wall.setTranslateX(newTranslateX);
+			wall.setTranslateY(newTranslateY);
+		    wall.toFront();
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 *This method is executed when the user releases the wall
+	 */
+	public void DropWall(MouseEvent mouseEvent) {
+
+
+	}
+
+
 	public void addToLoadedGameList() {
             	Stage stage = new Stage();
             	DirectoryChooser fileChooser = new DirectoryChooser();
@@ -102,14 +142,6 @@ public class ViewInterface {
                 	lbl_directory.setText("Directory could not be opened");
                 }
 	}
-	
-	/**
-	 * @author Matthias Arabian
-	 * @param file directory path to parse through
-	 * Goes through the directory <file> in search of game files. 
-	 * Fills the GUI element loadedGameList with the discovered game files.
-	 * 
-	 */
 	private void detectGameFiles(File file) {
 		File[] gameFiles = file.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -134,7 +166,8 @@ public class ViewInterface {
 	public void Goto_New_Game_Page() {
 		Goto_Page(Page.NEW_GAME_PAGE);
 	}
-	
+
+
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Main Page.
@@ -147,15 +180,24 @@ public class ViewInterface {
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
-	public void Goto_Choose_Opponent_Page() {
-		Goto_Page(Page.CHOOSE_OPPONENT_PAGE);
+	public void Goto_Choose_Opponent_Page() { Goto_Page(Page.CHOOSE_OPPONENT_PAGE);
 	}
 	
 	/**
-	 * @author Matthias Arabian
+	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Game Session Page.
 	 */
 	public void Goto_Game_Session_Page() {
+
+		try {
+			QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
+		}
+		catch(Exception e){
+			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
+		}
+		//whiteTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
+		//blackTimer.textProperty().bindBidirectional((Property<String>) QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getRemainingTime());
+
 		Goto_Page(Page.GAME_SESSION_PAGE);
 	}
 	
@@ -290,7 +332,7 @@ public class ViewInterface {
 		else 
 			return null;
 	}
-	
+
 	
 	/**
 	 * @author Matthias Arabian
@@ -306,30 +348,17 @@ public class ViewInterface {
 				Game_Board.add(tmp , row, col);
 			}
 		}
-		
-  //attempts at dragging wallMoveCandidates on GUI  
-	aWall.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            System.out.println("mouse click detected! "+event.getSource());
-        }
-    });
-	aWall.setOnMouseDragged(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-        	((Rectangle)event.getSource()).prefWidth(event.getScreenX());
-            ((Rectangle)event.getSource()).setX(event.getScreenX());
-            ((Rectangle)event.getSource()).setY(event.getScreenY());
-        }
-    });
 
+		whiteExistingName.setItems(FXCollections.observableArrayList(
+				"A", "B", "C", "D"));
+		blackExistingName.setItems(FXCollections.observableArrayList(
+				"A", "B", "C", "D"));
 
-	whiteExistingName.setItems(FXCollections.observableArrayList(
-			    "A", "B", "C", "D"));
-	blackExistingName.setItems(FXCollections.observableArrayList(
-			    "A", "B", "C", "D"));
+		quoridor =QuoridorApplication.getQuoridor();
+		QuoridorController.initializeQuoridor(quoridor);
+		timer = new Timer();
 
-		
+		timer = new Timer();
 	}
 
     /**
@@ -342,11 +371,11 @@ public class ViewInterface {
         //when the arrow is pressed
         List<String> existingUserNames = QuoridorController.provideExistingUserNames(quoridor);
 
-        //this comboBox is for whiteUserChooseFromExistingArrow
-        whiteExistingName.setItems(FXCollections.observableList(existingUserNames));
+		//this comboBox is for whiteUserChooseFromExistingArrow
+		whiteExistingName.setItems(FXCollections.observableList(existingUserNames));
 
-        //this comboBox is for blackUserChooseFromExistingArrow
-        blackExistingName.setItems(FXCollections.observableList(existingUserNames));
+		//this comboBox is for blackUserChooseFromExistingArrow
+		blackExistingName.setItems(FXCollections.observableList(existingUserNames));
 
     }
 
@@ -379,8 +408,7 @@ public class ViewInterface {
      */
     public void createNewUserName(){
 
-        /*
-        Boolean IsValid;
+        /*        Boolean IsValid;
         //here comboBox should be like newWhiteUserName or newBlackUserName
 	    if(ComboBox_username1.toString().toLowerCase().contains("white")){
 	        QuoridorController.assignPlayerColorToUserName("white", quoridor);
@@ -405,11 +433,4 @@ public class ViewInterface {
 
 	    */
     }
-
-	public Label getWhiteTimer() {
-		return lbl_whiteTimer;
-	}
-	public Label getBlackTimer() {
-		return lbl_blackTimer;
-	}
 }
