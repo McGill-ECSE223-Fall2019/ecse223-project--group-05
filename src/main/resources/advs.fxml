@@ -182,25 +182,26 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" disable="true" visible="false">
+                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" disable="true" prefWidth="397.0" visible="false">
                            <children>
-                              <HBox prefHeight="356.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <HBox prefHeight="356.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <VBox alignment="TOP_CENTER" prefHeight="356.0" prefWidth="200.0" spacing="5.0">
                                        <children>
                                           <Label text="[BLACK PAWN PLAYER NAME]" />
-                                          <HBox alignment="CENTER" prefHeight="72.0" prefWidth="167.0">
-                                             <children>
-                                                <Rectangle fx:id="aWall" arcHeight="5.0" arcWidth="5.0" height="55.0" onMouseClicked="#GrabWall" onMouseDragged="#MoveWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="9.0" />
-                                             </children></HBox>
-                                          <Label text="BLACK PAWN's TURN!" textFill="#e5b75b" />
-                                          <Label fx:id="blackTimer" prefHeight="77.0" prefWidth="84.0" />
-                                          <Button mnemonicParsing="false" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="END TURN" textFill="#735c2d" />
-                                       </children></VBox>
-                                    <VBox prefHeight="356.0" prefWidth="300.0">
+                                          <Button contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="END TURN" textFill="#735c2d" />
+                                          <Label fx:id="blackTimer" prefHeight="82.0" prefWidth="84.0" text="Black Timer" />
+                                          <VBox />
+                                          <Label text="[WHITE PAWN PLAYER NAME]" textAlignment="CENTER" />
+                                          <Label text="AWAITING MOVE" textFill="#5ba0e5" />
+                                          <Button mnemonicParsing="false" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
+                                          <Label fx:id="whiteTimer" prefHeight="84.0" prefWidth="83.0" text="White Timer" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="356.0" prefWidth="300.0">
                                        <children>
                                           <Separator prefHeight="26.0" prefWidth="267.0" visible="false" />
-                                          <GridPane fx:id="Game_Board">
+                                          <GridPane fx:id="Game_Board" alignment="CENTER" gridLinesVisible="true">
                                             <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="5.0" />
@@ -240,15 +241,42 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                           </GridPane>
-                                       </children></VBox>
+                                       </children>
+                                    </VBox>
                                     <VBox alignment="TOP_CENTER" prefHeight="356.0" prefWidth="200.0" spacing="5.0">
                                        <children>
+                                          <Label fx:id="gameSessionNotificationLabel" prefHeight="41.0" prefWidth="134.0" textFill="RED" />
                                           <Separator prefHeight="93.0" prefWidth="167.0" visible="false" />
-                                          <Label text="AWAITING MOVE" textFill="#5ba0e5" />
-                                          <Button mnemonicParsing="false" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
-                                          <Label fx:id="whiteTimer" prefHeight="96.0" prefWidth="83.0" text="Label" />
-                                          <Label text="[WHITE PAWN PLAYER NAME]" />
-                                       </children></VBox>
+                                          <HBox alignment="CENTER" prefHeight="85.0" prefWidth="606.0">
+                                             <children>
+                                                <Rectangle fx:id="blackWall1" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall2" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall3" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall4" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall5" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall6" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall7" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall8" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall9" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall10" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="102.0" prefWidth="386.0">
+                                             <children>
+                                                <Rectangle fx:id="whiteWall1" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall2" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall3" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall4" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall5" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall6" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall7" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall8" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall9" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall10" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children></HBox>
                            </children>
                         </AnchorPane>
