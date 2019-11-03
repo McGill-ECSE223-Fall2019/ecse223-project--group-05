@@ -74,6 +74,10 @@
                                           <Button mnemonicParsing="false" onMouseClicked="#whitePlayerSelectsNewUserName" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
                                        </children>
                                     </HBox>
+                                    <Label fx:id="whiteUsernameExistsLabel" prefHeight="7.0" prefWidth="142.0" textFill="RED">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font></Label>
                                     <Separator prefHeight="31.0" prefWidth="150.0" visible="false" />
                                     <Label text="Set thinking time" />
                                     <TextField fx:id="whiteTimerField" promptText="00:00" style="-fx-background-color: #ffd800;" />
@@ -94,6 +98,11 @@
                                           <Button mnemonicParsing="false" onMouseClicked="#blackPlayerSelectsNewUserName" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
                                        </children>
                                     </HBox>
+                                    <Label fx:id="blackUsernameExistsLabel" prefHeight="13.0" prefWidth="149.0" textFill="#f80b0b">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </Label>
                                     <Separator prefHeight="31.0" prefWidth="150.0" visible="false" />
                                     <Label text="Set thinking time" />
                                     <TextField fx:id="blackTimerField" promptText="00:00" style="-fx-background-color: #ffd800;" />

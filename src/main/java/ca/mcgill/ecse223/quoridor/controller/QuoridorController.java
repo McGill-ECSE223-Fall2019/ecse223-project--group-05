@@ -165,8 +165,14 @@ public class QuoridorController {
             //or have a popup showup to tell the player if they are sure or something
         }*/
         Game game = new Game(GameStatus.Initializing, Game.MoveMode.PlayerMove, quoridor);
-        Player player1 = new Player(null, null, 9, Direction.Horizontal);
-        Player player2 = new Player(null, null, 1, Direction.Horizontal);
+
+        User user1 = quoridor.addUser("user1");
+        User user2 = quoridor.addUser("user2");
+
+        int thinkingTime = 10;
+
+        Player player1 = new Player(new Time (thinkingTime), user1, 9, Direction.Horizontal);
+        Player player2 = new Player(new Time(thinkingTime), user2, 1, Direction.Horizontal);
 
         Player[] players = { player1, player2 };
         // Create all walls. Walls with lower ID belong to player1,
