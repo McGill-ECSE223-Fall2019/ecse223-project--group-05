@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.TimerTask;
 
+import ca.mcgill.ecse223.quoridor.model.Player;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -90,12 +91,15 @@ public class ViewInterface {
 	@FXML private Label blackTimer;
 	@FXML private Button btn_whitePlayerTurn, btn_blackPlayerTurn;
 	@FXML private Label lbl_black_awaitingMove, lbl_white_awaitingMove;
+	@FXML private Label whitePlayerName;
+	@FXML private Label blackPlayerName;
 
-//Grab and Drad wall variables
+//Grab and Drag wall variables
 	double wallXPosition, wallYPosition;
 
 
 	private static Quoridor quoridor;
+	private Player whitePlayer, blackPlayer;
 	private Timer timer;
 	private Timer RefreshTimer;
 	private String timerVal;
@@ -236,6 +240,13 @@ public class ViewInterface {
 		catch(Exception e){
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
 		}
+
+		//get both players
+		whitePlayer = QuoridorController.getCurrentWhitePlayer();
+		blackPlayer = QuoridorController.getCurrentBlackPlayer();
+
+		whitePlayerName.setText(QuoridorController.getPlayerName(whitePlayer));
+		blackPlayerName.setText(QuoridorController.getPlayerName(blackPlayer));
 
 
 		//This tasks runs on a separate thread. It is used to update the GUI every second
@@ -405,6 +416,7 @@ public class ViewInterface {
 		//Initialize the timers
 		timer = new Timer();
 		RefreshTimer = new Timer();
+
 		//quoridor =QuoridorApplication.getQuoridor();
 
 	}

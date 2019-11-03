@@ -312,7 +312,7 @@ public class QuoridorController {
                 game.getCurrentPosition().removeBlackWallsInStock(wall);
             }
 
-            WallMove wallMoveCandidate = new WallMove(lastMoveNumber+1, roundNumber, playerToMove, targetTile, game, Direction.Horizontal, wall);
+            WallMove wallMoveCandidate = new WallMove(lastMoveNumber+1, roundNumber, playerToMove, targetTile, game, Direction.Vertical, wall);
             game.setWallMoveCandidate(wallMoveCandidate);
             returnVal = true;
         }
@@ -1003,6 +1003,23 @@ public class QuoridorController {
         throw new UnsupportedOperationException("QuoridorController.playerTimerStop(player) is not currently implemented!");
     }
 
+    /**
+     * GUI query method
+     * Returns the name of the player
+     *
+     * @param player
+     * @return String name of the player
+     * @author Thomas Philippon
+     */
+    public static String getPlayerName(Player player) {
+
+        try{
+            return player.getUser().getName();
+
+        }catch(Exception e){
+            throw new java.lang.UnsupportedOperationException("Cannot get the player's name");
+        }
+    }
 }
 
 
