@@ -6,10 +6,6 @@ import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
 import ca.mcgill.ecse223.quoridor.persistence.QuoridorSettingsManager;
 
 public class QuoridorApplication {
-
-	public static void main (String [] args ) {
-		getQuoridor();
-	}
 	
 	private static Quoridor quoridor;
 
@@ -31,5 +27,5 @@ public class QuoridorApplication {
 		}
  		return quoridor;
 	}
-
+	
 }

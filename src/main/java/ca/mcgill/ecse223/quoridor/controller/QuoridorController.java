@@ -337,10 +337,9 @@ public class QuoridorController {
 	 * @param fileName
 	 * @throws FileNotFoundException, IOException, InvalidPositionException
 	 */
-	public static void loadSavedGame(String fileName) throws IOException, FileNotFoundException, InvalidPositionException {
-		Quoridor quoridorInMemory = QuoridorApplication.getQuoridor();
-		Game game = QuoridorSavesManager.loadGamePawnsAndWalls(fileName, quoridorInMemory.getCurrentGame());
-		quoridorInMemory.setCurrentGame(game);
+	public static void loadSavedGame(String fileName, Player firstPlayer, Player secondPlayer) throws IOException, FileNotFoundException, InvalidPositionException {
+		Game game = QuoridorSavesManager.loadGamePawnsAndWalls(fileName, QuoridorApplication.getQuoridor(), QuoridorApplication.getQuoridor().getCurrentGame(), firstPlayer, secondPlayer);
+		QuoridorApplication.getQuoridor().setCurrentGame(game);
 	}
 
 	

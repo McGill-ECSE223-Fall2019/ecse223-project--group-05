@@ -1216,7 +1216,7 @@ public class CucumberStepDefinitions {
 	public void iInitiateToLoadASavedGame(String fileName) {
 		CucumberTest_LoadPosition_TestFileWriters.createGameSaveTestFile(fileName);
 		try {
-			QuoridorController.loadSavedGame(fileName);
+			QuoridorController.loadSavedGame(fileName, this.myPlayers.get(0), this.myPlayers.get(1) );
 		} catch (FileNotFoundException e) {
 			failedToReadSaveFile = true;
 			e.printStackTrace();
