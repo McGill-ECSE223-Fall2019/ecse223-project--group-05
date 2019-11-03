@@ -91,7 +91,7 @@
                                        </font>
                                     </Label>
                                     <Separator prefHeight="24.0" prefWidth="150.0" visible="false" />
-                                    <ComboBox fx:id="blackExistingName" onAction="#blackPlayerSelectsExistingUserName" prefWidth="150.0" promptText="&lt;select username&gt;" />
+                                    <ComboBox fx:id="blackExistingName" onAction="#blackPlayerSelectsExistingUserName" onMouseClicked="#displayExistingUserNames" prefWidth="150.0" promptText="&lt;select username&gt;" />
                                     <HBox prefHeight="26.0" prefWidth="150.0">
                                        <children>
                                           <TextField fx:id="blackNewName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
@@ -188,16 +188,23 @@
                                  <children>
                                     <VBox alignment="TOP_CENTER" prefHeight="356.0" prefWidth="200.0" spacing="5.0">
                                        <children>
-                                          <Label text="[BLACK PAWN PLAYER NAME]" />
-                                          <Button contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="END TURN" textFill="#735c2d" />
+                                          <Label fx:id="blackPlayerName" text="[BLACK PAWN PLAYER NAME]">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font></Label>
+                                          <Label fx:id="lbl_black_awaitingMove" textFill="#5ba0e5" />
+                                          <Button fx:id="btn_blackPlayerTurn" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="END TURN" textFill="#735c2d" />
                                           <Label fx:id="blackTimer" alignment="CENTER" prefHeight="82.0" prefWidth="113.0" text="Black Timer" textAlignment="CENTER">
                                              <font>
                                                 <Font size="21.0" />
-                                             </font></Label>
+                                         </font></Label>
                                           <VBox />
-                                          <Label text="[WHITE PAWN PLAYER NAME]" textAlignment="CENTER" />
-                                          <Label text="AWAITING MOVE" textFill="#5ba0e5" />
-                                          <Button mnemonicParsing="false" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
+                                          <Label fx:id="whitePlayerName" text="[WHITE PAWN PLAYER NAME]" textAlignment="CENTER" textFill="WHITE">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font></Label>
+                                          <Label fx:id="lbl_white_awaitingMove" text="AWAITING MOVE" textFill="#5ba0e5" />
+                                          <Button fx:id="btn_whitePlayerTurn" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
                                           <Label fx:id="whiteTimer" alignment="CENTER" prefHeight="84.0" prefWidth="120.0" text="White Timer" textAlignment="CENTER" textFill="WHITE">
                                              <font>
                                                 <Font size="21.0" />
@@ -255,7 +262,7 @@
                                           <Separator prefHeight="93.0" prefWidth="167.0" visible="false" />
                                           <HBox alignment="CENTER" prefHeight="85.0" prefWidth="606.0">
                                              <children>
-                                                <Rectangle fx:id="blackWall1" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall1" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMouseEntered="#rotateWallEvent" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                                 <Rectangle fx:id="blackWall2" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                                 <Rectangle fx:id="blackWall3" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                                 <Rectangle fx:id="blackWall4" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />

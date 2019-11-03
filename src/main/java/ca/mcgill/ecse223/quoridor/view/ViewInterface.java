@@ -9,7 +9,8 @@ package ca.mcgill.ecse223.quoridor.view;
 
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
-import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
+import ca.mcgill.ecse223.quoridor.controller.*;
+
 
 import java.util.List;
 import java.util.Timer;
@@ -18,13 +19,15 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.TimerTask;
 
+import ca.mcgill.ecse223.quoridor.model.Player;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-
+import javafx.event.Event;
 import javafx.application.Platform;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -35,7 +38,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-
 
 public class ViewInterface {
 
@@ -86,15 +88,26 @@ public class ViewInterface {
 	@FXML private Rectangle whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6, whiteWall7, whiteWall8, whiteWall9, whiteWall10;
 	@FXML private Rectangle blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6, blackWall7, blackWall8, blackWall9, wblackWall10;
 	@FXML private Label gameSessionNotificationLabel;
-	@FXML public Label whiteTimer;
+	@FXML private Label whiteTimer;
 	@FXML private Label blackTimer;
+	@FXML private Button btn_whitePlayerTurn, btn_blackPlayerTurn;
+	@FXML private Label lbl_black_awaitingMove, lbl_white_awaitingMove;
+	@FXML private Label whitePlayerName;
+	@FXML private Label blackPlayerName;
 
-//Grab and Drad wall variables
+//Grab and Drag wall variables
 	double wallXPosition, wallYPosition;
 
+
 	private static Quoridor quoridor;
-	public Timer timer;
-	public Timer RefreshTimer;
+	private Player whitePlayer, blackPlayer;
+	private Timer timer;
+	private Timer RefreshTimer;
+	private String timerVal;
+
+  //Rotate wall variables
+	private Rectangle wallMoveCandidate;
+
 
 	/**
 	 * @author Thomas Philippon
@@ -116,7 +129,6 @@ public class ViewInterface {
 		else{
 			gameSessionNotificationLabel.setText("You have no more walls in stock...");
 		}
-
 	}
 
 	/**
@@ -133,6 +145,9 @@ public class ViewInterface {
 			double newTranslateY = wall.getTranslateY() + offsetY;
 			wall.setTranslateX(newTranslateX);
 			wall.setTranslateY(newTranslateY);
+    
+    //ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
+			wallMoveCandidate = wall;
 	}
 
 	/**
@@ -141,13 +156,14 @@ public class ViewInterface {
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
 		gameSessionNotificationLabel.setText("Invalid Wall Placement");
+    wallMoveCandidate = null;
 	}
 
 
 	public void addToLoadedGameList() {
 		Stage stage = new Stage();
 		DirectoryChooser fileChooser = new DirectoryChooser();
-		fileChooser.setTitle("Open Resource File");
+		fileChooser.setTitle("Select directory with saved games");
 		File file = fileChooser.showDialog(stage);
 		stage.close();
 		if (file != null) {
@@ -158,6 +174,9 @@ public class ViewInterface {
 			lbl_directory.setText("Directory could not be opened");
 		}
 	}
+
+
+
 	private void detectGameFiles(File file) {
 		File[] gameFiles = file.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -208,6 +227,7 @@ public class ViewInterface {
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the Game");
 		}
 }
+
 	
 	/**
 	 * @author Thomas Philippon
@@ -221,6 +241,14 @@ public class ViewInterface {
 		catch(Exception e){
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
 		}
+
+		//get both players
+		whitePlayer = QuoridorController.getCurrentWhitePlayer();
+		blackPlayer = QuoridorController.getCurrentBlackPlayer();
+
+		whitePlayerName.setText(QuoridorController.getPlayerName(whitePlayer));
+		blackPlayerName.setText(QuoridorController.getPlayerName(blackPlayer));
+
 
 		//This tasks runs on a separate thread. It is used to update the GUI every second
 		RefreshTimer.schedule(new TimerTask() {
@@ -376,7 +404,6 @@ public class ViewInterface {
 	 * @author Matthias Arabian
 	 * initializes the FXML components. this code runs once the application is launched but before the GUI is displayed.
 	 */
-	@SuppressWarnings("deprecation")
 	public void initialize() {
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
@@ -384,22 +411,13 @@ public class ViewInterface {
 				AnchorPane tmp = new AnchorPane();
 				tmp.setStyle("-fx-background-color: #ffffff");
 				Game_Board.add(tmp , row, col);
-
 			}
 		}
 
-
-		//Populate game board with colorful tiles
-		for (int row = 0; row < 17; row+=2) {
-			for (int col = 0; col < 17; col+=2) {
-				AnchorPane tmp = new AnchorPane();
-				tmp.setStyle("-fx-background-color: #ffffff");
-				Game_Board.add(tmp , row, col);
-			}
-		}
 		//Initialize the timers
 		timer = new Timer();
 		RefreshTimer = new Timer();
+
 		//quoridor =QuoridorApplication.getQuoridor();
 
 	}
@@ -412,6 +430,7 @@ public class ViewInterface {
     public void displayExistingUserNames(MouseEvent mouseEvent) {
 
 		//when the arrow is pressed
+
 
 		List<String> existingUserNames = null;
 		try {
@@ -479,6 +498,8 @@ public class ViewInterface {
 
 		Boolean isValid = true;
 
+		whiteUsernameExistsLabel.setText("");
+
 		try {
 			QuoridorController.assignPlayerColorToUserName("white", quoridor);
 		} catch (Exception e) {
@@ -506,6 +527,8 @@ public class ViewInterface {
 
 		Boolean isValid = true;
 
+		blackUsernameExistsLabel.setText("");
+
 		try {
 			QuoridorController.assignPlayerColorToUserName("black", quoridor);
 		} catch (Exception e) {
@@ -522,6 +545,45 @@ public class ViewInterface {
 
 		if (!isValid){
 			blackUsernameExistsLabel.setText(userNameToSet + " already exists");
+		}
+	}
+	/**
+	 * @author Matthias Arabian
+	 * @return the wallMoveCandidate currently on the board
+	 */
+	public Rectangle getWallMoveCandidate() {
+		return wallMoveCandidate;
+	}
+	
+	public void rotateWallEvent(MouseEvent mouseEvent) {
+
+		//get the rectangle that is grabbed
+		Rectangle wall = (Rectangle) mouseEvent.getSource();
+		//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
+		wallMoveCandidate = wall;
+		System.out.println("hi");
+		QuoridorController.GUI_flipWallCandidate("horizontal");
+
+	}
+	
+	public void switchPlayer(Event e) {
+		Button b = ((Button)e.getSource());
+		if (b.getId().equals(btn_whitePlayerTurn.getId())) {
+			if (btn_whitePlayerTurn.getText().equals("END TURN")) {
+				btn_blackPlayerTurn.setText("END TURN");
+				lbl_black_awaitingMove.setText("");
+				btn_whitePlayerTurn.setText("NOT WHITE TURN");
+				lbl_white_awaitingMove.setText("AWAITING MOVE");
+				
+			}
+		}
+		else {
+			if (btn_blackPlayerTurn.getText().equals("END TURN")) {
+				btn_whitePlayerTurn.setText("END TURN");
+				lbl_white_awaitingMove.setText("");
+				btn_blackPlayerTurn.setText("NOT BLACK TURN");
+				lbl_black_awaitingMove.setText("AWAITING MOVE");
+			}
 		}
 	}
 }

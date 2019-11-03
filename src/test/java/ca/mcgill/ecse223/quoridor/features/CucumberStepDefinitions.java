@@ -1,10 +1,5 @@
 package ca.mcgill.ecse223.quoridor.features;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,6 +35,7 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.*;
 
 import javax.swing.text.View;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CucumberStepDefinitions {
 
@@ -48,6 +44,11 @@ public class CucumberStepDefinitions {
 	int[] myCoordinate = {0,0}; //Used to store the row and column input from the given scenario
 	String myDirection = ""; //Used to store the direction input from the given scenario
 	boolean positionIsValid = true; // Used to check if the position was valid or not, true by default for detecting if the gamePosition exists/changed
+	Boolean handIsEmpty = false; //used to see if wall drop was successfull or not
+	Boolean userNameSet = true; //used to see if user name was set correctly
+	//Variable for GrabWall test
+	Boolean handHasWall = false;
+
 
 	//Instance Variables for SavePosition tests
 	private String saveFilename = "";
@@ -55,8 +56,7 @@ public class CucumberStepDefinitions {
 	private char [] refFileData = new char [fileDataLength];	//Memory for storing data of one file for comparison.
 	private char [] curFileData = new char [fileDataLength];	//Memory for storing data of another file for comparison.
 
-	//Variable for GrabWall test
-	Boolean grabWallResult = false;
+
 
 	//Timer object for starting and stopping the player clock
 	Timer timer = new Timer();
@@ -132,11 +132,13 @@ public class CucumberStepDefinitions {
 	
 	@And("I do not have a wall in my hand")
 	public void iDoNotHaveAWallInMyHand() {
+		assertFalse(handHasWall);
 		// GUI-related feature -- TODO for later
 	}
 
 	@And("^I have a wall in my hand over the board$")
 	public void iHaveAWallInMyHandOverTheBoard() throws Throwable {
+		assertFalse(handIsEmpty);
 		// GUI-related feature -- TODO for later
 	}
 
@@ -365,7 +367,7 @@ public class CucumberStepDefinitions {
 	@When("I try to grab a wall from my stock")
 	public void iTryToGrabAWallFromMyStock() {
 
-		grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+		handHasWall = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
 	}
 
 	/**
@@ -375,8 +377,11 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("I shall have a wall in my hand over the board")
 	public void iShallHaveAWallInMyHandOverTheBoard() throws Throwable{
-	assertEquals(true, grabWallResult);
 
+		//As this is a GUI related step, it will be implemented later on
+		assertFalse(handIsEmpty);
+		assertTrue(handHasWall);
+		//TODO
 	}
 
 	/**
@@ -403,7 +408,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("I shall be notified that I have no more walls")
 	public void iShouldBeNotifiedThatIHaveNoMoreWalls() throws Throwable{
-		assertEquals(false, grabWallResult);
+		assertFalse(handHasWall);
 	}
 	
 	/**
@@ -411,7 +416,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("I shall have no walls in my hand")
 	public void iShallHaveNoWallsInMyHand() throws Throwable{
-		assertEquals(false, grabWallResult);
+		assertFalse(handHasWall);
 	}
 	
 	/**checks that a wall move candidate exists, otherwise create one and link to appropriate tile
@@ -600,7 +605,7 @@ public class CucumberStepDefinitions {
 
     	Quoridor quoridor = QuoridorApplication.getQuoridor();
         //Game game = QuoridorApplication.getQuoridor().getCurrentGame();
-        QuoridorController.selectNewUserName(username, quoridor);
+        userNameSet = QuoridorController.selectNewUserName(username, quoridor);
     }
 
     /**
@@ -632,6 +637,7 @@ public class CucumberStepDefinitions {
         //assertEquals(username, QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getNextPlayer().getUser().getName());
 
         //GUI notification that username is already existing and he will be that username
+		assertFalse(userNameSet);
     }
 
     /**
@@ -952,7 +958,13 @@ public class CucumberStepDefinitions {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         //Board board = QuoridorApplication.getQuoridor().getBoard();
 
-		grabWallResult = !QuoridorController.releaseWall(quoridor);
+        handIsEmpty = QuoridorController.releaseWall(quoridor);
+        if(handIsEmpty){
+        	handHasWall = false;
+		}else{
+        	handHasWall = true;
+		}
+
     }
 
     /**
@@ -1008,6 +1020,7 @@ public class CucumberStepDefinitions {
     @And("I shall not have a wall in my hand")
     public void iShallNotHaveAWallInMyHand() throws Throwable {
 
+    	assertTrue(handIsEmpty);
         //TODO:GUI
     }
 
@@ -1203,7 +1216,7 @@ public class CucumberStepDefinitions {
 //TODO MATTHIAS
 	@Then("The wall shall be rotated over the board to {string}")
 	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
-		// GUI-related feature -- TODO for later
+		QuoridorController.GUI_flipWallCandidate(newDir);
 	}
 	
 	
@@ -1375,6 +1388,9 @@ public class CucumberStepDefinitions {
 		myCoordinate[1] = 0;
 		myDirection = "";
 		boolean positionValidated = false;
+		handIsEmpty = false;
+		handHasWall = false;
+		userNameSet = true;
 		
 	}
 
