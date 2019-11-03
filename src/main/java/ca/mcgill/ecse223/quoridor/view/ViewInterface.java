@@ -36,7 +36,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-
 public class ViewInterface {
 
 
@@ -92,9 +91,15 @@ public class ViewInterface {
 //Grab and Drad wall variables
 	double wallXPosition, wallYPosition;
 
+
 	private static Quoridor quoridor;
 	public Timer timer;
 	public Timer RefreshTimer;
+  public String timerVal;
+
+  //Rotate wall variables
+	private Rectangle wallMoveCandidate;
+
 
 	/**
 	 * @author Thomas Philippon
@@ -116,7 +121,6 @@ public class ViewInterface {
 		else{
 			gameSessionNotificationLabel.setText("You have no more walls in stock...");
 		}
-
 	}
 
 	/**
@@ -133,6 +137,9 @@ public class ViewInterface {
 			double newTranslateY = wall.getTranslateY() + offsetY;
 			wall.setTranslateX(newTranslateX);
 			wall.setTranslateY(newTranslateY);
+    
+    //ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
+			wallMoveCandidate = wall;
 	}
 
 	/**
@@ -141,13 +148,14 @@ public class ViewInterface {
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
 		gameSessionNotificationLabel.setText("Invalid Wall Placement");
+    wallMoveCandidate = null;
 	}
 
 
 	public void addToLoadedGameList() {
 		Stage stage = new Stage();
 		DirectoryChooser fileChooser = new DirectoryChooser();
-		fileChooser.setTitle("Open Resource File");
+		fileChooser.setTitle("Select directory with saved games");
 		File file = fileChooser.showDialog(stage);
 		stage.close();
 		if (file != null) {
@@ -158,6 +166,9 @@ public class ViewInterface {
 			lbl_directory.setText("Directory could not be opened");
 		}
 	}
+
+
+
 	private void detectGameFiles(File file) {
 		File[] gameFiles = file.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -208,6 +219,7 @@ public class ViewInterface {
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the Game");
 		}
 }
+
 	
 	/**
 	 * @author Thomas Philippon
@@ -221,6 +233,7 @@ public class ViewInterface {
 		catch(Exception e){
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
 		}
+
 
 		//This tasks runs on a separate thread. It is used to update the GUI every second
 		RefreshTimer.schedule(new TimerTask() {
@@ -397,6 +410,7 @@ public class ViewInterface {
 				Game_Board.add(tmp , row, col);
 			}
 		}
+
 		//Initialize the timers
 		timer = new Timer();
 		RefreshTimer = new Timer();
@@ -412,6 +426,7 @@ public class ViewInterface {
     public void displayExistingUserNames(MouseEvent mouseEvent) {
 
 		//when the arrow is pressed
+
 
 		List<String> existingUserNames = null;
 		try {
@@ -523,5 +538,23 @@ public class ViewInterface {
 		if (!isValid){
 			blackUsernameExistsLabel.setText(userNameToSet + " already exists");
 		}
+
+	/**
+	 * @author Matthias Arabian
+	 * @return the wallMoveCandidate currently on the board
+	 */
+	public Rectangle getWallMoveCandidate() {
+		return wallMoveCandidate;
+	}
+	
+	public void rotateWallEvent(MouseEvent mouseEvent) {
+
+		//get the rectangle that is grabbed
+		Rectangle wall = (Rectangle) mouseEvent.getSource();
+		//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
+		wallMoveCandidate = wall;
+		System.out.println("hi");
+		QuoridorController.GUI_flipWallCandidate("horizontal");
+
 	}
 }

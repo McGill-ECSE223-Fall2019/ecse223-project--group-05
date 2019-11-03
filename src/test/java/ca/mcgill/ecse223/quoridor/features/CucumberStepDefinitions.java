@@ -376,7 +376,6 @@ public class CucumberStepDefinitions {
 	@Then("I shall have a wall in my hand over the board")
 	public void iShallHaveAWallInMyHandOverTheBoard() throws Throwable{
 	assertEquals(true, grabWallResult);
-
 	}
 
 	/**
@@ -1203,7 +1202,7 @@ public class CucumberStepDefinitions {
 //TODO MATTHIAS
 	@Then("The wall shall be rotated over the board to {string}")
 	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
-		// GUI-related feature -- TODO for later
+		QuoridorController.GUI_flipWallCandidate(newDir);
 	}
 	
 	
