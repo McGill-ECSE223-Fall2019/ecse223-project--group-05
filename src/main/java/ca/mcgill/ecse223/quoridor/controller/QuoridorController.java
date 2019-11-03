@@ -284,7 +284,8 @@ public class QuoridorController {
      * @author David
      */
     public static boolean isIllegalMoveNotificationDisplayed() {
-        throw new java.lang.UnsupportedOperationException();
+    	ViewInterface view = QuoridorApplication.getViewInterface();
+    	return view.isIllegalNotificationDisplayed();
     }
 
     /**
@@ -296,7 +297,8 @@ public class QuoridorController {
      */
     public static boolean thisWallIsAtPosition(int row, int column) {
     	ViewInterface view = QuoridorApplication.getViewInterface();
-    	return true;
+    	
+    	return view.isWallDisplayedAt(row, column);
     }
 
     /**

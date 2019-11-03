@@ -35,6 +35,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
@@ -143,27 +144,33 @@ public class ViewInterface {
 	
 	@FXML
 	public static void MoveWall(KeyEvent keyEvent) {
-
+		boolean isValid = true;
 		try {
 			if(wallSelected==null && (keyEvent.getCode()==KeyCode.UP||keyEvent.getCode()==KeyCode.DOWN||keyEvent.getCode()==KeyCode.LEFT||keyEvent.getCode()==KeyCode.RIGHT)){
 				throw new IllegalArgumentException("no wall was selected.");
 			}
 			if(keyEvent.getCode()==KeyCode.UP) {
-				QuoridorController.moveWall("up");
+				isValid = QuoridorController.moveWall("up");
 				wallSelected.setTranslateY(wallSelected.getTranslateY()-VERTICALSTEP);//translates the rectangle by a tilewidth
 				//System.out.println("detected"); 
 			}
 			else if(keyEvent.getCode()==KeyCode.DOWN) {
-				QuoridorController.moveWall("down");
+				isValid = QuoridorController.moveWall("down");
 				wallSelected.setTranslateY(wallSelected.getTranslateY()+VERTICALSTEP);
 			}
 			else if(keyEvent.getCode()==KeyCode.LEFT) {
-				QuoridorController.moveWall("left");
+				isValid = QuoridorController.moveWall("left");
 				wallSelected.setTranslateX(wallSelected.getTranslateX()-HORIZONTALSTEP);
 			}
 			else if(keyEvent.getCode()==KeyCode.RIGHT) {
-				QuoridorController.moveWall("right");
+				isValid = QuoridorController.moveWall("right");
 				wallSelected.setTranslateX(wallSelected.getTranslateX()+HORIZONTALSTEP);
+			}
+			if(isValid) {
+				wallSelected.setStroke(Color.RED);
+			}
+			else {
+				wallSelected.setStroke(Color.BLACK);
 			}
 		}
 		catch(Throwable e) {
@@ -174,16 +181,20 @@ public class ViewInterface {
 			//wallSelected.setTranslateX(newTranslateX);
 			//wallSelected.setTranslateY(newTranslateY);
 		    wallSelected.toFront();
+			//System.out.println("x: " + wallDisplayX());
+			//System.out.println("y: " + wallDisplayY());
 			
 	}
-
+	
+	
+	
+	//wallSelected needs to be null after this method--David
 	/**
 	 * @author Thomas Philippon
 	 *This method is executed when the user releases the wall
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
 		
-
 	}
 
 
@@ -532,5 +543,18 @@ public class ViewInterface {
     public boolean isIllegalNotificationDisplayed() {
     	return isIllegalNotificationDisplayed;
     }
-    //public checkWallDisplayPosition()
+    private static double wallDisplayX() {
+    	if(wallSelected==null) return -1;
+    	return wallSelected.getTranslateX();
+    }
+    private static double wallDisplayY() {
+    	if(wallSelected==null) return -1;
+    	return wallSelected.getTranslateY();
+    }
+    public boolean isWallDisplayedAt(int row, int col) {
+    	if((wallDisplayX()==110+(col-1)*30) && (wallDisplayY()==35+(row-1)*30)){
+    		return true;
+    	}
+    	return false;
+    }
 }
