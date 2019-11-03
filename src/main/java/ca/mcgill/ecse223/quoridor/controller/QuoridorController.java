@@ -131,7 +131,7 @@ public class QuoridorController {
      * @author David
      */
   //TODO: link to View
-    public static void moveWall(String side) throws Throwable {
+    public static boolean moveWall(String side) throws Throwable {
     	Quoridor quoridor = QuoridorApplication.getQuoridor();
     	WallMove current = quoridor.getCurrentGame().getWallMoveCandidate();
     	int col = current.getTargetTile().getColumn();
@@ -162,6 +162,7 @@ public class QuoridorController {
     	default:
     		throw new IllegalArgumentException("move wall illegal argument");
     	}
+    	return validatePosition(current.getTargetTile().getRow(), current.getTargetTile().getColumn(),current.getWallDirection().toString());
     	
     }
 
