@@ -178,13 +178,12 @@ public class QuoridorController {
             //or have a popup showup to tell the player if they are sure or something
         }*/
         Game game = new Game(GameStatus.Initializing, Game.MoveMode.PlayerMove, quoridor);
-
         User user1 = quoridor.addUser("user1");
         User user2 = quoridor.addUser("user2");
 
-        int thinkingTime = 10;
+        int thinkingTime = 180;
 
-        Player player1 = new Player(new Time (thinkingTime), user1, 9, Direction.Horizontal);
+        Player player1 = new Player(new Time(thinkingTime), user1, 9, Direction.Horizontal);
         Player player2 = new Player(new Time(thinkingTime), user2, 1, Direction.Horizontal);
 
         Player[] players = { player1, player2 };
@@ -203,28 +202,34 @@ public class QuoridorController {
 
     /**
      * @param player is the player whether it be white or black
-     * @return true if the player chose a username and false if not
+     * @return true if user name is set successfully
      * @author Daniel Wu
      */
-    public static boolean playerChoseUsername(Player player) {
+    public static boolean setUserToPlayer(Player player, User user) {
         //This returns false if the player didn't, choose a username, but a player can't exist without a username??!?!??!
-        if (player.getUser() != null){
+        player.setUser(user);
+        if (player.getUser() != user){
             return false;
         }
         return true;
     }
 
     /**
-     * @param game takes the return from Player.setRemainingTime
-     * @return true if the thinking time is set and false if not
+     * @param player is the player, white or black
+     * @param time is the time to set the remaining time of the player
+     * @return true if the thinking time is set successfully and false if not
      * @author Daniel Wu
      */
-    public static boolean thinkingTimeIsSet(Game game) {
-        throw new java.lang.UnsupportedOperationException();
+    public static boolean setTotalThinkingTime(Player player, Time time) {
+        player.setRemainingTime(time);
+        if (player.getRemainingTime() != time){
+            return false;
+        }
+        return true;
     }
 
     /**
-     * @param player
+     * @param player is the player, white or black
      * @param timer
      * @return void
      * @author Daniel Wu
@@ -436,12 +441,10 @@ public class QuoridorController {
     public static void initializeQuoridor(Quoridor quoridor) {
         //part of method is taken from given code in the stepDefinitions
 
-        User user1 = quoridor.addUser("user1");
-        User user2 = quoridor.addUser("user2");
 
         int thinkingTime = 10; //placeholder
-        Player player1 = new Player(new Time(thinkingTime), user1, 9, Direction.Horizontal);
-        Player player2 = new Player(new Time(thinkingTime), user2, 1, Direction.Horizontal);
+        Player player1 = new Player(null, null, 9, Direction.Horizontal);
+        Player player2 = new Player(null, null, 1, Direction.Horizontal);
 
         Player[] players = { player1, player2 };
 
