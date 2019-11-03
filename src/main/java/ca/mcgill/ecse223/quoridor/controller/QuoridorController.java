@@ -5,9 +5,11 @@ import java.io.IOException;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
+import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
 import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
+import ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager;
 
 public class QuoridorController {
 	
@@ -359,10 +361,7 @@ public class QuoridorController {
 	 * @throws IOException
 	 */
 	public static SavingStatus saveGame(String filename, Game game) throws IOException{
-		if( SaveConfig.createGameSavesFolder() == false ) {
-			return SavingStatus.failed;
-		}
-		throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game) not yet implemented.");
+		return QuoridorSavesManager.saveGamePawnsAndWalls(game, filename, SavePriority.DEFAULT);
 	}
 	/**
 	 * NOT IMPLEMENTED.
@@ -376,11 +375,8 @@ public class QuoridorController {
 	 * @return savingStatus enum
 	 * @throws IOException
 	 */
-	public static SavingStatus saveGame(String filename, Game game, boolean overwrite) throws IOException{
-		if( SaveConfig.createGameSavesFolder() == false ) {
-			return SavingStatus.failed;
-		}
-		throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game,overwrite) not yet implemented.");
+	public static SavingStatus saveGame(String filename, Game game, SavePriority save_enforcement_type) throws IOException{
+		return QuoridorSavesManager.saveGamePawnsAndWalls(game, filename, save_enforcement_type);
 	}
 	
 	/**

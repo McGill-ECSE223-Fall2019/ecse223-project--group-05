@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
+import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
 import ca.mcgill.ecse223.quoridor.model.Move;
@@ -30,12 +32,54 @@ public class QuoridorSavesManager {
 	
 	/**
 	 * Writes into the file system sprint3-format data about the black and white pawns and walls. 
-	 * Only the name of the file with its extension need to be provided. Returns false with IOException.
+	 * Only the name of the file with its extension need to be provided. Returns false in the case of an IOException.
 	 * @param game
 	 * @param filename
 	 * @return
 	 */
-	public static boolean saveGamePawnsAndWalls( Game game , String filename) {
+	public static SavingStatus saveGamePawnsAndWalls( Game game , String filename, SavePriority save_enforcement_type) {
+		/*
+		 * CANCELATION CHECK
+		 */
+		if(save_enforcement_type == SavePriority.DO_NOT_SAVE) {
+			return SavingStatus.CANCELED;
+		}
+		
+		
+		/*
+		 * FILE SYSTEM CHECK
+		 */
+		//First, check if the game already exists. If it does, then check if the user wants to overwrite it; inform them that it already exists if not.
+		//If the game does not exist, but the operation is being used with FORCE_OVERWRITE as an argument, someone's not using this method properly.
+		File file = new File(filename);
+		if( file.exists() ) {
+			if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
+				return SavingStatus.ALREADY_EXISTS;
+			} else {
+				if( save_enforcement_type == SavePriority.FORCE_OVERWRITE) {
+					throw new IllegalArgumentException("Programmer has made improper use of save_enforcement_type. Did not check that the file already exists before using FORCE_OVERWRITE: Detected use of FORCE_OVERWRITE with a non-existing file.");
+				}
+			}
+		}
+		
+		
+		/*
+		 * GAME INSTANCE DATA CHECK
+		 */
+		String datacheck = "";
+		datacheck = datacheck + "gameAsWhite : " + game.getWhitePlayer() + "\n";
+		datacheck = datacheck + "gameAsBlack : " + game.getBlackPlayer() + "\n";
+		datacheck = datacheck + "gamePositions : " + game.getPositions() + "\n";
+		datacheck = datacheck + "currentPosition : " + game.getCurrentPosition() + "\n";
+		datacheck = datacheck + "moves : " + game.getMoves() + "\n";
+		if( game.getWhitePlayer() == null || game.getBlackPlayer() == null || game.getPositions() == null || game.getCurrentPosition() == null || game.getMoves() == null ) {
+			throw new RuntimeException(datacheck);
+		}
+		
+		
+		/*
+		 * FILE WRITING
+		 */
 		//Dual line setup
 		String line1 = "";
 		String line2 = "";
@@ -52,18 +96,20 @@ public class QuoridorSavesManager {
 		}
 		
 		//File System Writing
-		File file = new File(filename);
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
 			bufferedWriter.write(line1);
 			bufferedWriter.write(line2);
 			bufferedWriter.close();
 		} catch (IOException e) {
-			return false;
+			return SavingStatus.FAILED;
 		}
 		
 		//Success confirmation
-		return true;
+		if( save_enforcement_type == SavePriority.FORCE_OVERWRITE ) {
+			return SavingStatus.OVERWRITTEN;
+		}
+		return SavingStatus.SAVED;
 	}
 	
 	/**
@@ -218,7 +264,7 @@ public class QuoridorSavesManager {
 		if( playerIsBlack ) {
 			playerTile = player.getGameAsBlack().getCurrentPosition().getBlackPosition().getTile();
 		} else {
-			playerTile = player.getGameAsBlack().getCurrentPosition().getWhitePosition().getTile();
+			playerTile = player.getGameAsWhite().getCurrentPosition().getWhitePosition().getTile();
 		}
 		if( playerIsBlack ) {
 			playerWalls = player.getGameAsBlack().getCurrentPosition().getBlackWallsOnBoard();

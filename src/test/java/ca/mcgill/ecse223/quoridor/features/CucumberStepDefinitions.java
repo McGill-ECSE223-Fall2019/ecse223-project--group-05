@@ -18,6 +18,7 @@ import java.util.Map;
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
+import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -700,7 +701,7 @@ public class CucumberStepDefinitions {
 	public void theUserConfirmsToOverwriteExistingFile() {
 		SaveConfig.createGameSavesFolder();
 		try {
-			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), true);
+			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), SavePriority.FORCE_OVERWRITE);
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
@@ -715,7 +716,7 @@ public class CucumberStepDefinitions {
 	public void theUserCancelsToOverwriteExistingFile() {
 		SaveConfig.createGameSavesFolder();
 		try {
-			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), false);
+			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), SavePriority.DO_NOT_SAVE);
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
@@ -730,6 +731,7 @@ public class CucumberStepDefinitions {
 	public void aFileWithFilenameIsCreatedInTheFilesystem(String filename) {
 		SaveConfig.createGameSavesFolder();
 		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
+		checkFileSystemAccess( SaveConfig.getGameSaveFilePath(filename) );
 		assertEquals(file.exists(),true);
 	}
 	
@@ -742,6 +744,7 @@ public class CucumberStepDefinitions {
 	public void fileWithFilenameIsUpdatedInTheFileSystem(String filename) {
 		SaveConfig.createGameSavesFolder();
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
+		checkFileSystemAccess( SaveConfig.getGameSaveFilePath(filename) );
 		assertEquals( Arrays.equals(refFileData, curFileData), false );	
 	}
 	
@@ -754,9 +757,24 @@ public class CucumberStepDefinitions {
 	public void fileWithFilenameIsNotChangedInTheFileSystem(String filename) {
 		SaveConfig.createGameSavesFolder();
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
+		checkFileSystemAccess( SaveConfig.getGameSaveFilePath(filename) );
 		assertEquals( Arrays.equals(refFileData, curFileData), true );
 	}
 	
+	/**
+	 * @author Edwin Pan
+	 * Helper method for checking if the Operating System is preventing the application from doing Save and Load tests
+	 * Checks if Access if being Denied: If so, prints the stacktrace and announces the Exception to tester.
+	 */
+	private void checkFileSystemAccess( String path ) {
+		SecurityManager securityManager = new SecurityManager();
+		try {
+			securityManager.checkRead( path );
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
 	
 	
 	/*
