@@ -10,17 +10,19 @@ package ca.mcgill.ecse223.quoridor.view;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
-import ca.mcgill.ecse223.quoridor.model.Player;
-import ca.mcgill.ecse223.quoridor.model.Quoridor;
 
 import java.util.List;
 import java.util.Timer;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.TimerTask;
 
+import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+
+import javafx.application.Platform;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -34,11 +36,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-
-
 public class ViewInterface {
 
-    private static Quoridor quoridor = QuoridorApplication.getQuoridor();
+
 
 	//these are the pages that the user can travel to/interact with
 	private enum Page {
@@ -67,27 +67,102 @@ public class ViewInterface {
 	@FXML private TextField blackNewName;
 	@FXML private TextField whiteTimerField;
 	@FXML private TextField blackTimerField;
+	@FXML private Label whiteUsernameExistsLabel;
+	@FXML private Label blackUsernameExistsLabel;
+
+
+
+
 	
 	@FXML ListView loadedGameList;
 	private int counter = 0;
 	
 	
-	
-//Load Game Page
+     //Load Game Page
 	@FXML private Label lbl_directory;
-	
-//Game Session Page
+
+	//Game Session Page
 	@FXML private GridPane Game_Board;
-	@FXML private Rectangle aWall;
-	@FXML private Label lbl_blackTimer;
-	@FXML private Label lbl_whiteTimer;
+	@FXML private Rectangle whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6, whiteWall7, whiteWall8, whiteWall9, whiteWall10;
+	@FXML private Rectangle blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6, blackWall7, blackWall8, blackWall9, wblackWall10;
+	@FXML private Label gameSessionNotificationLabel;
+	@FXML public Label whiteTimer;
+	@FXML private Label blackTimer;
+
+//Grab and Drad wall variables
+	double wallXPosition, wallYPosition;
+
+//Rotate wall variables
+	private Rectangle wallMoveCandidate;
 	
-	
+	private static Quoridor quoridor;
+	public Timer timer;
+	public String timerVal;
+	//StringProperty prop = new SimpleStringProperty();
+
 	/**
-	 * @author Matthias Arabian
-	 * Prompts user to select a directory in which game files are stored.
-	 * Detects valid files and adds them to the GUI.
+	 * @author Thomas Philippon
+	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
+	public void GrabWall(MouseEvent mouseEvent) {
+
+		boolean grabWallResult;
+		try {
+			grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+		}
+		catch(Exception e){
+				throw new java.lang.UnsupportedOperationException("Cannot retrieve the number of walls in stock");
+			}
+
+		if (grabWallResult == true ){
+			gameSessionNotificationLabel.setText("You have more walls in stock!");
+		}
+		else{
+			gameSessionNotificationLabel.setText("You have no more walls in stock...");
+		}
+
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 * This method is called when the user drags the walls
+	 */
+	public void MoveWall(MouseEvent mouseEvent) {
+
+		//get the rectangle that is grabbed
+		Rectangle wall = (Rectangle) mouseEvent.getSource();
+		
+		//Compute the new wall position and move the wall to that position
+			double offsetX = mouseEvent.getX();
+			double offsetY = mouseEvent.getY();
+			double newTranslateX = wall.getTranslateX() + offsetX;
+			double newTranslateY = wall.getTranslateY() + offsetY;
+			wall.setTranslateX(newTranslateX);
+			wall.setTranslateY(newTranslateY);
+			
+			
+			//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
+			wallMoveCandidate = wall;
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 *This method is executed when the user releases the wall
+	 */
+	public void DropWall(MouseEvent mouseEvent) {
+
+		gameSessionNotificationLabel.setText("Invalid Wall Placement");
+		wallMoveCandidate = null;
+		//get the rectangle that is dropped
+//		Rectangle wall = (Rectangle) mouseEvent.getSource();
+//		double newTranslateX = wall.getTranslateX() + wallXPosition;
+//		double newTranslateY = wall.getTranslateY() + wallYPosition;
+//		wall.setTranslateX(newTranslateX);
+//		wall.setTranslateY(newTranslateY);
+
+	}
+
+
 	public void addToLoadedGameList() {
             	Stage stage = new Stage();
             	DirectoryChooser fileChooser = new DirectoryChooser();
@@ -102,14 +177,6 @@ public class ViewInterface {
                 	lbl_directory.setText("Directory could not be opened");
                 }
 	}
-	
-	/**
-	 * @author Matthias Arabian
-	 * @param file directory path to parse through
-	 * Goes through the directory <file> in search of game files. 
-	 * Fills the GUI element loadedGameList with the discovered game files.
-	 * 
-	 */
 	private void detectGameFiles(File file) {
 		File[] gameFiles = file.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -134,7 +201,8 @@ public class ViewInterface {
 	public void Goto_New_Game_Page() {
 		Goto_Page(Page.NEW_GAME_PAGE);
 	}
-	
+
+
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Main Page.
@@ -144,18 +212,35 @@ public class ViewInterface {
 	}
 	
 	/**
-	 * @author Matthias Arabian
+	 * @author Daniel Wu
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
 	public void Goto_Choose_Opponent_Page() {
+
 		Goto_Page(Page.CHOOSE_OPPONENT_PAGE);
+
+		quoridor = QuoridorApplication.getQuoridor();
+
+		try {
+			QuoridorController.initializeGame(quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Cannot initialize the Game");
+		}
 	}
 	
 	/**
-	 * @author Matthias Arabian
+	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Game Session Page.
 	 */
 	public void Goto_Game_Session_Page() {
+
+		try {
+			QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
+		}
+		catch(Exception e){
+			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
+		}
+
 		Goto_Page(Page.GAME_SESSION_PAGE);
 	}
 	
@@ -290,7 +375,7 @@ public class ViewInterface {
 		else 
 			return null;
 	}
-	
+
 	
 	/**
 	 * @author Matthias Arabian
@@ -304,112 +389,162 @@ public class ViewInterface {
 				AnchorPane tmp = new AnchorPane();
 				tmp.setStyle("-fx-background-color: #ffffff");
 				Game_Board.add(tmp , row, col);
+
 			}
 		}
-		
-  //attempts at dragging wallMoveCandidates on GUI  
-	aWall.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            System.out.println("mouse click detected! "+event.getSource());
-        }
-    });
-	aWall.setOnMouseDragged(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-        	((Rectangle)event.getSource()).prefWidth(event.getScreenX());
-            ((Rectangle)event.getSource()).setX(event.getScreenX());
-            ((Rectangle)event.getSource()).setY(event.getScreenY());
-        }
-    });
 
+		timer = new Timer();
+		//Populate game board with colorful tiles
+		for (int row = 0; row < 17; row+=2) {
+			for (int col = 0; col < 17; col+=2) {
+				AnchorPane tmp = new AnchorPane();
+				tmp.setStyle("-fx-background-color: #ffffff");
+				Game_Board.add(tmp , row, col);
+			}
+		}
 
-	whiteExistingName.setItems(FXCollections.observableArrayList(
-			    "A", "B", "C", "D"));
-	blackExistingName.setItems(FXCollections.observableArrayList(
-			    "A", "B", "C", "D"));
+		//quoridor =QuoridorApplication.getQuoridor();
+		timer = new Timer();
 
-		
+		//fortesting
 	}
 
-    /**
-     * @author Alex Masciotra
-     * method to display the existingusernames in quoridor when arrow is pressed
-     */
-	public void displayExistingUserNames(){
-	    //for testing purposes manually adding usernames
+	/**
+	 * Method to display ExistingUserNames
+	 * @author Alex Masciotra
+	 * @param mouseEvent when arrow is pressed
+	 */
+    public void displayExistingUserNames(MouseEvent mouseEvent) {
 
-        //when the arrow is pressed
-        List<String> existingUserNames = QuoridorController.provideExistingUserNames(quoridor);
+		//when the arrow is pressed
 
-        //this comboBox is for whiteUserChooseFromExistingArrow
-        whiteExistingName.setItems(FXCollections.observableList(existingUserNames));
+		List<String> existingUserNames = null;
+		try {
+			existingUserNames = QuoridorController.provideExistingUserNames(quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to display Existing UserNames");
+		}
 
-        //this comboBox is for blackUserChooseFromExistingArrow
-        blackExistingName.setItems(FXCollections.observableList(existingUserNames));
+		//this comboBox is for whiteUserChooseFromExistingArrow
+		whiteExistingName.setItems(FXCollections.observableList(existingUserNames));
 
-    }
+		//this comboBox is for blackUserChooseFromExistingArrow
+		blackExistingName.setItems(FXCollections.observableList(existingUserNames));
 
-    /**
-     * @author Alex Masciotra
-     * method to selectAnExistingUserNAme when arrow is pressed to view
-     */
-	public void selectExistingUserNameFromDropDownList(){
-
-	    //when user selects one of the usernames from the drop downlist
-        //check if the event is coming from selecting from the white or black combobox username
-
-        /*
-        // the if and else conditions is more, if the event is coming from the whiteplayer, or if its coming from black
-        if(ComboBox_username1.toString().toLowerCase().contains("white")){
-            QuoridorController.assignPlayerColorToUserName("white", quoridor);
-            QuoridorController.selectExistingUserName(ComboBox_username1.getContentOfBoxAsString, quoridor);
-        } else if (ComboBox_username2.toString().toLowerCase().contains("black")){
-            QuoridorController.assignPlayerColorToUserName("black", quoridor);
-            QuoridorController.selectExistingUserName(ComboBox_username2.getContentOfBoxAsString, quoridor);
-        }
-
-         */
-
-    }
-
-    /**
-     * @author Alex Masciotra
-     * Method to create a new username
-     */
-    public void createNewUserName(){
-
-        /*
-        Boolean IsValid;
-        //here comboBox should be like newWhiteUserName or newBlackUserName
-	    if(ComboBox_username1.toString().toLowerCase().contains("white")){
-	        QuoridorController.assignPlayerColorToUserName("white", quoridor);
-
-	        isValid = QuoridorController.selectNewUserName(ComboBox_username1.getContentOfBoxAsString, quoridor);
-
-	        if (isValid == false){
-
-	            //THROW POPUP SAYING USERNAME ALREADY IN USE AND SELECT A NEW ONE AND RECALL THIS METHOD
-            }
-
-        } else if (ComboBox_username2.toString().toLowerCase().contains("black")){
-            QuoridorController.assignPlayerColorToUserName("black", quoridor);
-
-            isValid = QuoridorController.selectNewUserName(ComboBox_username2.getContentOfBoxAsString, quoridor);
-
-            if (isValid == false){
-
-                //THROW POPUP SAYING USERNAME ALREADY IN USE AND SELECT A NEW ONE AND RECALL THIS METHOD
-            }
-        }
-
-	    */
-    }
-
-	public Label getWhiteTimer() {
-		return lbl_whiteTimer;
 	}
-	public Label getBlackTimer() {
-		return lbl_blackTimer;
+
+	/**
+	 * Method to select existing username for white player from dropdownList
+	 * @author Alex Masciotra
+	 * @param actionEvent name selected
+	 */
+	public void whitePlayerSelectsExistingUserName(ActionEvent actionEvent) {
+
+		try {
+			QuoridorController.assignPlayerColorToUserName("white", quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
+		}
+		String userNameToSet = whiteExistingName.getValue().toString();
+
+		try {
+			QuoridorController.selectExistingUserName(userNameToSet, quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to select Existing UserName");
+		}
+	}
+
+	/**
+	 * Method to select existing username for black player from dropDownList
+	 * @author Alex Masciotra
+	 * @param actionEvent name selected
+	 */
+	public void blackPlayerSelectsExistingUserName(ActionEvent actionEvent) {
+
+		try {
+			QuoridorController.assignPlayerColorToUserName("black", quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
+		}
+		String userNameToSet = blackExistingName.getValue().toString();
+
+		try {
+			QuoridorController.selectExistingUserName(userNameToSet, quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to select Existing UserName");
+		}
+	}
+
+	/**
+	 * Method to create new username for white player
+	 * @author Alex Masciotra
+	 * @param mouseEvent when done is pressed
+	 */
+	public void whitePlayerSelectsNewUserName(MouseEvent mouseEvent) {
+
+		Boolean isValid = true;
+
+		try {
+			QuoridorController.assignPlayerColorToUserName("white", quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
+		}
+		String userNameToSet = whiteNewName.getText();
+
+		try {
+			isValid = QuoridorController.selectNewUserName(userNameToSet, quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to select New UserName");
+		}
+
+		if (!isValid){
+			whiteUsernameExistsLabel.setText(userNameToSet + " already exists");
+		}
+	}
+
+	/**
+	 * Method to create new username for black player
+	 * @author Alex Masciotra
+	 * @param mouseEvent when done is pressed
+	 */
+	public void blackPlayerSelectsNewUserName(MouseEvent mouseEvent) {
+
+		Boolean isValid = true;
+
+		try {
+			QuoridorController.assignPlayerColorToUserName("black", quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
+		}
+
+		String userNameToSet = blackNewName.getText();
+
+		try {
+			isValid = QuoridorController.selectNewUserName(userNameToSet, quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to select New UserName");
+		}
+
+		if (!isValid){
+			blackUsernameExistsLabel.setText(userNameToSet + " already exists");
+		}
+	}
+
+	/**
+	 * @author Matthias Arabian
+	 * @return the wallMoveCandidate currently on the board
+	 */
+	public Rectangle getWallMoveCandidate() {
+		return wallMoveCandidate;
+	}
+	
+	public void rotateWallEvent(MouseEvent mouseEvent) {
+
+		//get the rectangle that is grabbed
+		Rectangle wall = (Rectangle) mouseEvent.getSource();
+		//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
+		wallMoveCandidate = wall;
+		System.out.println("hi");
+		QuoridorController.GUI_flipWallCandidate("horizontal");
 	}
 }

@@ -15,7 +15,6 @@ import java.sql.Time;
 import java.util.*;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
-import ca.mcgill.ecse223.quoridor.controller.*;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.model.Board;
@@ -31,6 +30,7 @@ import ca.mcgill.ecse223.quoridor.model.Tile;
 import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
+import ca.mcgill.ecse223.quoridor.view.ViewInterface;
 import cucumber.api.PendingException;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
@@ -38,6 +38,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.*;
+
+import javax.swing.text.View;
 
 public class CucumberStepDefinitions {
 
@@ -157,7 +159,7 @@ public class CucumberStepDefinitions {
     @When("A new game is being initialized")
     public void aNewGameIsBeingInitializing() throws java.lang.UnsupportedOperationException{
     	
-    	QuoridorController.isGameInitializing(QuoridorApplication.getQuoridor().getCurrentGame());
+    	QuoridorController.initializeGame(QuoridorApplication.getQuoridor());
     }
     
     /**
@@ -166,7 +168,7 @@ public class CucumberStepDefinitions {
 	 * Scenario: Initiate a new game
 	 */
     @And("White player chooses a username")
-    public void whitePlayerChosesAUsername() throws java.lang.UnsupportedOperationException{
+    public void whitePlayerChoosesAUsername() throws java.lang.UnsupportedOperationException{
     	QuoridorController.playerChoseUsername(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer());
     }
     
@@ -198,7 +200,7 @@ public class CucumberStepDefinitions {
 	 */
     @Then("The game shall become ready to start")
     public void theGameShallBecomeReadyToStart() {
-    	assertEquals(Game.GameStatus.ReadyToStart, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
+    	assertEquals(Game.GameStatus.ReadyToStart, QuoridorController.getGameStatus());
     }
 
     /**
@@ -226,11 +228,13 @@ public class CucumberStepDefinitions {
 	 * starts the clock
 	 */
   	@When("I start the clock")
-  	public void iStartTheClock() throws java.lang.UnsupportedOperationException {
+  	public void iStartTheClock(){
+  		Player player = QuoridorController.getCurrentWhitePlayer();
+		if(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove().hasGameAsBlack()){
+			player = QuoridorController.getCurrentWhitePlayer();
+		}
+		QuoridorController.startPlayerTimer(player, timer);
 
-  		Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
-  		Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
-  		QuoridorController.startPlayerTimer(whitePlayer, timer);
   	}
   	
   	/**
@@ -263,7 +267,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The initialization of the board is initiated")
 	public void initializationOfBoardInitiated(){
-		QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
+        QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
 	}
 	
 	/**
@@ -279,6 +283,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("White's pawn shall be in its initial position")
 	public void whitesPawnShallBeInItsInitialPosition() {
+		//the initial tile for the white player is the tile 4
 		assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(4),QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile());
 	}
 	
@@ -287,6 +292,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("Black's pawn shall be in its initial position")
 	public void blacksPawnShallBeInItsInitialPosition() {
+		//the initial tile for the black player is the tile 76
 		assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(76), QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile());
 	}
 	
@@ -295,7 +301,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("All of White's walls shall be in stock")
 	public void allOfWhitesWallsShallBeInStock() {
-		//ask mentor about this one
+		//the white player should have 10 walls in stock
 		assertEquals(10, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size());
 	}
 	
@@ -304,7 +310,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("All of Black's walls shall be in stock")
 	public void allOfBlacksWallsShallBeInStock() {
-		//ask mentor about this one too
+		//the black player should have 10 walls in stock
 		assertEquals(10, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackWallsInStock().size());
 	}
 	
@@ -366,7 +372,7 @@ public class CucumberStepDefinitions {
 	@Then("I shall have a wall in my hand over the board")
 	public void iShallHaveAWallInMyHandOverTheBoard() throws Throwable{
 		//As this is a GUI related step, it will be implemented later on
-		//TODO 
+		//TODO
 	}
 
 	/**
@@ -1193,7 +1199,7 @@ public class CucumberStepDefinitions {
 //TODO MATTHIAS
 	@Then("The wall shall be rotated over the board to {string}")
 	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
-		// GUI-related feature -- TODO for later
+		QuoridorController.GUI_flipWallCandidate(newDir);
 	}
 	
 	

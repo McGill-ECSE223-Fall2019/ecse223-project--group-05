@@ -20,7 +20,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import java.util.ArrayList?>
-
 <Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
       <AnchorPane id="Application_Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3d6b99;">
@@ -47,17 +46,6 @@
                   </AnchorPane>
                   <StackPane id="Stacked_Pages" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="356.0" prefWidth="600.0">
                      <children>
-                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
-                           <children>
-                              <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
-                              <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@logo.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </AnchorPane>
                         <AnchorPane id="New_Game_Page" fx:id="New_Game_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0" visible="false">
                            <children>
                               <Button fx:id="Create_New_Game_btn_StartGame" layoutX="247.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#Goto_Game_Session_Page" style="-fx-background-color: #ffd800;" text="Start Game">
@@ -72,19 +60,23 @@
                               </ImageView>
                               <VBox layoutX="25.0" layoutY="88.0" prefHeight="244.0" prefWidth="150.0">
                                  <children>
-                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="Player 1">
+                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="White Player">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
                                     <Separator prefHeight="24.0" prefWidth="150.0" visible="false" />
-                                    <ComboBox fx:id="whiteExistingName" prefWidth="150.0" promptText="&lt;select username&gt;" />
+                                    <ComboBox fx:id="whiteExistingName" onAction="#whitePlayerSelectsExistingUserName" onMouseClicked="#displayExistingUserNames" prefWidth="150.0" promptText="&lt;select username&gt;" />
                                     <HBox prefHeight="26.0" prefWidth="150.0">
                                        <children>
                                           <TextField fx:id="whiteNewName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
-                                          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
+                                          <Button mnemonicParsing="false" onMouseClicked="#whitePlayerSelectsNewUserName" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
                                        </children>
                                     </HBox>
+                                    <Label fx:id="whiteUsernameExistsLabel" prefHeight="7.0" prefWidth="142.0" textFill="RED">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font></Label>
                                     <Separator prefHeight="31.0" prefWidth="150.0" visible="false" />
                                     <Label text="Set thinking time" />
                                     <TextField fx:id="whiteTimerField" promptText="00:00" style="-fx-background-color: #ffd800;" />
@@ -92,24 +84,40 @@
                               </VBox>
                               <VBox layoutX="412.0" layoutY="88.0" prefHeight="244.0" prefWidth="150.0">
                                  <children>
-                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="Player 2">
+                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="Black Player">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
                                     <Separator prefHeight="24.0" prefWidth="150.0" visible="false" />
-                                    <ComboBox fx:id="blackExistingName" prefWidth="150.0" promptText="&lt;select username&gt;" />
+                                    <ComboBox fx:id="blackExistingName" onAction="#blackPlayerSelectsExistingUserName" prefWidth="150.0" promptText="&lt;select username&gt;" />
                                     <HBox prefHeight="26.0" prefWidth="150.0">
                                        <children>
                                           <TextField fx:id="blackNewName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
-                                          <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
+                                          <Button mnemonicParsing="false" onMouseClicked="#blackPlayerSelectsNewUserName" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
                                        </children>
                                     </HBox>
+                                    <Label fx:id="blackUsernameExistsLabel" prefHeight="13.0" prefWidth="149.0" textFill="#f80b0b">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </Label>
                                     <Separator prefHeight="31.0" prefWidth="150.0" visible="false" />
                                     <Label text="Set thinking time" />
                                     <TextField fx:id="blackTimerField" promptText="00:00" style="-fx-background-color: #ffd800;" />
                                  </children>
                               </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane id="Main_Page" fx:id="Main_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" visible="false">
+                           <children>
+                              <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
+                              <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@logo.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                         <AnchorPane id="Rules_Page" fx:id="Rules_Page" disable="true" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -173,34 +181,26 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" disable="true" visible="false">
+                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" prefWidth="397.0">
                            <children>
-                              <HBox prefHeight="356.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <HBox prefHeight="356.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <VBox alignment="TOP_CENTER" prefHeight="356.0" prefWidth="200.0" spacing="5.0">
                                        <children>
                                           <Label text="[BLACK PAWN PLAYER NAME]" />
-                                          <HBox alignment="CENTER" prefHeight="72.0" prefWidth="167.0">
-                                             <children>
-                                                <Rectangle fx:id="aWall" arcHeight="5.0" arcWidth="5.0" height="55.0" stroke="BLACK" strokeType="INSIDE" width="9.0" />
-                                             </children></HBox>
-                                          <Label text="BLACK PAWN's TURN!" textFill="#e5b75b" />
-                                          <VBox alignment="TOP_CENTER">
-                                             <children>
-                                                <Label id="black timer" fx:id="lbl_blackTimer" text="XX" textFill="#e5b75b">
-                                                   <font>
-                                                      <Font name="System Bold" size="48.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label text="SECONDS REMAINING" textFill="#e5b75b" />
-                                             </children>
-                                          </VBox>
-                                          <Button mnemonicParsing="false" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="END TURN" textFill="#735c2d" />
-                                       </children></VBox>
-                                    <VBox prefHeight="356.0" prefWidth="300.0">
+                                          <Button contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="END TURN" textFill="#735c2d" />
+                                          <Label fx:id="blackTimer" prefHeight="82.0" prefWidth="84.0" text="Black Timer" />
+                                          <VBox />
+                                          <Label text="[WHITE PAWN PLAYER NAME]" textAlignment="CENTER" />
+                                          <Label text="AWAITING MOVE" textFill="#5ba0e5" />
+                                          <Button mnemonicParsing="false" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
+                                          <Label fx:id="whiteTimer" prefHeight="84.0" prefWidth="83.0" text="White Timer" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="356.0" prefWidth="300.0">
                                        <children>
                                           <Separator prefHeight="26.0" prefWidth="267.0" visible="false" />
-                                          <GridPane fx:id="Game_Board">
+                                          <GridPane fx:id="Game_Board" alignment="CENTER" gridLinesVisible="true">
                                             <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="5.0" />
@@ -240,25 +240,42 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                           </GridPane>
-                                       </children></VBox>
+                                       </children>
+                                    </VBox>
                                     <VBox alignment="TOP_CENTER" prefHeight="356.0" prefWidth="200.0" spacing="5.0">
                                        <children>
+                                          <Label fx:id="gameSessionNotificationLabel" prefHeight="41.0" prefWidth="134.0" textFill="RED" />
                                           <Separator prefHeight="93.0" prefWidth="167.0" visible="false" />
-                                          <Label text="AWAITING MOVE" textFill="#5ba0e5" />
-                                          <VBox alignment="TOP_CENTER">
+                                          <HBox alignment="CENTER" prefHeight="85.0" prefWidth="606.0">
                                              <children>
-                                                <Label id="white timer" fx:id="lbl_whiteTimer" text="XX" textFill="#5ba0e5">
-                                                   <font>
-                                                      <Font name="System Bold" size="48.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label text="SECONDS REMAINING" textFill="#5ba0e5" />
+                                                <Rectangle fx:id="blackWall1" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMouseEntered="#rotateWallEvent" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall2" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall3" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall4" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall5" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall6" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall7" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall8" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall9" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall10" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                              </children>
-                                          </VBox>
-                                          <Button mnemonicParsing="false" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
-                                          <HBox prefHeight="72.0" prefWidth="167.0" />
-                                          <Label text="[WHITE PAWN PLAYER NAME]" />
-                                       </children></VBox>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="102.0" prefWidth="386.0">
+                                             <children>
+                                                <Rectangle fx:id="whiteWall1" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall2" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall3" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall4" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall5" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall6" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall7" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall8" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall9" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="whiteWall10" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children></HBox>
                            </children>
                         </AnchorPane>
@@ -323,17 +340,17 @@
                         </AnchorPane>
                      </children>
                      <fx:define>
-      				    <ArrayList fx:id="pageList">
-      				    	<fx:reference source="Top_Buttons" />
-      				        <fx:reference source="Main_Page" />
-      				        <fx:reference source="New_Game_Page" /> 
-      				        <fx:reference source="Rules_Page" /> 
-      				        <fx:reference source="Load_Game_Page" /> 
-      				        <fx:reference source="Select_Host_Page" /> 
-      				        <fx:reference source="Game_Session_Page" /> 
-      				        <fx:reference source="Choose_Opponent_Page" /> 
-      				    </ArrayList>
-      				</fx:define>
+                        <ArrayList fx:id="pageList">
+                           <fx:reference source="Top_Buttons" />
+                           <fx:reference source="Main_Page" />
+                           <fx:reference source="New_Game_Page" />
+                           <fx:reference source="Rules_Page" />
+                           <fx:reference source="Load_Game_Page" />
+                           <fx:reference source="Select_Host_Page" />
+                           <fx:reference source="Game_Session_Page" />
+                           <fx:reference source="Choose_Opponent_Page" />
+                        </ArrayList>
+                     </fx:define>
                   </StackPane>
                </children>
             </Pane>
