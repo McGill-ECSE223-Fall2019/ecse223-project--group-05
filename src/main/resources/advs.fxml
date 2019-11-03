@@ -91,7 +91,7 @@
                                        </font>
                                     </Label>
                                     <Separator prefHeight="24.0" prefWidth="150.0" visible="false" />
-                                    <ComboBox fx:id="blackExistingName" onAction="#blackPlayerSelectsExistingUserName" prefWidth="150.0" promptText="&lt;select username&gt;" />
+                                    <ComboBox fx:id="blackExistingName" onAction="#blackPlayerSelectsExistingUserName" onMouseClicked="#displayExistingUserNames" prefWidth="150.0" promptText="&lt;select username&gt;" />
                                     <HBox prefHeight="26.0" prefWidth="150.0">
                                        <children>
                                           <TextField fx:id="blackNewName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />

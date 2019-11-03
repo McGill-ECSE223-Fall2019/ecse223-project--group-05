@@ -9,7 +9,8 @@ package ca.mcgill.ecse223.quoridor.view;
 
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
-import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
+import ca.mcgill.ecse223.quoridor.controller.*;
+
 
 import java.util.List;
 import java.util.Timer;
@@ -497,6 +498,8 @@ public class ViewInterface {
 
 		Boolean isValid = true;
 
+		whiteUsernameExistsLabel.setText("");
+
 		try {
 			QuoridorController.assignPlayerColorToUserName("white", quoridor);
 		} catch (Exception e) {
@@ -523,6 +526,8 @@ public class ViewInterface {
 	public void blackPlayerSelectsNewUserName(MouseEvent mouseEvent) {
 
 		Boolean isValid = true;
+
+		blackUsernameExistsLabel.setText("");
 
 		try {
 			QuoridorController.assignPlayerColorToUserName("black", quoridor);
