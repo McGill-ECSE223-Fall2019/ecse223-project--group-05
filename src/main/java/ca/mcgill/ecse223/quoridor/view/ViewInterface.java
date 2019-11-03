@@ -67,7 +67,11 @@ public class ViewInterface {
 	@FXML private TextField blackNewName;
 	@FXML private TextField whiteTimerField;
 	@FXML private TextField blackTimerField;
-	
+	@FXML private Label whiteUsernameExistsLabel;
+	@FXML private Label blackUsernameExistsLabel;
+
+
+
 	@FXML ListView loadedGameList;
 	private int counter = 0;
 	
@@ -181,7 +185,10 @@ public class ViewInterface {
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
 	public void Goto_Choose_Opponent_Page() {
+
 		Goto_Page(Page.CHOOSE_OPPONENT_PAGE);
+
+		quoridor = QuoridorApplication.getQuoridor();
 
 		try {
 			QuoridorController.initializeGame(quoridor);
@@ -356,8 +363,10 @@ public class ViewInterface {
 			}
 		}
 
-		quoridor =QuoridorApplication.getQuoridor();
+		//quoridor =QuoridorApplication.getQuoridor();
 		timer = new Timer();
+
+		//fortesting
 	}
 
 	/**
@@ -449,7 +458,7 @@ public class ViewInterface {
 		}
 
 		if (!isValid){
-			//throw popup invalid username provided, already exists
+			whiteUsernameExistsLabel.setText(userNameToSet + " already exists");
 		}
 	}
 
@@ -468,7 +477,7 @@ public class ViewInterface {
 			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
 		}
 
-		String userNameToSet = whiteNewName.getText();
+		String userNameToSet = blackNewName.getText();
 
 		try {
 			isValid = QuoridorController.selectNewUserName(userNameToSet, quoridor);
@@ -477,7 +486,7 @@ public class ViewInterface {
 		}
 
 		if (!isValid){
-			//throw popup invalid username provided, already exists
+			blackUsernameExistsLabel.setText(userNameToSet + " already exists");
 		}
 	}
 }
