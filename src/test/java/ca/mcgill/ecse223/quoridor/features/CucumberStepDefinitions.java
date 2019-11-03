@@ -203,7 +203,7 @@ public class CucumberStepDefinitions {
     public void totalThinkingTimeIsSet(){
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		Time time = new Time(180);
-    	QuoridorController.setThinkingTime(quoridor.getCurrentGame().getWhitePlayer(), time);
+    	QuoridorController.setTotalThinkingTime(quoridor.getCurrentGame().getWhitePlayer(), time);
     	QuoridorController.setGameStatus(GameStatus.ReadyToStart); //after all the whens, then the game should be ready to start
     }
     
@@ -1394,7 +1394,7 @@ public class CucumberStepDefinitions {
 		myCoordinate[0] = 0;
 		myCoordinate[1] = 0;
 		myDirection = "";
-		boolean positionValidated = true;
+		positionValidated = true;
 		handIsEmpty = false;
 		handHasWall = false;
 		userNameSet = true;

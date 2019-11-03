@@ -220,7 +220,7 @@ public class QuoridorController {
      * @return true if the thinking time is set successfully and false if not
      * @author Daniel Wu
      */
-    public static boolean setThinkingTime(Player player, Time time) {
+    public static boolean setTotalThinkingTime(Player player, Time time) {
         player.setRemainingTime(time);
         if (player.getRemainingTime() != time){
             return false;
