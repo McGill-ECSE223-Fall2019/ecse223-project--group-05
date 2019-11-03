@@ -19,9 +19,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import java.util.ArrayList?>
 
-<Pane xmlns="http://javafx.com/javafx/8.8.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
+<?import java.util.ArrayList?>
+<Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
       <AnchorPane id="Application_Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3d6b99;">
          <children>
@@ -32,13 +32,13 @@
                      <children>
                         <ButtonBar id="Top_buttons" layoutX="103.0" maxHeight="40.0" prefHeight="40.0" prefWidth="451.0">
                           <buttons>
-                              <Label onMouseClicked="#Goto_Main_Page" prefHeight="17.0" prefWidth="100.0" text="NEW GAME" textFill="#ffd800" />
-                              <Label onMouseClicked="#Goto_New_Game_Page" text="PREVIOUS GAME" textFill="#ffd800" />
+                              <Label prefHeight="17.0" prefWidth="100.0" text="NEW GAME" textFill="#ffd800" />
+                              <Label text="PREVIOUS GAME" textFill="#ffd800" />
                               <Label text="STATS FOR NERDS" textFill="#ffd800" />
                               <Label minWidth="62.0" onMouseClicked="#openRulesPage" prefHeight="20.0" prefWidth="100.0" text="RULES" textFill="#ffd800" />
                           </buttons>
                         </ButtonBar>
-                        <ImageView fitHeight="45.0" fitWidth="77.0" layoutX="17.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="45.0" fitWidth="77.0" layoutX="17.0" layoutY="7.0" onMouseClicked="#Goto_Main_Page" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@logo.png" />
                            </image>
@@ -47,17 +47,6 @@
                   </AnchorPane>
                   <StackPane id="Stacked_Pages" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="356.0" prefWidth="600.0">
                      <children>
-                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
-                           <children>
-                              <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
-                              <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@logo.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </AnchorPane>
                         <AnchorPane id="New_Game_Page" fx:id="New_Game_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0" visible="false">
                            <children>
                               <Button fx:id="Create_New_Game_btn_StartGame" layoutX="247.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#Goto_Game_Session_Page" style="-fx-background-color: #ffd800;" text="Start Game">
@@ -72,34 +61,64 @@
                               </ImageView>
                               <VBox layoutX="25.0" layoutY="88.0" prefHeight="244.0" prefWidth="150.0">
                                  <children>
-                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="Player 1">
+                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="White Player">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
                                     <Separator prefHeight="24.0" prefWidth="150.0" visible="false" />
-                                    <Label prefHeight="8.0" prefWidth="133.0" text="Select username" wrapText="true" />
-                                    <ComboBox fx:id="ComboBox_username1" editable="true" prefWidth="150.0" />
+                                    <ComboBox fx:id="whiteExistingName" onAction="#whitePlayerSelectsExistingUserName" onMouseClicked="#displayExistingUserNames" prefWidth="150.0" promptText="&lt;select username&gt;" />
+                                    <HBox prefHeight="26.0" prefWidth="150.0">
+                                       <children>
+                                          <TextField fx:id="whiteNewName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
+                                          <Button mnemonicParsing="false" onMouseClicked="#whitePlayerSelectsNewUserName" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
+                                       </children>
+                                    </HBox>
+                                    <Label fx:id="whiteUsernameExistsLabel" prefHeight="7.0" prefWidth="142.0" textFill="RED">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font></Label>
                                     <Separator prefHeight="31.0" prefWidth="150.0" visible="false" />
                                     <Label text="Set thinking time" />
-                                    <TextField promptText="00:00" style="-fx-background-color: #ffd800;" />
+                                    <TextField fx:id="whiteTimerField" promptText="00:00" style="-fx-background-color: #ffd800;" />
                                  </children>
                               </VBox>
                               <VBox layoutX="412.0" layoutY="88.0" prefHeight="244.0" prefWidth="150.0">
                                  <children>
-                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="Player 2">
+                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="150.0" text="Black Player">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
                                     <Separator prefHeight="24.0" prefWidth="150.0" visible="false" />
-                                    <Label prefHeight="17.0" prefWidth="133.0" text="Select username" wrapText="true" />
-                                    <ComboBox fx:id="ComboBox_username2" editable="true" prefWidth="150.0" />
+                                    <ComboBox fx:id="blackExistingName" onAction="#blackPlayerSelectsExistingUserName" prefWidth="150.0" promptText="&lt;select username&gt;" />
+                                    <HBox prefHeight="26.0" prefWidth="150.0">
+                                       <children>
+                                          <TextField fx:id="blackNewName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
+                                          <Button mnemonicParsing="false" onMouseClicked="#blackPlayerSelectsNewUserName" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
+                                       </children>
+                                    </HBox>
+                                    <Label fx:id="blackUsernameExistsLabel" prefHeight="13.0" prefWidth="149.0" textFill="#f80b0b">
+                                       <font>
+                                          <Font size="11.0" />
+                                       </font>
+                                    </Label>
                                     <Separator prefHeight="31.0" prefWidth="150.0" visible="false" />
                                     <Label text="Set thinking time" />
-                                    <TextField promptText="00:00" style="-fx-background-color: #ffd800;" />
+                                    <TextField fx:id="blackTimerField" promptText="00:00" style="-fx-background-color: #ffd800;" />
                                  </children>
                               </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
+                           <children>
+                              <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
+                              <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@logo.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                         <AnchorPane id="Rules_Page" fx:id="Rules_Page" disable="true" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -170,44 +189,54 @@
                                     <VBox alignment="TOP_CENTER" prefHeight="356.0" prefWidth="200.0" spacing="5.0">
                                        <children>
                                           <Label text="[BLACK PAWN PLAYER NAME]" />
-                                          <HBox prefHeight="72.0" prefWidth="167.0" />
-                                          <Label text="BLACK PAWN's TURN!" textFill="#e5b75b" />
-                                          <VBox alignment="TOP_CENTER">
+                                          <HBox alignment="CENTER" prefHeight="72.0" prefWidth="167.0">
                                              <children>
-                                                <Label text="XX" textFill="#e5b75b">
-                                                   <font>
-                                                      <Font name="System Bold" size="48.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label text="SECONDS REMAINING" textFill="#e5b75b" />
-                                             </children>
-                                          </VBox>
+                                                <Rectangle fx:id="aWall" arcHeight="5.0" arcWidth="5.0" height="55.0" onMouseClicked="#GrabWall" onMouseDragged="#MoveWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="9.0" />
+                                             </children></HBox>
+                                          <Label text="BLACK PAWN's TURN!" textFill="#e5b75b" />
+                                          <Label fx:id="blackTimer" prefHeight="77.0" prefWidth="84.0" />
                                           <Button mnemonicParsing="false" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="END TURN" textFill="#735c2d" />
                                        </children></VBox>
                                     <VBox prefHeight="356.0" prefWidth="300.0">
                                        <children>
-                                          <Separator prefHeight="41.0" prefWidth="267.0" visible="false" />
-                                          <GridPane gridLinesVisible="true">
+                                          <Separator prefHeight="26.0" prefWidth="267.0" visible="false" />
+                                          <GridPane fx:id="Game_Board">
                                             <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="5.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="5.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="5.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="5.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="5.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="5.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="5.0" />
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="5.0" prefWidth="5.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="18.0" minHeight="1.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="19.0" minHeight="4.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="44.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="20.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="44.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="21.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                              <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="21.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="48.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                           </GridPane>
@@ -216,18 +245,8 @@
                                        <children>
                                           <Separator prefHeight="93.0" prefWidth="167.0" visible="false" />
                                           <Label text="AWAITING MOVE" textFill="#5ba0e5" />
-                                          <VBox alignment="TOP_CENTER">
-                                             <children>
-                                                <Label text="XX" textFill="#5ba0e5">
-                                                   <font>
-                                                      <Font name="System Bold" size="48.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label text="SECONDS REMAINING" textFill="#5ba0e5" />
-                                             </children>
-                                          </VBox>
                                           <Button mnemonicParsing="false" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
-                                          <HBox prefHeight="72.0" prefWidth="167.0" />
+                                          <Label fx:id="whiteTimer" prefHeight="96.0" prefWidth="83.0" text="Label" />
                                           <Label text="[WHITE PAWN PLAYER NAME]" />
                                        </children></VBox>
                                  </children></HBox>
@@ -257,18 +276,28 @@
                                                 <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="169.0">
                                                    <children>
                                                       <Label alignment="CENTER" contentDisplay="CENTER" text="VERSUS GUEST" textAlignment="CENTER" />
-                                                      <ImageView fitHeight="150.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true" />
+                                                      <Label alignment="CENTER" contentDisplay="TOP" prefHeight="57.0" prefWidth="126.0" text="TO BE IMPLEMENTED AT A LATER DATE" textAlignment="CENTER" textFill="#ffd800" wrapText="true">
+                                                         <font>
+                                                            <Font name="System Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ImageView fitHeight="105.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true" />
                                                       <Label text="Hosts a LAN game session" />
                                                    </children>
                                                 </VBox>
                                              </children>
                                           </AnchorPane>
-                                          <AnchorPane onMouseClicked="#Goto_Select_Host_Page" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d5072;">
+                                          <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d5072;">
                                              <children>
                                                 <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="169.0">
                                                    <children>
                                                       <Label alignment="CENTER" contentDisplay="CENTER" text="VERSUS HOST" textAlignment="CENTER" />
-                                                      <ImageView fitHeight="150.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true" />
+                                                      <Label alignment="CENTER" contentDisplay="TOP" prefHeight="57.0" prefWidth="126.0" text="TO BE IMPLEMENTED AT A LATER DATE" textAlignment="CENTER" textFill="#ffd800" wrapText="true">
+                                                         <font>
+                                                            <Font name="System Bold" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ImageView fitHeight="104.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true" />
                                                       <Label text="Searches for LAN sessions" />
                                                    </children>
                                                 </VBox>
@@ -284,17 +313,17 @@
                         </AnchorPane>
                      </children>
                      <fx:define>
-      				    <ArrayList fx:id="pageList">
-      				    	<fx:reference source="Top_Buttons" />
-      				        <fx:reference source="Main_Page" />
-      				        <fx:reference source="New_Game_Page" /> 
-      				        <fx:reference source="Rules_Page" /> 
-      				        <fx:reference source="Load_Game_Page" /> 
-      				        <fx:reference source="Select_Host_Page" /> 
-      				        <fx:reference source="Game_Session_Page" /> 
-      				        <fx:reference source="Choose_Opponent_Page" /> 
-      				    </ArrayList>
-      				</fx:define>
+                        <ArrayList fx:id="pageList">
+                           <fx:reference source="Top_Buttons" />
+                           <fx:reference source="Main_Page" />
+                           <fx:reference source="New_Game_Page" />
+                           <fx:reference source="Rules_Page" />
+                           <fx:reference source="Load_Game_Page" />
+                           <fx:reference source="Select_Host_Page" />
+                           <fx:reference source="Game_Session_Page" />
+                           <fx:reference source="Choose_Opponent_Page" />
+                        </ArrayList>
+                     </fx:define>
                   </StackPane>
                </children>
             </Pane>

@@ -15,7 +15,6 @@ import java.sql.Time;
 import java.util.*;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
-import ca.mcgill.ecse223.quoridor.controller.*;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.model.Board;
@@ -31,7 +30,6 @@ import ca.mcgill.ecse223.quoridor.model.Tile;
 import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
-import cucumber.api.PendingException;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -157,7 +155,7 @@ public class CucumberStepDefinitions {
     @When("A new game is being initialized")
     public void aNewGameIsBeingInitializing() throws java.lang.UnsupportedOperationException{
     	
-    	QuoridorController.isGameInitializing(QuoridorApplication.getQuoridor().getCurrentGame());
+    	QuoridorController.initializeGame(QuoridorApplication.getQuoridor());
     }
     
     /**
@@ -166,7 +164,7 @@ public class CucumberStepDefinitions {
 	 * Scenario: Initiate a new game
 	 */
     @And("White player chooses a username")
-    public void whitePlayerChosesAUsername() throws java.lang.UnsupportedOperationException{
+    public void whitePlayerChoosesAUsername() throws java.lang.UnsupportedOperationException{
     	QuoridorController.playerChoseUsername(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer());
     }
     
@@ -198,7 +196,7 @@ public class CucumberStepDefinitions {
 	 */
     @Then("The game shall become ready to start")
     public void theGameShallBecomeReadyToStart() {
-    	assertEquals(Game.GameStatus.ReadyToStart, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
+    	assertEquals(Game.GameStatus.ReadyToStart, QuoridorController.getGameStatus());
     }
 
     /**
@@ -226,11 +224,13 @@ public class CucumberStepDefinitions {
 	 * starts the clock
 	 */
   	@When("I start the clock")
-  	public void iStartTheClock() throws java.lang.UnsupportedOperationException {
+  	public void iStartTheClock(){
+  		Player player = QuoridorController.getCurrentWhitePlayer();
+		if(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove().hasGameAsBlack()){
+			player = QuoridorController.getCurrentWhitePlayer();
+		}
+		QuoridorController.startPlayerTimer(player, timer);
 
-  		Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
-  		Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
-  		QuoridorController.startPlayerTimer(whitePlayer, timer);
   	}
   	
   	/**
@@ -263,7 +263,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The initialization of the board is initiated")
 	public void initializationOfBoardInitiated(){
-		QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
+        QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
 	}
 	
 	/**
@@ -279,6 +279,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("White's pawn shall be in its initial position")
 	public void whitesPawnShallBeInItsInitialPosition() {
+		//the initial tile for the white player is the tile 4
 		assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(4),QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile());
 	}
 	
@@ -287,6 +288,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("Black's pawn shall be in its initial position")
 	public void blacksPawnShallBeInItsInitialPosition() {
+		//the initial tile for the black player is the tile 76
 		assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(76), QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile());
 	}
 	
@@ -295,7 +297,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("All of White's walls shall be in stock")
 	public void allOfWhitesWallsShallBeInStock() {
-		//ask mentor about this one
+		//the white player should have 10 walls in stock
 		assertEquals(10, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size());
 	}
 	
@@ -304,7 +306,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("All of Black's walls shall be in stock")
 	public void allOfBlacksWallsShallBeInStock() {
-		//ask mentor about this one too
+		//the black player should have 10 walls in stock
 		assertEquals(10, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackWallsInStock().size());
 	}
 	
@@ -366,7 +368,7 @@ public class CucumberStepDefinitions {
 	@Then("I shall have a wall in my hand over the board")
 	public void iShallHaveAWallInMyHandOverTheBoard() throws Throwable{
 		//As this is a GUI related step, it will be implemented later on
-		//TODO 
+		//TODO
 	}
 
 	/**
@@ -774,9 +776,9 @@ public class CucumberStepDefinitions {
 	 */
 	
 	/**
-	 * @author Edwin Pan
+	 * @author Matthias Arabian
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
-	 * Sets up test preconditions such that the player whose turn it is to player is the provided player.
+	 * Sets up test preconditions such that the player whose turn it is to play is the provided player.
 	 */
 	@Given("The player to move is {string}")
 	public void thePlayerToMoveIsPlayer(String playerColorAsString){
@@ -798,6 +800,7 @@ public class CucumberStepDefinitions {
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the clock of the player whose turn it is to play is running
 	 */
+//TODO MATTHIAS	
 	@Given("The clock of {string} is running")
 	public void theClockOfPlayerIsRunning(String playerColorAsString){
 		QuoridorController.continuePlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
@@ -808,6 +811,7 @@ public class CucumberStepDefinitions {
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the clock of the player whose turn it is not to play is stopped
 	 */
+//TODO MATTHIAS
 	@Given("The clock of {string} is stopped")
 	public void theClockOfOtherIsStopped(String playerColorAsString){
 		QuoridorController.stopPlayerTimer( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString), timer );
@@ -818,28 +822,42 @@ public class CucumberStepDefinitions {
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Makes the selected player complete their move.
 	 */
+//TODO MATTHIAS
 	@When("Player {string} completes his move")
 	public void playerPlayerCompletesHisMove(String playerColorAsString){
 		QuoridorController.completePlayerTurn( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) );
 	}
-
+	
+	/**
+	 * @author Matthias Arabian
+	 */
+//TODO MATTHIAS	
+	@Then("The user interface shall be showing it is {string} turn")
+	public void theUserInterfaceShallBeShowingItIs__Turn(String name) {
+		
+	}
+	
+	
 	/**
 	 * @author Edwin Pan
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Asserts that the user interface now shows that the specified player's timer is stopped.
 	 */
-	@Then("The clock of {string} shall be stopped")
-	public void theClockOfPlayerShallBeStopped(String playerColorAsString){
+	//TODO MATTHIAS
+	@And("The clock of {string} shall be stopped")
+	public void andTheClockOfPlayerShallBeStopped(String playerColorAsString){
 		assertEquals( QuoridorController.getPlayerTimerRunning( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , false );
 	}
 
+	
 	/**
 	 * @author Edwin Pan
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Asserts that the user interface now shows that the specified player's timer is running.
 	 */
-	@Then("The clock of {string} shall be running")
-	public void theClockOfOtherShallBeRunning(String playerColorAsString){
+	//TODO MATTHIAS
+	@And("The clock of {string} shall be running")
+	public void andTheClockOfOtherShallBeRunning(String playerColorAsString){
 		assertEquals( QuoridorController.getPlayerTimerRunning( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
 	}
 	
@@ -849,18 +867,9 @@ public class CucumberStepDefinitions {
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Asserts that the user interface now shows that the next move belongs to the specified player.
 	 */
-	@Then("The next player to move shall be {string}")
+//TODO MATTHIAS
+	@And("The next player to move shall be {string}")
 	public void theNextPlayerToMoveShallBeOther(String playerColorAsString){
-		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
-	}
-	
-	/**
-	 * @author Edwin Pan
-	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
-	 * Asserts that the user interface now shows that is now the specified player's turn.
-	 */
-	@Then("The user interface shall be showing it is {string} turn")
-	public void theUserInterfaceShallBeShowingItIsOtherTurn(String playerColorAsString){
 		assertEquals( QuoridorController.getPlayerOfCurrentTurn().equals( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ) , true );
 	}
 	
@@ -1183,6 +1192,7 @@ public class CucumberStepDefinitions {
 	 * This function calls for the GUI to update its wall move object to match its new direction
 	 * @author Matthias Arabian
 	 */
+//TODO MATTHIAS
 	@Then("The wall shall be rotated over the board to {string}")
 	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
 		// GUI-related feature -- TODO for later

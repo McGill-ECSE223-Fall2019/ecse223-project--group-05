@@ -6,7 +6,6 @@ import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
 import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
 import ca.mcgill.ecse223.quoridor.timer.PlayerTimer;
-
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -25,9 +24,11 @@ public class QuoridorController {
      * @return void
      * @author Thomas Philippon
      */
-    public static void initializeBoard(Quoridor quoridor, Timer timer) {
+    public static void initializeBoard(Quoridor quoridor, Timer timer){
         // throw new java.lang.UnsupportedOperationException("This controller method is not implemented yet");
-
+        if(quoridor.getCurrentGame() ==null){
+            throw new java.lang.UnsupportedOperationException("The Quoridor object does not exist");
+        }
         //Create the board object
         Board board = new Board(quoridor);
 
@@ -153,12 +154,38 @@ public class QuoridorController {
 
 
     /**
-     * @param game is the current game
-     * @return true if gamestate is initializing and false if not
+     * @param quoridor
+     * @return true if game is initialized and false if not
      * @author Daniel Wu
      */
-    public static boolean isGameInitializing(Game game) {
-        throw new java.lang.UnsupportedOperationException();
+    public static boolean initializeGame(Quoridor quoridor) {
+       //could have a false, if there is currently a game running
+        /*if (isGameRunning(quoridor.getCurrentGame())){
+            return false;
+            //or have a popup showup to tell the player if they are sure or something
+        }*/
+        Game game = new Game(GameStatus.Initializing, Game.MoveMode.PlayerMove, quoridor);
+
+        User user1 = quoridor.addUser("user1");
+        User user2 = quoridor.addUser("user2");
+
+        int thinkingTime = 10;
+
+        Player player1 = new Player(new Time (thinkingTime), user1, 9, Direction.Horizontal);
+        Player player2 = new Player(new Time(thinkingTime), user2, 1, Direction.Horizontal);
+
+        Player[] players = { player1, player2 };
+        // Create all walls. Walls with lower ID belong to player1,
+        // while the second half belongs to player 2
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 10; j++) {
+                new Wall(i * 10 + j, players[i]);
+            }
+        }
+
+        game.setWhitePlayer(player1);
+        game.setBlackPlayer(player2);
+        return true;
     }
 
     /**
@@ -167,7 +194,11 @@ public class QuoridorController {
      * @author Daniel Wu
      */
     public static boolean playerChoseUsername(Player player) {
-        throw new java.lang.UnsupportedOperationException();
+        //This returns false if the player didn't, choose a username, but a player can't exist without a username??!?!??!
+        if (player.getUser() != null){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -180,19 +211,18 @@ public class QuoridorController {
     }
 
     /**
-     * @param A game Player
+     * @param player
+     * @param timer
      * @return void
      * @author Daniel Wu
      */
     public static void startPlayerTimer(Player player, Timer timer) {
-        // throw new java.lang.UnsupportedOperationException();
-
         PlayerTimer playerTimer = new PlayerTimer(player);
         timer.schedule(playerTimer,0, 1000); //the playerTimer task will be executed every 1 second
     }
 
     /**
-     * @return the current gamestatus
+     * @return the current GameStatus
      * @author Daniel Wu
      */
     public static Game.GameStatus getGameStatus() {
@@ -368,42 +398,6 @@ public class QuoridorController {
         }
     }
 
-    /**
-     * method to insure no nullpointerExceptions occur when getting items from the model
-     *
-     * @param quoridor game object
-     * @author Alex Masciotra
-     */
-    public static void initializeQuoridor(Quoridor quoridor) {
-        //part of method is taken from given code in the stepDefinitions
-
-        User user1 = quoridor.addUser("user1");
-        User user2 = quoridor.addUser("user2");
-
-        int thinkingTime = 10; //placeholder
-        Player player1 = new Player(new Time(thinkingTime), user1, 9, Direction.Horizontal);
-        Player player2 = new Player(new Time(thinkingTime), user2, 1, Direction.Horizontal);
-
-        Player[] players = { player1, player2 };
-
-        // Create all walls. Walls with lower ID belong to player1,
-        // while the second half belongs to player 2
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 10; j++) {
-                new Wall(i * 10 + j, players[i]);
-            }
-        }
-
-        new Game(GameStatus.Initializing, Game.MoveMode.PlayerMove, quoridor);
-
-        quoridor.getCurrentGame().setWhitePlayer(player1);
-        quoridor.getCurrentGame().setBlackPlayer(player2);
-
-    }
-
-
-
-
     /***
      * Method to set existing username to player
      * @param userName username to set to player
@@ -448,7 +442,9 @@ public class QuoridorController {
 
         if (userNameSetSuccessfully) {
             Player playerToAssignUserTo = currentGame.getWhitePlayer().getNextPlayer();
-            playerToAssignUserTo.getUser().setName(userName);
+            User addUser = quoridor.addUser(userName);
+            playerToAssignUserTo.setUser(addUser);
+            //playerToAssignUserTo.getUser().setName(userName);
         }
 
         return userNameSetSuccessfully;
@@ -660,12 +656,15 @@ public class QuoridorController {
      * Changes the WallMoveCandidate's direction from Horizontal to Vertical
      * and vice versa
      *
-     * @throws UnsupportedOperationException
      * @author Matthias Arabian
      * @returns true if the wall was successfully flipped. false otherwise
      */
-    public static Boolean flipWallCandidate() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("flipWallCandidate Error");
+    public static Boolean flipWallCandidate() {
+        Quoridor q = QuoridorApplication.getQuoridor();
+        Direction d = q.getCurrentGame().getWallMoveCandidate().getWallDirection();
+        return q.getCurrentGame().getWallMoveCandidate().setWallDirection(
+        		d.equals(Direction.Horizontal) ? Direction.Vertical : Direction.Horizontal
+        );
     }
 
     /**
@@ -813,16 +812,22 @@ public class QuoridorController {
     }
 
     /**
-     * PENDING IMPLEMENTATION
      * Completes the turn of the provided player. Aborts (and thereby returns false) if
      * the current turn does not belong to the provided player.
      *
      * @param player
      * @return
-     * @author Edwin Pan
+     * @author Matthias Arabian
      */
     public static boolean completePlayerTurn(Player player) {
-        throw new UnsupportedOperationException("QuoridorController.completePlayerturn(player) is not currently implemented!");
+    	Quoridor quoridor = QuoridorApplication.getQuoridor();
+    	Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
+    	if (currentPlayer.equals(player)) {
+    		quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(currentPlayer.getNextPlayer());
+    		return true;
+    	}
+    	else
+    		return false;
     }
 
     /**
