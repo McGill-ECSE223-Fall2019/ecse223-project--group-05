@@ -11,7 +11,6 @@ package ca.mcgill.ecse223.quoridor.view;
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 
-import java.sql.Time;
 import java.util.List;
 import java.util.Timer;
 
@@ -20,23 +19,11 @@ import java.io.FilenameFilter;
 import java.util.TimerTask;
 
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
-import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.List;
-import ca.mcgill.ecse223.quoridor.timer.TimerGui;
 import javafx.application.Platform;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -51,7 +38,6 @@ import javafx.stage.Stage;
 
 
 public class ViewInterface {
-
 
 
 	//these are the pages that the user can travel to/interact with
@@ -108,8 +94,7 @@ public class ViewInterface {
 
 	private static Quoridor quoridor;
 	public Timer timer;
-	public String timerVal;
-	//StringProperty prop = new SimpleStringProperty();
+	public Timer RefreshTimer;
 
 	/**
 	 * @author Thomas Philippon
@@ -139,7 +124,6 @@ public class ViewInterface {
 	 * This method is called when the user drags the walls
 	 */
 	public void MoveWall(MouseEvent mouseEvent) {
-
 		//get the rectangle that is grabbed
 		Rectangle wall = (Rectangle) mouseEvent.getSource();
 		//Compute the new wall position and move the wall to that position
@@ -156,31 +140,23 @@ public class ViewInterface {
 	 *This method is executed when the user releases the wall
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
-
 		gameSessionNotificationLabel.setText("Invalid Wall Placement");
-		//get the rectangle that is dropped
-//		Rectangle wall = (Rectangle) mouseEvent.getSource();
-//		double newTranslateX = wall.getTranslateX() + wallXPosition;
-//		double newTranslateY = wall.getTranslateY() + wallYPosition;
-//		wall.setTranslateX(newTranslateX);
-//		wall.setTranslateY(newTranslateY);
-
 	}
 
 
 	public void addToLoadedGameList() {
-            	Stage stage = new Stage();
-            	DirectoryChooser fileChooser = new DirectoryChooser();
-            	fileChooser.setTitle("Open Resource File");
-            	File file = fileChooser.showDialog(stage);
-            	stage.close();
-                if (file != null) {
-                    lbl_directory.setText(file.toString());
-                    detectGameFiles(file);
-                }
-                else {
-                	lbl_directory.setText("Directory could not be opened");
-                }
+		Stage stage = new Stage();
+		DirectoryChooser fileChooser = new DirectoryChooser();
+		fileChooser.setTitle("Open Resource File");
+		File file = fileChooser.showDialog(stage);
+		stage.close();
+		if (file != null) {
+			lbl_directory.setText(file.toString());
+			detectGameFiles(file);
+		}
+		else {
+			lbl_directory.setText("Directory could not be opened");
+		}
 	}
 	private void detectGameFiles(File file) {
 		File[] gameFiles = file.listFiles(new FilenameFilter() {
@@ -231,7 +207,7 @@ public class ViewInterface {
 		} catch (Exception e) {
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the Game");
 		}
-	}
+}
 	
 	/**
 	 * @author Thomas Philippon
@@ -245,6 +221,20 @@ public class ViewInterface {
 		catch(Exception e){
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
 		}
+
+		//This tasks runs on a separate thread. It is used to update the GUI every second
+		RefreshTimer.schedule(new TimerTask() {
+			public void run() {
+				Platform.runLater(new Runnable() {
+					public void run() {
+						//Update white player's thinking time clock
+						whiteTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
+						//Update black's player thinking time clock
+						blackTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getRemainingTime().toString());
+					}
+				});
+			}
+		}, 0, 1000);
 
 		Goto_Page(Page.GAME_SESSION_PAGE);
 	}
@@ -398,7 +388,7 @@ public class ViewInterface {
 			}
 		}
 
-		timer = new Timer();
+
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
@@ -407,11 +397,11 @@ public class ViewInterface {
 				Game_Board.add(tmp , row, col);
 			}
 		}
-
-		//quoridor =QuoridorApplication.getQuoridor();
+		//Initialize the timers
 		timer = new Timer();
+		RefreshTimer = new Timer();
+		//quoridor =QuoridorApplication.getQuoridor();
 
-		//fortesting
 	}
 
 	/**

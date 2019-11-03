@@ -55,6 +55,9 @@ public class CucumberStepDefinitions {
 	private char [] refFileData = new char [fileDataLength];	//Memory for storing data of one file for comparison.
 	private char [] curFileData = new char [fileDataLength];	//Memory for storing data of another file for comparison.
 
+	//Variable for GrabWall test
+	Boolean grabWallResult = false;
+
 	//Timer object for starting and stopping the player clock
 	Timer timer = new Timer();
 	// ***********************************************
@@ -323,7 +326,7 @@ public class CucumberStepDefinitions {
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		assertNotEquals("19:00:00", QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
@@ -334,7 +337,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("It shall be shown that this is White's turn")
 	public void itShallBeShownThatThisIsWhitesTurn() throws Throwable{
-		//GUI step, will be implemented later on. TODO
+		assertEquals(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer(),QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove());
 	}
 	
 	//Grab wall feature
@@ -361,7 +364,8 @@ public class CucumberStepDefinitions {
 	 */
 	@When("I try to grab a wall from my stock")
 	public void iTryToGrabAWallFromMyStock() {
-		QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+
+		grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
 	}
 
 	/**
@@ -371,8 +375,8 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("I shall have a wall in my hand over the board")
 	public void iShallHaveAWallInMyHandOverTheBoard() throws Throwable{
-		//As this is a GUI related step, it will be implemented later on
-		//TODO
+	assertEquals(true, grabWallResult);
+
 	}
 
 	/**
@@ -399,7 +403,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("I shall be notified that I have no more walls")
 	public void iShouldBeNotifiedThatIHaveNoMoreWalls() throws Throwable{
-		//GUI related step, TODO
+		assertEquals(false, grabWallResult);
 	}
 	
 	/**
@@ -407,7 +411,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("I shall have no walls in my hand")
 	public void iShallHaveNoWallsInMyHand() throws Throwable{
-		//GUI related step, to implemented later. TODO
+		assertEquals(false, grabWallResult);
 	}
 	
 	/**checks that a wall move candidate exists, otherwise create one and link to appropriate tile
@@ -948,7 +952,7 @@ public class CucumberStepDefinitions {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         //Board board = QuoridorApplication.getQuoridor().getBoard();
 
-        QuoridorController.releaseWall(quoridor);
+		grabWallResult = !QuoridorController.releaseWall(quoridor);
     }
 
     /**
