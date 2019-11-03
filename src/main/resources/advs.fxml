@@ -182,7 +182,7 @@
                                           <Label text="[BLACK PAWN PLAYER NAME]" />
                                           <HBox alignment="CENTER" prefHeight="72.0" prefWidth="167.0">
                                              <children>
-                                                <Rectangle fx:id="aWall" arcHeight="5.0" arcWidth="5.0" height="55.0" onMouseClicked="#GrabWall" onMouseDragged="#MoveWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="9.0" />
+                                                <Rectangle fx:id="aWall" arcHeight="5.0" arcWidth="5.0" height="60.0" onMouseClicked="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="9.0" />
                                              </children></HBox>
                                           <Label text="BLACK PAWN's TURN!" textFill="#e5b75b" />
                                           <Label fx:id="blackTimer" prefHeight="77.0" prefWidth="84.0" />

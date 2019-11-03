@@ -15,6 +15,7 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Timer;
 
+
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -24,6 +25,9 @@ import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -32,8 +36,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
 
 
 public class ViewInterface {
@@ -77,6 +85,7 @@ public class ViewInterface {
 
 	//Game Session Page
 	@FXML private GridPane Game_Board;
+	
 	@FXML private Rectangle aWall;
 	@FXML private Label whiteTimer;
 	@FXML private Label blackTimer;
@@ -85,37 +94,87 @@ public class ViewInterface {
 	double wallXPosition, wallYPosition;
 
 	private static Quoridor quoridor;
+	private static boolean isIllegalNotificationDisplayed = false;
 	public Timer timer;
+	private static final double HORIZONTALSTEP = 30;
+	private static final double VERTICALSTEP = 35;
+	private static Rectangle wallSelected; 
 
 	/**
 	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
+	@FXML
 	public void GrabWall(MouseEvent mouseEvent) {
 		//TODO : Call the get number of remaining walls method
 		//Get the wall po
 
-		Rectangle wall = (Rectangle) mouseEvent.getSource();
-		wallXPosition = mouseEvent.getSceneX();
-		wallYPosition = mouseEvent.getSceneY();
+		wallSelected = (Rectangle) mouseEvent.getSource();
+		wallSelected.setTranslateX(110);
+		//wallSelected.setTranslateY(100);
+		wallSelected.toFront();
+		//System.out.println("mouse detected");
+		boolean grabWallResult;
+		try {
+			grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+		}
+		catch(Exception e){
+				throw new java.lang.UnsupportedOperationException("Cannot retrieve the number of walls in stock");
+			}
 	}
-
-	/**
-	 * @author Thomas Philippon
-	 * This method is called when the user drags the walls
-	 */
+	
+	
 	public void MoveWall(MouseEvent mouseEvent) {
 
+		//get the rectangle that is grabbed
 		Rectangle wall = (Rectangle) mouseEvent.getSource();
-
+		//Compute the new wall position and move the wall to that position
 			double offsetX = mouseEvent.getX();
 			double offsetY = mouseEvent.getY();
 			double newTranslateX = wall.getTranslateX() + offsetX;
 			double newTranslateY = wall.getTranslateY() + offsetY;
-
 			wall.setTranslateX(newTranslateX);
 			wall.setTranslateY(newTranslateY);
-		    wall.toFront();
+	}
+	/**
+	 * @author David Deng
+	 * This method is called when the user moves the wall
+	 */
+	
+	@FXML
+	public static void MoveWall(KeyEvent keyEvent) {
+
+		try {
+			if(wallSelected==null && (keyEvent.getCode()==KeyCode.UP||keyEvent.getCode()==KeyCode.DOWN||keyEvent.getCode()==KeyCode.LEFT||keyEvent.getCode()==KeyCode.RIGHT)){
+				throw new IllegalArgumentException("no wall was selected.");
+			}
+			if(keyEvent.getCode()==KeyCode.UP) {
+				QuoridorController.moveWall("up");
+				wallSelected.setTranslateY(wallSelected.getTranslateY()-VERTICALSTEP);//translates the rectangle by a tilewidth
+				//System.out.println("detected"); 
+			}
+			else if(keyEvent.getCode()==KeyCode.DOWN) {
+				QuoridorController.moveWall("down");
+				wallSelected.setTranslateY(wallSelected.getTranslateY()+VERTICALSTEP);
+			}
+			else if(keyEvent.getCode()==KeyCode.LEFT) {
+				QuoridorController.moveWall("left");
+				wallSelected.setTranslateX(wallSelected.getTranslateX()-HORIZONTALSTEP);
+			}
+			else if(keyEvent.getCode()==KeyCode.RIGHT) {
+				QuoridorController.moveWall("right");
+				wallSelected.setTranslateX(wallSelected.getTranslateX()+HORIZONTALSTEP);
+			}
+		}
+		catch(Throwable e) {
+			displayIllegalNotification(e.getMessage());
+		}
+			
+
+			//wallSelected.setTranslateX(newTranslateX);
+			//wallSelected.setTranslateY(newTranslateY);
+		    wallSelected.toFront();
+			
 	}
 
 	/**
@@ -123,7 +182,7 @@ public class ViewInterface {
 	 *This method is executed when the user releases the wall
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
-
+		
 
 	}
 
@@ -184,21 +243,29 @@ public class ViewInterface {
 	}
 	
 	/**
-	 * @author Thomas Philippon
+	 * @author Thomas Philippon, David Deng
 	 * Changes the GUI CurrentPage to the Game Session Page.
 	 */
 	public void Goto_Game_Session_Page() {
-
+		try {
+			setThinkingTime(whiteTimerField.getText(), blackTimerField.getText());
+		
+		
 		try {
 			QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
 		}
 		catch(Exception e){
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
 		}
+		
+		Goto_Page(Page.GAME_SESSION_PAGE);
 		//whiteTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
 		//blackTimer.textProperty().bindBidirectional((Property<String>) QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getRemainingTime());
-
-		Goto_Page(Page.GAME_SESSION_PAGE);
+		}
+		catch(Exception e) {
+			displayIllegalNotification(e.getMessage());
+		}
+		
 	}
 	
 	/**
@@ -433,4 +500,37 @@ public class ViewInterface {
 
 	    */
     }
+    //input1=white, input2=black
+    private void setThinkingTime(String input1, String input2){
+    	if(input1.length()!=5 || input2.length()!=5) {
+    		throw new IllegalArgumentException("cannot set thinkingTime. Thinking time must follow format 00:00");
+    	}
+    	try {
+    	int min = Integer.parseInt(input1.substring(0, 2));
+    	int second = Integer.parseInt(input1.substring(3, 5));
+    	QuoridorController.setThinkingTime(min, second, 0);
+    	min = Integer.parseInt(input2.substring(0, 2));
+    	second = Integer.parseInt(input2.substring(3, 5));
+    	QuoridorController.setThinkingTime(min, second, 1);
+
+    	}
+    	catch(Throwable e){
+    		throw new IllegalArgumentException("cannot set thinkingTime. Thinking time must follow format 00:00");
+    	}
+    	
+    	
+    }
+    public static void displayIllegalNotification(String message) {
+    	Text text = new Text();
+    	Alert alert = new Alert(AlertType.ERROR, message, ButtonType.OK);
+    	alert.showAndWait();
+    	isIllegalNotificationDisplayed = true;
+    	if (alert.getResult() == ButtonType.OK) {
+    		isIllegalNotificationDisplayed = false;
+    	}
+    }
+    public boolean isIllegalNotificationDisplayed() {
+    	return isIllegalNotificationDisplayed;
+    }
+    //public checkWallDisplayPosition()
 }
