@@ -442,7 +442,9 @@ public class QuoridorController {
 
         if (userNameSetSuccessfully) {
             Player playerToAssignUserTo = currentGame.getWhitePlayer().getNextPlayer();
-            playerToAssignUserTo.getUser().setName(userName);
+            User addUser = quoridor.addUser(userName);
+            playerToAssignUserTo.setUser(addUser);
+            //playerToAssignUserTo.getUser().setName(userName);
         }
 
         return userNameSetSuccessfully;

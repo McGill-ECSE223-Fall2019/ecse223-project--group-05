@@ -91,8 +91,6 @@ public class ViewInterface {
 	
 	
 //Game Session Page
-	@FXML private GridPane Game_Board;
-	@FXML private Rectangle aWall;
 	@FXML private Label lbl_blackTimer;
 	@FXML private Label lbl_whiteTimer;
 	
@@ -367,13 +365,6 @@ public class ViewInterface {
 	 */
 	@SuppressWarnings("deprecation")
 	public void initialize() {
-
-		ComboBox_username1.setItems(FXCollections.observableArrayList(
-			    "A", "B", "C", "D"));
-		ComboBox_username2.setItems(FXCollections.observableArrayList(
-			    "A", "B", "C", "D"));
-
-		QuoridorController.initializeQuoridor(QuoridorApplication.getQuoridor());
 
 		timer = new Timer();
 		//Populate game board with colorful tiles
