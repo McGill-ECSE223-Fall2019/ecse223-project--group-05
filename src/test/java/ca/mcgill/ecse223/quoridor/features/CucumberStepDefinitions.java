@@ -165,7 +165,7 @@ public class CucumberStepDefinitions {
 	 * Scenario: Initiate a new game
 	 */
     @When("A new game is being initialized")
-    public void aNewGameIsBeingInitializing() throws java.lang.UnsupportedOperationException{
+    public void aNewGameIsBeingInitializing(){
     	
     	QuoridorController.initializeGame(QuoridorApplication.getQuoridor());
     }
@@ -176,8 +176,10 @@ public class CucumberStepDefinitions {
 	 * Scenario: Initiate a new game
 	 */
     @And("White player chooses a username")
-    public void whitePlayerChoosesAUsername() throws java.lang.UnsupportedOperationException{
-    	QuoridorController.playerChoseUsername(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer());
+    public void whitePlayerChoosesAUsername(){
+    	Quoridor quoridor = QuoridorApplication.getQuoridor();
+    	User user = quoridor.addUser("temp1");
+    	QuoridorController.setUserToPlayer(quoridor.getCurrentGame().getWhitePlayer(), user);
     }
     
     /**
@@ -186,8 +188,10 @@ public class CucumberStepDefinitions {
 	 * Scenario: Initiate a new game
 	 */
     @And("Black player chooses a username")
-    public void blackPlayerChoosesAUsername() throws java.lang.UnsupportedOperationException{
-    	QuoridorController.playerChoseUsername(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer());
+    public void blackPlayerChoosesAUsername(){
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		User user = quoridor.addUser("temp2");
+    	QuoridorController.setUserToPlayer(quoridor.getCurrentGame().getBlackPlayer(), user);
     }
     
     /**
@@ -196,9 +200,11 @@ public class CucumberStepDefinitions {
 	 * Scenario: Initiate a new game
 	 */
     @And("Total thinking time is set")
-    public void totalThinkingTimeIsSet()  throws java.lang.UnsupportedOperationException{
-    	Game game = QuoridorApplication.getQuoridor().getCurrentGame();
-    	QuoridorController.thinkingTimeIsSet(game);
+    public void totalThinkingTimeIsSet(){
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		Time time = new Time(180);
+    	QuoridorController.setThinkingTime(quoridor.getCurrentGame().getWhitePlayer(), time);
+    	QuoridorController.setGameStatus(GameStatus.ReadyToStart); //after all the whens, then the game should be ready to start
     }
     
     /**
@@ -220,9 +226,6 @@ public class CucumberStepDefinitions {
   	public void theGameIsReadyToStart() {
   		//Code is taken from createAndStartGame(Arraylist<Player>) except with GameStatus.Running replaced with GameStatus.ReadyToStart
   		Quoridor quoridor = QuoridorApplication.getQuoridor();
-		// There are total 36 tiles in the first four rows and
-  		// indexing starts from 0 -> tiles with indices 36 and 36+8=44 are the starting
-		// positions
 		Game game = new Game(GameStatus.ReadyToStart, MoveMode.PlayerMove, quoridor);
 		myPlayers = createUsersAndPlayers("user1", "user2");
 		game.setWhitePlayer(myPlayers.get(0));
@@ -238,10 +241,11 @@ public class CucumberStepDefinitions {
   	@When("I start the clock")
   	public void iStartTheClock(){
   		Player player = QuoridorController.getCurrentWhitePlayer();
-		if(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove().hasGameAsBlack()){
-			player = QuoridorController.getCurrentWhitePlayer();
-		}
+//		if(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove().hasGameAsBlack()){
+//			player = QuoridorController.getCurrentBlackPlayer();
+//		}
 		QuoridorController.startPlayerTimer(player, timer);
+		QuoridorController.setGameStatus(GameStatus.Running);
 
   	}
   	
@@ -253,7 +257,7 @@ public class CucumberStepDefinitions {
 	 */
   	@Then("The game shall be running")
   	public void theGameShallBeRunning() {
-    	assertEquals(Game.GameStatus.Running, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus());
+    	assertEquals(Game.GameStatus.Running, QuoridorController.getGameStatus());
   	}
   	
   	/**
@@ -1390,7 +1394,7 @@ public class CucumberStepDefinitions {
 		myCoordinate[0] = 0;
 		myCoordinate[1] = 0;
 		myDirection = "";
-		boolean positionValidated = false;
+		boolean positionValidated = true;
 		handIsEmpty = false;
 		handHasWall = false;
 		userNameSet = true;
