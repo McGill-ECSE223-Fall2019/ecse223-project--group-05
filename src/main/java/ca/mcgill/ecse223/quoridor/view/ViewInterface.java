@@ -39,7 +39,6 @@ import javafx.stage.Stage;
 public class ViewInterface {
 
 
-
 	//these are the pages that the user can travel to/interact with
 	private enum Page {
 		TOP_BUTTONS,
@@ -92,13 +91,15 @@ public class ViewInterface {
 //Grab and Drad wall variables
 	double wallXPosition, wallYPosition;
 
-//Rotate wall variables
-	private Rectangle wallMoveCandidate;
-	
+
 	private static Quoridor quoridor;
 	public Timer timer;
-	public String timerVal;
-	//StringProperty prop = new SimpleStringProperty();
+	public Timer RefreshTimer;
+  public String timerVal;
+
+  //Rotate wall variables
+	private Rectangle wallMoveCandidate;
+
 
 	/**
 	 * @author Thomas Philippon
@@ -120,7 +121,6 @@ public class ViewInterface {
 		else{
 			gameSessionNotificationLabel.setText("You have no more walls in stock...");
 		}
-
 	}
 
 	/**
@@ -128,10 +128,8 @@ public class ViewInterface {
 	 * This method is called when the user drags the walls
 	 */
 	public void MoveWall(MouseEvent mouseEvent) {
-
 		//get the rectangle that is grabbed
 		Rectangle wall = (Rectangle) mouseEvent.getSource();
-		
 		//Compute the new wall position and move the wall to that position
 			double offsetX = mouseEvent.getX();
 			double offsetY = mouseEvent.getY();
@@ -139,9 +137,8 @@ public class ViewInterface {
 			double newTranslateY = wall.getTranslateY() + offsetY;
 			wall.setTranslateX(newTranslateX);
 			wall.setTranslateY(newTranslateY);
-			
-			
-			//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
+    
+    //ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
 			wallMoveCandidate = wall;
 	}
 
@@ -150,33 +147,28 @@ public class ViewInterface {
 	 *This method is executed when the user releases the wall
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
-
 		gameSessionNotificationLabel.setText("Invalid Wall Placement");
-		wallMoveCandidate = null;
-		//get the rectangle that is dropped
-//		Rectangle wall = (Rectangle) mouseEvent.getSource();
-//		double newTranslateX = wall.getTranslateX() + wallXPosition;
-//		double newTranslateY = wall.getTranslateY() + wallYPosition;
-//		wall.setTranslateX(newTranslateX);
-//		wall.setTranslateY(newTranslateY);
-
+    wallMoveCandidate = null;
 	}
 
 
 	public void addToLoadedGameList() {
-            	Stage stage = new Stage();
-            	DirectoryChooser fileChooser = new DirectoryChooser();
-            	fileChooser.setTitle("Open Resource File");
-            	File file = fileChooser.showDialog(stage);
-            	stage.close();
-                if (file != null) {
-                    lbl_directory.setText(file.toString());
-                    detectGameFiles(file);
-                }
-                else {
-                	lbl_directory.setText("Directory could not be opened");
-                }
+		Stage stage = new Stage();
+		DirectoryChooser fileChooser = new DirectoryChooser();
+		fileChooser.setTitle("Select directory with saved games");
+		File file = fileChooser.showDialog(stage);
+		stage.close();
+		if (file != null) {
+			lbl_directory.setText(file.toString());
+			detectGameFiles(file);
+		}
+		else {
+			lbl_directory.setText("Directory could not be opened");
+		}
 	}
+
+
+
 	private void detectGameFiles(File file) {
 		File[] gameFiles = file.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -226,7 +218,8 @@ public class ViewInterface {
 		} catch (Exception e) {
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the Game");
 		}
-	}
+}
+
 	
 	/**
 	 * @author Thomas Philippon
@@ -240,6 +233,21 @@ public class ViewInterface {
 		catch(Exception e){
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
 		}
+
+
+		//This tasks runs on a separate thread. It is used to update the GUI every second
+		RefreshTimer.schedule(new TimerTask() {
+			public void run() {
+				Platform.runLater(new Runnable() {
+					public void run() {
+						//Update white player's thinking time clock
+						whiteTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
+						//Update black's player thinking time clock
+						blackTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getRemainingTime().toString());
+					}
+				});
+			}
+		}, 0, 1000);
 
 		Goto_Page(Page.GAME_SESSION_PAGE);
 	}
@@ -393,7 +401,7 @@ public class ViewInterface {
 			}
 		}
 
-		timer = new Timer();
+
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
@@ -403,10 +411,11 @@ public class ViewInterface {
 			}
 		}
 
-		//quoridor =QuoridorApplication.getQuoridor();
+		//Initialize the timers
 		timer = new Timer();
+		RefreshTimer = new Timer();
+		//quoridor =QuoridorApplication.getQuoridor();
 
-		//fortesting
 	}
 
 	/**
@@ -417,6 +426,7 @@ public class ViewInterface {
     public void displayExistingUserNames(MouseEvent mouseEvent) {
 
 		//when the arrow is pressed
+
 
 		List<String> existingUserNames = null;
 		try {
@@ -528,7 +538,6 @@ public class ViewInterface {
 		if (!isValid){
 			blackUsernameExistsLabel.setText(userNameToSet + " already exists");
 		}
-	}
 
 	/**
 	 * @author Matthias Arabian
@@ -546,5 +555,6 @@ public class ViewInterface {
 		wallMoveCandidate = wall;
 		System.out.println("hi");
 		QuoridorController.GUI_flipWallCandidate("horizontal");
+
 	}
 }

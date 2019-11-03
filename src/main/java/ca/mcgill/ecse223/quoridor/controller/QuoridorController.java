@@ -38,7 +38,8 @@ public class QuoridorController {
      */
     public static void initializeBoard(Quoridor quoridor, Timer timer){
         // throw new java.lang.UnsupportedOperationException("This controller method is not implemented yet");
-        if(quoridor.getCurrentGame() ==null){
+
+        if(quoridor.getCurrentGame() == null){
             throw new java.lang.UnsupportedOperationException("The Quoridor object does not exist");
         }
         //Create the board object

@@ -19,6 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+
 <?import java.util.ArrayList?>
 <Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
@@ -109,7 +110,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Main_Page" fx:id="Main_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" visible="false">
+                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
                            <children>
                               <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
                               <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
@@ -181,7 +182,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" prefWidth="397.0">
+                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" disable="true" prefWidth="397.0" visible="false">
                            <children>
                               <HBox prefHeight="356.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
@@ -189,12 +190,18 @@
                                        <children>
                                           <Label text="[BLACK PAWN PLAYER NAME]" />
                                           <Button contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="END TURN" textFill="#735c2d" />
-                                          <Label fx:id="blackTimer" prefHeight="82.0" prefWidth="84.0" text="Black Timer" />
+                                          <Label fx:id="blackTimer" alignment="CENTER" prefHeight="82.0" prefWidth="113.0" text="Black Timer" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="21.0" />
+                                         </font></Label>
                                           <VBox />
                                           <Label text="[WHITE PAWN PLAYER NAME]" textAlignment="CENTER" />
                                           <Label text="AWAITING MOVE" textFill="#5ba0e5" />
                                           <Button mnemonicParsing="false" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
-                                          <Label fx:id="whiteTimer" prefHeight="84.0" prefWidth="83.0" text="White Timer" />
+                                          <Label fx:id="whiteTimer" alignment="CENTER" prefHeight="84.0" prefWidth="120.0" text="White Timer" textAlignment="CENTER" textFill="WHITE">
+                                             <font>
+                                                <Font size="21.0" />
+                                             </font></Label>
                                        </children>
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="356.0" prefWidth="300.0">
