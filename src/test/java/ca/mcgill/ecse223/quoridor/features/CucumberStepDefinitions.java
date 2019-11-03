@@ -999,7 +999,7 @@ public class CucumberStepDefinitions {
     */
     @Then("I shall be notified that my wall move is invalid")
     public void iShallBeNotifiedThatMyWallMoveIsInvalid() throws Throwable {
-
+		assertFalse(handIsEmpty);
         //GUI related TODO
     }
 
