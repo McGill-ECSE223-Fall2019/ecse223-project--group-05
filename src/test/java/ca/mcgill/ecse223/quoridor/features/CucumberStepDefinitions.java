@@ -145,8 +145,11 @@ public class CucumberStepDefinitions {
 	@Given("^A new game is initializing$")
 	public void aNewGameIsInitializing() throws Throwable {
 		initQuoridorAndBoard();
-		//ArrayList<Player> players = createUsersAndPlayers("user1", "user2");
-		new Game(GameStatus.Initializing, MoveMode.PlayerMove, QuoridorApplication.getQuoridor());
+		ArrayList<Player> players = createUsersAndPlayers("user1", "user2");
+		Game game = new Game(GameStatus.Initializing, MoveMode.PlayerMove, QuoridorApplication.getQuoridor());
+		game.setWhitePlayer(players.get(0));
+        game.setBlackPlayer(players.get(1));
+
 	}
 	// ***********************************************
 	// Scenario and scenario outline step definitions
@@ -525,13 +528,13 @@ public class CucumberStepDefinitions {
      */
     @Given("Next player to set user name is {string}")
     public void nextPlayerToSetUserNameIs(String color) {
-
+//
         Game game = QuoridorApplication.getQuoridor().getCurrentGame();
-
-        ArrayList<Player> newPlayers = createUsersAndPlayers("user1", "user2");
-
-        game.setWhitePlayer(newPlayers.get(0));
-        game.setBlackPlayer(newPlayers.get(1));
+//
+//        ArrayList<Player> newPlayers = createUsersAndPlayers("user1", "user2");
+//
+//        game.setWhitePlayer(newPlayers.get(0));
+//        game.setBlackPlayer(newPlayers.get(1));
 
         Player nextPlayerWhite = game.getWhitePlayer();
         Player nextPlayerBlack = game.getBlackPlayer();
