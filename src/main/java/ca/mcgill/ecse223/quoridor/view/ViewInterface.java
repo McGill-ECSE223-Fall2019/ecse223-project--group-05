@@ -216,13 +216,13 @@ public class ViewInterface {
 	}
 
 	/**
-	 * @author Thomas Philippon
+	 * @author Alex Masciotra
 	 *This method is executed when the user releases the wall
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
-		gameSessionNotificationLabel.setText("Invalid Wall Placement");
-    wallMoveCandidate = null;
-    wallSelected = null;
+		//gameSessionNotificationLabel.setText("Invalid Wall Placement");
+
+		Boolean dropSuccessful
 	}
 
     /**
