@@ -242,20 +242,19 @@ public class QuoridorController {
      * @return Boolean - Returns 1 if a wall candidate object was created and 0 if not
      * @author Thomas Philippon
      */
-    public static Boolean grabWall(Quoridor quoridor) {
+    public static boolean grabWall(Quoridor quoridor) {
         // throw new java.lang.UnsupportedOperationException("This controller method is not implemented yet");
-
+        boolean returnVal = false;
         Game game = quoridor.getCurrentGame();
         String whitePlayerName = game.getWhitePlayer().getUser().getName();
         Wall wall;
         //check if the player to move has more walls in stock
         Player playerToMove = game.getCurrentPosition().getPlayerToMove();
-        Integer nbOfWalls = numberOfWallsInStock(playerToMove, game);
+        int nbOfWalls = numberOfWallsInStock(playerToMove, game);
 
-        if(nbOfWalls <= 0) {
-            return false; //the current player to move has no more walls in stock
-        }
-        else{ //the player has more walls in stock
+        System.out.println(nbOfWalls);
+        if(nbOfWalls >= 1) {
+            //the player has more walls in stock
             int lastMoveNumber = game.getMoves().size();
             int roundNumber = game.getCurrentPosition().getId();
             Tile targetTile = quoridor.getBoard().getTile(0); //initialize the wall move candidate to the tile(0,0)
@@ -271,8 +270,9 @@ public class QuoridorController {
 
             WallMove wallMoveCandidate = new WallMove(lastMoveNumber+1, roundNumber, playerToMove, targetTile, game, Direction.Horizontal, wall);
             game.setWallMoveCandidate(wallMoveCandidate);
-            return true;
+            returnVal = true;
         }
+        return returnVal;
 
     }
 
@@ -284,18 +284,33 @@ public class QuoridorController {
      * @return Integer  - The number of walls in stock for the player
      * @author Thomas Philippon
      */
-    public static Integer numberOfWallsInStock(Player player, Game game) {
+    public static int numberOfWallsInStock(Player player, Game game) {
 
-        Integer nbOfWalls = 0;
+        int nbOfWalls = 0;
         //Get both players to determine which player is provided
         String blackPlayerName = game.getBlackPlayer().getUser().getName();
         String whitePlayerName = game.getWhitePlayer().getUser().getName();
 
         if(player.getUser().getName().toString().equals(whitePlayerName)) {
             nbOfWalls = game.getCurrentPosition().getWhiteWallsInStock().size();
+            //the size the the list is 1 even if it is empty..
+            // Thus we check if it is empty by asserting that the wall is not equal to null
+            if(nbOfWalls == 1){
+                if (game.getCurrentPosition().getWhiteWallsInStock().get(0) == null) {
+                    nbOfWalls = 0;
+                }
+            }
+
         }
         else if(player.getUser().getName().toString().equals(blackPlayerName)) {
             nbOfWalls = game.getCurrentPosition().getBlackWallsInStock().size();
+            if(nbOfWalls == 1){
+                //the size the the list is 1 even if it is empty..
+                // Thus we check if it is empty by asserting that the wall is not equal to null
+                if (game.getCurrentPosition().getBlackWallsInStock().get(0) == null) {
+                    nbOfWalls = 0;
+                }
+            }
         }
         return nbOfWalls;
     }

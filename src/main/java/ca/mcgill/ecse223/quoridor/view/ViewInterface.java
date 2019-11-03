@@ -17,9 +17,14 @@ import java.util.Timer;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.TimerTask;
 
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
+import ca.mcgill.ecse223.quoridor.timer.TimerGui;
+import javafx.application.Platform;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 
@@ -65,20 +70,21 @@ public class ViewInterface {
 	@FXML private ComboBox blackExistingName;
 	@FXML private TextField whiteNewName;
 	@FXML private TextField blackNewName;
-	@FXML private TextField whiteTimerField;
-	@FXML private TextField blackTimerField;
+
 	
 	@FXML ListView loadedGameList;
 	private int counter = 0;
 	
 	
-//Load Game Page
+     //Load Game Page
 	@FXML private Label lbl_directory;
 
 	//Game Session Page
 	@FXML private GridPane Game_Board;
-	@FXML private Rectangle aWall;
-	@FXML private Label whiteTimer;
+	@FXML private Rectangle whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6, whiteWall7, whiteWall8, whiteWall9, whiteWall10;
+	@FXML private Rectangle blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6, blackWall7, blackWall8, blackWall9, wblackWall10;
+	@FXML private Label gameSessionNotificationLabel;
+	@FXML public Label whiteTimer;
 	@FXML private Label blackTimer;
 
 //Grab and Drad wall variables
@@ -86,18 +92,30 @@ public class ViewInterface {
 
 	private static Quoridor quoridor;
 	public Timer timer;
+	public String timerVal;
+	//StringProperty prop = new SimpleStringProperty();
 
 	/**
 	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
 	public void GrabWall(MouseEvent mouseEvent) {
-		//TODO : Call the get number of remaining walls method
-		//Get the wall po
 
-		Rectangle wall = (Rectangle) mouseEvent.getSource();
-		wallXPosition = mouseEvent.getSceneX();
-		wallYPosition = mouseEvent.getSceneY();
+		boolean grabWallResult;
+		try {
+			grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+		}
+		catch(Exception e){
+				throw new java.lang.UnsupportedOperationException("Cannot retrieve the number of walls in stock");
+			}
+
+		if (grabWallResult == true ){
+			gameSessionNotificationLabel.setText("You have more walls in stock!");
+		}
+		else{
+			gameSessionNotificationLabel.setText("You have no more walls in stock...");
+		}
+
 	}
 
 	/**
@@ -106,16 +124,15 @@ public class ViewInterface {
 	 */
 	public void MoveWall(MouseEvent mouseEvent) {
 
+		//get the rectangle that is grabbed
 		Rectangle wall = (Rectangle) mouseEvent.getSource();
-
+		//Compute the new wall position and move the wall to that position
 			double offsetX = mouseEvent.getX();
 			double offsetY = mouseEvent.getY();
 			double newTranslateX = wall.getTranslateX() + offsetX;
 			double newTranslateY = wall.getTranslateY() + offsetY;
-
 			wall.setTranslateX(newTranslateX);
 			wall.setTranslateY(newTranslateY);
-		    wall.toFront();
 	}
 
 	/**
@@ -124,6 +141,13 @@ public class ViewInterface {
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
 
+		gameSessionNotificationLabel.setText("Invalid Wall Placement");
+		//get the rectangle that is dropped
+//		Rectangle wall = (Rectangle) mouseEvent.getSource();
+//		double newTranslateX = wall.getTranslateX() + wallXPosition;
+//		double newTranslateY = wall.getTranslateY() + wallYPosition;
+//		wall.setTranslateX(newTranslateX);
+//		wall.setTranslateY(newTranslateY);
 
 	}
 
@@ -195,8 +219,6 @@ public class ViewInterface {
 		catch(Exception e){
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
 		}
-		//whiteTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
-		//blackTimer.textProperty().bindBidirectional((Property<String>) QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getRemainingTime());
 
 		Goto_Page(Page.GAME_SESSION_PAGE);
 	}
@@ -346,6 +368,7 @@ public class ViewInterface {
 				AnchorPane tmp = new AnchorPane();
 				tmp.setStyle("-fx-background-color: #ffffff");
 				Game_Board.add(tmp , row, col);
+
 			}
 		}
 
@@ -357,10 +380,16 @@ public class ViewInterface {
 		quoridor =QuoridorApplication.getQuoridor();
 		QuoridorController.initializeQuoridor(quoridor);
 		timer = new Timer();
+		Timer timer2 = new Timer();
+		TimerGui playerTimer = new TimerGui();
+		timer2.schedule(playerTimer,0, 1000); //the playerTimer task will be executed every 1 second
 
-		timer = new Timer();
 	}
 
+	public void Refresh(){
+
+		//whiteTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
+	}
     /**
      * @author Alex Masciotra
      * method to display the existingusernames in quoridor when arrow is pressed
