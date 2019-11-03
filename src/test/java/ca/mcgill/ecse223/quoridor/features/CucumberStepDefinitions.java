@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
+import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -48,10 +50,14 @@ public class CucumberStepDefinitions {
 	boolean positionIsValid = false; //Used to check if the position was valid or not
 	
 	//Instance Variables for SavePosition tests
-	private String saveFilename = "";
+	private String testGameSaveFilename = "";
 	private final int fileDataLength = 1000000;
 	private char [] refFileData = new char [fileDataLength];	//Memory for storing data of one file for comparison.
-	private char [] curFileData = new char [fileDataLength];	//Memory for storing data of another file for comparison.
+	private char [] curFileData = new char [fileDataLength];	//Memory for storing data of another file for comparison.]
+	
+	//Instance Variables for LoadPosition tests
+	private boolean failedToReadSaveFile = false;
+	private boolean receivedInvalidPositionException = false;
 
 	// ***********************************************
 	// Background step definitions
@@ -646,10 +652,10 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("No file {string} exists in the filesystem")
 	public void noFileFilenameExistsInTheFileSystem(String filename) {
+		this.testGameSaveFilename = filename;
 		SaveConfig.createGameSavesFolder();
 		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
 		if (file.exists())	{	file.delete();	}
-		this.saveFilename = filename;
 	}
 	
 	/**
@@ -661,6 +667,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("File {string} exists in the filesystem")
 	public void fileFilenameExistsInTheFilesystem(String filename) {
+		this.testGameSaveFilename = filename;
 		SaveConfig.createGameSavesFolder();
 		//First put in our control as the existing file for our test.
 		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
@@ -701,7 +708,7 @@ public class CucumberStepDefinitions {
 	public void theUserConfirmsToOverwriteExistingFile() {
 		SaveConfig.createGameSavesFolder();
 		try {
-			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), SavePriority.FORCE_OVERWRITE);
+			QuoridorController.saveGame(this.testGameSaveFilename, QuoridorController.getCurrentGame(), SavePriority.FORCE_OVERWRITE);
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
@@ -716,7 +723,7 @@ public class CucumberStepDefinitions {
 	public void theUserCancelsToOverwriteExistingFile() {
 		SaveConfig.createGameSavesFolder();
 		try {
-			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), SavePriority.DO_NOT_SAVE);
+			QuoridorController.saveGame(this.testGameSaveFilename, QuoridorController.getCurrentGame(), SavePriority.DO_NOT_SAVE);
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
@@ -1202,11 +1209,23 @@ public class CucumberStepDefinitions {
 	/**
 	 * This function calls a controller function loadSavedGame("filename").
 	 * Loads data from file, initiates the creation of a game and sets positions according to loaded data.
-	 * @author Matthias Arabian
+	 * @author Matthias Arabian (original)
+	 * @author Edwin Pan (Rewrote to catch exceptions)
 	 */
 	@When("I initiate to load a saved game {string}")
 	public void iInitiateToLoadASavedGame(String fileName) {
-		QuoridorController.loadSavedGame(fileName);
+		CucumberTest_LoadPosition_TestFileWriters.createGameSaveTestFile(fileName);
+		try {
+			QuoridorController.loadSavedGame(fileName);
+		} catch (FileNotFoundException e) {
+			failedToReadSaveFile = true;
+			e.printStackTrace();
+		} catch (IOException e) {
+			failedToReadSaveFile = true;
+			e.printStackTrace();
+		} catch (InvalidPositionException e) {
+			receivedInvalidPositionException = true;
+		} 
 	}
 	
 	/**
@@ -1215,8 +1234,8 @@ public class CucumberStepDefinitions {
 	 */
 	@And("The position to load is valid")
 	public void thePositionToLoadIsValid(){
-		Boolean positionIsValid = QuoridorController.CheckThatPositionIsValid();
-		assertEquals(true, positionIsValid);
+		assertEquals(true, !failedToReadSaveFile);
+		assertEquals(true, !receivedInvalidPositionException);
 	}
 	
 	/**
@@ -1299,8 +1318,8 @@ public class CucumberStepDefinitions {
 	 */
 	@And("The position to load is invalid")
 	public void thePositionToLoadIsInvalid(){
-		Boolean positionIsValid = QuoridorController.CheckThatPositionIsValid();
-		assertEquals(false, positionIsValid);
+		assertEquals(true, !failedToReadSaveFile);
+		assertEquals(true, receivedInvalidPositionException);
 	}
 	
 	/**
@@ -1309,7 +1328,8 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("The load shall return an error")
 	public void theLoadShallReturnAnError() throws Throwable{
-		assertEquals(true, QuoridorController.sendLoadError());
+		assertEquals(true, !failedToReadSaveFile);
+		assertEquals(true, receivedInvalidPositionException);
 	}
 	
 	
@@ -1334,9 +1354,9 @@ public class CucumberStepDefinitions {
 			}
 		}
 		// Clear out file data memories, used for SavePosition features.
-		File file = new File( SaveConfig.getGameSaveFilePath(this.saveFilename) );
+		File file = new File( SaveConfig.getGameSaveFilePath(this.testGameSaveFilename) );
 		file.delete();
-		this.saveFilename = "";
+		this.testGameSaveFilename = "";
 		for( int i = 0 ; i < refFileData.length ; i++ ) {
 			this.refFileData[i] = 0;
 		}
@@ -1348,7 +1368,12 @@ public class CucumberStepDefinitions {
 		myCoordinate[0] = 0;
 		myCoordinate[1] = 0;
 		myDirection = "";
+		receivedInvalidPositionException = false;
+		failedToReadSaveFile = false;
 		//boolean positionValidated = false;//dead code
+		
+		//Clear load position files from saves directory
+		CucumberTest_LoadPosition_TestFileWriters.clearGameSaveLoadingTestFiles();
 		
 	}
 

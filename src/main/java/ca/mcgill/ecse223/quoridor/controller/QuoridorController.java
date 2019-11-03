@@ -1,12 +1,14 @@
 package ca.mcgill.ecse223.quoridor.controller;
 
 import java.util.List;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
+import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
 import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
 import ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager;
@@ -308,37 +310,55 @@ public class QuoridorController {
 		throw new UnsupportedOperationException("flipWallCandidate Error");
 	}
 
-	/**
-	 * Verifies that the load position is a valid position
-	 * @author Matthias Arabian
-	 * @return true: position is valid. false otherwise
-	 * @throws UnsupportedOperationException
+	/*
+	 * This method is outside the scope of what load position tests are able to recognize. While we could refer to the work
+	 * of the ValidatePosition developer, we can also use my loading system which throws InvalidPositionException's and infer
+	 * that if no exception is thrown, then the position is probably valid. Not to say that this isn't something we want: in
+	 * the controller, it is definitely good to have a means to ensure that the position is valid when creating a new one in-
+	 * game. But for our intents and purposes, the only time we need to check if the position is valid is as we are parsing
+	 * in text data from save files, as we can avoid a lot of arrayIndexOutOfBounds errors this way. And this is handled by
+	 * my QuoridorSavesManager class.
+	 * -Edwin
 	 */
-	public static Boolean CheckThatPositionIsValid() throws UnsupportedOperationException{
-		throw new UnsupportedOperationException("Position is valid");
-	}
+	///**
+	// * Verifies that the load position is a valid position
+	// * @author Matthias Arabian
+	// * @return true: position is valid. false otherwise
+	// * @throws UnsupportedOperationException
+	// */
+	//public static Boolean CheckThatPositionIsValid() throws UnsupportedOperationException{
+	//	throw new UnsupportedOperationException("Position is valid");
+	//}
 
 	/**
 	 * Loads a saved game by instantiating a new game and populating it with file data
-	 * @author Matthias Arabian
+	 * @author Matthias Arabian (Interface Author)
+	 * @author Edwin Pan (Method Author)
 	 * @param fileName
-	 * @throws UnsupportedOperationException
+	 * @throws FileNotFoundException, IOException, InvalidPositionException
 	 */
-	public static void loadSavedGame(String fileName) throws UnsupportedOperationException{
-		throw new UnsupportedOperationException("Game could not be loaded");
-		
+	public static void loadSavedGame(String fileName) throws IOException, FileNotFoundException, InvalidPositionException {
+		Quoridor quoridorInMemory = QuoridorApplication.getQuoridor();
+		Game game = QuoridorSavesManager.loadGamePawnsAndWalls(fileName, quoridorInMemory.getCurrentGame());
+		quoridorInMemory.setCurrentGame(game);
 	}
 
-
-	/**
-	 * Propagates a sort of "Invalid Position to Load" error to wherever it is necessary
-	 * @author Matthias Arabian
-	 * @return whether the error has been successfully propagated
-	 * @throws UnsupportedOperationException
+	
+	/*
+	 * This method requires the controller to be stateful - namely, for previous errors to be remembered. This is non-ideal.
+	 * This method will instead be replaced by the method above, loadSavedGame, being a method which throws IOException or
+	 * FileNotFoundException which can be.
+	 * -Edwin
 	 */
-	public static Boolean sendLoadError() throws UnsupportedOperationException{
-		throw new UnsupportedOperationException("sendLoadError");
-	}
+	///**
+	// * Propagates a sort of "Invalid Position to Load" error to wherever it is necessary
+	// * @author Matthias Arabian
+	// * @return whether the error has been successfully propagated
+	// * @throws UnsupportedOperationException
+	// */
+	//public static Boolean sendLoadError() throws UnsupportedOperationException{
+	//	throw new UnsupportedOperationException("sendLoadError");
+	//}
 	
 	/**
 	 * Simple query method for obtaining the application's current game instance.

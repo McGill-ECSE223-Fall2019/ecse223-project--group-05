@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
+import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
 import ca.mcgill.ecse223.quoridor.model.Move;
@@ -33,8 +35,8 @@ public class QuoridorSavesManager {
 	/**
 	 * Writes into the file system sprint3-format data about the black and white pawns and walls. 
 	 * Only the name of the file with its extension need to be provided. Returns false in the case of an IOException.
-	 * @param game
-	 * @param filename
+	 * @param game in the form of an active current game.
+	 * @param filename in the form of the file's name and its extension, but not its path.
 	 * @return
 	 */
 	public static SavingStatus saveGamePawnsAndWalls( Game game , String filename, SavePriority save_enforcement_type) {
@@ -51,7 +53,7 @@ public class QuoridorSavesManager {
 		 */
 		//First, check if the game already exists. If it does, then check if the user wants to overwrite it; inform them that it already exists if not.
 		//If the game does not exist, but the operation is being used with FORCE_OVERWRITE as an argument, someone's not using this method properly.
-		File file = new File(filename);
+		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
 		if( file.exists() ) {
 			if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
 				return SavingStatus.ALREADY_EXISTS;
@@ -121,15 +123,15 @@ public class QuoridorSavesManager {
 	 * @param filename
 	 * @param game
 	 * @return
-	 * @throws FileNotFoundException, IOException
+	 * @throws FileNotFoundException, IOException, InvalidPositionException
 	 */
-	public static Game loadGamePawnsAndWalls( String filename, Game game ) throws FileNotFoundException, IOException {
+	public static Game loadGamePawnsAndWalls( String filename, Game game ) throws FileNotFoundException, IOException, InvalidPositionException {
 		
 		/*
 		 * Read Setup
 		 */
 		String[] lines = new String [2];
-		File file = new File(filename);
+		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
 		FileReader fileReader;
 		try{
 			fileReader = new FileReader(file);
@@ -191,6 +193,7 @@ public class QuoridorSavesManager {
 		for( int i = 0 ; i < 2 ; i ++ ) {
 			int playerPositionRow = lines[i].charAt(4) - '0' + 1;
 			int playerPositionCol = lines[i].charAt(3) - 'a' + 1;
+			sanityCheckTileCoordinate(playerPositionRow,playerPositionCol);
 			playerPositions[0].setTile( game.getQuoridor().getBoard().getTile( getTileId(playerPositionRow, playerPositionCol) ) );
 			int wallsPlaced = (lines[i].length()-5)/5;
 			for( int j = 0 ; j < wallsPlaced ; j++ ) {
@@ -212,6 +215,7 @@ public class QuoridorSavesManager {
 				//Read in the j'th wall word for constructing the new WallMove
 				int			wallCol = lines[i].charAt( 7 + 5*j ) - 'a' + 1;
 				int			wallRow = lines[i].charAt( 8 + 5*j ) - '0' + 1;
+				sanityCheckTileCoordinate(wallRow,wallCol);
 				Direction	wallDir = lines[i].charAt( 9 + 5*j ) == 'v' ? Direction.Vertical : Direction.Horizontal;
 				//Collect remaining data for constructing the new WallMove
 				int 		newMoveNumber 	= prevMove != null ? prevMove.getMoveNumber() + 1 : 1 ;
@@ -335,6 +339,12 @@ public class QuoridorSavesManager {
 	 */
 	private static int getTileId( int row, int col ) {
 		return (row-1)*9+col-1 ;
+	}
+	
+	private static void sanityCheckTileCoordinate(int row, int col) throws InvalidPositionException {
+		if( row < 1 || row > 9 || col < 1 || row > 9 ) {
+			throw new InvalidPositionException("Detected invalid Tile Coordinates: (" + row + "," + col + ").");
+		}
 	}
 	
 }
