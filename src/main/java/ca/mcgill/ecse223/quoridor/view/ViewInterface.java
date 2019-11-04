@@ -638,15 +638,28 @@ public class ViewInterface {
 		QuoridorController.GUI_flipWallCandidate("horizontal");
 
 	}
-	
+
+	/**
+	 * @author Matthias Arabian
+	 * @param e
+	 * Truggered when a user pressses a button that might end a turn. Checks that that is a valid operation
+	 * and acts accordingly.
+	 * If the button can be pressed, then the player's turn is over. Its timer is turned off, and the other player's turn begins.
+	 * Other's timer turns on.
+	 */
 	public void switchPlayer(Event e) {
 		Button b = ((Button)e.getSource());
 		if (b.getId().equals(btn_whitePlayerTurn.getId())) {
 			if (btn_whitePlayerTurn.getText().equals("END TURN")) {
 				btn_blackPlayerTurn.setText("END TURN");
 				lbl_black_awaitingMove.setText("");
+                QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
+                        ,timer);
+                timer = new Timer();
 				btn_whitePlayerTurn.setText("NOT WHITE TURN");
 				lbl_white_awaitingMove.setText("AWAITING MOVE");
+                QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
+                        ,timer);
 				
 			}
 		}
@@ -654,8 +667,13 @@ public class ViewInterface {
 			if (btn_blackPlayerTurn.getText().equals("END TURN")) {
 				btn_whitePlayerTurn.setText("END TURN");
 				lbl_white_awaitingMove.setText("");
+				QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
+                        ,timer);
+				timer = new Timer();
 				btn_blackPlayerTurn.setText("NOT BLACK TURN");
 				lbl_black_awaitingMove.setText("AWAITING MOVE");
+                QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
+                        ,timer);
 			}
 		}
 	}
