@@ -144,7 +144,7 @@ public class SaveConfig {
 	 * Produces the complete path for the folder for game save files
 	 * @return
 	 */
-	private static String getGameSavesFolder() {
+	public static String getGameSavesFolder() {
 		return (baseDir + gameSavesDataFolderName);
 	}
 	
