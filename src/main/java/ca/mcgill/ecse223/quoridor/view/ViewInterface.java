@@ -198,7 +198,9 @@ public class ViewInterface {
 			}
 
 			System.out.println(wallSelected.getTranslateX());
+			System.out.println(wallSelected.getX());
 			System.out.println(wallSelected.getTranslateY());
+			System.out.println(wallSelected.getY());
 		}
 		catch(Throwable e) {
 			displayIllegalNotification(e.getMessage());

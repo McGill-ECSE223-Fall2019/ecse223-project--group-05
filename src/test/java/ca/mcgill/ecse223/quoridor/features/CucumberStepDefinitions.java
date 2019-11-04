@@ -461,7 +461,9 @@ public class CucumberStepDefinitions {
 
         }
 	}
-	/**communicates to View to verify that the wall is indeed moved to a new position
+	/**communicates to View to verify that the wall is indeed moved to a new position. NOTE: THIS TEST FAILS BECAUSE
+	 * THE TEST CASES ARE DONE WITHOUT EVER INITIALIZING VIEW. If test cases try to access view, a null pointe exception
+	 * will always be thrown. It is my opinion that the test case is not necessary.
 	 * @author David
 	 * @param row
 	 * @param column
