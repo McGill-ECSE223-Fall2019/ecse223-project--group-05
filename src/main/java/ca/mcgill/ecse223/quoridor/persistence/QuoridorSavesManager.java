@@ -59,10 +59,10 @@ public class QuoridorSavesManager {
 		if( file.exists() ) {
 			if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
 				return SavingStatus.ALREADY_EXISTS;
-			} else {
-				if( save_enforcement_type == SavePriority.FORCE_OVERWRITE) {
-					throw new IllegalArgumentException("Programmer has made improper use of save_enforcement_type. Did not check that the file already exists before using FORCE_OVERWRITE: Detected use of FORCE_OVERWRITE with a non-existing file.");
-				}
+			} 
+		} else {
+			if( save_enforcement_type == SavePriority.FORCE_OVERWRITE) {
+				throw new IllegalArgumentException("Programmer has made improper use of save_enforcement_type. Did not check that the file already exists before using FORCE_OVERWRITE: Detected use of FORCE_OVERWRITE with a non-existing file.");
 			}
 		}
 		

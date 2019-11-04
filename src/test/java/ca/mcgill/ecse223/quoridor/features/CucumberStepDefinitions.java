@@ -656,6 +656,7 @@ public class CucumberStepDefinitions {
 		SaveConfig.createGameSavesFolder();
 		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
 		if (file.exists())	{	file.delete();	}
+		assertEquals(false,file.exists());
 	}
 	
 	/**
@@ -738,7 +739,6 @@ public class CucumberStepDefinitions {
 	public void aFileWithFilenameIsCreatedInTheFilesystem(String filename) {
 		SaveConfig.createGameSavesFolder();
 		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
-		checkFileSystemAccess( SaveConfig.getGameSaveFilePath(filename) );
 		assertEquals(file.exists(),true);
 	}
 	
@@ -751,7 +751,6 @@ public class CucumberStepDefinitions {
 	public void fileWithFilenameIsUpdatedInTheFileSystem(String filename) {
 		SaveConfig.createGameSavesFolder();
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
-		checkFileSystemAccess( SaveConfig.getGameSaveFilePath(filename) );
 		assertEquals( Arrays.equals(refFileData, curFileData), false );	
 	}
 	
@@ -764,12 +763,14 @@ public class CucumberStepDefinitions {
 	public void fileWithFilenameIsNotChangedInTheFileSystem(String filename) {
 		SaveConfig.createGameSavesFolder();
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
-		checkFileSystemAccess( SaveConfig.getGameSaveFilePath(filename) );
 		assertEquals( Arrays.equals(refFileData, curFileData), true );
 	}
 	
 	/**
 	 * @author Edwin Pan
+	 * DEPRECATED: This method doesn't seem to work. Despite it claiming that java has no access to the file system,
+	 * the application is still able to write and read files from the file system. Quite strange.
+	 * I'm keeping this in the code for investigative purposes in the future. Nobody else should be using this, though.
 	 * Helper method for checking if the Operating System is preventing the application from doing Save and Load tests
 	 * Checks if Access if being Denied: If so, prints the stacktrace and announces the Exception to tester.
 	 */
