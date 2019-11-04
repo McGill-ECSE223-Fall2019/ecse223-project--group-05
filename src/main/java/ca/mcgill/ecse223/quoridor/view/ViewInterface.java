@@ -96,7 +96,7 @@ public class ViewInterface {
 	@FXML private Label whitePlayerName;
 	@FXML private Label blackPlayerName;
 
-//Grab and Drag wall variables
+	//Grab and Drag wall variables
 	double wallXPosition, wallYPosition;
 
 	public static boolean isIllegalNotificationDisplayed = true;
@@ -483,7 +483,10 @@ public class ViewInterface {
 				tmp.setStyle("-fx-background-color: #ffffff");
 				Game_Board.add(tmp , row, col);
 			}
+
+
 		}
+
 
 		//Initialize the timers
 		timer = new Timer();
@@ -657,6 +660,7 @@ public class ViewInterface {
 		}
 	}
 
+
 	//input1=white, input2=black
 
 	/**
@@ -743,5 +747,30 @@ public class ViewInterface {
 		}
 
 		return false;
+  }
+	/**
+	 * @author Matthias Arabian
+	 * @return value of string awaitingMove
+	 * this is used to ensure that the player switching has been announced to the players
+	 */
+	public String getWhitePlayerStatus(){
+		return null;
+//        if (lbl_white_awaitingMove == null || lbl_white_awaitingMove.equals(""))
+//            return null;
+//        return lbl_white_awaitingMove.getText();
+
+	}
+
+	/**
+	 * @author Matthias Arabian
+	 * @return value of string awaitingMove
+	 * this is used to ensure that the player switching has been announced to the players
+	 */
+	public String getBlackPlayerStatus(){
+		return null;
+//	    if (lbl_black_awaitingMove == null || lbl_black_awaitingMove.equals(""))
+//	        return null;
+//		return lbl_black_awaitingMove.getText();
+
 	}
 }
