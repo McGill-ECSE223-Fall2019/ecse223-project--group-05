@@ -484,7 +484,7 @@ public class CucumberStepDefinitions {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		Tile tile = quoridor.getCurrentGame().getWallMoveCandidate().getTargetTile();
 		
-		assertEquals(Direction.valueOf(dir), quoridor.getCurrentGame().getWallMoveCandidate().getWallDirection());
+		assertEquals(dir.toLowerCase(), quoridor.getCurrentGame().getWallMoveCandidate().getWallDirection().toString().toLowerCase());
 		assertEquals(row, tile.getRow());
 		assertEquals(column,tile.getColumn() );
 	}

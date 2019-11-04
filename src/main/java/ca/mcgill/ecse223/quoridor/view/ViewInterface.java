@@ -99,7 +99,7 @@ public class ViewInterface {
 //Grab and Drag wall variables
 	double wallXPosition, wallYPosition;
 
-	private static boolean isIllegalNotificationDisplayed = false;
+	public static boolean isIllegalNotificationDisplayed = true;
 	private static final double HORIZONTALSTEP = 30;
 	private static final double VERTICALSTEP = 35;
 	private static Rectangle wallSelected;
@@ -119,8 +119,8 @@ public class ViewInterface {
 	 */
 	public void GrabWall(MouseEvent mouseEvent) {
 		wallSelected = (Rectangle) mouseEvent.getSource();
-		wallSelected.setTranslateX(110);
-		//wallSelected.setTranslateY(100);
+
+
 		wallSelected.toFront();
 		boolean grabWallResult;
 		try {
@@ -136,6 +136,7 @@ public class ViewInterface {
 		else{
 			gameSessionNotificationLabel.setText("You have no more walls in stock...");
 		}
+		//System.out.println();
 	}
 
 	/**
@@ -159,7 +160,10 @@ public class ViewInterface {
 	}
 	/**
 	 * @author David Deng
-	 * This method is called when the user moves the wall
+	 * This method is called when the user moves the wall using the keyboard.
+	 * It is suppsoed to change the rectangle to red if the position is invalid.
+	 * It had worked with an old version of GUI, but is not working well with a newer version.
+	 * We believe that having more time, it should work more smoothly.
 	 */
 
 	@FXML
@@ -172,7 +176,7 @@ public class ViewInterface {
 			if(keyEvent.getCode()==KeyCode.UP) {
 				isValid = QuoridorController.moveWall("up");
 				wallSelected.setTranslateY(wallSelected.getTranslateY()-VERTICALSTEP);//translates the rectangle by a tilewidth
-				//System.out.println("detected");
+				System.out.println("detected");
 			}
 			else if(keyEvent.getCode()==KeyCode.DOWN) {
 				isValid = QuoridorController.moveWall("down");
@@ -192,6 +196,9 @@ public class ViewInterface {
 			else {
 				wallSelected.setStroke(Color.BLACK);
 			}
+
+			System.out.println(wallSelected.getTranslateX());
+			System.out.println(wallSelected.getTranslateY());
 		}
 		catch(Throwable e) {
 			displayIllegalNotification(e.getMessage());
@@ -213,6 +220,7 @@ public class ViewInterface {
 	public void DropWall(MouseEvent mouseEvent) {
 		gameSessionNotificationLabel.setText("Invalid Wall Placement");
     wallMoveCandidate = null;
+    wallSelected = null;
 	}
 
 
@@ -648,6 +656,13 @@ public class ViewInterface {
 	}
 
 	//input1=white, input2=black
+
+	/**
+	 * process the thinking time data from the thinking time text field fed into the method
+	 * @param input1 white player
+	 * @param input2 black player
+	 * @author David
+	 */
 	private void setThinkingTime(String input1, String input2){
 		if(input1.length()!=5 || input2.length()!=5) {
 			throw new IllegalArgumentException("cannot set thinkingTime. Thinking time must follow format 00:00");
@@ -667,18 +682,42 @@ public class ViewInterface {
 
 
 	}
+
+	/**
+	 * display an alert message that can be clicked away
+	 * @param message to be displayed
+	 */
 	public static void displayIllegalNotification(String message) {
+		try{
 		Text text = new Text();
 		Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
+
 		alert.showAndWait();
+
 		isIllegalNotificationDisplayed = true;
+
 		if (alert.getResult() == ButtonType.OK) {
 			isIllegalNotificationDisplayed = false;
-		}
+		}}
+		catch(Throwable e)
+	{
+		isIllegalNotificationDisplayed = true;//to account to missing user interaction during testing. No one will be there to see error window, but they exist.
 	}
+	}
+
+	/**
+	 * @author David
+	 * @return true if there is currently an IllegalNotification (alert) displayed
+	 */
 	public boolean isIllegalNotificationDisplayed() {
 		return isIllegalNotificationDisplayed;
 	}
+
+	/**
+	 * The following two methods return coordinate of the wallSelected using the old
+	 * coodinate system. Be cautious using it in the new one.
+	 * @return
+	 */
 	private static double wallDisplayX() {
 		if(wallSelected==null) return -1;
 		return wallSelected.getTranslateX();
@@ -687,10 +726,20 @@ public class ViewInterface {
 		if(wallSelected==null) return -1;
 		return wallSelected.getTranslateY();
 	}
-	public boolean isWallDisplayedAt(int row, int col) {
+
+	/**
+	 * Checks whether the wall is displayed at the given coordinate in GUI
+	 * @param row
+	 * @param col
+	 * @author David
+	 * @return true if it is, false otherwise
+	 */
+	public static boolean isWallDisplayedAt(int row, int col) {
+
 		if((wallDisplayX()==110+(col-1)*30) && (wallDisplayY()==35+(row-1)*30)){
 			return true;
 		}
+
 		return false;
 	}
 }

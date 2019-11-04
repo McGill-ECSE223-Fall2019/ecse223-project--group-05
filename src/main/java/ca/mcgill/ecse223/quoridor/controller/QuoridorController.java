@@ -328,8 +328,10 @@ public class QuoridorController {
      * @author David
      */
     public static boolean isIllegalMoveNotificationDisplayed() {
+
         ViewInterface view = QuoridorApplication.getViewInterface();
-        return view.isIllegalNotificationDisplayed();
+        return view.isIllegalNotificationDisplayed;
+
     }
 
     /**
@@ -340,7 +342,9 @@ public class QuoridorController {
      * @author David
      */
     public static boolean thisWallIsAtPosition(int row, int column) {
+
         ViewInterface view = QuoridorApplication.getViewInterface();
+
 
         return view.isWallDisplayedAt(row, column);
     }
