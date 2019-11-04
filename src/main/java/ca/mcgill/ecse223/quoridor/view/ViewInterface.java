@@ -9,14 +9,19 @@ package ca.mcgill.ecse223.quoridor.view;
 
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
+import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.*;
+import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
+import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
 
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Timer;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.TimerTask;
 
 import ca.mcgill.ecse223.quoridor.model.Player;
@@ -29,6 +34,7 @@ import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -38,6 +44,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class ViewInterface {
@@ -96,6 +104,7 @@ public class ViewInterface {
 	@FXML private Label lbl_black_awaitingMove, lbl_white_awaitingMove;
 	@FXML private Label whitePlayerName;
 	@FXML private Label blackPlayerName;
+	@FXML private Button btn_saveGame;
 
 	//Grab and Drag wall variables
 	double wallXPosition, wallYPosition;
@@ -235,6 +244,7 @@ public class ViewInterface {
 		Stage stage = new Stage();
 		DirectoryChooser fileChooser = new DirectoryChooser();
 		fileChooser.setTitle("Select directory with saved games");
+		fileChooser.setInitialDirectory( new File(SaveConfig.getGameSavesFolder()) );	//Here's a little something from my SaveConfig to spice things up for you, Matthias
 		File file = fileChooser.showDialog(stage);
 		stage.close();
 
@@ -333,6 +343,11 @@ public class ViewInterface {
 
 			whitePlayerName.setText(QuoridorController.getPlayerName(whitePlayer));
 			blackPlayerName.setText(QuoridorController.getPlayerName(blackPlayer));
+			
+			/*
+			 * Addition made by Edwin Pan for SaveGame button to show on the game_session_page
+			 */
+			btn_saveGame.setVisible(true);
 
 
 			//This tasks runs on a separate thread. It is used to update the GUI every second
@@ -381,6 +396,14 @@ public class ViewInterface {
 	 * Disables and turns the past page invisible.
 	 */
 	private void Goto_Page(Page p) {
+		
+		/*
+		 * The following line has been added by Edwin Pan in order to have the SaveGame button on the ButtonBar
+		 */
+		if( p != Page.GAME_SESSION_PAGE && p != Page.RULES_PAGE ) {
+			btn_saveGame.setVisible(false);
+		}
+		
 		CurrentPage = getCurrentPage();
 		
 //		Restrict page to page movement when the current page is disabled 
@@ -509,6 +532,9 @@ public class ViewInterface {
 		RefreshTimer = new Timer();
 
 		//quoridor =QuoridorApplication.getQuoridor();
+		
+		//Hides the save game button
+		btn_saveGame.setVisible(false);
 
 	}
 
@@ -814,4 +840,117 @@ public class ViewInterface {
 //		return lbl_black_awaitingMove.getText();
 
 	}
+	
+	
+	/**
+	 * Event Listener. When the saveGame event is called, this method begins saving the current game instance into a file through dialog windows.
+	 * Known Bug: TODO: saveGame process does not pause the player timers in game.
+	 * @author Edwin Pan
+	 * @param e
+	 */
+	public void saveGame(Event e) {
+		//Good reference: https://docs.oracle.com/javafx/2/ui_controls/file-chooser.htm
+		//Look for "Saving Files" section header.
+
+		
+		//Prepare the file choosing window
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save Your Game");
+		List<String> extensions = new ArrayList<String>();
+		extensions.add(".dat");
+		extensions.add(SaveConfig.gameSavesDataExtension);
+		ExtensionFilter extensionsFilter = new ExtensionFilter("quoridor data saves files",extensions);
+		fileChooser.setSelectedExtensionFilter( extensionsFilter );
+		fileChooser.setInitialFileName("newgamesave.dat");
+		SaveConfig.createGameSavesFolder();
+		fileChooser.setInitialDirectory( new File(SaveConfig.getGameSavesFolder()) );
+		
+		//Show the file choosing window and await response
+		Stage stage = new Stage();
+		File file = fileChooser.showSaveDialog(stage);
+		
+		//If the user did not choose a file, let them know they did not choose a file and finish.
+		if( file == null ) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Save Game Warning");
+			alert.setHeaderText("Your game was not saved.");
+			alert.setContentText(null);
+			alert.showAndWait();
+			return;
+		}
+		
+		//If the user chose a file, then attempt to save the file.
+		try {
+			SavingStatus saveStatus = QuoridorController.saveGame( file.getAbsolutePath() , QuoridorController.getCurrentGame() );
+			switch (saveStatus) {
+				case ALREADY_EXISTS:	//If it already exists, ask if the player wants to overwrite it.
+					//set up Alert
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+					alert.setTitle("Confirm Overwrite?");
+					alert.setHeaderText("You are about to overwrite your file '" + file.getName() + "'. Proceed?");
+					alert.setContentText(null);
+					//receive from alert
+					Optional<ButtonType> overwriteConfirmation = alert.showAndWait();
+					if( overwriteConfirmation.get() == ButtonType.OK ) {	//If we are good to overwrite
+						
+						//Now attempt to overwrite the file.
+						SavingStatus saveStatus2 = QuoridorController.saveGame( file.getAbsolutePath() , QuoridorController.getCurrentGame(), SavePriority.FORCE_OVERWRITE );
+						switch( saveStatus2 ) {
+							case OVERWRITTEN:
+								return;
+							case FAILED:
+								Alert alert2 = new Alert(AlertType.ERROR);
+								alert2.setTitle("Failed To Overwrite");
+								alert2.setHeaderText("We were unable to overwrite your game onto the pre-existing save. Sorry!");
+								alert2.setContentText(null);
+								alert2.showAndWait();
+								return;
+							default:
+								Alert alert3 = new Alert(AlertType.ERROR);
+								alert3.setTitle("pog");
+								alert3.setHeaderText("How tho");
+								alert3.setContentText("... You have to be looking for these bugs... Like how did you even do that? Tell you what: how about you go skirt along, writing down what steps you took, and mail'em to some rando named Edwin Pan? He won't respond but at least your strange antiques will have finally amazed someone. Thanks!");
+								alert3.showAndWait();
+								return;
+								
+						}
+						
+					}
+					//If the user does not want to overwrite; it is canceled. so we stop all here.
+					return;
+					
+				case FAILED:			//If the save failed, let the player know and stop the saving.
+					Alert alert4 = new Alert(AlertType.ERROR);
+					alert4.setTitle("Failed To Save");
+					alert4.setHeaderText("We were unable to save your game. Sorry!");
+					alert4.setContentText(null);
+					alert4.showAndWait();
+					return;
+					
+				case SAVED:				//If the save succeeded, no need to do anything.
+					return;
+					
+				default:
+					Alert alert5 = new Alert(AlertType.ERROR);
+					alert5.setTitle("wut");
+					alert5.setHeaderText("MonkaS");
+					alert5.setContentText("So uhhhh You just broke the code here! I'm not even sure how you got here.... How about this? Write down or remember how you got here, and go look for some rando named Edwin Pan who worked on this and tell him you done fucked up? Thanks!");
+					alert5.showAndWait();
+					return;
+					
+			}
+			
+		} catch (IOException err) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Save Game Failed Warning");
+			alert.setHeaderText("The Application was unable to save your game into your file system due to some File System input-output error. Sorry!");
+			alert.setContentText(null);
+			alert.showAndWait();
+			return;
+		}
+		
+		
+	}
+	
+	
 }

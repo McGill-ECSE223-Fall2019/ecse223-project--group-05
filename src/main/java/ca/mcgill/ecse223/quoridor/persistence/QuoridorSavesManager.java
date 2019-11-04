@@ -55,7 +55,12 @@ public class QuoridorSavesManager {
 		 */
 		//First, check if the game already exists. If it does, then check if the user wants to overwrite it; inform them that it already exists if not.
 		//If the game does not exist, but the operation is being used with FORCE_OVERWRITE as an argument, someone's not using this method properly.
-		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
+		File file;
+		if( filename.charAt(0) == 'C' || filename.charAt(0) == 'c' ) {
+			file = new File(filename);
+		} else {
+			file = new File( SaveConfig.getGameSaveFilePath(filename) );
+		}
 		if( file.exists() ) {
 			if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
 				return SavingStatus.ALREADY_EXISTS;

@@ -20,6 +20,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import java.util.ArrayList?>
+
 <Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
       <AnchorPane id="Application_Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3d6b99;">
@@ -29,12 +30,12 @@
                <children>
                   <AnchorPane id="Top_Buttons" fx:id="Top_Buttons" focusTraversable="true" prefHeight="45.0" prefWidth="600.0">
                      <children>
-                        <ButtonBar id="Top_buttons" layoutX="103.0" maxHeight="40.0" prefHeight="40.0" prefWidth="451.0">
+                        <ButtonBar id="Top_buttons" layoutX="95.0" maxHeight="40.0" prefHeight="40.0" prefWidth="415.0">
                           <buttons>
-                              <Label prefHeight="17.0" prefWidth="100.0" text="NEW GAME" textFill="#ffd800" />
-                              <Label text="PREVIOUS GAME" textFill="#ffd800" />
-                              <Label text="STATS FOR NERDS" textFill="#ffd800" />
-                              <Label minWidth="62.0" onMouseClicked="#openRulesPage" prefHeight="20.0" prefWidth="100.0" text="RULES" textFill="#ffd800" />
+                              <Label alignment="CENTER" minWidth="60.0" prefHeight="17.0" prefWidth="60.0" text="NEW GAME" textFill="#ffd800" />
+                              <Label alignment="CENTER" text="PREVIOUS GAME" textFill="#ffd800" />
+                              <Label alignment="CENTER" minWidth="67.0" prefHeight="17.0" text="STATISTICS" textFill="#ffd800" />
+                              <Label alignment="CENTER" minWidth="44.0" onMouseClicked="#openRulesPage" prefHeight="17.0" prefWidth="100.0" text="RULES" textFill="#ffd800" />
                           </buttons>
                         </ButtonBar>
                         <ImageView fitHeight="45.0" fitWidth="77.0" layoutX="17.0" layoutY="7.0" onMouseClicked="#Goto_Main_Page" pickOnBounds="true" preserveRatio="true">
@@ -42,6 +43,7 @@
                               <Image url="@logo.png" />
                            </image>
                         </ImageView>
+                        <Button fx:id="btn_saveGame" alignment="CENTER" layoutX="506.0" layoutY="7.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#saveGame" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ffd400; -fx-border-color: #735c2d;" text="Save Game" textFill="#735c2d" />
                      </children>
                   </AnchorPane>
                   <StackPane id="Stacked_Pages" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="356.0" prefWidth="600.0">
@@ -118,28 +120,29 @@
                                     <Image url="@logo.png" />
                                  </image>
                               </ImageView>
+                              <AnchorPane id="Rules_Page" fx:id="Rules_Page" disable="true" prefHeight="200.0" prefWidth="200.0" visible="false">
+                                 <children>
+                                    <Pane layoutX="90.0" layoutY="1.0" prefHeight="322.0" prefWidth="402.0">
+                                       <children>
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2d5072" height="287.0" layoutX="12.0" stroke="#2d5072" strokeType="INSIDE" width="391.0" />
+                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="174.0" layoutX="359.0" layoutY="-42.0" stroke="#2d5072" strokeType="INSIDE" strokeWidth="5.0" width="44.0" />
+                                          <Label layoutX="27.0" layoutY="55.0" prefHeight="194.0" prefWidth="359.0" text="Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. " textAlignment="CENTER" textFill="#997a3d" wrapText="true">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Button layoutX="166.0" layoutY="249.0" mnemonicParsing="false" onMouseClicked="#closeRulesPage" style="-fx-background-color: #cca351;" text="Aight. Got it." textFill="#997a3d" />
+                                          <Label layoutX="174.0" layoutY="38.0" text="RULES" textFill="#cca351">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Rules_Page" fx:id="Rules_Page" disable="true" prefHeight="200.0" prefWidth="200.0" visible="false">
-                           <children>
-                              <Pane layoutX="90.0" layoutY="1.0" prefHeight="322.0" prefWidth="402.0">
-                                 <children>
-                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2d5072" height="287.0" layoutX="12.0" stroke="#2d5072" strokeType="INSIDE" width="391.0" />
-                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="174.0" layoutX="359.0" layoutY="-42.0" stroke="#2d5072" strokeType="INSIDE" strokeWidth="5.0" width="44.0" />
-                                    <Label layoutX="27.0" layoutY="55.0" prefHeight="194.0" prefWidth="359.0" text="Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. " textAlignment="CENTER" textFill="#997a3d" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold" size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <Button layoutX="166.0" layoutY="249.0" mnemonicParsing="false" onMouseClicked="#closeRulesPage" style="-fx-background-color: #cca351;" text="Aight. Got it." textFill="#997a3d" />
-                                    <Label layoutX="174.0" layoutY="38.0" text="RULES" textFill="#cca351">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </Pane>
-                           </children></AnchorPane>
                         <AnchorPane id="Load_Game_Page" fx:id="Load_Game_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0" visible="false">
                            <children>
                               <VBox layoutX="54.0" layoutY="78.0" prefHeight="200.0" prefWidth="421.0">
