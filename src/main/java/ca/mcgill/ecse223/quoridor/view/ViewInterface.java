@@ -91,6 +91,8 @@ public class ViewInterface {
 	@FXML private Label lbl_black_awaitingMove, lbl_white_awaitingMove;
 	@FXML private Label whitePlayerName;
 	@FXML private Label blackPlayerName;
+	private boolean validWallGrab = false; //boolean set to true when a used grabs one of his walls
+
 
 	//Grab and Drag wall variables
 	double wallXPosition, wallYPosition;
@@ -100,7 +102,7 @@ public class ViewInterface {
 	private static final double VERTICALSTEP = 35;
 	private static Rectangle wallSelected;
 	private static Quoridor quoridor;
-	private Player whitePlayer, blackPlayer;
+	private Player whitePlayer, blackPlayer, playerToMove;
 	private Timer timer;
 	private Timer RefreshTimer;
 
@@ -113,25 +115,29 @@ public class ViewInterface {
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
 	public void GrabWall(MouseEvent mouseEvent) {
-		wallSelected = (Rectangle) mouseEvent.getSource();
+		playerToMove = QuoridorController.getPlayerOfCurrentTurn();
+		Rectangle wall = (Rectangle) mouseEvent.getSource();
+		String wallID = wall.getId();
+		String color = QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor());
 
-
-		wallSelected.toFront();
-		boolean grabWallResult;
-		try {
-			grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
-		}
-		catch(Exception e){
+		//check if the player to move is grabbing his walls and not the opponent's
+		if(wallID.contains(color)) {
+			boolean grabWallResult;
+			try {
+				grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+			} catch (Exception e) {
 				throw new java.lang.UnsupportedOperationException("Cannot retrieve the number of walls in stock");
 			}
 
-		if (grabWallResult == true ){
-			gameSessionNotificationLabel.setText("You have more walls in stock!");
+			if (grabWallResult == false) {
+				gameSessionNotificationLabel.setText("You have no more walls in stock...");
+			}
+			else{
+				validWallGrab = true;
+				wallMoveCandidate = wall;
+				wallSelected = wall;
+			}
 		}
-		else{
-			gameSessionNotificationLabel.setText("You have no more walls in stock...");
-		}
-		//System.out.println();
 	}
 
 	/**
@@ -139,19 +145,18 @@ public class ViewInterface {
 	 * This method is called when the user drags the walls
 	 */
 	public void MoveWall(MouseEvent mouseEvent) {
-		//get the rectangle that is grabbed
-		Rectangle wall = (Rectangle) mouseEvent.getSource();
-		//Compute the new wall position and move the wall to that position
+		if(validWallGrab==true) { //check if the user grabbed one of his walls and not the other player's walls
+			Rectangle wall = (Rectangle) mouseEvent.getSource();
 			double offsetX = mouseEvent.getX();
 			double offsetY = mouseEvent.getY();
 			double newTranslateX = wall.getTranslateX() + offsetX;
 			double newTranslateY = wall.getTranslateY() + offsetY;
 			wall.setTranslateX(newTranslateX);
 			wall.setTranslateY(newTranslateY);
-
-    //ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
 			wallMoveCandidate = wall;
 			wallSelected = wall;
+		}
+
 	}
 	/**
 	 * @author David Deng
@@ -200,14 +205,6 @@ public class ViewInterface {
 		catch(Throwable e) {
 			displayIllegalNotification(e.getMessage());
 		}
-
-
-		//wallSelected.setTranslateX(newTranslateX);
-		//wallSelected.setTranslateY(newTranslateY);
-		wallSelected.toFront();
-		//System.out.println("x: " + wallDisplayX());
-		//System.out.println("y: " + wallDisplayY());
-
 	}
 
 	/**
@@ -218,6 +215,7 @@ public class ViewInterface {
 		Boolean dropSuccessful;
 
 		invalidWallPlacement.setText("");
+		System.out.println("yeyye");
 
 		try {
 			dropSuccessful = QuoridorController.releaseWall(quoridor);
@@ -256,18 +254,13 @@ public class ViewInterface {
 	 *This method is executed when the user releases the wall
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
-		//gameSessionNotificationLabel.setText("Invalid Wall Placement");
-
-		//Boolean dropSuccessful;
-
 	}
 
 
     /**
      * @author Matthias Arabian
      * opens a DialogWindow prompting the user to select a directory that contains game files.
-     * Then parse through that directory and upodate the GUI to display the user input
-     */
+git s     */
 	public void addToLoadedGameList() {
 	    //directory chooser dialog window
 		Stage stage = new Stage();
@@ -380,9 +373,9 @@ public class ViewInterface {
 					Platform.runLater(new Runnable() {
 						public void run() {
 							//Update white player's thinking time clock
-							whiteTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
+							whiteTimer.setText(QuoridorController.playerThinkingTime(whitePlayer).substring(3));
 							//Update black's player thinking time clock
-							blackTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getRemainingTime().toString());
+							blackTimer.setText(QuoridorController.playerThinkingTime(blackPlayer).substring(3));
 						}
 					});
 				}

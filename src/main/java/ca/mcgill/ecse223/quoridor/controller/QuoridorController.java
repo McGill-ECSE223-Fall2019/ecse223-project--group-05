@@ -1076,6 +1076,39 @@ public class QuoridorController {
         }
     }
 
+    /**
+     * GUI query method
+     * Returns the color of the current player to move
+     *
+     * @param quoridor quoridor object
+     * @return String color of the current player to move
+     * @author Thomas Philippon
+     */
+    public static String getColorOfPlayerToMove(Quoridor quoridor) {
+        String whitePlayerName = quoridor.getCurrentGame().getWhitePlayer().getUser().getName();
+        Player playerToMove = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
+        String color;
+
+        if(playerToMove.getUser().getName().equals(whitePlayerName)) {
+            color = "white";
+        }
+        else {
+            color = "black";
+        }
+        return color;
+    }
+    /**
+     * GUI query method
+     * Returns Thinking of a player
+     *
+     * @param player player
+     * @return String thinking time of the player
+     * @author Thomas Philippon
+     */
+    public static String playerThinkingTime(Player player) {
+        return player.getRemainingTime().toString();
+    }
+
 
 
 }
