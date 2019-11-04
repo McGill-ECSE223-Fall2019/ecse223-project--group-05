@@ -44,10 +44,10 @@ public class CucumberStepDefinitions {
 	int[] myCoordinate = {0,0}; //Used to store the row and column input from the given scenario
 	String myDirection = ""; //Used to store the direction input from the given scenario
 	boolean positionIsValid = true; // Used to check if the position was valid or not, true by default for detecting if the gamePosition exists/changed
-	Boolean handIsEmpty = false; //used to see if wall drop was successfull or not
-	Boolean userNameSet = true; //used to see if user name was set correctly
+	boolean handIsEmpty = false; //used to see if wall drop was successfull or not
+	boolean userNameSet = true; //used to see if user name was set correctly
 	//Variable for GrabWall test
-	Boolean handHasWall = false;
+	boolean handHasWall = false;
 
 
 	//Instance Variables for SavePosition tests
@@ -435,7 +435,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("A wall move candidate exists with {string} at position \\({int}, {int})")
 	public void wallMoveCandidateExists(String dir, int row, int column) throws Throwable{
-		QuoridorController.getWallMove(dir, row, column);
+		QuoridorController.GetWallMoveCandidate(dir, row, column);
 		
 	}
 	/**we will check the test cases provided to make sure it is true that they are not at the edge of the board
@@ -455,7 +455,11 @@ public class CucumberStepDefinitions {
 	 */
 	@When("I try to move the wall {string}")
 	public void tryToMoveWall(String side) throws Throwable{
-		QuoridorController.moveWall(side);
+	    try{
+		QuoridorController.moveWall(side);}
+	    catch(Throwable e){
+
+        }
 	}
 	/**communicates to View to verify that the wall is indeed moved to a new position
 	 * @author David
@@ -1394,7 +1398,7 @@ public class CucumberStepDefinitions {
 		myCoordinate[0] = 0;
 		myCoordinate[1] = 0;
 		myDirection = "";
-		positionValidated = true;
+		//positionValidated = true;
 		handIsEmpty = false;
 		handHasWall = false;
 		userNameSet = true;

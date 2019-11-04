@@ -22,6 +22,7 @@ import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
 import ca.mcgill.ecse223.quoridor.timer.PlayerTimer;
+import ca.mcgill.ecse223.quoridor.view.ViewInterface;
 import javafx.scene.shape.Rectangle;
 
 public class QuoridorController {
@@ -111,8 +112,27 @@ public class QuoridorController {
      * @author David
      */
     public static boolean wallIsAtEdge(String side) throws Throwable {
-        throw new java.lang.UnsupportedOperationException();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        int col = quoridor.getCurrentGame().getWallMoveCandidate().getTargetTile().getColumn();
+        int row = quoridor.getCurrentGame().getWallMoveCandidate().getTargetTile().getRow();
+        switch(side) {
+            case "left":
+                if(col==1) return true;
+                return false;
+            case "right":
+                if(col==8) return true;
+                return false;
+            case "up":
+                if(row==1) return true;
+                return false;
+            case "down":
+                if(row==8) return true;
+                return false;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
+
 
     /**
      * moves the wall one tile toward the direction specified. An illegal move notification will be shown
@@ -122,8 +142,38 @@ public class QuoridorController {
      * @throws Throwable
      * @author David
      */
-    public static void moveWall(String side) throws Throwable {
-        throw new java.lang.UnsupportedOperationException();
+    public static boolean moveWall(String side) throws Throwable {
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        WallMove current = quoridor.getCurrentGame().getWallMoveCandidate();
+        int col = current.getTargetTile().getColumn();
+        int row = current.getTargetTile().getRow();
+        if(wallIsAtEdge(side)) {
+            ViewInterface view = QuoridorApplication.getViewInterface();
+            throw new IllegalArgumentException("Cannot move the wall in the specified direction. The wall is at the edge. ");
+
+        }//the method automatically throws illegalArgumentException if invalidInput;
+        //to get a tile at (row, col), we use (col - 1) * 9 + row - 1
+        switch(side) {
+            case "left":
+                col--;
+                current.setTargetTile(quoridor.getBoard().getTile((row - 1 ) * 9 + col - 1));
+                break;
+            case "right":
+                col++;
+                current.setTargetTile(quoridor.getBoard().getTile((row - 1 ) * 9 + col - 1));
+                break;
+            case "up":
+                row--;
+                current.setTargetTile(quoridor.getBoard().getTile((row - 1) * 9 + col - 1));
+                break;
+            case "down":
+                row++;
+                current.setTargetTile(quoridor.getBoard().getTile((row - 1) * 9 + col - 1));
+                break;
+            default:
+                throw new IllegalArgumentException("move wall illegal argument");
+        }
+        return validatePosition(current.getTargetTile().getRow(), current.getTargetTile().getColumn(),current.getWallDirection().toString());
     }
 
     /**
@@ -136,7 +186,9 @@ public class QuoridorController {
      * @author David
      */
     public static void setThinkingTime(int min, int sec) {
-        throw new java.lang.UnsupportedOperationException();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        quoridor.getCurrentGame().getBlackPlayer().setRemainingTime(new Time((min*60+sec)*1000));
+        quoridor.getCurrentGame().getWhitePlayer().setRemainingTime(new Time((min*60+sec)*1000));
     }
 
     /**
@@ -145,6 +197,7 @@ public class QuoridorController {
      * However, being able to set time for individual players can to increase the difficulty for a more experienced player without affecting the other opponent.
      * Each player is given a fixed time limit for a game. This method changes the remaining thinking
      * time of each player
+     * index = 0->white; index = 1->black
      *
      * @param min         the minute part of the time
      * @param sec         the second part of the time
@@ -153,7 +206,16 @@ public class QuoridorController {
      * @author David
      */
     public static void setThinkingTime(int min, int sec, int playerIndex) {
-        throw new java.lang.UnsupportedOperationException();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        if(playerIndex==0) {
+            quoridor.getCurrentGame().getWhitePlayer().setRemainingTime(new Time((min*60+sec)*1000));
+        }
+        else if(playerIndex==1) {
+            quoridor.getCurrentGame().getBlackPlayer().setRemainingTime(new Time((min*60+sec)*1000));
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
@@ -266,7 +328,8 @@ public class QuoridorController {
      * @author David
      */
     public static boolean isIllegalMoveNotificationDisplayed() {
-        throw new java.lang.UnsupportedOperationException();
+        ViewInterface view = QuoridorApplication.getViewInterface();
+        return view.isIllegalNotificationDisplayed();
     }
 
     /**
@@ -277,7 +340,9 @@ public class QuoridorController {
      * @author David
      */
     public static boolean thisWallIsAtPosition(int row, int column) {
-        throw new java.lang.UnsupportedOperationException();
+        ViewInterface view = QuoridorApplication.getViewInterface();
+
+        return view.isWallDisplayedAt(row, column);
     }
 
     /**
@@ -287,7 +352,7 @@ public class QuoridorController {
      * object is created at initial position (Tile at (0, 0)) and the method returns 1. If the player has no more walls
      * in stock, no wall move candidate is created and the method returns 0.
      *
-     * @param Quoridor - Quoridor application
+     * @param quoridor - Quoridor application
      * @return Boolean - Returns 1 if a wall candidate object was created and 0 if not
      * @author Thomas Philippon
      */
