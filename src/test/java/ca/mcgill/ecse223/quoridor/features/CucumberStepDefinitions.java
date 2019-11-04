@@ -1336,6 +1336,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("I initiate to load a saved game {string}")
 	public void iInitiateToLoadASavedGame(String fileName) {
+		myPlayers = createUsersAndPlayers("user1", "user2");
 		CucumberTest_LoadPosition_TestFileWriters.createGameSaveTestFile(fileName);
 		try {
 			QuoridorController.loadSavedGame(fileName, this.myPlayers.get(0), this.myPlayers.get(1) );
