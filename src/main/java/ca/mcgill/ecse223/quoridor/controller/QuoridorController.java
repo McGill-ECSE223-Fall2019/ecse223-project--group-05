@@ -1,14 +1,22 @@
 package ca.mcgill.ecse223.quoridor.controller;
 
+import java.awt.*;
+import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
+import javafx.scene.shape.Rectangle;
+
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
+import ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager;
+import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
+import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -22,7 +30,10 @@ import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
 import ca.mcgill.ecse223.quoridor.timer.PlayerTimer;
+
+import ca.mcgill.ecse223.quoridor.view.ViewInterface;
 import javafx.scene.shape.Rectangle;
+
 
 public class QuoridorController {
 
@@ -111,8 +122,27 @@ public class QuoridorController {
      * @author David
      */
     public static boolean wallIsAtEdge(String side) throws Throwable {
-        throw new java.lang.UnsupportedOperationException();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        int col = quoridor.getCurrentGame().getWallMoveCandidate().getTargetTile().getColumn();
+        int row = quoridor.getCurrentGame().getWallMoveCandidate().getTargetTile().getRow();
+        switch(side) {
+            case "left":
+                if(col==1) return true;
+                return false;
+            case "right":
+                if(col==8) return true;
+                return false;
+            case "up":
+                if(row==1) return true;
+                return false;
+            case "down":
+                if(row==8) return true;
+                return false;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
+
 
     /**
      * moves the wall one tile toward the direction specified. An illegal move notification will be shown
@@ -122,8 +152,38 @@ public class QuoridorController {
      * @throws Throwable
      * @author David
      */
-    public static void moveWall(String side) throws Throwable {
-        throw new java.lang.UnsupportedOperationException();
+    public static boolean moveWall(String side) throws Throwable {
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        WallMove current = quoridor.getCurrentGame().getWallMoveCandidate();
+        int col = current.getTargetTile().getColumn();
+        int row = current.getTargetTile().getRow();
+        if(wallIsAtEdge(side)) {
+            ViewInterface view = QuoridorApplication.getViewInterface();
+            throw new IllegalArgumentException("Cannot move the wall in the specified direction. The wall is at the edge. ");
+
+        }//the method automatically throws illegalArgumentException if invalidInput;
+        //to get a tile at (row, col), we use (col - 1) * 9 + row - 1
+        switch(side) {
+            case "left":
+                col--;
+                current.setTargetTile(quoridor.getBoard().getTile((row - 1 ) * 9 + col - 1));
+                break;
+            case "right":
+                col++;
+                current.setTargetTile(quoridor.getBoard().getTile((row - 1 ) * 9 + col - 1));
+                break;
+            case "up":
+                row--;
+                current.setTargetTile(quoridor.getBoard().getTile((row - 1) * 9 + col - 1));
+                break;
+            case "down":
+                row++;
+                current.setTargetTile(quoridor.getBoard().getTile((row - 1) * 9 + col - 1));
+                break;
+            default:
+                throw new IllegalArgumentException("move wall illegal argument");
+        }
+        return validatePosition(current.getTargetTile().getRow(), current.getTargetTile().getColumn(),current.getWallDirection().toString());
     }
 
     /**
@@ -136,7 +196,9 @@ public class QuoridorController {
      * @author David
      */
     public static void setThinkingTime(int min, int sec) {
-        throw new java.lang.UnsupportedOperationException();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        quoridor.getCurrentGame().getBlackPlayer().setRemainingTime(new Time((min*60+sec)*1000));
+        quoridor.getCurrentGame().getWhitePlayer().setRemainingTime(new Time((min*60+sec)*1000));
     }
 
     /**
@@ -145,6 +207,7 @@ public class QuoridorController {
      * However, being able to set time for individual players can to increase the difficulty for a more experienced player without affecting the other opponent.
      * Each player is given a fixed time limit for a game. This method changes the remaining thinking
      * time of each player
+     * index = 0->white; index = 1->black
      *
      * @param min         the minute part of the time
      * @param sec         the second part of the time
@@ -153,7 +216,16 @@ public class QuoridorController {
      * @author David
      */
     public static void setThinkingTime(int min, int sec, int playerIndex) {
-        throw new java.lang.UnsupportedOperationException();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        if(playerIndex==0) {
+            quoridor.getCurrentGame().getWhitePlayer().setRemainingTime(new Time((min*60+sec)*1000));
+        }
+        else if(playerIndex==1) {
+            quoridor.getCurrentGame().getBlackPlayer().setRemainingTime(new Time((min*60+sec)*1000));
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
@@ -266,7 +338,10 @@ public class QuoridorController {
      * @author David
      */
     public static boolean isIllegalMoveNotificationDisplayed() {
-        throw new java.lang.UnsupportedOperationException();
+
+        ViewInterface view = QuoridorApplication.getViewInterface();
+        return view.isIllegalNotificationDisplayed;
+
     }
 
     /**
@@ -277,7 +352,11 @@ public class QuoridorController {
      * @author David
      */
     public static boolean thisWallIsAtPosition(int row, int column) {
-        throw new java.lang.UnsupportedOperationException();
+
+        ViewInterface view = QuoridorApplication.getViewInterface();
+
+
+        return view.isWallDisplayedAt(row, column);
     }
 
     /**
@@ -287,7 +366,7 @@ public class QuoridorController {
      * object is created at initial position (Tile at (0, 0)) and the method returns 1. If the player has no more walls
      * in stock, no wall move candidate is created and the method returns 0.
      *
-     * @param Quoridor - Quoridor application
+     * @param quoridor - Quoridor application
      * @return Boolean - Returns 1 if a wall candidate object was created and 0 if not
      * @author Thomas Philippon
      */
@@ -430,37 +509,6 @@ public class QuoridorController {
 
             throw new IllegalArgumentException("Unsupported color was provided");
         }
-    }
-
-    /**
-     * method to insure no nullpointerExceptions occur when getting items from the model
-     *
-     * @param quoridor game object
-     * @author Alex Masciotra
-     */
-    public static void initializeQuoridor(Quoridor quoridor) {
-        //part of method is taken from given code in the stepDefinitions
-
-
-        int thinkingTime = 10; //placeholder
-        Player player1 = new Player(null, null, 9, Direction.Horizontal);
-        Player player2 = new Player(null, null, 1, Direction.Horizontal);
-
-        Player[] players = { player1, player2 };
-
-        // Create all walls. Walls with lower ID belong to player1,
-        // while the second half belongs to player 2
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 10; j++) {
-                new Wall(i * 10 + j, players[i]);
-            }
-        }
-
-        new Game(GameStatus.Initializing, Game.MoveMode.PlayerMove, quoridor);
-
-        quoridor.getCurrentGame().setWhitePlayer(player1);
-        quoridor.getCurrentGame().setBlackPlayer(player2);
-
     }
 
     /***
@@ -705,6 +753,8 @@ public class QuoridorController {
 
     //Getter for gamestate
 
+
+
     /**
      * Ensures that a wall move candidate exists with parameters dir,row,col
      * Creates one if one does not exist.
@@ -715,7 +765,8 @@ public class QuoridorController {
      */
     public static void GetWallMoveCandidate(String dir, int row, int col) throws UnsupportedOperationException {
         WallMove wallMove = QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate();
-        
+
+        //if no wall move candidate exists
         if (wallMove == null) {
         	//get the direction of the wall
         	Direction d;
@@ -778,7 +829,11 @@ public class QuoridorController {
      * Rotates the GUI wallMoveCandidate to the desired direction.
      */
     public static void GUI_flipWallCandidate(String newDir) throws UnsupportedOperationException{
-    	Rectangle r = QuoridorApplication.getViewInterface().getWallMoveCandidate();
+    	//Cucumber Test Runner does not initialize the GUI during test. Therefore, the test would not pass even though it is rigorous
+       if (QuoridorApplication.getViewInterface() == null){
+           return;
+       }
+        Rectangle r = QuoridorApplication.getViewInterface().getWallMoveCandidate();
     	if (r == null)
     		throw new UnsupportedOperationException("No GUI wallCandidate entity exists");
     	
@@ -804,40 +859,55 @@ public class QuoridorController {
     	
     }
 
-    /**
-     * Verifies that the load position is a valid position
-     *
-     * @return true: position is valid. false otherwise
-     * @throws UnsupportedOperationException
-     * @author Matthias Arabian
-     */
-    public static Boolean CheckThatPositionIsValid() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Position is valid");
-    }
+    /*
+	   * This method is outside the scope of what load position tests are able to recognize. While we could refer to the work
+	   * of the ValidatePosition developer, we can also use my loading system which throws InvalidPositionException's and infer
+	   * that if no exception is thrown, then the position is probably valid. Not to say that this isn't something we want: in
+	   * the controller, it is definitely good to have a means to ensure that the position is valid when creating a new one in-
+	   * game. But for our intents and purposes, the only time we need to check if the position is valid is as we are parsing
+	   * in text data from save files, as we can avoid a lot of arrayIndexOutOfBounds errors this way. And this is handled by
+	   * my QuoridorSavesManager class.
+	   * -Edwin
+	   */
+  	///**
+  	// * Verifies that the load position is a valid position
+  	// * @author Matthias Arabian
+  	// * @return true: position is valid. false otherwise
+  	// * @throws UnsupportedOperationException
+  	// */
+  	//public static Boolean CheckThatPositionIsValid() throws UnsupportedOperationException{
+  	//	throw new UnsupportedOperationException("Position is valid");
+  	//}
 
-    /**
-     * Loads a saved game by instantiating a new game and populating it with file data
-     *
-     * @param fileName
-     * @throws UnsupportedOperationException
-     * @author Matthias Arabian
-     */
-    public static void loadSavedGame(String fileName) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Game could not be loaded");
+	  /**
+	   * Loads a saved game by instantiating a new game and populating it with file data
+	   * @author Matthias Arabian (Interface Author)
+	   * @author Edwin Pan (Method Author)
+	   * @param fileName
+	   * @throws FileNotFoundException, IOException, InvalidPositionException
+	   */
+	  public static void loadSavedGame(String fileName, Player firstPlayer, Player secondPlayer) throws IOException, FileNotFoundException, InvalidPositionException {
+		  Game game = QuoridorSavesManager.loadGamePawnsAndWalls(fileName, QuoridorApplication.getQuoridor(), QuoridorApplication.getQuoridor().getCurrentGame(), firstPlayer, secondPlayer);
+		  QuoridorApplication.getQuoridor().setCurrentGame(game);
+	  }
 
-    }
-
-
-    /**
-     * Propagates a sort of "Invalid Position to Load" error to wherever it is necessary
-     *
-     * @return whether the error has been successfully propagated
-     * @throws UnsupportedOperationException
-     * @author Matthias Arabian
-     */
-    public static Boolean sendLoadError() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("sendLoadError");
-    }
+	
+	  /*
+	   * This method requires the controller to be stateful - namely, for previous errors to be remembered. This is non-ideal.
+	   * This method will instead be replaced by the method above, 
+     *, being a method which throws IOException or
+	   * FileNotFoundException which can be.
+	   * -Edwin
+	   */
+	  ///**
+	  // * Propagates a sort of "Invalid Position to Load" error to wherever it is necessary
+	  // * @author Matthias Arabian
+	  // * @return whether the error has been successfully propagated
+	  // * @throws UnsupportedOperationException
+	  // */
+	  //public static Boolean sendLoadError() throws UnsupportedOperationException{
+	  //	throw new UnsupportedOperationException("sendLoadError");
+	  //}
 
     /**
      * Simple query method for obtaining the ca.mcgill.ecse223.quoridor.application's current game instance.
@@ -849,44 +919,35 @@ public class QuoridorController {
         return QuoridorApplication.getQuoridor().getCurrentGame();
     }
 
-    /**
-     * NOT IMPLEMENTED.
-     * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
-     * It returns true when serialization of the game is successful and false when unsuccessful.
-     * This method is overwrite-averse; it does not overwrite files that already exist.
-     *
-     * @param filename (no extension will be added)
-     * @param game
-     * @return savingStatus enum
-     * @throws IOException
-     * @author Edwin Pan
-     */
-    public static SavingStatus saveGame(String filename, Game game) throws IOException {
-        if (SaveConfig.createFileSavesFolder() == false) {
-            return SavingStatus.failed;
-        }
-        throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game) not yet implemented.");
-    }
-
-    /**
-     * NOT IMPLEMENTED.
-     * This is the overwrite-capable version of saveGame.
-     * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
-     * It returns true when serialization of the game is successful and false when unsuccessful.
-     *
-     * @param filename  (no extension will be added)
-     * @param game
-     * @param overwrite
-     * @return savingStatus enum
-     * @throws IOException
-     * @author Edwin Pan
-     */
-    public static SavingStatus saveGame(String filename, Game game, boolean overwrite) throws IOException {
-        if (SaveConfig.createFileSavesFolder() == false) {
-            return SavingStatus.failed;
-        }
-        throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game,overwrite) not yet implemented.");
-    }
+    	
+	  /**
+	   * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
+	   * It returns true when serialization of the game is successful and false when unsuccessful.
+	   * This method is overwrite-averse; it does not overwrite files that already exist.
+	   * @author Edwin Pan
+	   * @param filename (no extension will be added)
+	   * @param game
+	   * @return savingStatus enum
+	   * @throws IOException
+	   */
+	  public static SavingStatus saveGame(String filename, Game game) throws IOException{
+		  return QuoridorSavesManager.saveGamePawnsAndWalls(game, filename, SavePriority.DEFAULT);
+	  }
+    
+	  /**
+	   * This is the overwrite-capable version of saveGame.
+	   * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
+	   * It returns true when serialization of the game is successful and false when unsuccessful.
+	   * @author Edwin Pan
+	   * @param filename (no extension will be added)
+	   * @param game
+	   * @param overwrite
+	   * @return savingStatus enum
+	   * @throws IOException
+	   */
+	  public static SavingStatus saveGame(String filename, Game game, SavePriority save_enforcement_type) throws IOException{
+	  	return QuoridorSavesManager.saveGamePawnsAndWalls(game, filename, save_enforcement_type);
+	  }
 
     /**
      * Simple query method for obtaining the player that is currently black.
@@ -954,17 +1015,20 @@ public class QuoridorController {
      *
      * @param player
      * @return
-     * @author Matthias Arabian
+     * @author Edwin Pan
+     * @author Matthias Arabian made modifications for deliverable 3
      */
     public static boolean completePlayerTurn(Player player) {
-    	Quoridor quoridor = QuoridorApplication.getQuoridor();
-    	Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
-    	if (currentPlayer.equals(player)) {
-    		quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(currentPlayer.getNextPlayer());
-    		return true;
-    	}
-    	else
-    		return false;
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        if (player.equals(quoridor.getCurrentGame().getBlackPlayer())){
+            Player tmp = quoridor.getCurrentGame().getWhitePlayer();
+            return quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(tmp);
+        }
+        else {
+            Player tmp = quoridor.getCurrentGame().getBlackPlayer();
+            return quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(tmp);
+        }
+
     }
 
     /**
@@ -993,18 +1057,6 @@ public class QuoridorController {
         throw new UnsupportedOperationException("QuoridorController.playerTimerStop(player) is not currently implemented!");
     }
 
-    /**
-     * PENDING IMPLEMENTATION
-     * GUI query method.
-     * Returns whether or not the provided player's clock (from their turn) is running.
-     *
-     * @param player
-     * @return player timer is running boolean
-     * @author Edwin Pan
-     */
-    public static boolean getPlayerTimerRunning(Player player) {
-        throw new UnsupportedOperationException("QuoridorController.playerTimerStop(player) is not currently implemented!");
-    }
 
     /**
      * GUI query method
@@ -1023,6 +1075,42 @@ public class QuoridorController {
             throw new java.lang.UnsupportedOperationException("Cannot get the player's name");
         }
     }
+
+    /**
+     * GUI query method
+     * Returns the color of the current player to move
+     *
+     * @param quoridor quoridor object
+     * @return String color of the current player to move
+     * @author Thomas Philippon
+     */
+    public static String getColorOfPlayerToMove(Quoridor quoridor) {
+        String whitePlayerName = quoridor.getCurrentGame().getWhitePlayer().getUser().getName();
+        Player playerToMove = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
+        String color;
+
+        if(playerToMove.getUser().getName().equals(whitePlayerName)) {
+            color = "white";
+        }
+        else {
+            color = "black";
+        }
+        return color;
+    }
+    /**
+     * GUI query method
+     * Returns Thinking of a player
+     *
+     * @param player player
+     * @return String thinking time of the player
+     * @author Thomas Philippon
+     */
+    public static String playerThinkingTime(Player player) {
+        return player.getRemainingTime().toString();
+    }
+
+
+
 }
 
 

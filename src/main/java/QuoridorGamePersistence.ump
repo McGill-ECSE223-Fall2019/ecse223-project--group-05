@@ -1,0 +1,74 @@
+namespace ca.mcgill.ecse223.quoridor.model;  
+
+external interface Serializable {}
+
+class Quoridor {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class Board {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class Tile {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class User {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class Wall {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class Player {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class Game {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class GamePosition {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class Destination {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class Move {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class StepMove {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class JumpMove {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class WallMove {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}
+class PlayerPosition {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 0L;
+}

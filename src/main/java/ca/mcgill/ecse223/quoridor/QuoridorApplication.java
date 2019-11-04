@@ -1,7 +1,10 @@
 package ca.mcgill.ecse223.quoridor;
 
 
+import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
+import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
+import ca.mcgill.ecse223.quoridor.persistence.QuoridorSettingsManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,19 +12,27 @@ import java.net.URL;
 
 import ca.mcgill.ecse223.quoridor.view.ViewInterface;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.transform.Scale;
+import javafx.stage.WindowEvent;
 
 
 public class QuoridorApplication extends Application{
 
+
 	private static Quoridor quoridor;
-	private static ViewInterface c;
-	
+
+
+
+	private static ViewInterface c = null;
+
 	//scaling variables (for resizing of window)
 	private double initialH, initialW;
 
@@ -57,13 +68,23 @@ public class QuoridorApplication extends Application{
 	        	scale.setPivotY(0);
 	        	scene.getRoot().getTransforms().setAll(scale);
 	       });
-	
+			scene.addEventHandler(KeyEvent.KEY_PRESSED, (keyEvent) -> {
+				ViewInterface.MoveWall(keyEvent);
+			});
 	        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
 	       	Scale scale = new Scale(scene.getWidth()/initialW, newVal.doubleValue()/initialH);
 	       	scale.setPivotX(0);
 	       	scale.setPivotY(0);
 	       	scene.getRoot().getTransforms().setAll(scale);
 	       });
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				public void handle(WindowEvent we) {
+					primaryStage.close();
+					Platform.exit();
+					System.exit(0);
+				}
+			});
+
 
 		} catch (IOException e) {e.printStackTrace();}
 	}
@@ -71,11 +92,21 @@ public class QuoridorApplication extends Application{
 
 	public static Quoridor getQuoridor() {
 		if (quoridor == null) {
-			quoridor = new Quoridor();
+			
+			//Safety behaviour: Ensures that save folders exist.
+			SaveConfig.setupSaveDirectories();
+			//Special behaviour: Resume previous game or user data.
+			if( QuoridorSettingsManager.checkIfToResumePreviousGame() ) {
+				quoridor = QuoridorRuntimeModelPersistence.quickload();		//If settings in appdata read that we're supposed to immediately jump into the previous game, then jump in.
+			} else {
+				quoridor = QuoridorRuntimeModelPersistence.loadUserData();	//If settings in appdata read that we are not supposed to immediately jump into the previous game, then just enter the normal game with users loaded.
+			}
+
 		}
  		return quoridor;
 	}
 	
+
 	public static ViewInterface getViewInterface() {
 
 		return c;
@@ -84,6 +115,7 @@ public class QuoridorApplication extends Application{
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 
 
 

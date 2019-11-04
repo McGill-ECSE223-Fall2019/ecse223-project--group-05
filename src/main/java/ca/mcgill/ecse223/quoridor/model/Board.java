@@ -2,10 +2,12 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.quoridor.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 15 "../../../../../QuoridorGame.ump"
-public class Board
+// line 10 "../../../../../QuoridorGamePersistence.ump"
+// line 16 "../../../../../QuoridorGame.ump"
+public class Board implements Serializable
 {
 
   //------------------------
@@ -185,5 +187,13 @@ public class Board
       existingQuoridor.setBoard(null);
     }
   }
+  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 13 "../../../../../QuoridorGamePersistence.ump"
+  private static final long serialVersionUID = 0L ;
 
+  
 }
