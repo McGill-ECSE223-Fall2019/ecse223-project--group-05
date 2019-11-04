@@ -673,7 +673,7 @@ public class ViewInterface {
 	public void switchPlayer(Event e) {
 		Button b = ((Button)e.getSource());
 		if (b.getId().equals(btn_whitePlayerTurn.getId())) {
-			if (btn_whitePlayerTurn.getText().equals("END TURN")) {
+			if (btn_whitePlayerTurn.getText().equals("END TURN")) { //starts black player turn
 				btn_blackPlayerTurn.setText("END TURN");
 				lbl_black_awaitingMove.setText("");
                 QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
@@ -683,10 +683,13 @@ public class ViewInterface {
 				lbl_white_awaitingMove.setText("AWAITING MOVE");
                 QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
                         ,timer);
-				
+
+                //update the model
+                Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
+                QuoridorController.completePlayerTurn(whitePlayer); //If it's WhitePlayer's turn, end it. If not, nothing happens.
 			}
 		}
-		else {
+		else { //starts white player turn
 			if (btn_blackPlayerTurn.getText().equals("END TURN")) {
 				btn_whitePlayerTurn.setText("END TURN");
 				lbl_white_awaitingMove.setText("");
@@ -697,6 +700,10 @@ public class ViewInterface {
 				lbl_black_awaitingMove.setText("AWAITING MOVE");
                 QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
                         ,timer);
+
+				//update the model
+                Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
+                QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
 			}
 		}
 	}
@@ -795,10 +802,9 @@ public class ViewInterface {
 	 * this is used to ensure that the player switching has been announced to the players
 	 */
 	public String getWhitePlayerStatus(){
-		return null;
-//        if (lbl_white_awaitingMove == null || lbl_white_awaitingMove.equals(""))
-//            return null;
-//        return lbl_white_awaitingMove.getText();
+        if (lbl_white_awaitingMove == null || lbl_white_awaitingMove.equals(""))
+            return null;
+        return lbl_white_awaitingMove.getText();
 
 	}
 
@@ -808,10 +814,9 @@ public class ViewInterface {
 	 * this is used to ensure that the player switching has been announced to the players
 	 */
 	public String getBlackPlayerStatus(){
-		return null;
-//	    if (lbl_black_awaitingMove == null || lbl_black_awaitingMove.equals(""))
-//	        return null;
-//		return lbl_black_awaitingMove.getText();
+	    if (lbl_black_awaitingMove == null || lbl_black_awaitingMove.equals(""))
+	        return null;
+		return lbl_black_awaitingMove.getText();
 
 	}
 }

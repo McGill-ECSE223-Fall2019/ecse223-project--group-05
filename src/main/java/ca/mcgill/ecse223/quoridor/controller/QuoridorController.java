@@ -1052,11 +1052,11 @@ public class QuoridorController {
     public static boolean completePlayerTurn(Player player) {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         if (player.equals(quoridor.getCurrentGame().getBlackPlayer())){
-            Player tmp = quoridor.getCurrentGame().getBlackPlayer();
+            Player tmp = quoridor.getCurrentGame().getWhitePlayer();
             return quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(tmp);
         }
         else {
-            Player tmp = quoridor.getCurrentGame().getWhitePlayer();
+            Player tmp = quoridor.getCurrentGame().getBlackPlayer();
             return quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(tmp);
         }
 
