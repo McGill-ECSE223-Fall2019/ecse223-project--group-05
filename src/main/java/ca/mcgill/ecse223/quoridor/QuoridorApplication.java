@@ -101,9 +101,7 @@ public class QuoridorApplication extends Application{
 			} else {
 				quoridor = QuoridorRuntimeModelPersistence.loadUserData();	//If settings in appdata read that we are not supposed to immediately jump into the previous game, then just enter the normal game with users loaded.
 			}
-		  
-			//quoridor = new Quoridor();
-			
+
 		}
  		return quoridor;
 	}

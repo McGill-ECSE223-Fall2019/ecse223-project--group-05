@@ -107,7 +107,6 @@ public class ViewInterface {
 	private Player whitePlayer, blackPlayer;
 	private Timer timer;
 	private Timer RefreshTimer;
-	private String timerVal;
 
   //Rotate wall variables
 	private Rectangle wallMoveCandidate;
