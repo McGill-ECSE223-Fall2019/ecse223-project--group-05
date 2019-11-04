@@ -1435,7 +1435,7 @@ public class CucumberStepDefinitions {
 		myCoordinate[0] = 0;
 		myCoordinate[1] = 0;
 		myDirection = "";
-		positionValidated = true;
+		positionIsValid = true;
 		handIsEmpty = false;
 		handHasWall = false;
 		userNameSet = true;
