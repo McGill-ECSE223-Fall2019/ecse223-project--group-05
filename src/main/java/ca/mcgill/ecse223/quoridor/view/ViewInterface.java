@@ -222,7 +222,8 @@ public class ViewInterface {
 	public void DropWall(MouseEvent mouseEvent) {
 		//gameSessionNotificationLabel.setText("Invalid Wall Placement");
 
-		Boolean dropSuccessful
+		Boolean dropSuccessful;
+
 	}
 
     /**
@@ -508,7 +509,7 @@ public class ViewInterface {
 		timer = new Timer();
 		RefreshTimer = new Timer();
 
-		//quoridor =QuoridorApplication.getQuoridor();
+		quoridor =QuoridorApplication.getQuoridor();
 
 	}
 
