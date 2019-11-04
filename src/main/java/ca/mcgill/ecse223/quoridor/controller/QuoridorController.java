@@ -880,15 +880,35 @@ public class QuoridorController {
   	//}
 
 	  /**
-	   * Loads a saved game by instantiating a new game and populating it with file data
+	   * Loads a saved game by instantiating a new game and populating it with file data.
+	   * If no exceptions are thrown, data should be loaded straight into the current game.
+	   * If exceptions are thrown, progress to loading the game is also disposed of.
 	   * @author Matthias Arabian (Interface Author)
 	   * @author Edwin Pan (Method Author)
 	   * @param fileName
 	   * @throws FileNotFoundException, IOException, InvalidPositionException
 	   */
 	  public static void loadSavedGame(String fileName, Player firstPlayer, Player secondPlayer) throws IOException, FileNotFoundException, InvalidPositionException {
-		  Game game = QuoridorSavesManager.loadGamePawnsAndWalls(fileName, QuoridorApplication.getQuoridor(), QuoridorApplication.getQuoridor().getCurrentGame(), firstPlayer, secondPlayer);
-		  QuoridorApplication.getQuoridor().setCurrentGame(game);
+		  try {
+			  Game game = QuoridorSavesManager.loadGamePawnsAndWalls(fileName, QuoridorApplication.getQuoridor(), firstPlayer, secondPlayer);
+			  QuoridorApplication.getQuoridor().setCurrentGame(game);
+		  } catch (FileNotFoundException e) {
+			  QuoridorApplication.getQuoridor().setCurrentGame(null);
+			  throw e;
+		  } catch (IOException e) {
+			  QuoridorApplication.getQuoridor().setCurrentGame(null);
+			  throw e;
+		  } catch (InvalidPositionException e) {
+			  QuoridorApplication.getQuoridor().getCurrentGame().delete();
+			  QuoridorApplication.getQuoridor().setCurrentGame(null);
+			  throw e;
+		  } catch (Exception e) {
+			  if( QuoridorApplication.getQuoridor().getCurrentGame() != null ) {
+				  QuoridorApplication.getQuoridor().getCurrentGame().delete();
+				  QuoridorApplication.getQuoridor().setCurrentGame(null);
+			  }
+			  throw e;
+		  }
 	  }
 
 	

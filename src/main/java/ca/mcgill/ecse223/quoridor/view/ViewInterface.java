@@ -13,6 +13,7 @@ import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.*;
 import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
+import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +21,18 @@ import java.util.Optional;
 import java.util.Timer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.TimerTask;
 
+import ca.mcgill.ecse223.quoridor.model.Destination;
+import ca.mcgill.ecse223.quoridor.model.Direction;
+import ca.mcgill.ecse223.quoridor.model.Game;
 import ca.mcgill.ecse223.quoridor.model.Player;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
+import ca.mcgill.ecse223.quoridor.model.User;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -895,7 +902,7 @@ public class ViewInterface {
 	 * @author Edwin Pan
 	 * @param e
 	 */
-	public void saveGame(Event e) {
+	public void saveGame(Event event) {
 		//Good reference: https://docs.oracle.com/javafx/2/ui_controls/file-chooser.htm
 		//Look for "Saving Files" section header.
 
@@ -997,6 +1004,68 @@ public class ViewInterface {
 		}
 		
 		
+	}
+	
+	
+	/**
+	 * Event Listener for a button. When the button for continuing a selected previous game is pressed, this method attempts to load in the data of that save file. If the save file cannot be loaded, Alert dialog messages are popped; if the save file is loaded, the application then
+	 * heads straight for the game session page.
+	 * @param event
+	 */
+	public void continuePreviousGame(Event event) {
+		//Make sure we have a selected item.
+		if( this.loadedGameList.getSelectionModel().getSelectedItem() == null ) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("No Save Selected!");
+			alert.setHeaderText("You did not select a save!");
+			alert.setContentText(null);
+			alert.showAndWait();
+			return;
+		}
+		String selectedPath = this.loadedGameList.getSelectionModel().getSelectedItem().toString();
+		
+		//Find the players to used for reloading into this game.
+		//Because game saves in sprint3-format do not contain player data, I am unfortunately forced to use random users
+		//THERE IS ALSO A BUG IN MY QUORIDORSAVESMANAGER CODE: the load game should require user input, not player input, as player input would give no choice in destination.
+		User user1, user2;
+		if( QuoridorApplication.getQuoridor().getUsers().size() < 2 ) {
+			user1 = new User("firstboi",QuoridorApplication.getQuoridor());
+			user2 = new User("secondboi",QuoridorApplication.getQuoridor());
+		} else {
+			user1 = QuoridorApplication.getQuoridor().getUser(0);
+			user2 = QuoridorApplication.getQuoridor().getUser(1);
+		}
+		Player player1 = new Player( new Time((10*60+10)*1000) , user1 , 1 , Direction.Horizontal );
+		Player player2 = new Player( new Time((10*60+10)*1000) , user1 , 9 , Direction.Horizontal );
+		
+		//Attempt to load the save game.
+		try{
+			QuoridorController.loadSavedGame(selectedPath, player1, player2);
+		} catch (FileNotFoundException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Save Was Not Found");
+			alert.setHeaderText("The save file selected could not be loaded due to an apparent file-not-found error.");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+			return;
+		} catch (IOException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Save Could Not Be Loaded");
+			alert.setHeaderText("The save file selected could not be loaded due to a file system input-output error.");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+			return;
+		} catch (InvalidPositionException e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Save Is Corrupted");
+			alert.setHeaderText("The save file selected appears to have invalid data. It cannot be loaded.");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+			return;
+		}
+		
+		//Once we're doing loading in the game, go on and actually continue the game in the game session page.
+		this.Goto_Game_Session_Page();
 	}
 	
 	

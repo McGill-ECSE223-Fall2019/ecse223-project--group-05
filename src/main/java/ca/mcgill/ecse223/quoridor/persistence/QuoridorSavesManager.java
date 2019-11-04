@@ -10,10 +10,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
 import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
+import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
 import ca.mcgill.ecse223.quoridor.model.GamePosition;
@@ -134,13 +136,30 @@ public class QuoridorSavesManager {
 	 * @return game provided but with loaded data
 	 * @throws FileNotFoundException, IOException, InvalidPositionException
 	 */
-	public static Game loadGamePawnsAndWalls( String filename, Quoridor quoridor , Game game, Player firstPlayer, Player secondPlayer) throws FileNotFoundException, IOException, InvalidPositionException {
+	public static Game loadGamePawnsAndWalls( String filename, Quoridor quoridor , Player firstPlayer, Player secondPlayer) throws FileNotFoundException, IOException, InvalidPositionException {
+		
+		/*
+		 * Input Sanity Check
+		 */
+		if(quoridor==null) {
+			throw new NullPointerException("Provided quoridor is null.");
+		}
+		if(firstPlayer==null) {
+			throw new NullPointerException("Provided firstPlayer is null.");
+		}
+		if(secondPlayer==null) {
+			throw new NullPointerException("Provided secondPlayer is null.");
+		}
+		
+		
 		
 		/*
 		 * Read Setup
 		 */
-		String[] lines = new String [2];
-		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
+		File file = new File( SaveConfig.getGameSaveFilePath(filename) );	//Default behaviour: If we receive a file name, and not a path.
+		if(!file.exists()) {			//If the filename behaviour doesn't work
+			file = new File( filename );	//Try the filename-was-actually-a-path measure. If that doesn't work, we'll know soon enoguh from the try catch block next.
+		}
 		FileReader fileReader;
 		try{
 			fileReader = new FileReader(file);
@@ -153,6 +172,7 @@ public class QuoridorSavesManager {
 		/*
 		 * Reading
 		 */
+		String[] lines = new String [2];
 		try {
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			lines[0] = bufferedReader.readLine();
@@ -175,10 +195,22 @@ public class QuoridorSavesManager {
 		firstPlayer.setNextPlayer(secondPlayer);
 		secondPlayer.setNextPlayer(firstPlayer);
 		/*
+		 * Set up Quoridor Board
+		 * In case this is the first time Quoridor is being booted, we need to initialize the board.
+		 */
+		if(	QuoridorApplication.getQuoridor().getBoard() == null ) {
+			Board board = new Board( QuoridorApplication.getQuoridor() );	//Creates a new board; also automatically links board to quoridor.
+			for( int row = 1 ; row < 10 ; row ++ ) {
+				for( int col = 1 ; col < 10 ; col ++ ) {
+					board.addTile(row,col);									//Creates all 81 new tiles; also automatically links those new tiles to the board.
+				}
+			}
+		}
+		/*
 		 * Setting up the Game instance
 		 * Initializes a new Game instance and adds generalized instances it contains. This means adding walls and gameposition, but not players which will be defined once we know what color goes first.
 		 */
-		game = new Game( Game.GameStatus.Initializing , Game.MoveMode.PlayerMove , quoridor );
+		Game game = new Game( Game.GameStatus.Initializing , Game.MoveMode.PlayerMove , quoridor );
 		if(blackIsNextToPlay) {
 			game.setBlackPlayer(firstPlayer);
 			PlayerPosition blackPosition = new PlayerPosition( firstPlayer, quoridor.getBoard().getTile( getTileId(1,5) ) );
@@ -384,7 +416,7 @@ public class QuoridorSavesManager {
 		}
 		
 		//Writing the player tile's coordinates first
-		positionThenWalls = "" + playerTile.getRow() + columnIntToChar(playerTile.getColumn()) +",";
+		positionThenWalls = "" + columnIntToChar(playerTile.getColumn()) + playerTile.getRow() +",";
 		//Writing all of the player's wall coordinates and orientation.
 		for( Wall wall : playerWalls ) {
 			positionThenWalls = positionThenWalls + " " + columnIntToChar(wall.getMove().getTargetTile().getColumn()) + wall.getMove().getTargetTile().getRow() + ( wall.getMove().getWallDirection() == Direction.Horizontal ? "h" : "v" ) + "," ;
@@ -456,7 +488,7 @@ public class QuoridorSavesManager {
 	 */
 	private static void sanityCheckTileCoordinate(int row, int col) throws InvalidPositionException {
 		if( row < 1 || row > 9 || col < 1 || row > 9 ) {
-			throw new InvalidPositionException("Detected invalid Tile Coordinates: (" + col + "," + row + ").");
+			throw new InvalidPositionException("Detected invalid Tile Coordinates: (" + col + "," + row + "). This would be read as a \"" + (char)(col + 'a' -1) + (char)(row + '1' - 1) + "\" in the file.");
 		}
 	}
 	
