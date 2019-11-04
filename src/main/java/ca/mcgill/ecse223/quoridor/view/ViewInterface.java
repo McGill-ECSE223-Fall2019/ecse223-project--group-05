@@ -92,7 +92,8 @@ public class ViewInterface {
 	@FXML private Label whitePlayerName;
 	@FXML private Label blackPlayerName;
 	private boolean validWallGrab = false; //boolean set to true when a used grabs one of his walls
-
+	private boolean whiteTimeIsUp = false;
+	private boolean blackTimeISUp = false;
 
 	//Grab and Drag wall variables
 	double wallXPosition, wallYPosition;
@@ -374,9 +375,26 @@ git s     */
 					Platform.runLater(new Runnable() {
 						public void run() {
 							//Update white player's thinking time clock
-							whiteTimer.setText(QuoridorController.playerThinkingTime(whitePlayer).substring(3));
-							//Update black's player thinking time clock
-							blackTimer.setText(QuoridorController.playerThinkingTime(blackPlayer).substring(3));
+							String whiteTime = QuoridorController.playerThinkingTime(whitePlayer).substring(3);
+							String blackTime =  QuoridorController.playerThinkingTime(blackPlayer).substring(3);
+							if(whiteTime.equals("00:00")){
+								whiteTimeIsUp = true;
+							}
+							if(blackTime.equals("00:00")){
+								blackTimeISUp = true;
+							}
+							if(whiteTimeIsUp==true){
+								whiteTimer.setText("00:00");
+							}
+							else{
+								whiteTimer.setText(whiteTime);
+							}
+							if(blackTimeISUp==true){
+								blackTimer.setText("00:00");
+							}
+							else{
+								blackTimer.setText(blackTime);
+							}
 						}
 					});
 				}
