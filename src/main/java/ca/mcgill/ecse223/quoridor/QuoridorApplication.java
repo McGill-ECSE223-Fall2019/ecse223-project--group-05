@@ -27,7 +27,7 @@ public class QuoridorApplication extends Application{
 
 
 	private static Quoridor quoridor;
-	private static ViewInterface c;
+	private static ViewInterface c = null;
 	
 	//scaling variables (for resizing of window)
 	private double initialH, initialW;
