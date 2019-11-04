@@ -107,6 +107,9 @@ public class ViewInterface {
 	@FXML private Label whitePlayerName;
 	@FXML private Label blackPlayerName;
 	@FXML private Button btn_saveGame;
+	private boolean validWallGrab = false; //boolean set to true when a used grabs one of his walls
+	private boolean whiteTimeIsUp = false;
+	private boolean blackTimeISUp = false;
 
 	//Grab and Drag wall variables
 	double wallXPosition, wallYPosition;
@@ -116,7 +119,7 @@ public class ViewInterface {
 	private static final double VERTICALSTEP = 35;
 	private static Rectangle wallSelected;
 	private static Quoridor quoridor;
-	private Player whitePlayer, blackPlayer;
+	private Player whitePlayer, blackPlayer, playerToMove;
 	private Timer timer;
 	private Timer RefreshTimer;
 
@@ -129,25 +132,29 @@ public class ViewInterface {
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
 	public void GrabWall(MouseEvent mouseEvent) {
-		wallSelected = (Rectangle) mouseEvent.getSource();
+		playerToMove = QuoridorController.getPlayerOfCurrentTurn();
+		Rectangle wall = (Rectangle) mouseEvent.getSource();
+		String wallID = wall.getId();
+		String color = QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor());
 
-
-		wallSelected.toFront();
-		boolean grabWallResult;
-		try {
-			grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
-		}
-		catch(Exception e){
+		//check if the player to move is grabbing his walls and not the opponent's
+		if(wallID.contains(color)) {
+			boolean grabWallResult;
+			try {
+				grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+			} catch (Exception e) {
 				throw new java.lang.UnsupportedOperationException("Cannot retrieve the number of walls in stock");
 			}
 
-		if (grabWallResult == true ){
-			gameSessionNotificationLabel.setText("You have more walls in stock!");
+			if (grabWallResult == false) {
+				gameSessionNotificationLabel.setText("You have no more walls in stock...");
+			}
+			else{
+				validWallGrab = true;
+				wallMoveCandidate = wall;
+				wallSelected = wall;
+			}
 		}
-		else{
-			gameSessionNotificationLabel.setText("You have no more walls in stock...");
-		}
-		//System.out.println();
 	}
 
 	/**
@@ -155,19 +162,18 @@ public class ViewInterface {
 	 * This method is called when the user drags the walls
 	 */
 	public void MoveWall(MouseEvent mouseEvent) {
-		//get the rectangle that is grabbed
-		Rectangle wall = (Rectangle) mouseEvent.getSource();
-		//Compute the new wall position and move the wall to that position
+		if(validWallGrab==true) { //check if the user grabbed one of his walls and not the other player's walls
+			Rectangle wall = (Rectangle) mouseEvent.getSource();
 			double offsetX = mouseEvent.getX();
 			double offsetY = mouseEvent.getY();
 			double newTranslateX = wall.getTranslateX() + offsetX;
 			double newTranslateY = wall.getTranslateY() + offsetY;
 			wall.setTranslateX(newTranslateX);
 			wall.setTranslateY(newTranslateY);
-
-    //ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
 			wallMoveCandidate = wall;
 			wallSelected = wall;
+		}
+
 	}
 	/**
 	 * @author David Deng
@@ -216,14 +222,6 @@ public class ViewInterface {
 		catch(Throwable e) {
 			displayIllegalNotification(e.getMessage());
 		}
-
-
-		//wallSelected.setTranslateX(newTranslateX);
-		//wallSelected.setTranslateY(newTranslateY);
-		wallSelected.toFront();
-		//System.out.println("x: " + wallDisplayX());
-		//System.out.println("y: " + wallDisplayY());
-
 	}
 
 	/**
@@ -234,6 +232,7 @@ public class ViewInterface {
 		Boolean dropSuccessful;
 
 		invalidWallPlacement.setText("");
+		System.out.println("yeyye");
 
 		try {
 			dropSuccessful = QuoridorController.releaseWall(quoridor);
@@ -272,18 +271,13 @@ public class ViewInterface {
 	 *This method is executed when the user releases the wall
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
-		//gameSessionNotificationLabel.setText("Invalid Wall Placement");
-
-		//Boolean dropSuccessful;
-
 	}
 
 
     /**
      * @author Matthias Arabian
      * opens a DialogWindow prompting the user to select a directory that contains game files.
-     * Then parse through that directory and upodate the GUI to display the user input
-     */
+git s     */
 	public void addToLoadedGameList() {
 	    //directory chooser dialog window
 		Stage stage = new Stage();
@@ -395,6 +389,7 @@ public class ViewInterface {
 			 */
 			btn_saveGame.setVisible(true);
 
+			lbl_white_awaitingMove.setText("It is your Turn!");
 
 			//This tasks runs on a separate thread. It is used to update the GUI every second
 			RefreshTimer.schedule(new TimerTask() {
@@ -402,9 +397,26 @@ public class ViewInterface {
 					Platform.runLater(new Runnable() {
 						public void run() {
 							//Update white player's thinking time clock
-							whiteTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getRemainingTime().toString());
-							//Update black's player thinking time clock
-							blackTimer.setText(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getRemainingTime().toString());
+							String whiteTime = QuoridorController.playerThinkingTime(whitePlayer).substring(3);
+							String blackTime =  QuoridorController.playerThinkingTime(blackPlayer).substring(3);
+							if(whiteTime.equals("00:00")){
+								whiteTimeIsUp = true;
+							}
+							if(blackTime.equals("00:00")){
+								blackTimeISUp = true;
+							}
+							if(whiteTimeIsUp==true){
+								whiteTimer.setText("00:00");
+							}
+							else{
+								whiteTimer.setText(whiteTime);
+							}
+							if(blackTimeISUp==true){
+								blackTimer.setText("00:00");
+							}
+							else{
+								blackTimer.setText(blackTime);
+							}
 						}
 					});
 				}
@@ -756,7 +768,9 @@ public class ViewInterface {
                 timer = new Timer();
 				btn_whitePlayerTurn.setText("NOT WHITE TURN");
 				lbl_white_awaitingMove.setText("AWAITING MOVE");
-                QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
+				lbl_black_awaitingMove.setText("It is your turn!");
+
+				QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
                         ,timer);
 
                 //update the model
@@ -772,6 +786,7 @@ public class ViewInterface {
                         ,timer);
 				timer = new Timer();
 				btn_blackPlayerTurn.setText("NOT BLACK TURN");
+				lbl_white_awaitingMove.setText("It is your turn!");
 				lbl_black_awaitingMove.setText("AWAITING MOVE");
                 QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
                         ,timer);
