@@ -366,6 +366,7 @@ git s     */
 			whitePlayerName.setText(QuoridorController.getPlayerName(whitePlayer));
 			blackPlayerName.setText(QuoridorController.getPlayerName(blackPlayer));
 
+			lbl_white_awaitingMove.setText("It is your Turn!");
 
 			//This tasks runs on a separate thread. It is used to update the GUI every second
 			RefreshTimer.schedule(new TimerTask() {
@@ -715,7 +716,9 @@ git s     */
                 timer = new Timer();
 				btn_whitePlayerTurn.setText("NOT WHITE TURN");
 				lbl_white_awaitingMove.setText("AWAITING MOVE");
-                QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
+				lbl_black_awaitingMove.setText("It is your turn!");
+
+				QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
                         ,timer);
 
                 //update the model
@@ -731,6 +734,7 @@ git s     */
                         ,timer);
 				timer = new Timer();
 				btn_blackPlayerTurn.setText("NOT BLACK TURN");
+				lbl_white_awaitingMove.setText("It is your turn!");
 				lbl_black_awaitingMove.setText("AWAITING MOVE");
                 QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
                         ,timer);
