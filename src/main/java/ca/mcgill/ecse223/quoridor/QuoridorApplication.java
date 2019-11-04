@@ -15,6 +15,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,8 +28,11 @@ public class QuoridorApplication extends Application{
 
 
 	private static Quoridor quoridor;
+
+
+
 	private static ViewInterface c = null;
-	
+
 	//scaling variables (for resizing of window)
 	private double initialH, initialW;
 
@@ -64,7 +68,9 @@ public class QuoridorApplication extends Application{
 	        	scale.setPivotY(0);
 	        	scene.getRoot().getTransforms().setAll(scale);
 	       });
-	
+			scene.addEventHandler(KeyEvent.KEY_PRESSED, (keyEvent) -> {
+				ViewInterface.MoveWall(keyEvent);
+			});
 	        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
 	       	Scale scale = new Scale(scene.getWidth()/initialW, newVal.doubleValue()/initialH);
 	       	scale.setPivotX(0);
