@@ -51,6 +51,7 @@ import javafx.stage.Stage;
 public class ViewInterface {
 
 
+
 	//these are the pages that the user can travel to/interact with
 	private enum Page {
 		TOP_BUTTONS,
@@ -62,8 +63,8 @@ public class ViewInterface {
 		GAME_SESSION_PAGE,
 		CHOOSE_OPPONENT_PAGE;
 	};
-	
-	//this list is initialized in the fxml file and is populated with 
+
+	//this list is initialized in the fxml file and is populated with
 	//GUI pages that the user can travel to/interact with.
 //////ORDER MATTERS. IF YOU ADD PAGES IN THE FXML PAGE, MAKE SURE THAT	////////
 //////YOU UPDATE THE ENUM AND THE getPage(Page Cur) FUNCTION			////////
@@ -80,15 +81,9 @@ public class ViewInterface {
 	@FXML private TextField blackTimerField;
 	@FXML private Label whiteUsernameExistsLabel;
 	@FXML private Label blackUsernameExistsLabel;
+	@FXML private Label invalidWallPlacement;
 
 
-
-
-	
-
-
-	
-	
      //Load Game Page
 	@FXML private Label lbl_directory;
     @FXML ListView loadedGameList;
@@ -100,7 +95,7 @@ public class ViewInterface {
 	@FXML private Label gameSessionNotificationLabel;
 	@FXML private Label whiteTimer;
 	@FXML private Label blackTimer;
-	@FXML private Button btn_whitePlayerTurn, btn_blackPlayerTurn;
+	@FXML private Button btn_whitePlayerTurn, btn_blackPlayerTurn, btn_blackPlayerDropWall, btn_whitePlayerDropWall;
 	@FXML private Label lbl_black_awaitingMove, lbl_white_awaitingMove;
 	@FXML private Label whitePlayerName;
 	@FXML private Label blackPlayerName;
@@ -162,7 +157,7 @@ public class ViewInterface {
 			double newTranslateY = wall.getTranslateY() + offsetY;
 			wall.setTranslateX(newTranslateX);
 			wall.setTranslateY(newTranslateY);
-    
+
     //ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
 			wallMoveCandidate = wall;
 			wallSelected = wall;
@@ -225,14 +220,57 @@ public class ViewInterface {
 	}
 
 	/**
-	 * @author Thomas Philippon
+	 * @author Alex Masciotra
+	 *This method is executed when the user releases the wall
+	 */
+	public void whiteDropWall(MouseEvent mouseEvent) {
+		Boolean dropSuccessful;
+
+		invalidWallPlacement.setText("");
+
+		try {
+			dropSuccessful = QuoridorController.releaseWall(quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to drop Wall");
+		}
+
+		if (!dropSuccessful){
+			invalidWallPlacement.setText("Invalid Wall Placement");
+		}
+	}
+
+	/**
+	 * @author Alex Masciotra
+	 *This method is executed when the user releases the wall
+	 */
+	public void blackDropWall(MouseEvent mouseEvent) {
+
+		Boolean dropSuccessful;
+
+		invalidWallPlacement.setText("");
+
+		try {
+			dropSuccessful = QuoridorController.releaseWall(quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to drop Wall");
+		}
+
+		if (!dropSuccessful){
+			invalidWallPlacement.setText("Invalid Wall Placement");
+		}
+	}
+
+	/**
+	 * @author Alex Masciotra
 	 *This method is executed when the user releases the wall
 	 */
 	public void DropWall(MouseEvent mouseEvent) {
-		gameSessionNotificationLabel.setText("Invalid Wall Placement");
-    wallMoveCandidate = null;
-    wallSelected = null;
+		//gameSessionNotificationLabel.setText("Invalid Wall Placement");
+
+		//Boolean dropSuccessful;
+
 	}
+
 
     /**
      * @author Matthias Arabian
@@ -284,10 +322,11 @@ public class ViewInterface {
      * @author Matthias Arabian
      * This function is used as a debugging tool to detect javaFX listView events visually as they occur.
      */
+
 	public void gotSelected() {
 		System.out.println(loadedGameList.getSelectionModel().getSelectedItem());
 	}
-	
+
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Create New Game Page.
@@ -304,7 +343,7 @@ public class ViewInterface {
 	public void Goto_Main_Page() {
 		Goto_Page(Page.MAIN_PAGE);
 	}
-	
+
 	/**
 	 * @author Daniel Wu
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
@@ -322,7 +361,7 @@ public class ViewInterface {
 		}
 }
 
-	
+
 	/**
 	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Game Session Page.
@@ -370,7 +409,7 @@ public class ViewInterface {
 			displayIllegalNotification(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Load Game Page.
@@ -378,7 +417,7 @@ public class ViewInterface {
 	public void Goto_Load_Game_Page() {
 		Goto_Page(Page.LOAD_GAME_PAGE);
 	}
-	
+
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Select Host Page.
@@ -386,10 +425,10 @@ public class ViewInterface {
 	public void Goto_Select_Host_Page() {
 		Goto_Page(Page.SELECT_HOST_PAGE);
 	}
-	
+
 	/**
 	 * @author Matthias Arabian
-	 * @param p The page to go to 
+	 * @param p The page to go to
 	 * Changes the GUI CurrentPage to the page defined by the parameter p
 	 * This function is called by every other Goto_ functions
 	 * and serves as a generalized template for page travel.
@@ -405,12 +444,12 @@ public class ViewInterface {
 		}
 		
 		CurrentPage = getCurrentPage();
-		
-//		Restrict page to page movement when the current page is disabled 
+
+//		Restrict page to page movement when the current page is disabled
 //		(something else is happening atm)
 		if (CurrentPageIsDisabled())
 			return;
-			
+
 		CurrentPage.setDisable(true);
 		CurrentPage.setVisible(false);
 
@@ -420,36 +459,36 @@ public class ViewInterface {
 		CurrentPage.setVisible(true);
 		CurrentPage.toFront();
 	}
-	
+
 	/**
 	 * @author Matthias Arabian
-	 * Displays the Rules page. 
+	 * Displays the Rules page.
 	 * Disables the CurrentPane, but does not replace it.
 	 * Overlays the rules on top of the CurrentPage to allow user to return to what
 	 * they were doing.
 	 */
 	public void openRulesPage() {
 		CurrentPage = getCurrentPage();
-		
+
 		//if page is disabled, then the rules are already displayed. Therefore, the rules page should be closed.
-		if (CurrentPageIsDisabled()) { 
+		if (CurrentPageIsDisabled()) {
 			closeRulesPage();
 			return;
 		}
-		
-		
+
+
 		//disable the current page, but do not make it invisible or replace it.
 		CurrentPage.setDisable(true);
-		
+
 		//display the Rules page, and bring it to front to allow for user interaction.
 		CurrentPage = getPage(Page.RULES_PAGE);
 		CurrentPage.setDisable(false);
 		CurrentPage.setVisible(true);
 		CurrentPage.toFront();
 		getPage(Page.TOP_BUTTONS).toFront(); //those need to be on top of the rules to allow for clicking on Rules label to close rules
-		
+
 	}
-	
+
 	/**
 	 * @author Matthias Arabian
 	 * this function closes the Rules page and re-enables the CurrentPage.
@@ -462,7 +501,7 @@ public class ViewInterface {
 		CurrentPage.setDisable(false);
 		CurrentPage.toFront();
 	}
-	
+
 	/**
 	 * @author Matthias Arabian
 	 * @return whether CurrentPage is disabled
@@ -470,7 +509,7 @@ public class ViewInterface {
 	private boolean CurrentPageIsDisabled() {
 		return getPage(currentState).isDisable();
 	}
-	
+
 	/**
 	 * @author Matthias Arabian
 	 * @return the current page the user is interacting with
@@ -478,16 +517,16 @@ public class ViewInterface {
 	private AnchorPane getCurrentPage() {
 		return getPage(currentState);
 	}
-	
+
 	/**
 	 * @author Matthias Arabian
 	 * @param Cur: an enum type used to discriminate between GUI pages in a user-friendly manner.
 	 * @return the page described by the variable Cur
-	 * 
-	 * The order of the pages stored in the pageList variable depends on 
+	 *
+	 * The order of the pages stored in the pageList variable depends on
 	 * their order when the list was declared in the FXML file.
 	 * You must ensure that the pages referenced in this function are the intended ones.
-	 * 
+	 *
 	 * This is a necessary evil that allows for greater generalization in event handlers.
 	 */
 	private AnchorPane getPage(Page Cur) {
@@ -507,11 +546,11 @@ public class ViewInterface {
 			return pageList.get(6);
 		if (Cur == Page.CHOOSE_OPPONENT_PAGE)
 			return pageList.get(7);
-		else 
+		else
 			return null;
 	}
 
-	
+
 	/**
 	 * @author Matthias Arabian
 	 * initializes the FXML components. this code runs once the application is launched but before the GUI is displayed.
@@ -531,10 +570,11 @@ public class ViewInterface {
 		timer = new Timer();
 		RefreshTimer = new Timer();
 
-		//quoridor =QuoridorApplication.getQuoridor();
-		
 		//Hides the save game button
 		btn_saveGame.setVisible(false);
+
+		quoridor =QuoridorApplication.getQuoridor();
+
 
 	}
 
@@ -547,7 +587,7 @@ public class ViewInterface {
 
 		//when the arrow is pressed
 
-		List<String> existingUserNames = null;
+		List<String> existingUserNames;
 		try {
 			existingUserNames = QuoridorController.provideExistingUserNames(quoridor);
 		} catch (Exception e) {
@@ -569,12 +609,14 @@ public class ViewInterface {
 	 */
 	public void whitePlayerSelectsExistingUserName(ActionEvent actionEvent) {
 
+		String userNameToSet = "";
 		try {
 			QuoridorController.assignPlayerColorToUserName("white", quoridor);
 		} catch (Exception e) {
 			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
 		}
-		String userNameToSet = whiteExistingName.getValue().toString();
+
+		userNameToSet = whiteExistingName.getEditor().getText();
 
 		try {
 			QuoridorController.selectExistingUserName(userNameToSet, quoridor);
@@ -595,7 +637,7 @@ public class ViewInterface {
 		} catch (Exception e) {
 			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
 		}
-		String userNameToSet = blackExistingName.getValue().toString();
+		String userNameToSet = blackExistingName.getEditor().getText();
 
 		try {
 			QuoridorController.selectExistingUserName(userNameToSet, quoridor);
@@ -699,7 +741,7 @@ public class ViewInterface {
 	public void switchPlayer(Event e) {
 		Button b = ((Button)e.getSource());
 		if (b.getId().equals(btn_whitePlayerTurn.getId())) {
-			if (btn_whitePlayerTurn.getText().equals("END TURN")) {
+			if (btn_whitePlayerTurn.getText().equals("END TURN")) { //starts black player turn
 				btn_blackPlayerTurn.setText("END TURN");
 				lbl_black_awaitingMove.setText("");
                 QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
@@ -709,10 +751,13 @@ public class ViewInterface {
 				lbl_white_awaitingMove.setText("AWAITING MOVE");
                 QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
                         ,timer);
-				
+
+                //update the model
+                Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
+                QuoridorController.completePlayerTurn(whitePlayer); //If it's WhitePlayer's turn, end it. If not, nothing happens.
 			}
 		}
-		else {
+		else { //starts white player turn
 			if (btn_blackPlayerTurn.getText().equals("END TURN")) {
 				btn_whitePlayerTurn.setText("END TURN");
 				lbl_white_awaitingMove.setText("");
@@ -723,6 +768,10 @@ public class ViewInterface {
 				lbl_black_awaitingMove.setText("AWAITING MOVE");
                 QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
                         ,timer);
+
+				//update the model
+                Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
+                QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
 			}
 		}
 	}
@@ -821,10 +870,9 @@ public class ViewInterface {
 	 * this is used to ensure that the player switching has been announced to the players
 	 */
 	public String getWhitePlayerStatus(){
-		return null;
-//        if (lbl_white_awaitingMove == null || lbl_white_awaitingMove.equals(""))
-//            return null;
-//        return lbl_white_awaitingMove.getText();
+        if (lbl_white_awaitingMove == null || lbl_white_awaitingMove.equals(""))
+            return null;
+        return lbl_white_awaitingMove.getText();
 
 	}
 
@@ -834,10 +882,9 @@ public class ViewInterface {
 	 * this is used to ensure that the player switching has been announced to the players
 	 */
 	public String getBlackPlayerStatus(){
-		return null;
-//	    if (lbl_black_awaitingMove == null || lbl_black_awaitingMove.equals(""))
-//	        return null;
-//		return lbl_black_awaitingMove.getText();
+	    if (lbl_black_awaitingMove == null || lbl_black_awaitingMove.equals(""))
+	        return null;
+		return lbl_black_awaitingMove.getText();
 
 	}
 	

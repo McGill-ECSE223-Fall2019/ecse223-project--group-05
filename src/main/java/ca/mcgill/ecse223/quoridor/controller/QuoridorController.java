@@ -511,37 +511,6 @@ public class QuoridorController {
         }
     }
 
-    /**
-     * method to insure no nullpointerExceptions occur when getting items from the model
-     *
-     * @param quoridor game object
-     * @author Alex Masciotra
-     */
-    public static void initializeQuoridor(Quoridor quoridor) {
-        //part of method is taken from given code in the stepDefinitions
-
-
-        int thinkingTime = 10; //placeholder
-        Player player1 = new Player(null, null, 9, Direction.Horizontal);
-        Player player2 = new Player(null, null, 1, Direction.Horizontal);
-
-        Player[] players = { player1, player2 };
-
-        // Create all walls. Walls with lower ID belong to player1,
-        // while the second half belongs to player 2
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 10; j++) {
-                new Wall(i * 10 + j, players[i]);
-            }
-        }
-
-        new Game(GameStatus.Initializing, Game.MoveMode.PlayerMove, quoridor);
-
-        quoridor.getCurrentGame().setWhitePlayer(player1);
-        quoridor.getCurrentGame().setBlackPlayer(player2);
-
-    }
-
     /***
      * Method to set existing username to player
      * @param userName username to set to player
@@ -1052,11 +1021,11 @@ public class QuoridorController {
     public static boolean completePlayerTurn(Player player) {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         if (player.equals(quoridor.getCurrentGame().getBlackPlayer())){
-            Player tmp = quoridor.getCurrentGame().getBlackPlayer();
+            Player tmp = quoridor.getCurrentGame().getWhitePlayer();
             return quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(tmp);
         }
         else {
-            Player tmp = quoridor.getCurrentGame().getWhitePlayer();
+            Player tmp = quoridor.getCurrentGame().getBlackPlayer();
             return quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(tmp);
         }
 
