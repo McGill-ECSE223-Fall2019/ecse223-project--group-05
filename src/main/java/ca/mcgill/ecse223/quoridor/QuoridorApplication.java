@@ -1,7 +1,10 @@
 package ca.mcgill.ecse223.quoridor;
 
 
+import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
+import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
+import ca.mcgill.ecse223.quoridor.persistence.QuoridorSettingsManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +21,7 @@ import javafx.scene.transform.Scale;
 
 
 public class QuoridorApplication extends Application{
+
 
 	private static Quoridor quoridor;
 	private static ViewInterface c;
@@ -71,11 +75,23 @@ public class QuoridorApplication extends Application{
 
 	public static Quoridor getQuoridor() {
 		if (quoridor == null) {
-			quoridor = new Quoridor();
+			
+			//Safety behaviour: Ensures that save folders exist.
+			SaveConfig.setupSaveDirectories();
+			//Special behaviour: Resume previous game or user data.
+			if( QuoridorSettingsManager.checkIfToResumePreviousGame() ) {
+				quoridor = QuoridorRuntimeModelPersistence.quickload();		//If settings in appdata read that we're supposed to immediately jump into the previous game, then jump in.
+			} else {
+				quoridor = QuoridorRuntimeModelPersistence.loadUserData();	//If settings in appdata read that we are not supposed to immediately jump into the previous game, then just enter the normal game with users loaded.
+			}
+		  
+			//quoridor = new Quoridor();
+			
 		}
  		return quoridor;
 	}
 	
+
 	public static ViewInterface getViewInterface() {
 
 		return c;
@@ -84,6 +100,7 @@ public class QuoridorApplication extends Application{
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 
 
 

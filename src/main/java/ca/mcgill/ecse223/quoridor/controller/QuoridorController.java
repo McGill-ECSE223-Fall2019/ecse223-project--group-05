@@ -1,14 +1,21 @@
 package ca.mcgill.ecse223.quoridor.controller;
 
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
+import javafx.scene.shape.Rectangle;
+
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
+import ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager;
+import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
+import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -22,7 +29,6 @@ import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
 import ca.mcgill.ecse223.quoridor.timer.PlayerTimer;
-import javafx.scene.shape.Rectangle;
 
 public class QuoridorController {
 
@@ -705,6 +711,8 @@ public class QuoridorController {
 
     //Getter for gamestate
 
+
+
     /**
      * Ensures that a wall move candidate exists with parameters dir,row,col
      * Creates one if one does not exist.
@@ -804,40 +812,55 @@ public class QuoridorController {
     	
     }
 
-    /**
-     * Verifies that the load position is a valid position
-     *
-     * @return true: position is valid. false otherwise
-     * @throws UnsupportedOperationException
-     * @author Matthias Arabian
-     */
-    public static Boolean CheckThatPositionIsValid() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Position is valid");
-    }
+    /*
+	   * This method is outside the scope of what load position tests are able to recognize. While we could refer to the work
+	   * of the ValidatePosition developer, we can also use my loading system which throws InvalidPositionException's and infer
+	   * that if no exception is thrown, then the position is probably valid. Not to say that this isn't something we want: in
+	   * the controller, it is definitely good to have a means to ensure that the position is valid when creating a new one in-
+	   * game. But for our intents and purposes, the only time we need to check if the position is valid is as we are parsing
+	   * in text data from save files, as we can avoid a lot of arrayIndexOutOfBounds errors this way. And this is handled by
+	   * my QuoridorSavesManager class.
+	   * -Edwin
+	   */
+  	///**
+  	// * Verifies that the load position is a valid position
+  	// * @author Matthias Arabian
+  	// * @return true: position is valid. false otherwise
+  	// * @throws UnsupportedOperationException
+  	// */
+  	//public static Boolean CheckThatPositionIsValid() throws UnsupportedOperationException{
+  	//	throw new UnsupportedOperationException("Position is valid");
+  	//}
 
-    /**
-     * Loads a saved game by instantiating a new game and populating it with file data
-     *
-     * @param fileName
-     * @throws UnsupportedOperationException
-     * @author Matthias Arabian
-     */
-    public static void loadSavedGame(String fileName) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Game could not be loaded");
+	  /**
+	   * Loads a saved game by instantiating a new game and populating it with file data
+	   * @author Matthias Arabian (Interface Author)
+	   * @author Edwin Pan (Method Author)
+	   * @param fileName
+	   * @throws FileNotFoundException, IOException, InvalidPositionException
+	   */
+	  public static void loadSavedGame(String fileName, Player firstPlayer, Player secondPlayer) throws IOException, FileNotFoundException, InvalidPositionException {
+		  Game game = QuoridorSavesManager.loadGamePawnsAndWalls(fileName, QuoridorApplication.getQuoridor(), QuoridorApplication.getQuoridor().getCurrentGame(), firstPlayer, secondPlayer);
+		  QuoridorApplication.getQuoridor().setCurrentGame(game);
+	  }
 
-    }
-
-
-    /**
-     * Propagates a sort of "Invalid Position to Load" error to wherever it is necessary
-     *
-     * @return whether the error has been successfully propagated
-     * @throws UnsupportedOperationException
-     * @author Matthias Arabian
-     */
-    public static Boolean sendLoadError() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("sendLoadError");
-    }
+	
+	  /*
+	   * This method requires the controller to be stateful - namely, for previous errors to be remembered. This is non-ideal.
+	   * This method will instead be replaced by the method above, 
+     *, being a method which throws IOException or
+	   * FileNotFoundException which can be.
+	   * -Edwin
+	   */
+	  ///**
+	  // * Propagates a sort of "Invalid Position to Load" error to wherever it is necessary
+	  // * @author Matthias Arabian
+	  // * @return whether the error has been successfully propagated
+	  // * @throws UnsupportedOperationException
+	  // */
+	  //public static Boolean sendLoadError() throws UnsupportedOperationException{
+	  //	throw new UnsupportedOperationException("sendLoadError");
+	  //}
 
     /**
      * Simple query method for obtaining the ca.mcgill.ecse223.quoridor.application's current game instance.
@@ -849,44 +872,35 @@ public class QuoridorController {
         return QuoridorApplication.getQuoridor().getCurrentGame();
     }
 
-    /**
-     * NOT IMPLEMENTED.
-     * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
-     * It returns true when serialization of the game is successful and false when unsuccessful.
-     * This method is overwrite-averse; it does not overwrite files that already exist.
-     *
-     * @param filename (no extension will be added)
-     * @param game
-     * @return savingStatus enum
-     * @throws IOException
-     * @author Edwin Pan
-     */
-    public static SavingStatus saveGame(String filename, Game game) throws IOException {
-        if (SaveConfig.createFileSavesFolder() == false) {
-            return SavingStatus.failed;
-        }
-        throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game) not yet implemented.");
-    }
-
-    /**
-     * NOT IMPLEMENTED.
-     * This is the overwrite-capable version of saveGame.
-     * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
-     * It returns true when serialization of the game is successful and false when unsuccessful.
-     *
-     * @param filename  (no extension will be added)
-     * @param game
-     * @param overwrite
-     * @return savingStatus enum
-     * @throws IOException
-     * @author Edwin Pan
-     */
-    public static SavingStatus saveGame(String filename, Game game, boolean overwrite) throws IOException {
-        if (SaveConfig.createFileSavesFolder() == false) {
-            return SavingStatus.failed;
-        }
-        throw new UnsupportedOperationException("QuoridorController.saveGame(filename,game,overwrite) not yet implemented.");
-    }
+    	
+	  /**
+	   * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
+	   * It returns true when serialization of the game is successful and false when unsuccessful.
+	   * This method is overwrite-averse; it does not overwrite files that already exist.
+	   * @author Edwin Pan
+	   * @param filename (no extension will be added)
+	   * @param game
+	   * @return savingStatus enum
+	   * @throws IOException
+	   */
+	  public static SavingStatus saveGame(String filename, Game game) throws IOException{
+		  return QuoridorSavesManager.saveGamePawnsAndWalls(game, filename, SavePriority.DEFAULT);
+	  }
+    
+	  /**
+	   * This is the overwrite-capable version of saveGame.
+	   * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
+	   * It returns true when serialization of the game is successful and false when unsuccessful.
+	   * @author Edwin Pan
+	   * @param filename (no extension will be added)
+	   * @param game
+	   * @param overwrite
+	   * @return savingStatus enum
+	   * @throws IOException
+	   */
+	  public static SavingStatus saveGame(String filename, Game game, SavePriority save_enforcement_type) throws IOException{
+	  	return QuoridorSavesManager.saveGamePawnsAndWalls(game, filename, save_enforcement_type);
+	  }
 
     /**
      * Simple query method for obtaining the player that is currently black.
@@ -1023,6 +1037,9 @@ public class QuoridorController {
             throw new java.lang.UnsupportedOperationException("Cannot get the player's name");
         }
     }
+
+
+
 }
 
 

@@ -3,6 +3,7 @@ package ca.mcgill.ecse223.quoridor.features;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,6 +13,8 @@ import java.util.*;
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
+import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
+import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
 import ca.mcgill.ecse223.quoridor.model.Board;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
@@ -51,10 +54,14 @@ public class CucumberStepDefinitions {
 
 
 	//Instance Variables for SavePosition tests
-	private String saveFilename = "";
+	private String testGameSaveFilename = "";
 	private final int fileDataLength = 1000000;
 	private char [] refFileData = new char [fileDataLength];	//Memory for storing data of one file for comparison.
-	private char [] curFileData = new char [fileDataLength];	//Memory for storing data of another file for comparison.
+	private char [] curFileData = new char [fileDataLength];	//Memory for storing data of another file for comparison.]
+	
+	//Instance Variables for LoadPosition tests
+	private boolean failedToReadSaveFile = false;
+	private boolean receivedInvalidPositionException = false;
 
 
 
@@ -148,9 +155,9 @@ public class CucumberStepDefinitions {
 		ArrayList<Player> players = createUsersAndPlayers("user1", "user2");
 		Game game = new Game(GameStatus.Initializing, MoveMode.PlayerMove, QuoridorApplication.getQuoridor());
 		game.setWhitePlayer(players.get(0));
-        game.setBlackPlayer(players.get(1));
-
+    game.setBlackPlayer(players.get(1));
 	}
+  
 	// ***********************************************
 	// Scenario and scenario outline step definitions
 	// ***********************************************
@@ -678,10 +685,11 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("No file {string} exists in the filesystem")
 	public void noFileFilenameExistsInTheFileSystem(String filename) {
-		SaveConfig.createFileSavesFolder();
-		File file = new File( SaveConfig.getSaveFilePath(filename) );
+		this.testGameSaveFilename = filename;
+		SaveConfig.createGameSavesFolder();
+		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
 		if (file.exists())	{	file.delete();	}
-		this.saveFilename = filename;
+		assertEquals(false,file.exists());
 	}
 	
 	/**
@@ -693,9 +701,10 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("File {string} exists in the filesystem")
 	public void fileFilenameExistsInTheFilesystem(String filename) {
-		SaveConfig.createFileSavesFolder();
+		this.testGameSaveFilename = filename;
+		SaveConfig.createGameSavesFolder();
 		//First put in our control as the existing file for our test.
-		File file = new File( SaveConfig.getSaveFilePath(filename) );
+		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
 		file.delete();
 		try {
 			String str = "myhelicoptergoessoisoisoisoisoisoisosiosoisoisoisoisoisoisoisoisoisoisoi"; //should do as something that should not ever appear in the text file in regular use.
@@ -716,7 +725,7 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The user initiates to save the game with name {string}")
 	public void theUserInitiatesToSaveTheGameWithNameFilename(String filename) {
-		SaveConfig.createFileSavesFolder();
+		SaveConfig.createGameSavesFolder();
 		try {
 			QuoridorController.saveGame(filename,QuoridorController.getCurrentGame());
 		} catch(IOException e) {
@@ -731,9 +740,9 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The user confirms to overwrite existing file")
 	public void theUserConfirmsToOverwriteExistingFile() {
-		SaveConfig.createFileSavesFolder();
+		SaveConfig.createGameSavesFolder();
 		try {
-			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), true);
+			QuoridorController.saveGame(this.testGameSaveFilename, QuoridorController.getCurrentGame(), SavePriority.FORCE_OVERWRITE);
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
@@ -746,9 +755,9 @@ public class CucumberStepDefinitions {
 	 */
 	@When("The user cancels to overwrite existing file")
 	public void theUserCancelsToOverwriteExistingFile() {
-		SaveConfig.createFileSavesFolder();
+		SaveConfig.createGameSavesFolder();
 		try {
-			QuoridorController.saveGame(this.saveFilename, QuoridorController.getCurrentGame(), false);
+			QuoridorController.saveGame(this.testGameSaveFilename, QuoridorController.getCurrentGame(), SavePriority.DO_NOT_SAVE);
 		} catch(IOException e) {
 			System.out.println(e.toString());
 		}
@@ -761,8 +770,8 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("A file with {string} shall be created in the filesystem")
 	public void aFileWithFilenameIsCreatedInTheFilesystem(String filename) {
-		SaveConfig.createFileSavesFolder();
-		File file = new File( SaveConfig.getSaveFilePath(filename) );
+		SaveConfig.createGameSavesFolder();
+		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
 		assertEquals(file.exists(),true);
 	}
 	
@@ -773,7 +782,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("File with {string} shall be updated in the filesystem")
 	public void fileWithFilenameIsUpdatedInTheFileSystem(String filename) {
-		SaveConfig.createFileSavesFolder();
+		SaveConfig.createGameSavesFolder();
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
 		assertEquals( Arrays.equals(refFileData, curFileData), false );	
 	}
@@ -785,11 +794,28 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("File {string} shall not be changed in the filesystem")
 	public void fileWithFilenameIsNotChangedInTheFileSystem(String filename) {
-		SaveConfig.createFileSavesFolder();
+		SaveConfig.createGameSavesFolder();
 		this.readInFileFilenameInFileSystem(filename, this.curFileData);
 		assertEquals( Arrays.equals(refFileData, curFileData), true );
 	}
 	
+	/**
+	 * @author Edwin Pan
+	 * DEPRECATED: This method doesn't seem to work. Despite it claiming that java has no access to the file system,
+	 * the application is still able to write and read files from the file system. Quite strange.
+	 * I'm keeping this in the code for investigative purposes in the future. Nobody else should be using this, though.
+	 * Helper method for checking if the Operating System is preventing the application from doing Save and Load tests
+	 * Checks if Access if being Denied: If so, prints the stacktrace and announces the Exception to tester.
+	 */
+	private void checkFileSystemAccess( String path ) {
+		SecurityManager securityManager = new SecurityManager();
+		try {
+			securityManager.checkRead( path );
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
 	
 	
 	/*
@@ -1248,21 +1274,35 @@ public class CucumberStepDefinitions {
 	/**
 	 * This function calls a controller function loadSavedGame("filename").
 	 * Loads data from file, initiates the creation of a game and sets positions according to loaded data.
-	 * @author Matthias Arabian
+	 * @author Matthias Arabian (original)
+	 * @author Edwin Pan (Rewrote to catch exceptions)
 	 */
 	@When("I initiate to load a saved game {string}")
 	public void iInitiateToLoadASavedGame(String fileName) {
-		QuoridorController.loadSavedGame(fileName);
+		CucumberTest_LoadPosition_TestFileWriters.createGameSaveTestFile(fileName);
+		try {
+			QuoridorController.loadSavedGame(fileName, this.myPlayers.get(0), this.myPlayers.get(1) );
+		} catch (FileNotFoundException e) {
+			failedToReadSaveFile = true;
+			e.printStackTrace();
+		} catch (IOException e) {
+			failedToReadSaveFile = true;
+			e.printStackTrace();
+		} catch (InvalidPositionException e) {
+			receivedInvalidPositionException = true;
+			e.printStackTrace();
+		} 
 	}
 	
 	/**
 	 * Ensures that the loaded positions are valid and legal/playable.
 	 * @author Matthias Arabian
+	 * @author Edwin Pan made modifications after taking over for sprint 3
 	 */
 	@And("The position to load is valid")
 	public void thePositionToLoadIsValid(){
-		Boolean positionIsValid = QuoridorController.CheckThatPositionIsValid();
-		assertEquals(true, positionIsValid);
+		assertEquals(false, failedToReadSaveFile);
+		assertEquals(false, receivedInvalidPositionException);
 	}
 	
 	/**
@@ -1329,12 +1369,13 @@ public class CucumberStepDefinitions {
 	/**
 	 * Ensures that both players have the same number of walls in stock (which doesn't really make sense....?)
 	 * @author Matthias Arabian
+	 * @author Edwin Pan fixed code after taking over for sprint 3.
 	 */
 	@And("Both players shall have {int} in their stacks")
 	public void bothPlayersShallHaveRemainingWallsInTheirStacks(int remainingWalls) {
 		Game g = QuoridorApplication.getQuoridor().getCurrentGame();
-		assertEquals(remainingWalls, g.getBlackPlayer().numberOfWalls());
-		assertEquals(remainingWalls, g.getWhitePlayer().numberOfWalls());
+		assertEquals(remainingWalls, g.getCurrentPosition().getBlackWallsInStock().size());
+		assertEquals(remainingWalls, g.getCurrentPosition().getWhiteWallsInStock().size());
 	}
 	
 	//LOAD INVALID POSITION
@@ -1342,20 +1383,23 @@ public class CucumberStepDefinitions {
 	 * This function is called when an invalid position is loaded.
 	 * It verifies that the position is indeed invalid.
 	 * @author Matthias Arabian
+	 * @author Edwin Pan made modifications after taking over for sprint 3
 	 */
 	@And("The position to load is invalid")
 	public void thePositionToLoadIsInvalid(){
-		Boolean positionIsValid = QuoridorController.CheckThatPositionIsValid();
-		assertEquals(false, positionIsValid);
+		assertEquals(false, failedToReadSaveFile);
+		assertEquals(true, receivedInvalidPositionException);
 	}
 	
 	/**
 	 * This function ensures that an error is sent out about the load position being invalid.
 	 * @author Matthias Arabian
+	 * @author Edwin Pan made modifications after taking over for sprint 3
 	 */
 	@Then("The load shall return an error")
 	public void theLoadShallReturnAnError() throws Throwable{
-		assertEquals(true, QuoridorController.sendLoadError());
+		assertEquals(true, !failedToReadSaveFile);
+		assertEquals(true, receivedInvalidPositionException);
 	}
 	
 	
@@ -1380,9 +1424,11 @@ public class CucumberStepDefinitions {
 			}
 		}
 		// Clear out file data memories, used for SavePosition features.
-		File file = new File( SaveConfig.getSaveFilePath(this.saveFilename) );
+		File file = new File( SaveConfig.getGameSaveFilePath(this.testGameSaveFilename) );
 		file.delete();
-		this.saveFilename = "";
+    //Clear load position files from saves directory
+		CucumberTest_LoadPosition_TestFileWriters.clearGameSaveLoadingTestFiles();
+		this.testGameSaveFilename = "";
 		for( int i = 0 ; i < refFileData.length ; i++ ) {
 			this.refFileData[i] = 0;
 		}
@@ -1394,6 +1440,8 @@ public class CucumberStepDefinitions {
 		myCoordinate[0] = 0;
 		myCoordinate[1] = 0;
 		myDirection = "";
+		receivedInvalidPositionException = false;
+		failedToReadSaveFile = false;
 		positionIsValid = true;
 		handIsEmpty = false;
 		handHasWall = false;
@@ -1517,7 +1565,7 @@ public class CucumberStepDefinitions {
 	 */
 	private void readInFileFilenameInFileSystem(String filename, char [] dataDestination) {
 		try {
-			File file = new File( SaveConfig.getSaveFilePath(filename) );
+			File file = new File( SaveConfig.getGameSaveFilePath(filename) );
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 			bufferedReader.read(dataDestination, 0, dataDestination.length);
 			bufferedReader.close();
