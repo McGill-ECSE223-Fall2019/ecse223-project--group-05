@@ -192,7 +192,7 @@
                                                 <Font name="System Bold" size="15.0" />
                                              </font></Label>
                                           <Label fx:id="lbl_black_awaitingMove" textFill="#5ba0e5" />
-                                          <Button fx:id="btn_blackPlayerTurn" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="END TURN" textFill="#735c2d" />
+                                          <Button fx:id="btn_blackPlayerTurn" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="NOT BLACK TURN" textFill="#735c2d" />
                                           <Label fx:id="blackTimer" alignment="CENTER" prefHeight="82.0" prefWidth="113.0" text="Black Timer" textAlignment="CENTER">
                                              <font>
                                                 <Font size="21.0" />
@@ -203,7 +203,7 @@
                                                 <Font name="System Bold" size="15.0" />
                                              </font></Label>
                                           <Label fx:id="lbl_white_awaitingMove" textFill="#5ba0e5" />
-                                          <Button fx:id="btn_whitePlayerTurn" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
+                                          <Button fx:id="btn_whitePlayerTurn" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="END TURN" textFill="#3d6b99" />
                                           <Label fx:id="whiteTimer" alignment="CENTER" prefHeight="84.0" prefWidth="120.0" text="White Timer" textAlignment="CENTER" textFill="WHITE">
                                              <font>
                                                 <Font size="21.0" />
@@ -305,7 +305,7 @@
                                                 <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="169.0">
                                                    <children>
                                                       <Label alignment="CENTER" contentDisplay="CENTER" text="VERSUS LOCAL PLAYER" textAlignment="CENTER" />
-                                                      <ImageView fitHeight="150.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true" />
+                                                      <ImageView fx:id="img_VS_local" fitHeight="150.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true" />
                                                       <Label text="Starts an offline game" />
                                                    </children>
                                                 </VBox>
@@ -321,7 +321,7 @@
                                                             <Font name="System Bold" size="12.0" />
                                                          </font>
                                                       </Label>
-                                                      <ImageView fitHeight="105.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true" />
+                                                      <ImageView fx:id="img_VS_guest" fitHeight="105.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true" />
                                                       <Label text="Hosts a LAN game session" />
                                                    </children>
                                                 </VBox>
@@ -337,7 +337,7 @@
                                                             <Font name="System Bold" size="12.0" />
                                                          </font>
                                                       </Label>
-                                                      <ImageView fitHeight="104.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true" />
+                                                      <ImageView fx:id="img_VS_host" fitHeight="104.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true" />
                                                       <Label text="Searches for LAN sessions" />
                                                    </children>
                                                 </VBox>
