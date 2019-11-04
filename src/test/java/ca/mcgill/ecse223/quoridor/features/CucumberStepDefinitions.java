@@ -1225,6 +1225,7 @@ public class CucumberStepDefinitions {
 			e.printStackTrace();
 		} catch (InvalidPositionException e) {
 			receivedInvalidPositionException = true;
+			e.printStackTrace();
 		} 
 	}
 	
@@ -1234,8 +1235,8 @@ public class CucumberStepDefinitions {
 	 */
 	@And("The position to load is valid")
 	public void thePositionToLoadIsValid(){
-		assertEquals(true, !failedToReadSaveFile);
-		assertEquals(true, !receivedInvalidPositionException);
+		assertEquals(false, failedToReadSaveFile);
+		assertEquals(false, receivedInvalidPositionException);
 	}
 	
 	/**
@@ -1306,8 +1307,8 @@ public class CucumberStepDefinitions {
 	@And("Both players shall have {int} in their stacks")
 	public void bothPlayersShallHaveRemainingWallsInTheirStacks(int remainingWalls) {
 		Game g = QuoridorApplication.getQuoridor().getCurrentGame();
-		assertEquals(remainingWalls, g.getBlackPlayer().numberOfWalls());
-		assertEquals(remainingWalls, g.getWhitePlayer().numberOfWalls());
+		assertEquals(remainingWalls, g.getCurrentPosition().getBlackWallsInStock().size());
+		assertEquals(remainingWalls, g.getCurrentPosition().getWhiteWallsInStock().size());
 	}
 	
 	//LOAD INVALID POSITION
@@ -1318,7 +1319,7 @@ public class CucumberStepDefinitions {
 	 */
 	@And("The position to load is invalid")
 	public void thePositionToLoadIsInvalid(){
-		assertEquals(true, !failedToReadSaveFile);
+		assertEquals(false, failedToReadSaveFile);
 		assertEquals(true, receivedInvalidPositionException);
 	}
 	

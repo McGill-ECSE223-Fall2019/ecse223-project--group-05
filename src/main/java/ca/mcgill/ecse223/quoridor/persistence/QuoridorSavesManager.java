@@ -192,42 +192,50 @@ public class QuoridorSavesManager {
 			game.setCurrentPosition(baseGamePosition);
 		}
 		/*
-		 *	RESETING PLAYER WALL DATA
-		 *	The players provided already have all of their walls. This needs to be overridden since we are completely replacing their data anyways.
+		 *      RESETING PLAYER WALL DATA
+		 *      The players provided already have all of their walls. This needs to be overridden since we are completely replacing their data anyways.
 		 */
 		{
 			List<Wall> firstPlayerOldWalls = new ArrayList<Wall>();
 			firstPlayerOldWalls.addAll( firstPlayer.getWalls() );
 			for(Wall wall: firstPlayerOldWalls) {
-				firstPlayer.removeWall(wall);
+				( blackIsNextToPlay?game.getBlackPlayer():game.getWhitePlayer() ).removeWall(wall);
 			}
 			while(!firstPlayerOldWalls.isEmpty()) {
 				firstPlayerOldWalls.remove(0).delete();
 			}
-			
+		
 			List<Wall> secondPlayerOldWalls = new ArrayList<Wall>();
 			secondPlayerOldWalls.addAll( secondPlayer.getWalls() );
 			for(Wall wall: secondPlayerOldWalls) {
-				secondPlayer.removeWall(wall);
+				( !blackIsNextToPlay?game.getBlackPlayer():game.getWhitePlayer() ).removeWall(wall);
 			}
 			while(!secondPlayerOldWalls.isEmpty()) {
 				secondPlayerOldWalls.remove(0).delete();
 			}
 		}
-		//Adding walls
+        //Adding the new walls
 		if(blackIsNextToPlay) {
 			for( int i = 0 ; i < 10 ; i ++ ) {
-				game.getCurrentPosition().addBlackWallsInStock( new Wall( i , firstPlayer ) );
+				Wall wall = new Wall( i , game.getBlackPlayer() );
+				game.getCurrentPosition().addBlackWallsInStock( wall );
+				game.getBlackPlayer().addWallAt(wall, i);
 			}
 			for( int i = 10 ; i < 20 ; i++ ) {
-				game.getCurrentPosition().addWhiteWallsInStock( new Wall( i , secondPlayer ) );
+				Wall wall = new Wall( i , game.getWhitePlayer() );
+				game.getCurrentPosition().addWhiteWallsInStock( wall );
+				game.getWhitePlayer().addWallAt(wall, i-10);
 			}
 		} else {
 			for( int i = 0 ; i < 10 ; i ++ ) {
-				game.getCurrentPosition().addWhiteWallsInStock( new Wall( i , firstPlayer ) );
+				Wall wall = new Wall( i , game.getWhitePlayer() );
+				game.getCurrentPosition().addWhiteWallsInStock( wall );
+				game.getWhitePlayer().addWallAt(wall, i);
 			}
 			for( int i = 10 ; i < 20 ; i++ ) {
-				game.getCurrentPosition().addBlackWallsInStock( new Wall( i , secondPlayer ) );
+				Wall wall = new Wall( i , game.getBlackPlayer() );
+				game.getCurrentPosition().addBlackWallsInStock( wall );
+				game.getBlackPlayer().addWallAt(wall, i-10);
 			}
 		}
 		
@@ -236,8 +244,8 @@ public class QuoridorSavesManager {
 			//			tens indices	000000000011111
 			//			ones indices	012345678901234
 		for( int i = 0 ; i < 2 ; i ++ ) {
-			int playerPositionRow = lines[i].charAt(4) - '0' + 1;
 			int playerPositionCol = lines[i].charAt(3) - 'a' + 1;
+			int playerPositionRow = lines[i].charAt(4) - '1' + 1;
 			sanityCheckTileCoordinate(playerPositionRow,playerPositionCol);
 			if(i==0) {	//If first player
 				if(blackIsNextToPlay) {		//If we're modifying the first playerPosition and first player is black
@@ -271,9 +279,9 @@ public class QuoridorSavesManager {
 				
 				//Read in the j'th wall word for constructing the new WallMove
 				int			wallCol = lines[i].charAt( 7 + 5*j ) - 'a' + 1;
-				int			wallRow = lines[i].charAt( 8 + 5*j ) - '0' + 1;
+				int			wallRow = lines[i].charAt( 8 + 5*j ) - '1' + 1;
 				sanityCheckTileCoordinate(wallRow,wallCol);
-				Direction	wallDir = lines[i].charAt( 9 + 5*j ) == 'v' ? Direction.Vertical : Direction.Horizontal;
+				Direction	wallDir = (lines[i].charAt( 9 + 5*j ) == 'v') ? Direction.Vertical : Direction.Horizontal;
 				//Collect remaining data for constructing the new WallMove
 				int 		newMoveNumber 	= prevMove != null ? prevMove.getMoveNumber() + 1 : 1 ;
 				int			newRoundNumber	= j + 1;
@@ -326,11 +334,8 @@ public class QuoridorSavesManager {
 		allPlacedWalls.addAll( game.getCurrentPosition().getBlackWallsOnBoard() );
 		allPlacedWalls.addAll( game.getCurrentPosition().getWhiteWallsOnBoard() );
 		for( int i = 0 ; i < allPlacedWalls.size(); i++ ) {
-			for( int j = 0 ; i < allPlacedWalls.size(); i++ ) {
-				if( i == j ) {
-					continue;
-				}
-				sanityCheckWallOverlap( allPlacedWalls.get(i), allPlacedWalls.get(j) );
+			for( int j = i + 1 ; j < allPlacedWalls.size(); j++ ) {
+				sanityCheckWallOverlap( allPlacedWalls.get(i), allPlacedWalls.get(j), allPlacedWalls );
 			}
 		}
 		
@@ -479,18 +484,18 @@ public class QuoridorSavesManager {
 	 * @param wall2
 	 * @throws InvalidPositionException
 	 */
-	private static void sanityCheckWallOverlap( Wall wall1, Wall wall2 ) throws InvalidPositionException {
+	private static void sanityCheckWallOverlap( Wall wall1, Wall wall2, List<Wall> allWalls ) throws InvalidPositionException {
 		//If either of the walls are null, then they're not going to overlap lul.
 		if( wall1.getMove() == null || wall2.getMove() == null ) {
 			return;
 		}
 		//Aight no we're going through a list of possible ways walls can be overlapped, with the first wall as the master wall.
 		WallMove wall1Move = (WallMove)wall1.getMove();
-		WallMove wall2Move = (WallMove)wall1.getMove();
+		WallMove wall2Move = (WallMove)wall2.getMove();
 		int wall1row = wall1Move.getTargetTile().getRow();
 		int wall2row = wall2Move.getTargetTile().getRow();
 		int wall1col = wall1Move.getTargetTile().getColumn();
-		int wall2col = wall1Move.getTargetTile().getColumn();
+		int wall2col = wall2Move.getTargetTile().getColumn();
 		if( wall1Move.getWallDirection() == Direction.Horizontal ) {
 			if( wall2Move.getWallDirection() == Direction.Horizontal ) {
 				//If both walls are Horizontal, then they can only intersect by being on the same row and close.
@@ -500,13 +505,13 @@ public class QuoridorSavesManager {
 				}
 				if( wall1col == wall2col - 1 || wall1col == wall2col || wall1col == wall2col + 1 ) {
 					//If wall2 is 1 to the left, on, or 1 to the right of wall1, it is intersecting.
-					throw new InvalidPositionException("Detected overlapping walls: ("+wall1col+","+wall1row+")h and ("+wall2col+","+wall2row+")h.");
+					throw new InvalidPositionException("Detected overlapping walls: ("+wall1col+","+wall1row+")h and ("+wall2col+","+wall2row+")h. Consider : \n" + listOfPlacedWallsToString(allWalls) );
 				}
 				
 			} else {
 				//If wall1 is horizontal and wall2 vertical, the only way they intersect is if they are on the same target tile.
 				if( wall1row == wall2row && wall1col == wall2col ) {
-					throw new InvalidPositionException("Detected overlapping walls: ("+wall1col+","+wall1row+")h and ("+wall2col+","+wall2row+")v.");
+					throw new InvalidPositionException("Detected overlapping walls: ("+wall1col+","+wall1row+")h and ("+wall2col+","+wall2row+")v. Consider : \n" + listOfPlacedWallsToString(allWalls) );
 				} else {
 					return;
 				}
@@ -516,7 +521,7 @@ public class QuoridorSavesManager {
 			if( wall2Move.getWallDirection() == Direction.Horizontal ) {
 				//If wall1 is vertical and wall2 horizontal, the only way they intersect is by being on the same target tile.
 				if( wall1row == wall2row && wall1col == wall2col ) {
-					throw new InvalidPositionException("Detected overlapping walls: ("+wall1col+","+wall1row+")v and ("+wall2col+","+wall2row+")h.");
+					throw new InvalidPositionException("Detected overlapping walls: ("+wall1col+","+wall1row+")v and ("+wall2col+","+wall2row+")h. Consider : \n" + listOfPlacedWallsToString(allWalls) );
 				} else {
 					return;
 				}
@@ -529,12 +534,19 @@ public class QuoridorSavesManager {
 				}
 				if( wall1row == wall2row - 1 || wall1row == wall2row || wall1row == wall2row + 1 ) {
 					//If wall1 is 1 above, on, or 1 below wall2, it is intersecting
-					throw new InvalidPositionException("Detected overlapping walls: ("+wall1col+","+wall1row+")v and ("+wall2col+","+wall2row+")v.");
+					throw new InvalidPositionException("Detected overlapping walls: ("+wall1col+","+wall1row+")v and ("+wall2col+","+wall2row+")v. Consider : \n" + listOfPlacedWallsToString(allWalls) );
 				}
 				
 			}
 		}
 	}
 	
+	private static String listOfPlacedWallsToString( List<Wall> walls ) {
+		String str = "";
+		for( Wall wall : walls ) {
+			str = str + "(" + wall.getMove().getTargetTile().getColumn() + "," + wall.getMove().getTargetTile().getRow() + ")\n" ;
+		}
+		return str;
+	}
 	
 }
