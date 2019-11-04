@@ -12,12 +12,15 @@ import java.net.URL;
 
 import ca.mcgill.ecse223.quoridor.view.ViewInterface;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.transform.Scale;
+import javafx.stage.WindowEvent;
 
 
 public class QuoridorApplication extends Application{
@@ -68,6 +71,14 @@ public class QuoridorApplication extends Application{
 	       	scale.setPivotY(0);
 	       	scene.getRoot().getTransforms().setAll(scale);
 	       });
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				public void handle(WindowEvent we) {
+					primaryStage.close();
+					Platform.exit();
+					System.exit(0);
+				}
+			});
+
 
 		} catch (IOException e) {e.printStackTrace();}
 	}
