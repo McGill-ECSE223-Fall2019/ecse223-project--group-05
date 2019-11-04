@@ -77,13 +77,14 @@ public class ViewInterface {
 
 
 	
-	@FXML ListView loadedGameList;
-	private int counter = 0;
+
+
 	
 	
      //Load Game Page
 	@FXML private Label lbl_directory;
-
+    @FXML ListView loadedGameList;
+    private int counter = 0; //used for debugging of listView
 	//Game Session Page
 	@FXML private GridPane Game_Board;
 	@FXML private Rectangle whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6, whiteWall7, whiteWall8, whiteWall9, whiteWall10;
@@ -224,16 +225,23 @@ public class ViewInterface {
     wallSelected = null;
 	}
 
-
+    /**
+     * @author Matthias Arabian
+     * opens a DialogWindow prompting the user to select a directory that contains game files.
+     * Then parse through that directory and upodate the GUI to display the user input
+     */
 	public void addToLoadedGameList() {
+	    //directory chooser dialog window
 		Stage stage = new Stage();
 		DirectoryChooser fileChooser = new DirectoryChooser();
 		fileChooser.setTitle("Select directory with saved games");
 		File file = fileChooser.showDialog(stage);
 		stage.close();
+
+		//check that the directory is valid. If not, update the GUI accordingly
 		if (file != null) {
-			lbl_directory.setText(file.toString());
-			detectGameFiles(file);
+			lbl_directory.setText(file.toString()); //display the selected directory
+			detectGameFiles(file); //detect game files in directory
 		}
 		else {
 			lbl_directory.setText("Directory could not be opened");
@@ -241,20 +249,31 @@ public class ViewInterface {
 	}
 
 
+    /**
+     * @author Matthias Arabian
+     * @param directory the directory to crawl through.
+     * Checks every file in <>directory</> and adds it to the listView if is a gameFile.
+     */
+	private void detectGameFiles(File directory) {
 
-	private void detectGameFiles(File file) {
-		File[] gameFiles = file.listFiles(new FilenameFilter() {
+	    //get list of files whose ending corresponds with the endings of game files (.dat)
+		File[] gameFiles = directory.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
 		    	return name.endsWith("dat");
 		    }
 		});
-		System.out.println(gameFiles);
+//		System.out.println(gameFiles); //debugging flag
+
+        //clears the listView and repopulates it with the new files list
 		loadedGameList.getItems().clear();
 		for (File f : gameFiles)
 			loadedGameList.getItems().add(f.toString());
 	}
 
-	
+    /**
+     * @author Matthias Arabian
+     * This function is used as a debugging tool to detect javaFX listView events visually as they occur.
+     */
 	public void gotSelected() {
 		System.out.println(loadedGameList.getSelectionModel().getSelectedItem());
 	}
@@ -482,8 +501,6 @@ public class ViewInterface {
 				tmp.setStyle("-fx-background-color: #ffffff");
 				Game_Board.add(tmp , row, col);
 			}
-
-
 		}
 
 
@@ -626,22 +643,29 @@ public class ViewInterface {
 	public Rectangle getWallMoveCandidate() {
 		return wallMoveCandidate;
 	}
-	
+
+    /**
+     * @author Matthias Arabian
+     * @param mouseEvent
+     * detect that the wall should be rotated and acts accordingly.
+     * rotates GUI and model wallMoveCandidate.
+     */
 	public void rotateWallEvent(MouseEvent mouseEvent) {
 
 		//get the rectangle that is grabbed
 		Rectangle wall = (Rectangle) mouseEvent.getSource();
 		//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
 		wallMoveCandidate = wall;
-		System.out.println("hi");
+		System.out.println("hi"); //used for debuging purposes
 		QuoridorController.GUI_flipWallCandidate("horizontal");
+        QuoridorController.flipWallCandidate();
 
 	}
 
 	/**
 	 * @author Matthias Arabian
 	 * @param e
-	 * Truggered when a user pressses a button that might end a turn. Checks that that is a valid operation
+	 * Triggered when a user presses a button that might end a turn. Checks that that is a valid operation
 	 * and acts accordingly.
 	 * If the button can be pressed, then the player's turn is over. Its timer is turned off, and the other player's turn begins.
 	 * Other's timer turns on.

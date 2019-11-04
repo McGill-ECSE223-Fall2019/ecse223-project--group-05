@@ -796,7 +796,8 @@ public class QuoridorController {
      */
     public static void GetWallMoveCandidate(String dir, int row, int col) throws UnsupportedOperationException {
         WallMove wallMove = QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate();
-        
+
+        //if no wall move candidate exists
         if (wallMove == null) {
         	//get the direction of the wall
         	Direction d;
@@ -1045,7 +1046,8 @@ public class QuoridorController {
      *
      * @param player
      * @return
-     * @author Matthias Arabian
+     * @author Edwin Pan
+     * @author Matthias Arabian made modifications for deliverable 3
      */
     public static boolean completePlayerTurn(Player player) {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -1086,18 +1088,6 @@ public class QuoridorController {
         throw new UnsupportedOperationException("QuoridorController.playerTimerStop(player) is not currently implemented!");
     }
 
-    /**
-     * PENDING IMPLEMENTATION
-     * GUI query method.
-     * Returns whether or not the provided player's clock (from their turn) is running.
-     *
-     * @param player
-     * @return player timer is running boolean
-     * @author Matthias Arabian
-     */
-    public static boolean getPlayerTimerRunning(Player player) {
-        throw new UnsupportedOperationException("QuoridorController.playerTimerStop(player) is not currently implemented!");
-    }
 
     /**
      * GUI query method

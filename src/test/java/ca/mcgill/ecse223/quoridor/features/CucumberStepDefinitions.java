@@ -834,7 +834,8 @@ public class CucumberStepDefinitions {
 	 */
 	
 	/**
-	 * @author Matthias Arabian
+     * @author Edwin Pan
+     * @author Matthias Arabian made modifications for deliverable 3
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the player whose turn it is to play is the provided player.
 	 */
@@ -854,7 +855,8 @@ public class CucumberStepDefinitions {
 	}
 	
 	/**
-	 * @author Matthias Arabian
+     * @author Edwin Pan
+     * @author Matthias Arabian made modifications for deliverable 3
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the clock of the player whose turn it is to play is running
 	 */
@@ -875,7 +877,8 @@ public class CucumberStepDefinitions {
 	}
 
 	/**
-	 * @author Matthias Arabian
+     * @author Edwin Pan
+     * @author Matthias Arabian made modifications for deliverable 3
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the clock of the player whose turn it is not to play is stopped
 	 */
@@ -894,18 +897,19 @@ public class CucumberStepDefinitions {
 	}
 
 	/**
-	 * @author Matthias Arabian
+     * @author Edwin Pan
+     * @author Matthias Arabian made modifications for deliverable 3
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Makes the selected player complete their move.
 	 */
-//TODO MATTHIAS
 	@When("Player {string} completes his move")
 	public void playerPlayerCompletesHisMove(String playerColorAsString){
 		assertEquals(true, QuoridorController.completePlayerTurn( QuoridorController.getPlayerOfProvidedColorstring(playerColorAsString) ));
 	}
 	
 	/**
-	 * @author Matthias Arabian
+     * @author Edwin Pan
+     * @author Matthias Arabian made modifications for deliverable 3
 	 */
 	@Then("The user interface shall be showing it is {string} turn")
 	public void theUserInterfaceShallBeShowingItIs__Turn(String name) {
@@ -917,11 +921,11 @@ public class CucumberStepDefinitions {
 	
 	
 	/**
-	 * @author Matthias Arabian
+     * @author Edwin Pan
+     * @author Matthias Arabian made modifications for deliverable 3
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Asserts that the user interface now shows that the specified player's timer is stopped.
 	 */
-	//TODO MATTHIAS
 	@And("The clock of {string} shall be stopped")
 	public void andTheClockOfPlayerShallBeStopped(String playerColorAsString){
 		Player p;
@@ -937,11 +941,11 @@ public class CucumberStepDefinitions {
 
 	
 	/**
-	 * @author Matthias Arabian
+     * @author Edwin Pan
+     * @author Matthias Arabian made modifications for deliverable 3
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Asserts that the user interface now shows that the specified player's timer is running.
 	 */
-	//TODO MATTHIAS
 	@And("The clock of {string} shall be running")
 	public void andTheClockOfOtherShallBeRunning(String playerColorAsString){
 		Player p;
@@ -959,11 +963,10 @@ public class CucumberStepDefinitions {
 	
 	
 	/**
-	 * @author Matthias Arabian
+     * @author Edwin Pan
 	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Asserts that the user interface now shows that the next move belongs to the specified player.
 	 */
-//TODO MATTHIAS
 	@And("The next player to move shall be {string}")
 	public void theNextPlayerToMoveShallBeOther(String playerColorAsString){
 		Player now = QuoridorController.getPlayerOfCurrentTurn();
@@ -1298,7 +1301,6 @@ public class CucumberStepDefinitions {
 	 * This function calls for the GUI to update its wall move object to match its new direction
 	 * @author Matthias Arabian
 	 */
-//TODO MATTHIAS
 	@Then("The wall shall be rotated over the board to {string}")
 	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
 		QuoridorController.GUI_flipWallCandidate(newDir);
