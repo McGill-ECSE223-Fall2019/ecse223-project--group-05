@@ -74,7 +74,7 @@ public class CucumberStepDefinitions {
 	@Given("^The game is not running$")
 	public void theGameIsNotRunning() {
 		initQuoridorAndBoard();
-//		myPlayers = createUsersAndPlayers("user1", "user2");
+		myPlayers = createUsersAndPlayers("user1", "user2");
 	}
 
 	@Given("^The game is running$")
