@@ -202,7 +202,7 @@
                                              <font>
                                                 <Font name="System Bold" size="15.0" />
                                              </font></Label>
-                                          <Label fx:id="lbl_white_awaitingMove" text="AWAITING MOVE" textFill="#5ba0e5" />
+                                          <Label fx:id="lbl_white_awaitingMove" textFill="#5ba0e5" />
                                           <Button fx:id="btn_whitePlayerTurn" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="NOT WHITE TURN" textFill="#3d6b99" />
                                           <Label fx:id="whiteTimer" alignment="CENTER" prefHeight="84.0" prefWidth="120.0" text="White Timer" textAlignment="CENTER" textFill="WHITE">
                                              <font>
@@ -257,8 +257,8 @@
                                     </VBox>
                                     <VBox alignment="TOP_CENTER" prefHeight="356.0" prefWidth="200.0" spacing="5.0">
                                        <children>
-                                          <Label fx:id="gameSessionNotificationLabel" prefHeight="41.0" prefWidth="134.0" textFill="RED" />
                                           <Separator prefHeight="93.0" prefWidth="167.0" visible="false" />
+                                          <Label fx:id="gameSessionNotificationLabel" prefHeight="41.0" prefWidth="134.0" textFill="RED" />
                                           <HBox alignment="CENTER" prefHeight="85.0" prefWidth="606.0">
                                              <children>
                                                 <Rectangle fx:id="blackWall1" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMouseEntered="#rotateWallEvent" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />

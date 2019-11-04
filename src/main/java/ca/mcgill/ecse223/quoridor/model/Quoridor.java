@@ -2,14 +2,16 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.quoridor.model;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Due to a bug in Umple, this enum has been added manually to the ca.mcgill.ecse223.quoridor.model package
  * public enum Direction { Horizontal, Vertical }
  */
-// line 9 "../../../../../QuoridorGame.ump"
-public class Quoridor
+// line 5 "../../../../../QuoridorGamePersistence.ump"
+// line 10 "../../../../../QuoridorGame.ump"
+public class Quoridor implements Serializable
 {
 
   //------------------------
@@ -236,5 +238,13 @@ public class Quoridor
     }
     
   }
+  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 8 "../../../../../QuoridorGamePersistence.ump"
+  private static final long serialVersionUID = 0L ;
 
+  
 }

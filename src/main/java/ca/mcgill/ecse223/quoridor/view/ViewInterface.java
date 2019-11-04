@@ -96,7 +96,7 @@ public class ViewInterface {
 	@FXML private Label whitePlayerName;
 	@FXML private Label blackPlayerName;
 
-//Grab and Drag wall variables
+	//Grab and Drag wall variables
 	double wallXPosition, wallYPosition;
 
 
@@ -413,7 +413,10 @@ public class ViewInterface {
 				tmp.setStyle("-fx-background-color: #ffffff");
 				Game_Board.add(tmp , row, col);
 			}
+
+
 		}
+
 
 		//Initialize the timers
 		timer = new Timer();

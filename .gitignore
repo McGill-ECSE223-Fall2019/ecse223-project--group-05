@@ -2,8 +2,9 @@
 build
 ca.mcgill.ecse223.quoridor
 bin
-.settings
 .idea
 .gradle
 .project
 .classpath
+env
+saves
