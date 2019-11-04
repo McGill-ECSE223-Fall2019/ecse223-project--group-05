@@ -25,9 +25,9 @@ public class CucumberTest_LoadPosition_TestFileWriters {
 	public static final String	badpawntestfile						=	"quoridor_test_game_invalid_pawn.dat";
 	private static final String	badpawntestfile_content				=	"W: j0\n"	+ 		"B: 01";
 	public static final String	overlappingwalltestfile				=	"quoridor_test_game_invalid_wall_overlap_.dat";
-	private static final String overlappingwalltestfile_content		=	"W: c3, e5v\n"	+	"B: e6v, e4v";
+	private static final String overlappingwalltestfile_content		=	"W: c3, e5v\n"	+	"B: g7, e6v";
     public static final String	outoftrackwalltestfile				=	"quoridor_test_game_invalid_wall_out-of-track.dat";
-    private static final String	outoftrackwalltestfile_content		=	"W: c3, i1v\n"	+	"B: e9v";
+    private static final String	outoftrackwalltestfile_content		=	"W: c3, i1v\n"	+	"B: e7, e9v";
 	
     /**
      * Takes in a filename. If the filename is recognized, then the related File will be written into the File System,
