@@ -586,4 +586,29 @@ public class ViewInterface {
 			}
 		}
 	}
+
+	/**
+	 * @author Matthias Arabian
+	 * @return value of string awaitingMove
+	 * this is used to ensure that the player switching has been announced to the players
+	 */
+	public String getWhitePlayerStatus(){
+		return null;
+//        if (lbl_white_awaitingMove == null || lbl_white_awaitingMove.equals(""))
+//            return null;
+//        return lbl_white_awaitingMove.getText();
+
+	}
+
+	/**
+	 * @author Matthias Arabian
+	 * @return value of string awaitingMove
+	 * this is used to ensure that the player switching has been announced to the players
+	 */
+	public String getBlackPlayerStatus(){
+		return null;
+//	    if (lbl_black_awaitingMove == null || lbl_black_awaitingMove.equals(""))
+//	        return null;
+//		return lbl_black_awaitingMove.getText();
+	}
 }
