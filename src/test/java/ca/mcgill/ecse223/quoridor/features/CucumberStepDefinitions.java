@@ -1232,6 +1232,7 @@ public class CucumberStepDefinitions {
 	/**
 	 * Ensures that the loaded positions are valid and legal/playable.
 	 * @author Matthias Arabian
+	 * @author Edwin Pan made modifications after taking over for sprint 3
 	 */
 	@And("The position to load is valid")
 	public void thePositionToLoadIsValid(){
@@ -1303,6 +1304,7 @@ public class CucumberStepDefinitions {
 	/**
 	 * Ensures that both players have the same number of walls in stock (which doesn't really make sense....?)
 	 * @author Matthias Arabian
+	 * @author Edwin Pan fixed code after taking over for sprint 3.
 	 */
 	@And("Both players shall have {int} in their stacks")
 	public void bothPlayersShallHaveRemainingWallsInTheirStacks(int remainingWalls) {
@@ -1316,6 +1318,7 @@ public class CucumberStepDefinitions {
 	 * This function is called when an invalid position is loaded.
 	 * It verifies that the position is indeed invalid.
 	 * @author Matthias Arabian
+	 * @author Edwin Pan made modifications after taking over for sprint 3
 	 */
 	@And("The position to load is invalid")
 	public void thePositionToLoadIsInvalid(){
@@ -1326,6 +1329,7 @@ public class CucumberStepDefinitions {
 	/**
 	 * This function ensures that an error is sent out about the load position being invalid.
 	 * @author Matthias Arabian
+	 * @author Edwin Pan made modifications after taking over for sprint 3
 	 */
 	@Then("The load shall return an error")
 	public void theLoadShallReturnAnError() throws Throwable{
