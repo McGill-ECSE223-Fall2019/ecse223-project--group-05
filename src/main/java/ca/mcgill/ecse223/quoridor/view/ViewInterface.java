@@ -43,6 +43,7 @@ import javafx.stage.Stage;
 public class ViewInterface {
 
 
+
 	//these are the pages that the user can travel to/interact with
 	private enum Page {
 		TOP_BUTTONS,
@@ -72,15 +73,9 @@ public class ViewInterface {
 	@FXML private TextField blackTimerField;
 	@FXML private Label whiteUsernameExistsLabel;
 	@FXML private Label blackUsernameExistsLabel;
+	@FXML private Label invalidWallPlacement;
 
 
-
-
-	
-
-
-	
-	
      //Load Game Page
 	@FXML private Label lbl_directory;
     @FXML ListView loadedGameList;
@@ -92,7 +87,7 @@ public class ViewInterface {
 	@FXML private Label gameSessionNotificationLabel;
 	@FXML private Label whiteTimer;
 	@FXML private Label blackTimer;
-	@FXML private Button btn_whitePlayerTurn, btn_blackPlayerTurn;
+	@FXML private Button btn_whitePlayerTurn, btn_blackPlayerTurn, btn_blackPlayerDropWall, btn_whitePlayerDropWall;
 	@FXML private Label lbl_black_awaitingMove, lbl_white_awaitingMove;
 	@FXML private Label whitePlayerName;
 	@FXML private Label blackPlayerName;
@@ -219,12 +214,54 @@ public class ViewInterface {
 	 * @author Alex Masciotra
 	 *This method is executed when the user releases the wall
 	 */
-	public void DropWall(MouseEvent mouseEvent) {
-		//gameSessionNotificationLabel.setText("Invalid Wall Placement");
+	public void whiteDropWall(MouseEvent mouseEvent) {
+		Boolean dropSuccessful;
+
+		invalidWallPlacement.setText("");
+
+		try {
+			dropSuccessful = QuoridorController.releaseWall(quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to drop Wall");
+		}
+
+		if (!dropSuccessful){
+			invalidWallPlacement.setText("Invalid Wall Placement");
+		}
+	}
+
+	/**
+	 * @author Alex Masciotra
+	 *This method is executed when the user releases the wall
+	 */
+	public void blackDropWall(MouseEvent mouseEvent) {
 
 		Boolean dropSuccessful;
 
+		invalidWallPlacement.setText("");
+
+		try {
+			dropSuccessful = QuoridorController.releaseWall(quoridor);
+		} catch (Exception e) {
+			throw new java.lang.UnsupportedOperationException("Unable to drop Wall");
+		}
+
+		if (!dropSuccessful){
+			invalidWallPlacement.setText("Invalid Wall Placement");
+		}
 	}
+
+	/**
+	 * @author Alex Masciotra
+	 *This method is executed when the user releases the wall
+	 */
+	public void DropWall(MouseEvent mouseEvent) {
+		//gameSessionNotificationLabel.setText("Invalid Wall Placement");
+
+		//Boolean dropSuccessful;
+
+	}
+
 
     /**
      * @author Matthias Arabian

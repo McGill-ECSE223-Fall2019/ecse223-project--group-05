@@ -259,8 +259,18 @@
                                     <VBox alignment="TOP_CENTER" prefHeight="356.0" prefWidth="200.0" spacing="5.0">
                                        <children>
                                           <Separator prefHeight="93.0" prefWidth="167.0" visible="false" />
+                                          <Label fx:id="invalidWallPlacement" prefHeight="8.0" prefWidth="118.0" textFill="#f50303">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Label>
                                           <Label fx:id="gameSessionNotificationLabel" prefHeight="41.0" prefWidth="134.0" textFill="RED" />
-                                          <HBox alignment="CENTER" prefHeight="85.0" prefWidth="606.0">
+                                          <Button fx:id="btn_blackPlayerDropWall" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#blackDropWall" prefHeight="23.0" prefWidth="82.0" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="BlackDropWall" textFill="#080807">
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Button>
+                                          <HBox alignment="CENTER" prefHeight="71.0" prefWidth="168.0">
                                              <children>
                                                 <Rectangle fx:id="blackWall1" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMouseEntered="#rotateWallEvent" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                                 <Rectangle fx:id="blackWall2" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
@@ -274,7 +284,12 @@
                                                 <Rectangle fx:id="blackWall10" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER" prefHeight="102.0" prefWidth="386.0">
+                                          <Button fx:id="btn_whitePlayerDropWall" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#whiteDropWall" prefHeight="23.0" prefWidth="86.0" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="WhiteDropWall" textFill="#080807">
+                                             <font>
+                                                <Font size="9.0" />
+                                             </font>
+                                          </Button>
+                                          <HBox alignment="CENTER" prefHeight="77.0" prefWidth="157.0">
                                              <children>
                                                 <Rectangle fx:id="whiteWall1" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                                 <Rectangle fx:id="whiteWall2" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
