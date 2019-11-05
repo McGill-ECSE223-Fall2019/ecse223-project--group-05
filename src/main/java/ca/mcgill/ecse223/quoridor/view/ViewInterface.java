@@ -458,7 +458,7 @@ git s     */
 		/*
 		 * The following line has been added by Edwin Pan in order to have the SaveGame button on the ButtonBar
 		 */
-		if( p != Page.GAME_SESSION_PAGE && p != Page.RULES_PAGE ) {
+		if( p != Page.GAME_SESSION_PAGE) {
 			btn_saveGame.setVisible(false);
 		}
 		
@@ -501,9 +501,11 @@ git s     */
 
 		//display the Rules page, and bring it to front to allow for user interaction.
 		CurrentPage = getPage(Page.RULES_PAGE);
-		CurrentPage.setDisable(false);
-		CurrentPage.setVisible(true);
-		CurrentPage.toFront();
+		getPage(Page.RULES_PAGE).setDisable(false);
+		getPage(Page.RULES_PAGE).setVisible(true);
+		getPage(Page.RULES_PAGE).toFront();
+		getPage(Page.RULES_PAGE).setDisable(false);
+		System.out.println("Rules openend");
 		getPage(Page.TOP_BUTTONS).toFront(); //those need to be on top of the rules to allow for clicking on Rules label to close rules
 
 	}
@@ -575,6 +577,7 @@ git s     */
 	 * initializes the FXML components. this code runs once the application is launched but before the GUI is displayed.
 	 */
 	public void initialize() {
+		resetGUItoMainPage();
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
@@ -1083,5 +1086,16 @@ git s     */
 		this.Goto_Game_Session_Page();
 	}
 	
-	
+	private void resetGUItoMainPage(){
+		for (Page p : Page.values()){
+			getPage(p).setVisible(false);
+			getPage(p).setDisable(true);
+		}
+		getPage(Page.TOP_BUTTONS).setDisable(false);
+		getPage(Page.TOP_BUTTONS).setVisible(true);
+		getPage(Page.MAIN_PAGE).setDisable(false);
+		getPage(Page.MAIN_PAGE).setVisible(true);
+		currentState = Page.MAIN_PAGE;
+	}
+
 }
