@@ -81,7 +81,7 @@
                                        </font></Label>
                                     <Separator prefHeight="31.0" prefWidth="150.0" visible="false" />
                                     <Label text="Set thinking time" />
-                                    <TextField fx:id="whiteTimerField" promptText="00:00" style="-fx-background-color: #ffd800;" />
+                                    <TextField fx:id="whiteTimerField" style="-fx-background-color: #ffd800;" text="05:00" />
                                  </children>
                               </VBox>
                               <VBox layoutX="412.0" layoutY="88.0" prefHeight="244.0" prefWidth="150.0">
@@ -106,7 +106,7 @@
                                     </Label>
                                     <Separator prefHeight="31.0" prefWidth="150.0" visible="false" />
                                     <Label text="Set thinking time" />
-                                    <TextField fx:id="blackTimerField" promptText="00:00" style="-fx-background-color: #ffd800;" />
+                                    <TextField fx:id="blackTimerField" style="-fx-background-color: #ffd800;" text="05:00" />
                                  </children>
                               </VBox>
                            </children>
