@@ -154,6 +154,7 @@ public class QuoridorController {
      */
     public static boolean moveWall(String side) throws Throwable {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
+        //System.err.print(quoridor.getCurrentGame().getWallMoveCandidate()+" is the wall candidate");
         WallMove current = quoridor.getCurrentGame().getWallMoveCandidate();
         int col = current.getTargetTile().getColumn();
         int row = current.getTargetTile().getRow();
@@ -828,7 +829,7 @@ public class QuoridorController {
      * 
      * Rotates the GUI wallMoveCandidate to the desired direction.
      */
-    public static void GUI_flipWallCandidate(String newDir) throws UnsupportedOperationException{
+    public static void GUI_flipWallCandidate() throws UnsupportedOperationException{
     	//Cucumber Test Runner does not initialize the GUI during test. Therefore, the test would not pass even though it is rigorous
        if (QuoridorApplication.getViewInterface() == null){
            return;
@@ -839,23 +840,10 @@ public class QuoridorController {
     	
     	double curWidth = r.getWidth();
     	double curHeight = r.getHeight();
-    	double largestDimension = (curWidth > curHeight) ? curWidth : curHeight;
-    	double shortestDimension = (curWidth > curHeight) ? curHeight : curWidth;
     	
-    	if (newDir.equals("horizontal")) {
-    		r.setWidth(largestDimension);
-    		r.setHeight(shortestDimension);
-    		
-    		if (largestDimension != r.getWidth() && shortestDimension != r.getHeight())
-        		throw new UnsupportedOperationException("Failed to rotate GUI wallCandidate entity");
-    	}
-    	else {
-    		r.setWidth(shortestDimension);
-    		r.setHeight(largestDimension);
-    		
-    		if (largestDimension != r.getHeight() && shortestDimension != r.getWidth())
-        		throw new UnsupportedOperationException("Failed to rotate GUI wallCandidate entity");
-    	}
+
+    		r.setWidth(curHeight);
+    		r.setHeight(curWidth);
     	
     }
 

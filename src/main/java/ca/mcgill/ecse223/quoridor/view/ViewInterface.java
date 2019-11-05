@@ -47,6 +47,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -136,9 +137,10 @@ public class ViewInterface {
 		Rectangle wall = (Rectangle) mouseEvent.getSource();
 		String wallID = wall.getId();
 		String color = QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor());
-
+		System.err.print(1);
 		//check if the player to move is grabbing his walls and not the opponent's
 		if(wallID.contains(color)) {
+
 			boolean grabWallResult;
 			try {
 				grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
@@ -153,6 +155,12 @@ public class ViewInterface {
 				validWallGrab = true;
 				wallMoveCandidate = wall;
 				wallSelected = wall;
+				System.err.print(2);
+				((HBox) wallSelected.getParent()).getChildren().remove(wallSelected);
+				System.err.print(3);
+				wallSelected.setTranslateX(0);
+
+
 			}
 		}
 	}
@@ -162,7 +170,7 @@ public class ViewInterface {
 	 * This method is called when the user drags the walls
 	 */
 	public void MoveWall(MouseEvent mouseEvent) {
-		if(validWallGrab==true) { //check if the user grabbed one of his walls and not the other player's walls
+		/*if(validWallGrab==true) { //check if the user grabbed one of his walls and not the other player's walls
 			Rectangle wall = (Rectangle) mouseEvent.getSource();
 			double offsetX = mouseEvent.getX();
 			double offsetY = mouseEvent.getY();
@@ -172,7 +180,9 @@ public class ViewInterface {
 			wall.setTranslateY(newTranslateY);
 			wallMoveCandidate = wall;
 			wallSelected = wall;
-		}
+		}*/
+		System.out.println("x: " + mouseEvent.getX());
+		System.out.println("y: " + mouseEvent.getY());
 
 	}
 	/**
@@ -243,12 +253,18 @@ public class ViewInterface {
 		if (!dropSuccessful){
 			invalidWallPlacement.setText("Invalid Wall Placement");
 		}
+		else{
+			validWallGrab=false;
+			wallSelected = null;
+			wallMoveCandidate=null;
+		}
 	}
 
 	/**
 	 * @author Alex Masciotra
 	 *This method is executed when the user releases the wall
 	 */
+
 	public void blackDropWall(MouseEvent mouseEvent) {
 
 		Boolean dropSuccessful;
@@ -257,12 +273,19 @@ public class ViewInterface {
 
 		try {
 			dropSuccessful = QuoridorController.releaseWall(quoridor);
+
 		} catch (Exception e) {
 			throw new java.lang.UnsupportedOperationException("Unable to drop Wall");
+
 		}
 
 		if (!dropSuccessful){
 			invalidWallPlacement.setText("Invalid Wall Placement");
+		}
+		else{
+			validWallGrab=false;
+			wallSelected = null;
+			wallMoveCandidate=null;
 		}
 	}
 
@@ -740,15 +763,18 @@ git s     */
      * detect that the wall should be rotated and acts accordingly.
      * rotates GUI and model wallMoveCandidate.
      */
-	public void rotateWallEvent(MouseEvent mouseEvent) {
+	public static void rotateWallEvent(KeyEvent keyEvent) {
 
 		//get the rectangle that is grabbed
-		Rectangle wall = (Rectangle) mouseEvent.getSource();
+		//Rectangle wall = (Rectangle) mouseEvent.getSource();
 		//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
-		wallMoveCandidate = wall;
+		//wallMoveCandidate = wall;
 		System.out.println("hi"); //used for debuging purposes
-		QuoridorController.GUI_flipWallCandidate("horizontal");
-        QuoridorController.flipWallCandidate();
+		if(keyEvent.getCode()==KeyCode.R) {
+			QuoridorController.GUI_flipWallCandidate();
+			QuoridorController.flipWallCandidate();
+		}
+
 
 	}
 
@@ -811,6 +837,7 @@ git s     */
 	 * @author David
 	 */
 	private void setThinkingTime(String input1, String input2){
+
 		if(input1.length()!=5 || input2.length()!=5) {
 			throw new IllegalArgumentException("cannot set thinkingTime. Thinking time must follow format 00:00");
 		}

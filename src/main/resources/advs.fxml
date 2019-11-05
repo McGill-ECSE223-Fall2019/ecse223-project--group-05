@@ -279,7 +279,7 @@
                                           <Label fx:id="gameSessionNotificationLabel" prefHeight="41.0" prefWidth="134.0" textFill="RED" />
                                           <HBox alignment="CENTER" prefHeight="71.0" prefWidth="168.0">
                                              <children>
-                                                <Rectangle fx:id="blackWall1" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMouseEntered="#rotateWallEvent" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
+                                                <Rectangle fx:id="blackWall1" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                                 <Rectangle fx:id="blackWall2" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                                 <Rectangle fx:id="blackWall3" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
                                                 <Rectangle fx:id="blackWall4" arcHeight="5.0" arcWidth="5.0" height="67.0" onMouseDragged="#MoveWall" onMousePressed="#GrabWall" onMouseReleased="#DropWall" stroke="BLACK" strokeType="INSIDE" width="5.0" />
