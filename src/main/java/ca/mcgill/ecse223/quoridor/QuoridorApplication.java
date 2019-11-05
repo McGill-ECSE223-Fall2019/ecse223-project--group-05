@@ -70,6 +70,7 @@ public class QuoridorApplication extends Application{
 	       });
 			scene.addEventHandler(KeyEvent.KEY_PRESSED, (keyEvent) -> {
 				ViewInterface.MoveWall(keyEvent);
+				ViewInterface.rotateWallEvent(keyEvent);
 			});
 	        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
 	       	Scale scale = new Scale(scene.getWidth()/initialW, newVal.doubleValue()/initialH);
