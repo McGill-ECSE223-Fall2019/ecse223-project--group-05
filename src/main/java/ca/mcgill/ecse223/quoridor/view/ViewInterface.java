@@ -163,14 +163,22 @@ public class ViewInterface {
 				System.out.println(p.getClass().getName().contains("HBox"));
 				if (p.getClass().getName().contains("HBox")) {
                     HBox parent = (HBox) wallSelected.getParent();
+                    wallSelected.setX(0);
+                    wallSelected.setY(0);
+                    wallSelected.setTranslateX(0);
+                    wallSelected.setTranslateY(0);
                     parent.getChildren().remove(wallSelected);
                     getCurrentPage().getChildren().add(wallSelected);
-                    wallSelected.setX(prevX);
-                    wallSelected.setY(prevY);
+                    //wallSelected.setX(prevX);
+                    //wallSelected.setY(prevY);
                 }
                 System.err.print(3);
-				wallSelected.setTranslateX(0);
+				wallSelected.setLayoutY(0);
+				wallSelected.setLayoutX(0);
+				wallSelected.setX(192.5);
+                wallSelected.setY(38);
 
+                System.out.println(wallSelected.getX());
 
 			}
 		}
@@ -211,20 +219,20 @@ public class ViewInterface {
 			if(wallSelected==null && (keyEvent.getCode()== KeyCode.UP||keyEvent.getCode()==KeyCode.DOWN||keyEvent.getCode()==KeyCode.LEFT||keyEvent.getCode()==KeyCode.RIGHT)){
 				throw new IllegalArgumentException("no wall was selected.");
 			}
-			if(keyEvent.getCode()==KeyCode.UP) {
+			if(keyEvent.getCode()==KeyCode.W) {
 				isValid = QuoridorController.moveWall("up");
 				wallSelected.setTranslateY(wallSelected.getTranslateY()-VERTICALSTEP);//translates the rectangle by a tilewidth
 				System.out.println("detected");
 			}
-			else if(keyEvent.getCode()==KeyCode.DOWN) {
+			else if(keyEvent.getCode()==KeyCode.S) {
 				isValid = QuoridorController.moveWall("down");
 				wallSelected.setTranslateY(wallSelected.getTranslateY()+VERTICALSTEP);
 			}
-			else if(keyEvent.getCode()==KeyCode.LEFT) {
+			else if(keyEvent.getCode()==KeyCode.A) {
 				isValid = QuoridorController.moveWall("left");
 				wallSelected.setTranslateX(wallSelected.getTranslateX()-HORIZONTALSTEP);
 			}
-			else if(keyEvent.getCode()==KeyCode.RIGHT) {
+			else if(keyEvent.getCode()==KeyCode.D) {
 				isValid = QuoridorController.moveWall("right");
 				wallSelected.setTranslateX(wallSelected.getTranslateX()+HORIZONTALSTEP);
 			}
