@@ -134,6 +134,9 @@ public class ViewInterface {
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
 	public void GrabWall(MouseEvent mouseEvent) {
+		if(wallSelected!=null){
+			displayIllegalNotification("you must drop the wall before selecting a new one");
+		}
 		playerToMove = QuoridorController.getPlayerOfCurrentTurn();
 		Rectangle wall = (Rectangle) mouseEvent.getSource();
 		String wallID = wall.getId();
@@ -217,7 +220,7 @@ public class ViewInterface {
 	public static void MoveWall(KeyEvent keyEvent) {
 		boolean isValid = true;
 		try {
-			if(wallSelected==null && (keyEvent.getCode()== KeyCode.UP||keyEvent.getCode()==KeyCode.DOWN||keyEvent.getCode()==KeyCode.LEFT||keyEvent.getCode()==KeyCode.RIGHT)){
+			if(wallSelected==null && (keyEvent.getCode()== KeyCode.W||keyEvent.getCode()==KeyCode.A||keyEvent.getCode()==KeyCode.S||keyEvent.getCode()==KeyCode.D)){
 				throw new IllegalArgumentException("no wall was selected.");
 			}
 			if(keyEvent.getCode()==KeyCode.W) {
@@ -237,7 +240,7 @@ public class ViewInterface {
 				isValid = QuoridorController.moveWall("right");
 				wallSelected.setTranslateX(wallSelected.getTranslateX()+HORIZONTALSTEP);
 			}
-			if(isValid) {
+			if(!isValid) {
 				wallSelected.setStroke(Color.RED);
 			}
 			else {

@@ -393,7 +393,7 @@ public class QuoridorController {
                 game.getCurrentPosition().removeWhiteWallsInStock(wall);
             }
             else{
-                wall = playerToMove.getWall(nbOfWalls-1+10);
+                wall = playerToMove.getWall(nbOfWalls-1);
                 game.getCurrentPosition().removeBlackWallsInStock(wall);
             }
 
