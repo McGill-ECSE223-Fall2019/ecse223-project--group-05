@@ -40,6 +40,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
@@ -156,8 +157,18 @@ public class ViewInterface {
 				wallMoveCandidate = wall;
 				wallSelected = wall;
 				System.err.print(2);
-				((HBox) wallSelected.getParent()).getChildren().remove(wallSelected);
-				System.err.print(3);
+				double prevX = wallSelected.getX();
+				double prevY = wallSelected.getY();
+				Node p = wallSelected.getParent();
+				System.out.println(p.getClass().getName().contains("HBox"));
+				if (p.getClass().getName().contains("HBox")) {
+                    HBox parent = (HBox) wallSelected.getParent();
+                    parent.getChildren().remove(wallSelected);
+                    getCurrentPage().getChildren().add(wallSelected);
+                    wallSelected.setX(prevX);
+                    wallSelected.setY(prevY);
+                }
+                System.err.print(3);
 				wallSelected.setTranslateX(0);
 
 
