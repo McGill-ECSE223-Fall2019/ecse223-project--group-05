@@ -20,7 +20,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import java.util.ArrayList?>
-
 <Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
       <AnchorPane id="Application_Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3d6b99;">
@@ -120,27 +119,6 @@
                                     <Image url="@logo.png" />
                                  </image>
                               </ImageView>
-                              <AnchorPane id="Rules_Page" fx:id="Rules_Page" disable="true" prefHeight="200.0" prefWidth="200.0" visible="false">
-                                 <children>
-                                    <Pane layoutX="90.0" layoutY="1.0" prefHeight="322.0" prefWidth="402.0">
-                                       <children>
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2d5072" height="287.0" layoutX="12.0" stroke="#2d5072" strokeType="INSIDE" width="391.0" />
-                                          <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="174.0" layoutX="359.0" layoutY="-42.0" stroke="#2d5072" strokeType="INSIDE" strokeWidth="5.0" width="44.0" />
-                                          <Label layoutX="27.0" layoutY="55.0" prefHeight="194.0" prefWidth="359.0" text="Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. " textAlignment="CENTER" textFill="#997a3d" wrapText="true">
-                                             <font>
-                                                <Font name="System Bold" size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <Button layoutX="166.0" layoutY="249.0" mnemonicParsing="false" onMouseClicked="#closeRulesPage" style="-fx-background-color: #cca351;" text="Aight. Got it." textFill="#997a3d" />
-                                          <Label layoutX="174.0" layoutY="38.0" text="RULES" textFill="#cca351">
-                                             <font>
-                                                <Font size="24.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </Pane>
-                                 </children>
-                              </AnchorPane>
                            </children>
                         </AnchorPane>
                         <AnchorPane id="Load_Game_Page" fx:id="Load_Game_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0" visible="false">
@@ -324,7 +302,10 @@
                                                 <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="169.0">
                                                    <children>
                                                       <Label alignment="CENTER" contentDisplay="CENTER" text="VERSUS LOCAL PLAYER" textAlignment="CENTER" />
-                                                      <ImageView fx:id="img_VS_local" fitHeight="150.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true" />
+                                                      <ImageView fx:id="img_VS_local" fitHeight="150.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@textures/icon_gamemode_versusofflineduo.png" />
+                                                         </image></ImageView>
                                                       <Label text="Starts an offline game" />
                                                    </children>
                                                 </VBox>
@@ -340,7 +321,10 @@
                                                             <Font name="System Bold" size="12.0" />
                                                          </font>
                                                       </Label>
-                                                      <ImageView fx:id="img_VS_guest" fitHeight="105.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true" />
+                                                      <ImageView fx:id="img_VS_guest" fitHeight="105.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@textures/icon_gamemode_versusguest.png" />
+                                                         </image></ImageView>
                                                       <Label text="Hosts a LAN game session" />
                                                    </children>
                                                 </VBox>
@@ -356,7 +340,10 @@
                                                             <Font name="System Bold" size="12.0" />
                                                          </font>
                                                       </Label>
-                                                      <ImageView fx:id="img_VS_host" fitHeight="104.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true" />
+                                                      <ImageView fx:id="img_VS_host" fitHeight="104.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@textures/icon_gamemode_versushost.png" />
+                                                         </image></ImageView>
                                                       <Label text="Searches for LAN sessions" />
                                                    </children>
                                                 </VBox>
@@ -368,6 +355,27 @@
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                                  </children>
                               </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane id="Rules_Page" fx:id="Rules_Page" disable="true" prefHeight="200.0" prefWidth="200.0" visible="false">
+                           <children>
+                              <Pane layoutX="90.0" layoutY="1.0" prefHeight="322.0" prefWidth="402.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2d5072" height="287.0" layoutX="6.0" stroke="#2d5072" strokeType="INSIDE" width="391.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="174.0" layoutX="353.0" layoutY="-42.0" stroke="#2d5072" strokeType="INSIDE" strokeWidth="5.0" width="44.0" />
+                                    <Label layoutX="27.0" layoutY="55.0" prefHeight="194.0" prefWidth="359.0" text="Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. " textAlignment="CENTER" textFill="#997a3d" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Button layoutX="166.0" layoutY="249.0" mnemonicParsing="false" onMouseClicked="#closeRulesPage" style="-fx-background-color: #cca351;" text="Aight. Got it." textFill="#997a3d" />
+                                    <Label layoutX="174.0" layoutY="38.0" text="RULES" textFill="#cca351">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
                            </children>
                         </AnchorPane>
                      </children>
