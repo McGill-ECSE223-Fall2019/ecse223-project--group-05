@@ -840,10 +840,19 @@ public class QuoridorController {
     	
     	double curWidth = r.getWidth();
     	double curHeight = r.getHeight();
-    	
+    	double w2h = curWidth/curHeight;
 
-    		r.setWidth(curHeight);
-    		r.setHeight(curWidth);
+    	r.setWidth(curHeight);
+    	r.setHeight(curWidth);
+
+    	if (w2h>1){
+            r.setTranslateY(r.getTranslateY()-curWidth/2 + 3);
+            r.setTranslateX(r.getTranslateX()+curWidth/2);
+        }
+    	else {
+            r.setTranslateY(r.getTranslateY()+curHeight/2 - 3);
+            r.setTranslateX(r.getTranslateX()-curHeight/2);
+        }
     	
     }
 

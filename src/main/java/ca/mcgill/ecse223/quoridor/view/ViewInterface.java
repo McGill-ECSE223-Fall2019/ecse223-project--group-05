@@ -2,7 +2,7 @@
 //IT GETS DELETED WHEN YOU REGENERATE THE .fxml FILE WITH SCENE BUILDER
 //YOU MUST ADD IT IN MANUALLY WHEN THAT HAPPENS
 
-//<?import java.util.ArrayList?>
+//g
 
 
 package ca.mcgill.ecse223.quoridor.view;
@@ -163,6 +163,7 @@ public class ViewInterface {
 				System.out.println(p.getClass().getName().contains("HBox"));
 				if (p.getClass().getName().contains("HBox")) {
                     HBox parent = (HBox) wallSelected.getParent();
+
                     wallSelected.setX(0);
                     wallSelected.setY(0);
                     wallSelected.setTranslateX(0);
@@ -176,7 +177,7 @@ public class ViewInterface {
 				wallSelected.setLayoutY(0);
 				wallSelected.setLayoutX(0);
 				wallSelected.setX(192.5);
-                wallSelected.setY(38);
+                wallSelected.setY(35);
 
                 System.out.println(wallSelected.getX());
 
@@ -788,7 +789,7 @@ git s     */
 		//Rectangle wall = (Rectangle) mouseEvent.getSource();
 		//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
 		//wallMoveCandidate = wall;
-		System.out.println("hi"); //used for debuging purposes
+		//System.out.println("hi"); //used for debuging purposes
 		if(keyEvent.getCode()==KeyCode.R) {
 			QuoridorController.GUI_flipWallCandidate();
 			QuoridorController.flipWallCandidate();
