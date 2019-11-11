@@ -131,7 +131,6 @@ public class ViewInterface {
 	//For moving the window
     double x,y;
 
-
 	/**
 	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.

@@ -65,6 +65,17 @@
                   </AnchorPane>
                   <StackPane id="Stacked_Pages" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="356.0" prefWidth="600.0">
                      <children>
+                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" visible="false">
+                           <children>
+                              <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
+                              <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@logo.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
                         <AnchorPane id="New_Game_Page" fx:id="New_Game_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0" visible="false">
                            <children>
                               <Button fx:id="Create_New_Game_btn_StartGame" layoutX="247.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#Goto_Game_Session_Page" style="-fx-background-color: #ffd800;" text="Start Game">
@@ -128,17 +139,6 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
-                           <children>
-                              <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
-                              <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
-                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@logo.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </AnchorPane>
                         <AnchorPane id="Load_Game_Page" fx:id="Load_Game_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0" visible="false">
                            <children>
                               <VBox layoutX="54.0" layoutY="78.0" prefHeight="200.0" prefWidth="421.0">
@@ -180,7 +180,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" disable="true" prefWidth="397.0" visible="false">
+                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" disable="true" prefWidth="397.0">
                            <children>
                               <HBox prefHeight="356.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
