@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -19,31 +18,58 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import java.util.ArrayList?>
 
-<Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
+<?import java.util.ArrayList?>
+<Pane stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
       <AnchorPane id="Application_Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3d6b99;">
          <children>
             <Rectangle id="Upper_Rectangle" arcHeight="5.0" arcWidth="5.0" fill="#192c3f" height="45.0" stroke="#192c3f" strokeType="INSIDE" width="600.0" />
             <Pane>
                <children>
-                  <AnchorPane id="Top_Buttons" fx:id="Top_Buttons" focusTraversable="true" prefHeight="45.0" prefWidth="600.0">
+                  <AnchorPane id="Top_Buttons" fx:id="Top_Buttons" focusTraversable="true" onMouseDragged="#topDragged" onMousePressed="#topPressed" prefHeight="45.0" prefWidth="600.0">
                      <children>
-                        <ButtonBar id="Top_buttons" layoutX="95.0" maxHeight="40.0" prefHeight="40.0" prefWidth="415.0">
-                          <buttons>
-                              <Label alignment="CENTER" minWidth="60.0" prefHeight="17.0" prefWidth="60.0" text="NEW GAME" textFill="#ffd800" />
-                              <Label alignment="CENTER" text="PREVIOUS GAME" textFill="#ffd800" />
-                              <Label alignment="CENTER" minWidth="67.0" prefHeight="17.0" text="STATISTICS" textFill="#ffd800" />
-                              <Label alignment="CENTER" minWidth="44.0" onMouseClicked="#openRulesPage" prefHeight="17.0" prefWidth="100.0" text="RULES" textFill="#ffd800" />
-                          </buttons>
-                        </ButtonBar>
-                        <ImageView fitHeight="45.0" fitWidth="77.0" layoutX="17.0" layoutY="7.0" onMouseClicked="#Goto_Main_Page" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@logo.png" />
-                           </image>
-                        </ImageView>
-                        <Button fx:id="btn_saveGame" alignment="CENTER" layoutX="506.0" layoutY="7.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#saveGame" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ffd400; -fx-border-color: #735c2d;" text="Save Game" textFill="#735c2d" />
+                        <Button mnemonicParsing="false" onMouseClicked="#Goto_Main_Page" style="-fx-background-color: #192c3f;">
+                           <graphic>
+                              <ImageView fitHeight="45.0" fitWidth="77.0" onMouseClicked="#Goto_Main_Page" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@logo.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button layoutX="97.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="New Game" textFill="#ffd800" />
+                        <Button layoutX="174.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="Previous Game" textFill="#ffd800" />
+                        <Button layoutX="270.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="Statistacks" textFill="#ffd800" />
+                        <Button layoutX="356.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#openRulesPage" onMouseEntered="#openRulesPage" onMouseExited="#closeRulesPage" style="-fx-background-color: #192c3f;" text="Rules" textFill="#ffd800" />
+                        <Button fx:id="btn_saveGame" alignment="CENTER" layoutX="413.0" layoutY="9.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#saveGame" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #192c3f;" text="Save Game" textFill="#ffd800" />
+                        <Button layoutX="538.0" layoutY="5.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;">
+                           <graphic>
+                              <ImageView fitHeight="15.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@textures/Maximize.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button layoutX="503.0" layoutY="5.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="31.0" style="-fx-background-color: #192c3f;">
+                           <graphic>
+                              <ImageView fitHeight="19.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@textures/Minimize.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button layoutX="567.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#quit" prefHeight="16.0" prefWidth="17.0" style="-fx-background-color: #192c3f;">
+                           <graphic>
+                              <ImageView fitHeight="14.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@textures/Quit.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </AnchorPane>
                   <StackPane id="Stacked_Pages" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="356.0" prefWidth="600.0">

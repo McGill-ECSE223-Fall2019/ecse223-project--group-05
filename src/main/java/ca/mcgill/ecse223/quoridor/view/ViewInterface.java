@@ -128,6 +128,9 @@ public class ViewInterface {
   //Rotate wall variables
 	private Rectangle wallMoveCandidate;
 
+	//For moving the window
+    double x,y;
+
 
 	/**
 	 * @author Thomas Philippon
@@ -1157,5 +1160,34 @@ git s     */
 		getPage(Page.MAIN_PAGE).setVisible(true);
 		currentState = Page.MAIN_PAGE;
 	}
+
+	/**
+	 * Updates position of window according to position of mouse
+	 * @param event
+	 * @author Daniel Wu
+	 */
+    public void topDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - x);
+        stage.setY(event.getScreenY() - y);
+    }
+
+	/**
+	 * Updates position of mouse
+	 * @param event
+	 * @author Daniel Wu
+	 */
+	public void topPressed(MouseEvent event){
+        x = event.getSceneX();
+        y = event.getSceneY();
+    }
+
+	/**
+	 * Close and stop program when x button is pressed
+	 * @author Daniel Wu
+	 */
+	public void quit(){
+        System.exit(0);
+    }
 
 }
