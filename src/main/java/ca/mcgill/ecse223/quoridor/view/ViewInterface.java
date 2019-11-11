@@ -2,7 +2,7 @@
 //IT GETS DELETED WHEN YOU REGENERATE THE .fxml FILE WITH SCENE BUILDER
 //YOU MUST ADD IT IN MANUALLY WHEN THAT HAPPENS
 
-//<?import java.util.ArrayList?>
+//g
 
 
 package ca.mcgill.ecse223.quoridor.view;
@@ -40,6 +40,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
@@ -47,6 +48,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -126,19 +128,25 @@ public class ViewInterface {
   //Rotate wall variables
 	private Rectangle wallMoveCandidate;
 
+	//For moving the window
+    double x,y;
 
 	/**
 	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
 	public void GrabWall(MouseEvent mouseEvent) {
+		if(wallSelected!=null){
+			displayIllegalNotification("you must drop the wall before selecting a new one");
+		}
 		playerToMove = QuoridorController.getPlayerOfCurrentTurn();
 		Rectangle wall = (Rectangle) mouseEvent.getSource();
 		String wallID = wall.getId();
 		String color = QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor());
-
+		System.err.print(1);
 		//check if the player to move is grabbing his walls and not the opponent's
 		if(wallID.contains(color)) {
+
 			boolean grabWallResult;
 			try {
 				grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
@@ -153,6 +161,31 @@ public class ViewInterface {
 				validWallGrab = true;
 				wallMoveCandidate = wall;
 				wallSelected = wall;
+				System.err.print(2);
+				double prevX = wallSelected.getX();
+				double prevY = wallSelected.getY();
+				Node p = wallSelected.getParent();
+				System.out.println(p.getClass().getName().contains("HBox"));
+				if (p.getClass().getName().contains("HBox")) {
+                    HBox parent = (HBox) wallSelected.getParent();
+
+                    wallSelected.setX(0);
+                    wallSelected.setY(0);
+                    wallSelected.setTranslateX(0);
+                    wallSelected.setTranslateY(0);
+                    parent.getChildren().remove(wallSelected);
+                    getCurrentPage().getChildren().add(wallSelected);
+                    //wallSelected.setX(prevX);
+                    //wallSelected.setY(prevY);
+                }
+                System.err.print(3);
+				wallSelected.setLayoutY(0);
+				wallSelected.setLayoutX(0);
+				wallSelected.setX(192.5);
+                wallSelected.setY(35);
+
+                System.out.println(wallSelected.getX());
+
 			}
 		}
 	}
@@ -162,7 +195,7 @@ public class ViewInterface {
 	 * This method is called when the user drags the walls
 	 */
 	public void MoveWall(MouseEvent mouseEvent) {
-		if(validWallGrab==true) { //check if the user grabbed one of his walls and not the other player's walls
+		/*if(validWallGrab==true) { //check if the user grabbed one of his walls and not the other player's walls
 			Rectangle wall = (Rectangle) mouseEvent.getSource();
 			double offsetX = mouseEvent.getX();
 			double offsetY = mouseEvent.getY();
@@ -172,7 +205,9 @@ public class ViewInterface {
 			wall.setTranslateY(newTranslateY);
 			wallMoveCandidate = wall;
 			wallSelected = wall;
-		}
+		}*/
+		System.out.println("x: " + mouseEvent.getX());
+		System.out.println("y: " + mouseEvent.getY());
 
 	}
 	/**
@@ -187,27 +222,27 @@ public class ViewInterface {
 	public static void MoveWall(KeyEvent keyEvent) {
 		boolean isValid = true;
 		try {
-			if(wallSelected==null && (keyEvent.getCode()== KeyCode.UP||keyEvent.getCode()==KeyCode.DOWN||keyEvent.getCode()==KeyCode.LEFT||keyEvent.getCode()==KeyCode.RIGHT)){
+			if(wallSelected==null && (keyEvent.getCode()== KeyCode.W||keyEvent.getCode()==KeyCode.A||keyEvent.getCode()==KeyCode.S||keyEvent.getCode()==KeyCode.D)){
 				throw new IllegalArgumentException("no wall was selected.");
 			}
-			if(keyEvent.getCode()==KeyCode.UP) {
+			if(keyEvent.getCode()==KeyCode.W) {
 				isValid = QuoridorController.moveWall("up");
 				wallSelected.setTranslateY(wallSelected.getTranslateY()-VERTICALSTEP);//translates the rectangle by a tilewidth
 				System.out.println("detected");
 			}
-			else if(keyEvent.getCode()==KeyCode.DOWN) {
+			else if(keyEvent.getCode()==KeyCode.S) {
 				isValid = QuoridorController.moveWall("down");
 				wallSelected.setTranslateY(wallSelected.getTranslateY()+VERTICALSTEP);
 			}
-			else if(keyEvent.getCode()==KeyCode.LEFT) {
+			else if(keyEvent.getCode()==KeyCode.A) {
 				isValid = QuoridorController.moveWall("left");
 				wallSelected.setTranslateX(wallSelected.getTranslateX()-HORIZONTALSTEP);
 			}
-			else if(keyEvent.getCode()==KeyCode.RIGHT) {
+			else if(keyEvent.getCode()==KeyCode.D) {
 				isValid = QuoridorController.moveWall("right");
 				wallSelected.setTranslateX(wallSelected.getTranslateX()+HORIZONTALSTEP);
 			}
-			if(isValid) {
+			if(!isValid) {
 				wallSelected.setStroke(Color.RED);
 			}
 			else {
@@ -243,12 +278,18 @@ public class ViewInterface {
 		if (!dropSuccessful){
 			invalidWallPlacement.setText("Invalid Wall Placement");
 		}
+		else{
+			validWallGrab=false;
+			wallSelected = null;
+			wallMoveCandidate=null;
+		}
 	}
 
 	/**
 	 * @author Alex Masciotra
 	 *This method is executed when the user releases the wall
 	 */
+
 	public void blackDropWall(MouseEvent mouseEvent) {
 
 		Boolean dropSuccessful;
@@ -257,12 +298,19 @@ public class ViewInterface {
 
 		try {
 			dropSuccessful = QuoridorController.releaseWall(quoridor);
+
 		} catch (Exception e) {
 			throw new java.lang.UnsupportedOperationException("Unable to drop Wall");
+
 		}
 
 		if (!dropSuccessful){
 			invalidWallPlacement.setText("Invalid Wall Placement");
+		}
+		else{
+			validWallGrab=false;
+			wallSelected = null;
+			wallMoveCandidate=null;
 		}
 	}
 
@@ -458,7 +506,7 @@ git s     */
 		/*
 		 * The following line has been added by Edwin Pan in order to have the SaveGame button on the ButtonBar
 		 */
-		if( p != Page.GAME_SESSION_PAGE && p != Page.RULES_PAGE ) {
+		if( p != Page.GAME_SESSION_PAGE) {
 			btn_saveGame.setVisible(false);
 		}
 		
@@ -501,9 +549,11 @@ git s     */
 
 		//display the Rules page, and bring it to front to allow for user interaction.
 		CurrentPage = getPage(Page.RULES_PAGE);
-		CurrentPage.setDisable(false);
-		CurrentPage.setVisible(true);
-		CurrentPage.toFront();
+		getPage(Page.RULES_PAGE).setDisable(false);
+		getPage(Page.RULES_PAGE).setVisible(true);
+		getPage(Page.RULES_PAGE).toFront();
+		getPage(Page.RULES_PAGE).setDisable(false);
+		System.out.println("Rules openend");
 		getPage(Page.TOP_BUTTONS).toFront(); //those need to be on top of the rules to allow for clicking on Rules label to close rules
 
 	}
@@ -575,6 +625,7 @@ git s     */
 	 * initializes the FXML components. this code runs once the application is launched but before the GUI is displayed.
 	 */
 	public void initialize() {
+		resetGUItoMainPage();
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
@@ -737,15 +788,28 @@ git s     */
      * detect that the wall should be rotated and acts accordingly.
      * rotates GUI and model wallMoveCandidate.
      */
-	public void rotateWallEvent(MouseEvent mouseEvent) {
+	public static void rotateWallEvent(KeyEvent keyEvent) {
 
 		//get the rectangle that is grabbed
-		Rectangle wall = (Rectangle) mouseEvent.getSource();
+		//Rectangle wall = (Rectangle) mouseEvent.getSource();
 		//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
-		wallMoveCandidate = wall;
-		System.out.println("hi"); //used for debuging purposes
-		QuoridorController.GUI_flipWallCandidate("horizontal");
-        QuoridorController.flipWallCandidate();
+		//wallMoveCandidate = wall;
+		//System.out.println("hi"); //used for debuging purposes
+        Quoridor q = QuoridorApplication.getQuoridor();
+
+		if(keyEvent.getCode()==KeyCode.R) {
+			QuoridorController.GUI_flipWallCandidate();
+			QuoridorController.flipWallCandidate();
+			q.getCurrentGame().getWallMoveCandidate().getTargetTile().getRow();
+			if (!QuoridorController.validatePosition(q.getCurrentGame().getWallMoveCandidate().getTargetTile().getRow()
+            , q.getCurrentGame().getWallMoveCandidate().getTargetTile().getColumn(), q.getCurrentGame().getWallMoveCandidate().getWallDirection().toString())){
+                wallSelected.setStroke(Color.RED);
+            }
+            else {
+                wallSelected.setStroke(Color.BLACK);
+            }
+		}
+
 
 	}
 
@@ -808,6 +872,7 @@ git s     */
 	 * @author David
 	 */
 	private void setThinkingTime(String input1, String input2){
+
 		if(input1.length()!=5 || input2.length()!=5) {
 			throw new IllegalArgumentException("cannot set thinkingTime. Thinking time must follow format 00:00");
 		}
@@ -1083,5 +1148,59 @@ git s     */
 		this.Goto_Game_Session_Page();
 	}
 	
-	
+	private void resetGUItoMainPage(){
+		for (Page p : Page.values()){
+			getPage(p).setVisible(false);
+			getPage(p).setDisable(true);
+		}
+		getPage(Page.TOP_BUTTONS).setDisable(false);
+		getPage(Page.TOP_BUTTONS).setVisible(true);
+		getPage(Page.MAIN_PAGE).setDisable(false);
+		getPage(Page.MAIN_PAGE).setVisible(true);
+		currentState = Page.MAIN_PAGE;
+	}
+
+	/**
+	 * Updates position of window according to position of mouse
+	 * @param event
+	 * @author Daniel Wu
+	 */
+    public void topDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - x);
+        stage.setY(event.getScreenY() - y);
+    }
+
+	/**
+	 * Updates position of mouse
+	 * @param event
+	 * @author Daniel Wu
+	 */
+	public void topPressed(MouseEvent event){
+        x = event.getSceneX();
+        y = event.getSceneY();
+    }
+
+	/**
+	 * Close and stop program when x button is pressed
+	 * @author Daniel Wu
+	 */
+	public void quit(){
+        System.exit(0);
+    }
+
+	/**
+	 * Toggles maximization when square button is pressed
+	 * @param event
+	 * @author Daniel Wu
+	 */
+	public void toggleMaximize(MouseEvent event){
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		if(stage.isMaximized()){
+			stage.setMaximized(false);
+		} else {
+			stage.setMaximized(true);
+		}
+	}
+
 }

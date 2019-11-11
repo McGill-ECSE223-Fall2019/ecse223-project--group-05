@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.transform.Scale;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 
@@ -45,7 +46,8 @@ public class QuoridorApplication extends Application{
 			FXMLLoader loader = new FXMLLoader(url);
 			Parent root = loader.load();
 			c = loader.getController(); //get reference to viewInterface
-	        Scene scene = new Scene(root);  
+	        Scene scene = new Scene(root);
+			primaryStage.initStyle(StageStyle.TRANSPARENT);
 	        primaryStage.setScene(scene);
 	        
 	        //set the icon and title of window
@@ -70,6 +72,7 @@ public class QuoridorApplication extends Application{
 	       });
 			scene.addEventHandler(KeyEvent.KEY_PRESSED, (keyEvent) -> {
 				ViewInterface.MoveWall(keyEvent);
+				ViewInterface.rotateWallEvent(keyEvent);
 			});
 	        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
 	       	Scale scale = new Scale(scene.getWidth()/initialW, newVal.doubleValue()/initialH);
