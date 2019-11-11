@@ -315,56 +315,70 @@
                                     <HBox prefHeight="300.0" prefWidth="600.0" spacing="20.0">
                                        <children>
                                           <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
-                                          <AnchorPane onMouseClicked="#Goto_New_Game_Page" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d5072;">
+                                          <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d5072;">
                                              <children>
-                                                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="169.0">
-                                                   <children>
-                                                      <Label alignment="CENTER" contentDisplay="CENTER" text="VERSUS LOCAL PLAYER" textAlignment="CENTER" />
-                                                      <ImageView fx:id="img_VS_local" fitHeight="150.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@textures/icon_gamemode_versusofflineduo.png" />
-                                                         </image></ImageView>
-                                                      <Label text="Starts an offline game" />
-                                                   </children>
-                                                </VBox>
+                                                <Button mnemonicParsing="false" onMouseClicked="#Goto_New_Game_Page" prefHeight="200.0" prefWidth="160.0" style="-fx-background-color: #234e76;">
+                                                   <graphic>
+                                                      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="129.0">
+                                                         <children>
+                                                            <Label alignment="CENTER" contentDisplay="CENTER" text="VERSUS LOCAL PLAYER" textAlignment="CENTER" textFill="#ffd800" />
+                                                            <ImageView fx:id="img_VS_local" fitHeight="151.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@textures/icon_gamemode_versusofflineduo.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                            <Label prefHeight="29.0" prefWidth="116.0" text="Starts an offline game" textFill="#ffd800" />
+                                                         </children>
+                                                      </VBox>
+                                                   </graphic></Button>
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d5072;">
                                              <children>
-                                                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="169.0">
-                                                   <children>
-                                                      <Label alignment="CENTER" contentDisplay="CENTER" text="VERSUS GUEST" textAlignment="CENTER" />
-                                                      <Label alignment="CENTER" contentDisplay="TOP" prefHeight="57.0" prefWidth="126.0" text="TO BE IMPLEMENTED AT A LATER DATE" textAlignment="CENTER" textFill="#ffd800" wrapText="true">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ImageView fx:id="img_VS_guest" fitHeight="105.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@textures/icon_gamemode_versusguest.png" />
-                                                         </image></ImageView>
-                                                      <Label text="Hosts a LAN game session" />
-                                                   </children>
-                                                </VBox>
+                                                <Button mnemonicParsing="false" prefHeight="200.0" prefWidth="160.0" style="-fx-background-color: #234e76;">
+                                                   <graphic>
+                                                      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="169.0">
+                                                         <children>
+                                                            <Label alignment="CENTER" contentDisplay="CENTER" text="VERSUS GUEST" textAlignment="CENTER" textFill="#ffd800" />
+                                                            <Label alignment="CENTER" contentDisplay="TOP" prefHeight="57.0" prefWidth="126.0" text="TO BE IMPLEMENTED AT A LATER DATE" textAlignment="CENTER" textFill="#ffd800" wrapText="true">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <ImageView fx:id="img_VS_guest" fitHeight="105.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@textures/icon_gamemode_versusguest.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                            <Label text="Hosts a LAN game session" textFill="#ffd800" />
+                                                         </children>
+                                                      </VBox>
+                                                   </graphic>
+                                                </Button>
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2d5072;">
                                              <children>
-                                                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="169.0">
-                                                   <children>
-                                                      <Label alignment="CENTER" contentDisplay="CENTER" text="VERSUS HOST" textAlignment="CENTER" />
-                                                      <Label alignment="CENTER" contentDisplay="TOP" prefHeight="57.0" prefWidth="126.0" text="TO BE IMPLEMENTED AT A LATER DATE" textAlignment="CENTER" textFill="#ffd800" wrapText="true">
-                                                         <font>
-                                                            <Font name="System Bold" size="12.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <ImageView fx:id="img_VS_host" fitHeight="104.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@textures/icon_gamemode_versushost.png" />
-                                                         </image></ImageView>
-                                                      <Label text="Searches for LAN sessions" />
-                                                   </children>
-                                                </VBox>
+                                                <Button mnemonicParsing="false" prefHeight="200.0" prefWidth="160.0" style="-fx-background-color: #234e76;">
+                                                   <graphic>
+                                                      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="169.0">
+                                                         <children>
+                                                            <Label alignment="CENTER" contentDisplay="CENTER" text="VERSUS HOST" textAlignment="CENTER" textFill="#ffd800" />
+                                                            <Label alignment="CENTER" contentDisplay="TOP" prefHeight="57.0" prefWidth="126.0" text="TO BE IMPLEMENTED AT A LATER DATE" textAlignment="CENTER" textFill="#ffd800" wrapText="true">
+                                                               <font>
+                                                                  <Font name="System Bold" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <ImageView fx:id="img_VS_host" fitHeight="104.0" fitWidth="152.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@textures/icon_gamemode_versushost.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                            <Label text="Searches for LAN sessions" textFill="#ffd800" />
+                                                         </children>
+                                                      </VBox>
+                                                   </graphic>
+                                                </Button>
                                              </children>
                                           </AnchorPane>
                                           <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
