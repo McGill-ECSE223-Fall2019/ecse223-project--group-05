@@ -1202,7 +1202,6 @@ git s     */
 		} else {
 			stage.setMaximized(true);
 		}
-		System.out.println(stage.isMaximized());
 	}
 
 }

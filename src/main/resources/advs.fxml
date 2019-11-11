@@ -43,27 +43,18 @@
                         <Button layoutX="270.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="Statistacks" textFill="#ffd800" />
                         <Button layoutX="356.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#openRulesPage" onMouseEntered="#openRulesPage" onMouseExited="#closeRulesPage" style="-fx-background-color: #192c3f;" text="Rules" textFill="#ffd800" />
                         <Button fx:id="btn_saveGame" alignment="CENTER" layoutX="413.0" layoutY="9.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#saveGame" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #192c3f;" text="Save Game" textFill="#ffd800" />
-                        <Button layoutX="536.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#toggleMaximize" style="-fx-background-color: #192c3f;">
+                        <Button layoutX="538.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#toggleMaximize" style="-fx-background-color: #192c3f;">
                            <graphic>
-                              <ImageView fitHeight="15.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="12.0" fitWidth="11.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@textures/Maximize.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button layoutX="503.0" layoutY="5.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="31.0" style="-fx-background-color: #192c3f;">
+                        <Button contentDisplay="CENTER" layoutX="567.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#quit" prefHeight="16.0" prefWidth="5.0" style="-fx-background-color: #192c3f;">
                            <graphic>
-                              <ImageView fitHeight="19.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@textures/Minimize.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button layoutX="567.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#quit" prefHeight="16.0" prefWidth="5.0" style="-fx-background-color: #192c3f;">
-                           <graphic>
-                              <ImageView fitHeight="14.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@textures/Quit.png" />
                                  </image>
@@ -389,18 +380,37 @@
                               <Pane layoutX="90.0" layoutY="1.0" prefHeight="322.0" prefWidth="402.0">
                                  <children>
                                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2d5072" height="287.0" layoutX="6.0" stroke="#2d5072" strokeType="INSIDE" width="391.0" />
-                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="174.0" layoutX="353.0" layoutY="-42.0" stroke="#2d5072" strokeType="INSIDE" strokeWidth="5.0" width="44.0" />
-                                    <Label layoutX="27.0" layoutY="55.0" prefHeight="194.0" prefWidth="359.0" text="Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. Blah blah rules. " textAlignment="CENTER" textFill="#997a3d" wrapText="true">
+                                    <Label layoutX="125.0" layoutY="33.0" text="Rules/Controls" textFill="#cca351">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="25.0" layoutY="97.0" text="1. REACH THE OTHER SIDE" textFill="#997a3d">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="24.0" layoutY="120.0" prefHeight="0.0" prefWidth="359.0" text="2. STOP THEM FROM REACHING YOUR SIDE" textAlignment="CENTER" textFill="#997a3d" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="24.0" layoutY="144.0" text="3. CLICK ON WALLS TO PLACE" textFill="#997a3d">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="25.0" layoutY="168.0" text="4. WASD TO MOVE WALLS" textFill="#997a3d">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="25.0" layoutY="191.0" text="5. R TO ROTATE WALLS" textFill="#997a3d">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
                                     <Button layoutX="166.0" layoutY="249.0" mnemonicParsing="false" onMouseClicked="#closeRulesPage" style="-fx-background-color: #cca351;" text="Aight. Got it." textFill="#997a3d" />
-                                    <Label layoutX="174.0" layoutY="38.0" text="RULES" textFill="#cca351">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
                                  </children>
                               </Pane>
                            </children>
