@@ -1190,4 +1190,19 @@ git s     */
         System.exit(0);
     }
 
+	/**
+	 * Toggles maximization when square button is pressed
+	 * @param event
+	 * @author Daniel Wu
+	 */
+	public void toggleMaximize(MouseEvent event){
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		if(stage.isMaximized()){
+			stage.setMaximized(false);
+		} else {
+			stage.setMaximized(true);
+		}
+		System.out.println(stage.isMaximized());
+	}
+
 }

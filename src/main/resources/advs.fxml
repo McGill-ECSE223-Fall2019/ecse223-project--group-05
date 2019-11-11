@@ -43,7 +43,7 @@
                         <Button layoutX="270.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="Statistacks" textFill="#ffd800" />
                         <Button layoutX="356.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#openRulesPage" onMouseEntered="#openRulesPage" onMouseExited="#closeRulesPage" style="-fx-background-color: #192c3f;" text="Rules" textFill="#ffd800" />
                         <Button fx:id="btn_saveGame" alignment="CENTER" layoutX="413.0" layoutY="9.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#saveGame" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #192c3f;" text="Save Game" textFill="#ffd800" />
-                        <Button layoutX="538.0" layoutY="5.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;">
+                        <Button layoutX="536.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#toggleMaximize" style="-fx-background-color: #192c3f;">
                            <graphic>
                               <ImageView fitHeight="15.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -61,7 +61,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button layoutX="567.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#quit" prefHeight="16.0" prefWidth="17.0" style="-fx-background-color: #192c3f;">
+                        <Button layoutX="567.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#quit" prefHeight="16.0" prefWidth="5.0" style="-fx-background-color: #192c3f;">
                            <graphic>
                               <ImageView fitHeight="14.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
