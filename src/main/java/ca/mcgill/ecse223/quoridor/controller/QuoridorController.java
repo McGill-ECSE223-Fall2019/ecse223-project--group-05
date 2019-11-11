@@ -113,6 +113,14 @@ public class QuoridorController {
         GetWallMoveCandidate(dir, row, column);
     }
 
+
+//    /**
+//     * @author Matthias Arabian
+//     * gets the current wall move candidate from the model. null otherwise
+//     */
+//    public static WallMove getExistingWallMove() throws Throwable {
+//        q.get
+//    }
     /**
      * (feature: move wall)
      *

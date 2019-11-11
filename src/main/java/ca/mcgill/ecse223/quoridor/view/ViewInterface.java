@@ -793,9 +793,19 @@ git s     */
 		//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
 		//wallMoveCandidate = wall;
 		//System.out.println("hi"); //used for debuging purposes
+        Quoridor q = QuoridorApplication.getQuoridor();
+
 		if(keyEvent.getCode()==KeyCode.R) {
 			QuoridorController.GUI_flipWallCandidate();
 			QuoridorController.flipWallCandidate();
+			q.getCurrentGame().getWallMoveCandidate().getTargetTile().getRow();
+			if (!QuoridorController.validatePosition(q.getCurrentGame().getWallMoveCandidate().getTargetTile().getRow()
+            , q.getCurrentGame().getWallMoveCandidate().getTargetTile().getColumn(), q.getCurrentGame().getWallMoveCandidate().getWallDirection().toString())){
+                wallSelected.setStroke(Color.RED);
+            }
+            else {
+                wallSelected.setStroke(Color.BLACK);
+            }
 		}
 
 
