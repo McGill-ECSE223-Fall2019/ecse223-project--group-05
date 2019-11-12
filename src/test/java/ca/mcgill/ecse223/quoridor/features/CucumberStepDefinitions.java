@@ -1467,7 +1467,7 @@ public class CucumberStepDefinitions {
 	// ***********************************************
 
 	// After each scenario, the test model is discarded
-    @After
+    	@After
 	public void tearDown() {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		// Avoid null pointer for step definitions that are not yet implemented.
@@ -1475,7 +1475,7 @@ public class CucumberStepDefinitions {
 			quoridor.delete();
 			quoridor = null;
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 1; i <= 20; i++) {
 			Wall wall = Wall.getWithId(i);
 			if(wall != null) {
 				wall.delete();
@@ -1557,7 +1557,7 @@ public class CucumberStepDefinitions {
 		// Create all walls. Walls with lower ID belong to player1,
 		// while the second half belongs to player 2
 		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 10; j++) {
+			for (int j = 1; j <= 10; j++) {
 				new Wall(i * 10 + j, players[i]);
 			}
 		}
@@ -1572,7 +1572,7 @@ public class CucumberStepDefinitions {
 	private void createAndStartGame(ArrayList<Player> players) {
 		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		// There are total 36 tiles in the first four rows and
-		// indexing starts from 0 -> tiles with indices 36 and 36+8=44 are the starting
+		// Tile indices start from 0 -> tiles with indices 4 and 8*9+4=76 are the starting
 		// positions
 		Tile player1StartPos = quoridor.getBoard().getTile(4);
 		Tile player2StartPos = quoridor.getBoard().getTile(76);
@@ -1587,11 +1587,11 @@ public class CucumberStepDefinitions {
 		GamePosition gamePosition = new GamePosition(0, player1Position, player2Position, players.get(0), game);
 
 		// Add the walls as in stock for the players
-		for (int j = 0; j < 10; j++) {
+		for (int j = 1; j <= 10; j++) {
 			Wall wall = Wall.getWithId(j);
 			gamePosition.addWhiteWallsInStock(wall);
 		}
-		for (int j = 0; j < 10; j++) {
+		for (int j = 1; j <= 10; j++) {
 			Wall wall = Wall.getWithId(j + 10);
 			gamePosition.addBlackWallsInStock(wall);
 		}
