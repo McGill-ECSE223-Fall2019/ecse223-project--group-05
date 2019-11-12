@@ -1306,7 +1306,7 @@ public class CucumberStepDefinitions {
 	 */
 	@Then("The wall shall be rotated over the board to {string}")
 	public void theWallShallBeRotatedOverTheBoardToString(String newDir){
-		QuoridorController.GUI_flipWallCandidate(newDir);
+		assertEquals(true, QuoridorController.GUI_assertFlipWallCandidate(newDir));
 	}
 	
 	
