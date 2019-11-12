@@ -8,3 +8,4 @@ bin
 .classpath
 env
 saves
+.log
