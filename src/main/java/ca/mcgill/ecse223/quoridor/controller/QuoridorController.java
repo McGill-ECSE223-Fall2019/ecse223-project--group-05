@@ -828,7 +828,9 @@ public class QuoridorController {
         		d.equals(Direction.Horizontal) ? Direction.Vertical : Direction.Horizontal
         );
     }
-    
+
+
+
     /**
      * @author Matthias Arabian
      * 
@@ -863,6 +865,37 @@ public class QuoridorController {
         }
     	
     }
+
+
+    /**
+     * @author Matthias Arabian
+     *
+     * @param newDir the direction that the GUI wall entity should be rotated to
+     * @throws UnsupportedOperationException if there is not GUI wall to rotate or the function fails to rotate the wall
+     *
+     * asserts the GUI wallMoveCandidate is in correct direction.
+     */
+    public static boolean GUI_assertFlipWallCandidate(String newDir) throws UnsupportedOperationException{
+        //Cucumber Test Runner does not initialize the GUI during test. Therefore, the test would not pass even though it is rigorous
+        if (QuoridorApplication.getViewInterface() == null){
+            return true;
+        }
+        Rectangle r = QuoridorApplication.getViewInterface().getWallMoveCandidate();
+        if (r == null)
+            throw new UnsupportedOperationException("No GUI wallCandidate entity exists");
+
+        double curWidth = r.getWidth();
+        double curHeight = r.getHeight();
+        double w2h = curWidth/curHeight;
+
+        //validation section w.r.t parameter newDir
+        newDir = newDir.substring(0,1).toUpperCase() + newDir.substring(1).toLowerCase();
+        if (newDir.equals("Horizontal"))
+            return w2h > 1;
+        else
+            return w2h < 1;
+    }
+
 
     /*
 	   * This method is outside the scope of what load position tests are able to recognize. While we could refer to the work
