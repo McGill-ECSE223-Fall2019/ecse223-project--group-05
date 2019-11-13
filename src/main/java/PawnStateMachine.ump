@@ -2,27 +2,226 @@ namespace ca.mcgill.ecse223.quoridor.controller;
 
 use QuoridorGame.ump;
 
-class PawnBehavior {
+
+class PawnBehaviour{
 
     0..1 -> 0..1 Game currentGame;
     0..1 -> 0..1 Player player;
 
-    pawnSM {
+
+  pawnSM{
+
+    gameRunning{
+
+      endGame() -> done;
+
+      canMove{
+        move() [!legal] -> canMove;
+        jump() [!legal] -> canMove;
+        grabWall() -> moveWall;
+        jump() [legal] -> cannotMove;
+        move() [legal] -> cannotMove;
+      }
+
+      cannotMove{
+        switchPlayer() [won] -> done;
+        switchPlayer() [!won] -> gameRunning;
+        cancel() -> canMove;
+      }
+
+      moveWall{
+        dropWall() [legal] -> cannotMove;
+        dropWall() [!legal] -> moveWall;
+        cancelWall() -> canMove;
+      }
+
     }
 
+    done{
+
+    }
+
+
     // Returns the current row number of the pawn
-    int getCurrentPawnRow() { return 0; }
+    int getCurrentPawnRow() {
+        PlayerPosition currentPosition = getCurrentPlayerPosition();
+        return currentPosition.getTile().getRow();
+    }
     // Returns the current column number of the pawn
-    int getCurrentPawnColumn() { return 0; }
+    int getCurrentPawnColumn() {
+        PlayerPosition currentPosition = getCurrentPlayerPosition();
+        return currentPosition.getTile().getColumn();
+    }
     // Returns if it is legal to step in the given direction
-    boolean isLegalStep(MoveDirection dir) { return false; }
+    boolean isLegalStep(MoveDirection dir) {
+        int initialRow = getCurrentPawnRow();
+        int initialCol = getCurrentPawnColumn();
+        int finalRow;
+        int finalCol;
+        int otherRow = getOtherPawnRow();       //Row of other pawn
+        int otherCol = getOtherPawnColumn();    //Column of other pawn
+        switch( dir ) {
+            case MoveDirection.East:
+                //Check if the player is already on the east border
+                if( initialCol == 9 ){
+                    return false;
+                }
+                //Compute new position
+                finalRow = initialRow;
+                finalCol = initialCol + 1;
+                //Now we check if there are walls in the way
+                for( Wall wall : getAllWallsOnBoard() ){
+                    if( wall.getWallPlaced().getWallDirection() == Direction.Horizontal ){
+                        //If this wall is incapable of blocking this eastbound movement
+                        continue;
+                    }
+                    int deltaCol = wall.getWallPlaced.getTargetTile().getColumn() - initialCol;
+                    int deltaRow = wall.getWallPlaced.getTargetTile().getRow() - initialRow;
+                    if( deltaCol == 0 && deltaRow >= -1 && deltaRow <= 0 ){
+                        //If this wall obstructs access to the right tile
+                        return false;
+                    }
+                }
+                break;
+            case MoveDirection.West:
+                //Check if the player is already on the west border
+                if( initialCol == 0 ){
+                    return false;
+                }
+                //Compute new position
+                finalRow = initialRow;
+                finalCol = initialCol - 1;
+                //Now we check if there are walls in the way
+                for( Wall wall : getAllWallsOnBoard() ){
+                    if( wall.getWallPlaced().getWallDirection() == Direction.Horizontal ){
+                        //If this wall is incapable of blocking this westbound movement
+                        continue;
+                    }
+                    int deltaCol = wall.getWallPlaced.getTargetTile().getColumn() - initialCol;
+                    int deltaRow = wall.getWallPlaced.getTargetTile().getRow() - initialRow;
+                    if( deltaCol == -1 && deltaRow >= -1 && deltaRow <= 0 ){
+                        //If this wall obstructs access to the left tile
+                        return false;
+                    }
+                }
+                break;
+            case MoveDirection.North:
+                //Check if the player is already on the north border
+                if( initialRow == 0 ){
+                    return false;
+                }
+                //Compute new position
+                finalRow = initialRow - 1;
+                finalCol = initialCol;
+                //Now we check if there are walls in the way
+                for( Wall wall : getAllWallsOnBoard() ){
+                    if( wall.getWallPlaced().getWallDirection() == Direction.Vertical ){
+                        //If this wall is incapable of blocking this northbound movement
+                        continue;
+                    }
+                    int deltaCol = wall.getWallPlaced.getTargetTile().getColumn() - initialCol;
+                    int deltaRow = wall.getWallPlaced.getTargetTile().getRow() - initialRow;
+                    if( deltaRow == -1 && deltaCol >= -1 && deltaCol <= 0 ){
+                        //If this wall obstructs access to the tile above
+                        return false;
+                    }
+                }
+                break;
+            case MoveDirection.South:
+                //Check if the player is already on the south border
+                if( initialRow == 9 ){
+                    return false;
+                }
+                //Compute new position
+                finalRow = initialRow + 1;
+                finalCol = initialCol;
+                //Now we check if there are walls in the way
+                for( Wall wall : getAllWallsOnBoard() ){
+                    if( wall.getWallPlaced().getWallDirection() == Direction.Vertical ){
+                        //If this wall is incapable of blocking this southbound movement
+                        continue;
+                    }
+                    int deltaCol = wall.getWallPlaced.getTargetTile().getColumn() - initialCol;
+                    int deltaRow = wall.getWallPlaced.getTargetTile().getRow() - initialRow;
+                    if( deltaRow == 0 && deltaCol >= -1 && deltaCol <= 0 ){
+                        //If this wall obstructs access to the tile below
+                        return false;
+                    }
+                }
+                break;
+        }
+        //Check if pawns would conflict with move
+        if( finalCol == otherCol && finalRow == otherRow ){
+            return false;
+        }
+        //All tests passed.
+        return true;
+    }
     // Returns if it is legal to jump in the given direction
-    boolean isLegalJump(MoveDirection dir) { return false; }
+    boolean isLegalJump(MoveDirection dir) {
+        //First check if the enemy pawn is adjacent
+        initialRow = getCurrentPawnRow();       //Starting row of player's pawn
+        initialCol = getCurrentPawnCol();       //Starting column of player's pawn
+        otherRow = getOtherPawnRow();           //Current row of other player's pawn
+        otherCol = getOtherPawnCol();           //Current column of other player's pawn
+        deltaRow = otherRow - initialRow;       //Displacement between other player's pawn and player's pawn in row.
+        deltaCol = otherCol - initialCol;       //Displacement between other player's pawn and player's pawn in column.
+        if( initialRow != otherRow && initialCol != otherCol ){
+            return false;
+        } else if ( initialRow - otherRow == 0 && !( initialCol - otherCol == -1  || initialCol - otherCol == 1 ) ) {
+            return false;
+        } else if ( initial
+    }
 
     // Action to be called when an illegal move is attempted
     void illegalMove() { }
-    
+
     // Enumeration for the possible moving directions
     // (directions are from the viewpoint of white player)
     enum MoveDirection { East, South, West, North; }
+
+
+    //Helper: Gets the current position of the player
+    private PlayerPosition getCurrentPlayerPosition() {
+        PlayerPosition playerPosition;
+        if( player.gameAsWhite() != null ){
+            playerPosition = player.getGameAsWhite().getCurrentPosition().getWhitePosition();
+        } else {
+            playerPosition = player.getGameAsBlack().getCurrentPosition().getBlackPosition();
+        }
+        return playerPosition;
+    }
+    //Helper: Gets the current position of the other player
+    private PlayerPosition getCurrentOtherPlayerPosition() {
+        PlayerPosition playerPosition;
+        if( player.gameAsWhite() != null ){
+            playerPosition = player.getGameAsWhite().getCurrentPosition().getBlackPosition();
+        } else {
+            playerPosition = player.getGameAsBlack().getCurrentPosition().getWhitePosition();
+        }
+        return playerPosition;
+    }
+    //Helper: Gets the current row number of the other player
+    private int getOtherPawnRow(){
+        return getCurrentOtherPlayerPosition().getTile().getRow();
+    }
+    //Helper: Gets the current column number of the other player
+    private int getOtherPawnColumn(){
+        return getCurrentOtherPlayerPosition().getTile().getColumn();
+    }
+    //Helper: Gets all of the walls placed onto the board
+    private List<Wall> getAllWallsOnBoard() {
+        List<Wall> placedWalls = new ArrayList<Wall>();
+        placedWalls.addAll( currentGame.getCurrentPosition().getBlackWallsOnBoard() );
+        placedWalls.addAll( currentGame.getCurrentPosition().getWhiteWallsOnBoard() );
+        return placedWalls;
+    }
+
+
+  }
+
+
+
+
+
 }
