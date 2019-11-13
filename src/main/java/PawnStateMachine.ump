@@ -70,17 +70,8 @@ class PawnBehaviour{
                 finalRow = initialRow;
                 finalCol = initialCol + 1;
                 //Now we check if there are walls in the way
-                for( Wall wall : getAllWallsOnBoard() ){
-                    if( wall.getWallPlaced().getWallDirection() == Direction.Horizontal ){
-                        //If this wall is incapable of blocking this eastbound movement
-                        continue;
-                    }
-                    int deltaCol = wall.getWallPlaced.getTargetTile().getColumn() - initialCol;
-                    int deltaRow = wall.getWallPlaced.getTargetTile().getRow() - initialRow;
-                    if( deltaCol == 0 && deltaRow >= -1 && deltaRow <= 0 ){
-                        //If this wall obstructs access to the right tile
-                        return false;
-                    }
+                if( pathIsBlockedByWall( initialRow, initialCol, dir ) ){
+                    return false;   //If the move is blocked by a wall
                 }
                 break;
             case MoveDirection.West:
@@ -92,17 +83,8 @@ class PawnBehaviour{
                 finalRow = initialRow;
                 finalCol = initialCol - 1;
                 //Now we check if there are walls in the way
-                for( Wall wall : getAllWallsOnBoard() ){
-                    if( wall.getWallPlaced().getWallDirection() == Direction.Horizontal ){
-                        //If this wall is incapable of blocking this westbound movement
-                        continue;
-                    }
-                    int deltaCol = wall.getWallPlaced.getTargetTile().getColumn() - initialCol;
-                    int deltaRow = wall.getWallPlaced.getTargetTile().getRow() - initialRow;
-                    if( deltaCol == -1 && deltaRow >= -1 && deltaRow <= 0 ){
-                        //If this wall obstructs access to the left tile
-                        return false;
-                    }
+                if( pathIsBlockedByWall( initialRow, initialCol, dir ) ){
+                    return false;   //If the move is blocked by a wall
                 }
                 break;
             case MoveDirection.North:
@@ -114,17 +96,8 @@ class PawnBehaviour{
                 finalRow = initialRow - 1;
                 finalCol = initialCol;
                 //Now we check if there are walls in the way
-                for( Wall wall : getAllWallsOnBoard() ){
-                    if( wall.getWallPlaced().getWallDirection() == Direction.Vertical ){
-                        //If this wall is incapable of blocking this northbound movement
-                        continue;
-                    }
-                    int deltaCol = wall.getWallPlaced.getTargetTile().getColumn() - initialCol;
-                    int deltaRow = wall.getWallPlaced.getTargetTile().getRow() - initialRow;
-                    if( deltaRow == -1 && deltaCol >= -1 && deltaCol <= 0 ){
-                        //If this wall obstructs access to the tile above
-                        return false;
-                    }
+                if( pathIsBlockedByWall( initialRow, initialCol, dir ) ){
+                    return false;   //If the move is blocked by a wall
                 }
                 break;
             case MoveDirection.South:
@@ -136,17 +109,8 @@ class PawnBehaviour{
                 finalRow = initialRow + 1;
                 finalCol = initialCol;
                 //Now we check if there are walls in the way
-                for( Wall wall : getAllWallsOnBoard() ){
-                    if( wall.getWallPlaced().getWallDirection() == Direction.Vertical ){
-                        //If this wall is incapable of blocking this southbound movement
-                        continue;
-                    }
-                    int deltaCol = wall.getWallPlaced.getTargetTile().getColumn() - initialCol;
-                    int deltaRow = wall.getWallPlaced.getTargetTile().getRow() - initialRow;
-                    if( deltaRow == 0 && deltaCol >= -1 && deltaCol <= 0 ){
-                        //If this wall obstructs access to the tile below
-                        return false;
-                    }
+                if( pathIsBlockedByWall( initialRow, initialCol, dir ) ){
+                    return false;   //If the move is blocked by a wall
                 }
                 break;
         }
@@ -159,22 +123,66 @@ class PawnBehaviour{
     }
     // Returns if it is legal to jump in the given direction
     boolean isLegalJump(MoveDirection dir) {
-        //First check if the enemy pawn is adjacent
+        //Compute useful data for calculating
         initialRow = getCurrentPawnRow();       //Starting row of player's pawn
         initialCol = getCurrentPawnCol();       //Starting column of player's pawn
         otherRow = getOtherPawnRow();           //Current row of other player's pawn
         otherCol = getOtherPawnCol();           //Current column of other player's pawn
         deltaRow = otherRow - initialRow;       //Displacement between other player's pawn and player's pawn in row.
         deltaCol = otherCol - initialCol;       //Displacement between other player's pawn and player's pawn in column.
+        //First check if the enemy pawn is adjacent. If not, return false.
         if( initialRow != otherRow && initialCol != otherCol ){
             return false;
-        } else if ( initialRow - otherRow == 0 && !( initialCol - otherCol == -1  || initialCol - otherCol == 1 ) ) {
-            return false;
-        } else if ( initial
+        } else if ( deltaRow == 0 ) {
+            if( deltaCol != 1 || deltaCol != -1 ){
+                return false;   //If you're on the same row but too far away from another still.
+            }
+        } else if ( deltaCol == 0 ) {
+            if( deltaRow != 1 || deltaCol != -1 ){
+                return false;   //If you're on the same column but too far away from another still.
+            }
+        }
+        //Now figure out what direction the adjacent pawn is to our current pawn, and verify it does not counter our dir.
+        MoveDirection adjacentPawnDir;
+        if( deltaCol == 1 ){
+            adjacentPawnDir = MoveDirection.East;
+            if( dir == MoveDirection.West ){
+                return false; //Moving West of the pawn to your East just returns you back to where you are.
+            }
+        } else if ( deltaRow == 1 ) {
+            adjacentPawnDir = MoveDirection.South;
+            if( dir == MoveDirection.North ){
+                return false; //Moving North of the pawn to your South just returns you back to where you are.
+            }
+        } else if ( deltaCol == -1 ) {
+            adjacentPawnDir = MoveDirection.West;
+            if( dir == MoveDirection.East ){
+                return false; //Moving East of the pawn to your West just returns you back to where you are.
+            }
+        } else if ( deltaRow == -1 ) {
+            adjacentPawnDir = MoveDirection.North;
+            if( dir == MoveDirection.South) {
+                return false; //Moving South of the pawn to your North just returns you back to where you are.
+            }
+        }
+        //Now that we know a pawn is adjacent, we need to figure out if there is a wall in between.
+        if( pathIsBlockedByWall( initialRow, initialCol, adjacentPawnDir ) ){
+            return false;   //If the move is prevented by a wall blocking access to the adjacent pawn.
+        }
+        //Now that we know we are clear, let us now see if moving in the provided direction from the adjacent pawn is possible.
+        if( pathIsBlockedByWall( otherRow, otherCol, dir ) ){
+            return false;   //The jump is blocked from the adjacent pawn's position.
+        }
+        //If all this works, then all tests have passed. Return true for legal jump.
+        return true;
     }
 
     // Action to be called when an illegal move is attempted
-    void illegalMove() { }
+    void illegalMove() {
+        throw new IllegalMoveException("Detected an illegal move. Do something.");
+        //TODO: Connect this to something in the view so that the player knows their move was illegal.
+        //A pop-up message is easy but not subtle. Consider red warning text appear in the UI instead.
+    }
 
     // Enumeration for the possible moving directions
     // (directions are from the viewpoint of white player)
@@ -215,6 +223,62 @@ class PawnBehaviour{
         placedWalls.addAll( currentGame.getCurrentPosition().getBlackWallsOnBoard() );
         placedWalls.addAll( currentGame.getCurrentPosition().getWhiteWallsOnBoard() );
         return placedWalls;
+    }
+    //Helper: Returns if a path off of a provided tile, through row and column, towards a direction is blocked by a wall
+    private boolean pathIsBlockedByWall( int row, int col, MoveDirection dir ){
+        for( Wall wall : getAllWallsOnBoard() ){
+            //Check if the wall's orientation is capable of blocking the direction.
+            if( wall.getWallPlaced().getWallDirection() == Direction.Horizontal ){
+                if( dir == MoveDirection.East || dir == MoveDirection.West ){
+                    continue;   //Skip the horizontal wall which can't block horizontal movement.
+                }
+            } else {
+                if( dir == MoveDirection.North || dir == MoveDirection.South ){
+                    continue;   //Skip the vertical wall which can't block vertical movement.
+                }
+            }
+            //Compute useful numbers.
+            int wallRow = wall.getWallPlaced().getTargetTile().getRow();
+            int wallCol = wall.getWallPlaced().getTargetTile().getColumn();
+            int deltaRow = wallRow - row;
+            int deltaCol = wallCol - col;
+            switch ( dir ) {
+                case MoveDirection.East:
+                    //Check if the path to the left of col row is blocked by wall. If so, then flag.
+                    if( deltaCol == -1 ){
+                        if( deltaRow == -1 || deltaRow == 0 ){
+                            return true;    //Return true for path is blocked by wall
+                        }
+                    }
+                    break;
+                case MoveDirection.West:
+                    //Check if the path to the right of col row is blocked by wall. If so, then flag.
+                    if( deltaCol == 0 ){
+                        if( deltaRow == -1 || deltaRow == 0 ){
+                            return true;    //Return true for path is blocked by wall
+                        }
+                    }
+                    break;
+                case MoveDirection.North:
+                    //Check if the path to the top of col row is blocked by wall. If so, then flag.
+                    if( deltaRow == -1 ){
+                        if( deltaCol == -1 || deltaCol == 0 ){
+                            return true;    //Return true for path is blocked by wall
+                        }
+                    }
+                    break;
+                case MoveDirection.South:
+                    //Check if the path to the bottom of col row is blocked by wall. If so, then flag.
+                    if( deltaRow == 0 ){
+                        if( deltaCol == -1 || deltaCol == 0 ){
+                            return true;    //Return true for path is blocked by wall
+                        }
+                    }
+                    break;
+            }
+        }
+        //No walls were detected to be blocking its path; return false for path is blocked by wall.
+        return false;
     }
 
 
