@@ -1,8 +1,8 @@
 //THE IMPORT STATEMENT BELOW IS REQUIRED IN THE .fxml FILE
 //IT GETS DELETED WHEN YOU REGENERATE THE .fxml FILE WITH SCENE BUILDER
 //YOU MUST ADD IT IN MANUALLY WHEN THAT HAPPENS
-
-//g
+//<?import java.util.ArrayList?>
+//<?import java.util.ArrayList?>
 
 
 package ca.mcgill.ecse223.quoridor.view;
@@ -246,7 +246,7 @@ public class ViewInterface {
 				wallSelected.setStroke(Color.RED);
 			}
 			else {
-				wallSelected.setStroke(Color.BLACK);
+				wallSelected.setStroke(Color.GREEN);
 			}
 
 			System.out.println(wallSelected.getTranslateX());
@@ -806,7 +806,7 @@ git s     */
                 wallSelected.setStroke(Color.RED);
             }
             else {
-                wallSelected.setStroke(Color.BLACK);
+                wallSelected.setStroke(Color.GREEN);
             }
 		}
 
@@ -822,6 +822,28 @@ git s     */
 	 * Other's timer turns on.
 	 */
 	public void switchPlayer(Event e) {
+
+		//dropWall implemented here
+		if (wallSelected != null) {
+			boolean dropSuccessful;
+			try {
+				dropSuccessful = QuoridorController.releaseWall(quoridor);
+			} catch (Exception ee) {
+				throw new java.lang.UnsupportedOperationException("Unable to drop Wall");
+			}
+
+			if (!dropSuccessful) {
+				invalidWallPlacement.setText("Invalid Wall Placement");
+				return;
+			} else {
+				invalidWallPlacement.setText("");
+				validWallGrab = false;
+				wallSelected = null;
+				wallMoveCandidate.setStroke(Color.BLACK);
+				wallMoveCandidate = null;
+			}
+		} //end dropWall
+
 		Button b = ((Button)e.getSource());
 		if (b.getId().equals(btn_whitePlayerTurn.getId())) {
 			if (btn_whitePlayerTurn.getText().equals("END TURN")) { //starts black player turn
@@ -975,7 +997,21 @@ git s     */
 
 	}
 	
-	
+
+
+	public void saveGameContainerFunction(Event event){
+		//pause counter
+		QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove()
+				,timer);
+		timer = new Timer();
+
+		saveGame(event); //save game
+
+		//restart counter
+		QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove()
+				,timer);
+	}
+
 	/**
 	 * Event Listener. When the saveGame event is called, this method begins saving the current game instance into a file through dialog windows.
 	 * Known Bug: TODO: saveGame process does not pause the player timers in game.
@@ -986,7 +1022,6 @@ git s     */
 		//Good reference: https://docs.oracle.com/javafx/2/ui_controls/file-chooser.htm
 		//Look for "Saving Files" section header.
 
-		
 		//Prepare the file choosing window
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save Your Game");
