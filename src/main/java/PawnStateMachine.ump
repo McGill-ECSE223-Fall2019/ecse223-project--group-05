@@ -8,19 +8,51 @@ class PawnBehavior {
     0..1 -> 0..1 Player player;
 
     pawnSM {
+    gameRunning{
+      endGame -> done;
+      canMove{
+        move [!isLegalStep(MoveDirection dir)] -> canMove;
+        jump [!isLegalJump(MoveDirection dir)] -> canMove;
+        grabWall -> moveWall;
+        jump [isLegalJump(MoveDirection dir)] -> cannotMove;
+        move [isLegalStep(MoveDirection dir)] -> cannotMove;
+      }
+      cannotMove{
+        switchPlayer [won] -> done;
+        switchPlayer [!won] -> gameRunning;
+        cancel -> canMove;
+      }
+      moveWall{
+        dropWall() [legal] -> cannotMove;
+        dropWall() [!legal] -> moveWall;
+        cancelWall() -> canMove;
+}
+    }
+    done{
+    }
+
+
+
+
+
     }
 
     // Returns the current row number of the pawn
     int getCurrentPawnRow() { return 0; }
+
     // Returns the current column number of the pawn
     int getCurrentPawnColumn() { return 0; }
+
     // Returns if it is legal to step in the given direction
     boolean isLegalStep(MoveDirection dir) { return false; }
+
     // Returns if it is legal to jump in the given direction
     boolean isLegalJump(MoveDirection dir) { return false; }
 
     // Action to be called when an illegal move is attempted
-    void illegalMove() { }
+    void illegalMove() {
+
+     }
     
     // Enumeration for the possible moving directions
     // (directions are from the viewpoint of white player)
