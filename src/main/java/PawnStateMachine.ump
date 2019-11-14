@@ -1,21 +1,375 @@
 namespace ca.mcgill.ecse223.quoridor.controller;
 
+external List {}
+external ArrayList {}
+
+use ca.mcgill.ecse223.quoridor.model.MoveDirection;
 use QuoridorGame.ump;
 
-class PawnBehavior {
+
+class PawnBehaviour{
+	depend java.util.List;
+	depend java.util.ArrayList;
+
+	0..1 -> 0..1 Game currentGame;
+	0..1 -> 0..1 Player player;
+
+
+  pawnSM{
+
+    positionStates{
+
+        RowState{
+
+            initialVerticalState{
+                entry [ playerIsBlack() ] -> OnNorthBorder;
+                entry [ playerIsWhite() ] -> OnSouthBorder;
+            }
+
+            OnNorthBorder{
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.South] -> NearNorthBorder;
+                jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
+            }
+            NearNorthBorder{
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.North] -> OnNorthBorder;
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
+                jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
+            }
+            BetweenNorthSouthBorders{
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 3] -> NearNorthBorder;
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> NearSouthBorder;
+                jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 3] -> OnNorthBorder;
+                jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 4] -> NearNorthBorder;
+                jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> OnSouthBorder;
+                jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 6] -> NearSouthBorder;
+            }
+            NearSouthBorder{
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.South] -> OnSouthBorder;
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
+                jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
+            }
+            OnSouthBorder{
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.North] -> NearSouthBorder;
+                jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
+            }
+        }
+        ||
+        ColumnState{
+
+            BetweenWestEastBorders{
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.West && getCurrentPawnColumn() == 3] -> NearWestBorder;
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.East && getCurrentPawnColumn() == 7] -> NearEastBorder;
+            jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.West && getCurrentPawnColumn() == 3] -> OnWestBorder;
+            jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.West && getCurrentPawnColumn() == 4] -> NearWestBorder;
+            jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.East && getCurrentPawnColumn() == 7] -> OnEastBorder;
+            jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.East && getCurrentPawnColumn() == 6] -> NearEastBorder;
+            }
+
+            OnWestBorder{
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.East] -> NearWestBorder;
+            jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
+            }
+            NearWestBorder{
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.West] -> OnWestBorder;
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
+            jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
+            }
+            NearEastBorder{
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.East] -> OnEastBorder;
+            jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
+            }
+            OnEastBorder{
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.West] -> NearEastBorder;
+            jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
+            }
+        }
+
     }
 
-    // Returns the current row number of the pawn
-    int getCurrentPawnRow() { return 0; }
-    // Returns the current column number of the pawn
-    int getCurrentPawnColumn() { return 0; }
-    // Returns if it is legal to step in the given direction
-    boolean isLegalStep(MoveDirection dir) { return false; }
-    // Returns if it is legal to jump in the given direction
-    boolean isLegalJump(MoveDirection dir) { return false; }
-    // Action to be called when an illegal move is attempted
-    void illegalMove() { }
-    // Enumeration for the possible moving directions
-    // (directions are from the viewpoint of white player)
-    enum MoveDirection { East, South, West, North; }
-}
+  }
+
+
+	// Returns the current row number of the pawn
+	int getCurrentPawnRow() {
+		PlayerPosition currentPosition = getCurrentPlayerPosition();
+		return currentPosition.getTile().getRow();
+	}
+	// Returns the current column number of the pawn
+	int getCurrentPawnColumn() {
+		PlayerPosition currentPosition = getCurrentPlayerPosition();
+		return currentPosition.getTile().getColumn();
+	}
+	// Returns if it is legal to step in the given direction
+	boolean isLegalStep(MoveDirection dir) {
+	    boolean stepWasLegal = true;
+
+	    //Compute useful data
+		int initialRow = getCurrentPawnRow();
+		int initialCol = getCurrentPawnColumn();
+		int finalRow = initialRow;
+		int finalCol = initialCol;
+		int otherRow = getOtherPawnRow();       //Row of other pawn
+		int otherCol = getOtherPawnColumn();    //Column of other pawn
+		//Check if the final destination is out of bounds
+		if(!moveIsInBounds( initialRow, initialCol, dir )){
+		    stepWasLegal =  false;
+		}
+		//Check if the path is blocked by a wall
+        if( pathIsBlockedByWall( initialRow, initialCol, dir ) ){
+            stepWasLegal =  false;   //If the move is blocked by a wall
+        }
+		//Get the final coordinates
+		switch( dir ) {
+			case East:
+				//Compute new position
+				finalRow = initialRow;
+				finalCol = initialCol + 1;
+				break;
+			case West:
+				//Compute new position
+				finalRow = initialRow;
+				finalCol = initialCol - 1;
+				break;
+			case North:
+				//Compute new position
+				finalRow = initialRow - 1;
+				finalCol = initialCol;
+				break;
+			case South:
+				//Compute new position
+				finalRow = initialRow + 1;
+				finalCol = initialCol;
+				break;
+		}
+		//Check if pawns would conflict with move
+		if( finalCol == otherCol && finalRow == otherRow ){
+			stepWasLegal =  false;
+		}
+
+		//If any test failed, call the illegalMove method
+		if( !stepWasLegal ){
+		    illegalMove();
+		}
+
+		//All tests passed.
+		return stepWasLegal;
+	}
+	// Returns if it is legal to jump in the given direction
+	boolean isLegalJump(MoveDirection dir) {
+	    boolean stepWasLegal = true;
+
+		//Compute useful data for calculating
+		int initialRow = getCurrentPawnRow();       //Starting row of player's pawn
+		int initialCol = getCurrentPawnColumn();       //Starting column of player's pawn
+		int otherRow = getOtherPawnRow();           //Current row of other player's pawn
+		int otherCol = getOtherPawnColumn();           //Current column of other player's pawn
+		int deltaRow = otherRow - initialRow;       //Displacement between other player's pawn and player's pawn in row.
+		int deltaCol = otherCol - initialCol;       //Displacement between other player's pawn and player's pawn in column.
+		//First check if the enemy pawn is adjacent. If not, return false.
+		if( initialRow != otherRow && initialCol != otherCol ){
+			stepWasLegal =  false;
+		} else if ( deltaRow == 0 ) {
+			if( deltaCol != 1 || deltaCol != -1 ){
+				stepWasLegal =  false;   //If you're on the same row but too far away from another still.
+			}
+		} else if ( deltaCol == 0 ) {
+			if( deltaRow != 1 || deltaCol != -1 ){
+				stepWasLegal =  false;   //If you're on the same column but too far away from another still.
+			}
+		}
+		//Now figure out what direction the adjacent pawn is to our current pawn, and verify it does not counter our dir.
+		MoveDirection adjacentPawnDir;
+		if( deltaCol == 1 ){
+			adjacentPawnDir = MoveDirection.East;
+			if( dir == MoveDirection.West ){
+				stepWasLegal =  false; //Moving West of the pawn to your East just returns you back to where you are.
+			}
+		} else if ( deltaRow == 1 ) {
+			adjacentPawnDir = MoveDirection.South;
+			if( dir == MoveDirection.North ){
+				stepWasLegal =  false; //Moving North of the pawn to your South just returns you back to where you are.
+			}
+		} else if ( deltaCol == -1 ) {
+			adjacentPawnDir = MoveDirection.West;
+			if( dir == MoveDirection.East ){
+				stepWasLegal =  false; //Moving East of the pawn to your West just returns you back to where you are.
+			}
+		} else if ( deltaRow == -1 ) {
+			adjacentPawnDir = MoveDirection.North;
+			if( dir == MoveDirection.South) {
+				stepWasLegal =  false; //Moving South of the pawn to your North just returns you back to where you are.
+			}
+		} else {
+			throw new IllegalArgumentException("Detected unacceptable MoveDirection.");
+		}
+		//Now that we know a pawn is adjacent, we need to figure out if there is a wall in between.
+		if( pathIsBlockedByWall( initialRow, initialCol, adjacentPawnDir ) ){
+			stepWasLegal =  false;   //If the move is prevented by a wall blocking access to the adjacent pawn.
+		}
+		//Now that we know we are clear, let us now see if moving in the provided direction from the adjacent pawn is blocked.
+		if( pathIsBlockedByWall( otherRow, otherCol, dir ) ){
+			stepWasLegal =  false;   //The jump is blocked from the adjacent pawn's position.
+		}
+		//Let's not forget that we need to check that the final destination is on the board.
+		if(!moveIsInBounds( otherRow, otherCol, dir )){
+		    stepWasLegal =  false;
+		}
+
+		//If any of the tests failed, call the illegalMove alerter.
+		if( !stepWasLegal ){
+		    illegalMove();
+		}
+		//If all this works, then all tests have passed. Return true for legal jump.
+		return true;
+	}
+
+	// Action to be called when an illegal move is attempted
+	void illegalMove() {
+		throw new IllegalArgumentException("Detected an illegal move. Do something.");
+		//TODO: Connect this to something in the view so that the player knows their move was illegal.
+		//A pop-up message is easy but not subtle. Consider red warning text appear in the UI instead.
+	}
+
+    /*
+     *  THIS ENUMERATION, UNSUPPORTED BY UMPLE, HAS BEEN MANUALLY ADDED INTO THE MODELS FOLDER.
+     */
+	// Enumeration for the possible moving directions
+	// (directions are from the viewpoint of white player)
+	//enum MoveDirection { East, South, West, North; }
+
+
+	//Helper: Gets the current position of the player
+	private PlayerPosition getCurrentPlayerPosition() {
+		PlayerPosition playerPosition;
+		if( player.getGameAsWhite() != null ){
+			playerPosition = player.getGameAsWhite().getCurrentPosition().getWhitePosition();
+		} else {
+			playerPosition = player.getGameAsBlack().getCurrentPosition().getBlackPosition();
+		}
+		return playerPosition;
+	}
+	//Helper: Gets the current position of the other player
+	private PlayerPosition getCurrentOtherPlayerPosition() {
+		PlayerPosition playerPosition;
+		if( player.getGameAsWhite() != null ){
+			playerPosition = player.getGameAsWhite().getCurrentPosition().getBlackPosition();
+		} else {
+			playerPosition = player.getGameAsBlack().getCurrentPosition().getWhitePosition();
+		}
+		return playerPosition;
+	}
+	//Helper: Gets the current row number of the other player
+	private int getOtherPawnRow(){
+		return getCurrentOtherPlayerPosition().getTile().getRow();
+	}
+	//Helper: Gets the current column number of the other player
+	private int getOtherPawnColumn(){
+		return getCurrentOtherPlayerPosition().getTile().getColumn();
+	}
+	//Helper: Gets all of the walls placed onto the board
+	private List<Wall> getAllWallsOnBoard() {
+		List<Wall> placedWalls = new ArrayList<Wall>();
+		placedWalls.addAll( currentGame.getCurrentPosition().getBlackWallsOnBoard() );
+		placedWalls.addAll( currentGame.getCurrentPosition().getWhiteWallsOnBoard() );
+		return placedWalls;
+	}
+	//Helper: Returns if a path off of a provided tile, through row and column, towards a direction is blocked by a wall
+	private boolean pathIsBlockedByWall( int row, int col, MoveDirection dir ){
+		for( Wall wall : getAllWallsOnBoard() ){
+			//Check if the wall's orientation is capable of blocking the direction.
+			if( wall.getMove().getWallDirection() == Direction.Horizontal ){
+				if( dir == MoveDirection.East || dir == MoveDirection.West ){
+					continue;   //Skip the horizontal wall which can't block horizontal movement.
+				}
+			} else {
+				if( dir == MoveDirection.North || dir == MoveDirection.South ){
+					continue;   //Skip the vertical wall which can't block vertical movement.
+				}
+			}
+			//Compute useful numbers.
+			int wallRow = wall.getMove().getTargetTile().getRow();
+			int wallCol = wall.getMove().getTargetTile().getColumn();
+			int deltaRow = wallRow - row;
+			int deltaCol = wallCol - col;
+			switch ( dir ) {
+				case East:
+					//Check if the path to the left of col row is blocked by wall. If so, then flag.
+					if( deltaCol == -1 ){
+						if( deltaRow == -1 || deltaRow == 0 ){
+							return true;    //Return true for path is blocked by wall
+						}
+					}
+					break;
+				case West:
+					//Check if the path to the right of col row is blocked by wall. If so, then flag.
+					if( deltaCol == 0 ){
+						if( deltaRow == -1 || deltaRow == 0 ){
+							return true;    //Return true for path is blocked by wall
+						}
+					}
+					break;
+				case North:
+					//Check if the path to the top of col row is blocked by wall. If so, then flag.
+					if( deltaRow == -1 ){
+						if( deltaCol == -1 || deltaCol == 0 ){
+							return true;    //Return true for path is blocked by wall
+						}
+					}
+					break;
+				case South:
+					//Check if the path to the bottom of col row is blocked by wall. If so, then flag.
+					if( deltaRow == 0 ){
+						if( deltaCol == -1 || deltaCol == 0 ){
+							return true;    //Return true for path is blocked by wall
+						}
+					}
+					break;
+			}
+		}
+		//No walls were detected to be blocking its path; return false for path is blocked by wall.
+		return false;
+	}
+	//Helper: Returns if a move in the dir off of the provided tile coordinates is valid
+	private boolean moveIsInBounds( int initialRow, int initialCol, MoveDirection dir ){
+		int finalRow;
+		int finalCol;
+		switch( dir ) {
+			case East:
+				//Check if the player is already on the east border
+				if( initialCol == 9 ){
+					return false;
+				}
+				break;
+			case West:
+				//Check if the player is already on the west border
+				if( initialCol == 0 ){
+					return false;
+				}
+				break;
+			case North:
+				//Check if the player is already on the north border
+				if( initialRow == 0 ){
+					return false;
+				}
+				break;
+			case South:
+				//Check if the player is already on the south border
+				if( initialRow == 9 ){
+					return false;
+				}
+				break;
+		}
+		//All tests passed.
+		return true;
+	}
+    //Helper method for knowing if the player has a white pawn
+    private boolean playerIsWhite(){
+        return player.getGameAsWhite() != null;
+    }
+    //Helper method for knowing if the player has a black pawn
+    private boolean playerIsBlack(){
+        return player.getGameAsBlack() != null;
+    }
+
+  }
