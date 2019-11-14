@@ -162,7 +162,76 @@ public class CucumberStepDefinitions {
 	// ***********************************************
 	// Scenario and scenario outline step definitions
 	// ***********************************************
-	
+
+	/*
+	 * Jump pawn step definition
+	 */
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn
+	 * Scenario: The game is running
+	 */
+	@Given("The opponent is located at {int}:{int}")
+	public void the_opponent_is_located_at(Integer int1, Integer int2) {
+		Player opponentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove().getNextPlayer();
+		Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
+		Player whitePlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer();
+
+		PlayerPosition playerPosition;
+
+		if(opponentPlayer.equals(blackPlayer)) {
+			playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition();
+		}
+		else {
+			playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition();
+		}
+		Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((int1 - 1) * 9 + int2 - 1);
+		playerPosition.setTile(targetTile);
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn
+	 * Scenario: The game is running
+	 */
+	@Given("There are no {string} walls {string} from the player nearby")
+	public void there_are_no_walls_from_the_player_nearby(String string, String string2) {
+		removeWalls();
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn
+	 * Scenario: Jump of player blocked by wall
+	 */
+	@Given("There is a {string} wall at {int}:{int}")
+	public void there_is_a_wall_at(String dir, Integer row, Integer col) {
+
+
+		QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+		Direction wallMoveDirection;
+		if (dir.equals("horizontal")) {
+			wallMoveDirection = Direction.Horizontal;
+		} else if (dir.equals("vertical")) {
+			wallMoveDirection = Direction.Vertical;
+		} else {
+			throw new IllegalArgumentException("Unsupported wall direction was provided");
+		}
+		Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((row - 1) * 9 + col - 1);
+
+		QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setWallDirection(wallMoveDirection);
+		QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setTargetTile(targetTile);
+		QuoridorController.releaseWall(QuoridorApplication.getQuoridor());
+	}
+
+
 	/*
 	 * Start new game step definition
 	 */
