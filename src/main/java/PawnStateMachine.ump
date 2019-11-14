@@ -3,11 +3,6 @@ namespace ca.mcgill.ecse223.quoridor.controller;
 use QuoridorGame.ump;
 
 class PawnBehavior {
-
-    0..1 -> 0..1 Game currentGame;
-    0..1 -> 0..1 Player player;
-
-    pawnSM {
     }
 
     // Returns the current row number of the pawn
@@ -18,10 +13,8 @@ class PawnBehavior {
     boolean isLegalStep(MoveDirection dir) { return false; }
     // Returns if it is legal to jump in the given direction
     boolean isLegalJump(MoveDirection dir) { return false; }
-
     // Action to be called when an illegal move is attempted
     void illegalMove() { }
-    
     // Enumeration for the possible moving directions
     // (directions are from the viewpoint of white player)
     enum MoveDirection { East, South, West, North; }
