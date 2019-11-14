@@ -176,13 +176,13 @@ public class CucumberStepDefinitions {
 	 */
 	@Given("The opponent is located at {int}:{int}")
 	public void the_opponent_is_located_at(Integer int1, Integer int2) {
-		Player opponentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove().getNextPlayer();
+		Player opponentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove();
 		Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
 		Player whitePlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer();
 
 		PlayerPosition playerPosition;
 
-		if(opponentPlayer.equals(blackPlayer)) {
+		if(opponentPlayer.getUser().getName().equals(whitePlayer.getUser().getName())) {
 			playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition();
 		}
 		else {
@@ -225,10 +225,46 @@ public class CucumberStepDefinitions {
 			throw new IllegalArgumentException("Unsupported wall direction was provided");
 		}
 		Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((row - 1) * 9 + col - 1);
-
 		QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setWallDirection(wallMoveDirection);
 		QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setTargetTile(targetTile);
 		QuoridorController.releaseWall(QuoridorApplication.getQuoridor());
+	}
+
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn
+	 */
+	@Then("The move {string} shall be {string}")
+	public void the_move_shall_be(String string, String string2) {
+		// Write code here that turns the phrase above into concrete actions
+		throw new cucumber.api.PendingException();
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn
+	 */
+	@Then("Player's new position shall be {int}:{int}")
+	public void player_s_new_position_shall_be(Integer int1, Integer int2) {
+		// Write code here that turns the phrase above into concrete actions
+		throw new cucumber.api.PendingException();
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn
+	 */
+	@Then("The next player to move shall become {string}")
+	public void the_next_player_to_move_shall_become(String string) {
+		// Write code here that turns the phrase above into concrete actions
+		throw new cucumber.api.PendingException();
 	}
 
 
@@ -243,7 +279,6 @@ public class CucumberStepDefinitions {
 	 */
     @When("A new game is being initialized")
     public void aNewGameIsBeingInitializing(){
-    	
     	QuoridorController.initializeGame(QuoridorApplication.getQuoridor());
     }
     
@@ -906,7 +941,7 @@ public class CucumberStepDefinitions {
 	/**
      * @author Edwin Pan
      * @author Matthias Arabian made modifications for deliverable 3
-	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * @param playerColorAsString color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the player whose turn it is to play is the provided player.
 	 */
 	@Given("The player to move is {string}")
