@@ -224,9 +224,12 @@ class PawnBehaviour{
 		//A pop-up message is easy but not subtle. Consider red warning text appear in the UI instead.
 	}
 
+    /*
+     *  THIS ENUMERATION, UNSUPPORTED BY UMPLE, HAS BEEN MANUALLY ADDED INTO THE MODELS FOLDER.
+     */
 	// Enumeration for the possible moving directions
 	// (directions are from the viewpoint of white player)
-	enum MoveDirection { East, South, West, North; }
+	//enum MoveDirection { East, South, West, North; }
 
 
 	//Helper: Gets the current position of the player
