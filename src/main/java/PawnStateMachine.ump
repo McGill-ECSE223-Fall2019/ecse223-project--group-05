@@ -11,36 +11,51 @@ class PawnBehaviour{
 
   pawnSM{
 
-	gameRunning{
+    verticalState{
 
-	  endGame() -> done;
+        initialVerticalState{
+            entry/{};
+        }
 
-	  canMove{
-		move() [!legal] -> canMove;
-		jump() [!legal] -> canMove;
-		grabWall() -> moveWall;
-		jump() [legal] -> cannotMove;
-		move() [legal] -> cannotMove;
-	  }
+        OnNorthBorder{
 
-	  cannotMove{
-		switchPlayer() [won] -> done;
-		switchPlayer() [!won] -> gameRunning;
-		cancel() -> canMove;
-	  }
+        }
+        NearNorthBorder{
 
-	  moveWall{
-		dropWall() [legal] -> cannotMove;
-		dropWall() [!legal] -> moveWall;
-		cancelWall() -> canMove;
-	  }
+        }
+        BetweenNorthSouthBorders{
 
-	}
+        }
+        NearSouthBorder{
 
-	done{
+        }
+        OnSouthBorder{
 
-	}
+        }
+    }
+    ||
+    horizontalState{
 
+        initialHorizontalState{
+            entry/{};
+        }
+
+        OnWestBorder{
+
+        }
+        NearWestBorder{
+
+        }
+        BetweenWestEastBorders{
+
+        }
+        NearEastBorder{
+
+        }
+        OnEastBorder{
+
+        }
+    }
 
   }
 
@@ -57,64 +72,42 @@ class PawnBehaviour{
 	}
 	// Returns if it is legal to step in the given direction
 	boolean isLegalStep(MoveDirection dir) {
+	    //Compute useful data
 		int initialRow = getCurrentPawnRow();
 		int initialCol = getCurrentPawnColumn();
 		int finalRow;
 		int finalCol;
 		int otherRow = getOtherPawnRow();       //Row of other pawn
 		int otherCol = getOtherPawnColumn();    //Column of other pawn
+		//Check if the final destination is out of bounds
+		if(!moveIsInBounds( initialRow, initialCol, dir )){
+		    return false;
+		}
+		//Check if the path is blocked by a wall
+        if( pathIsBlockedByWall( initialRow, initialCol, dir ) ){
+            return false;   //If the move is blocked by a wall
+        }
+		//Get the final coordinates
 		switch( dir ) {
 			case MoveDirection.East:
-				//Check if the player is already on the east border
-				if( initialCol == 9 ){
-					return false;
-				}
 				//Compute new position
 				finalRow = initialRow;
 				finalCol = initialCol + 1;
-				//Now we check if there are walls in the way
-				if( pathIsBlockedByWall( initialRow, initialCol, dir ) ){
-					return false;   //If the move is blocked by a wall
-				}
 				break;
 			case MoveDirection.West:
-				//Check if the player is already on the west border
-				if( initialCol == 0 ){
-					return false;
-				}
 				//Compute new position
 				finalRow = initialRow;
 				finalCol = initialCol - 1;
-				//Now we check if there are walls in the way
-				if( pathIsBlockedByWall( initialRow, initialCol, dir ) ){
-					return false;   //If the move is blocked by a wall
-				}
 				break;
 			case MoveDirection.North:
-				//Check if the player is already on the north border
-				if( initialRow == 0 ){
-					return false;
-				}
 				//Compute new position
 				finalRow = initialRow - 1;
 				finalCol = initialCol;
-				//Now we check if there are walls in the way
-				if( pathIsBlockedByWall( initialRow, initialCol, dir ) ){
-					return false;   //If the move is blocked by a wall
-				}
 				break;
 			case MoveDirection.South:
-				//Check if the player is already on the south border
-				if( initialRow == 9 ){
-					return false;
-				}
 				//Compute new position
 				finalRow = initialRow + 1;
 				finalCol = initialCol;
-				//Now we check if there are walls in the way
-				if( pathIsBlockedByWall( initialRow, initialCol, dir ) ){
-					return false;   //If the move is blocked by a wall
-				}
 				break;
 		}
 		//Check if pawns would conflict with move
@@ -172,9 +165,13 @@ class PawnBehaviour{
 		if( pathIsBlockedByWall( initialRow, initialCol, adjacentPawnDir ) ){
 			return false;   //If the move is prevented by a wall blocking access to the adjacent pawn.
 		}
-		//Now that we know we are clear, let us now see if moving in the provided direction from the adjacent pawn is possible.
+		//Now that we know we are clear, let us now see if moving in the provided direction from the adjacent pawn is blocked.
 		if( pathIsBlockedByWall( otherRow, otherCol, dir ) ){
 			return false;   //The jump is blocked from the adjacent pawn's position.
+		}
+		//Let's not forget that we need to check that the final destination is on the board.
+		if(!moveIsInBounds( otherRow, otherCol, dir )){
+		    return false;
 		}
 		//If all this works, then all tests have passed. Return true for legal jump.
 		return true;
@@ -282,6 +279,39 @@ class PawnBehaviour{
 		}
 		//No walls were detected to be blocking its path; return false for path is blocked by wall.
 		return false;
+	}
+	//Helper: Returns if a move in the dir off of the provided tile coordinates is valid
+	private boolean moveIsInBounds( int initialRow, int initialCol, MoveDirection dir ){
+		int finalRow;
+		int finalCol;
+		switch( dir ) {
+			case MoveDirection.East:
+				//Check if the player is already on the east border
+				if( initialCol == 9 ){
+					return false;
+				}
+				break;
+			case MoveDirection.West:
+				//Check if the player is already on the west border
+				if( initialCol == 0 ){
+					return false;
+				}
+				break;
+			case MoveDirection.North:
+				//Check if the player is already on the north border
+				if( initialRow == 0 ){
+					return false;
+				}
+				break;
+			case MoveDirection.South:
+				//Check if the player is already on the south border
+				if( initialRow == 9 ){
+					return false;
+				}
+				break;
+		}
+		//All tests passed.
+		return true;
 	}
 
 
