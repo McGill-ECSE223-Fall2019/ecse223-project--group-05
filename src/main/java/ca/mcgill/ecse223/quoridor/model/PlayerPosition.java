@@ -3,6 +3,7 @@
 
 package ca.mcgill.ecse223.quoridor.model;
 import java.io.Serializable;
+import java.util.*;
 
 // line 70 "../../../../../QuoridorGamePersistence.ump"
 // line 96 "../../../../../QuoridorGame.ump"

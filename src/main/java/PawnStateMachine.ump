@@ -1,10 +1,15 @@
 namespace ca.mcgill.ecse223.quoridor.controller;
 
+external List {}
+external ArrayList {}
+
 use ca.mcgill.ecse223.quoridor.model.MoveDirection;
 use QuoridorGame.ump;
 
 
 class PawnBehaviour{
+	depend java.util.List;
+	depend java.util.ArrayList;
 
 	0..1 -> 0..1 Game currentGame;
 	0..1 -> 0..1 Player player;
@@ -22,61 +27,61 @@ class PawnBehaviour{
             }
 
             OnNorthBorder{
-                move [isLegalMove(dir) && dir == MoveDirection.South] -> NearNorthBorder;
-                jump [isLegalMove(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
+                move(dir) [isLegalStep(dir) && dir == MoveDirection.South] -> NearNorthBorder;
+                jump(dir) [isLegalJump(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
             }
             NearNorthBorder{
-                move [isLegalMove(dir) && dir == MoveDirection.North] -> OnNorthBorder;
-                move [isLegalMove(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
-                jump [isLegalMove(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
+                move(dir) [isLegalStep(dir) && dir == MoveDirection.North] -> OnNorthBorder;
+                move(dir) [isLegalStep(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
+                jump(dir) [isLegalJump(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
             }
             BetweenNorthSouthBorders{
-                move [isLegalMove(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 3] -> NearNorthBorder;
-                move [isLegalMove(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> NearSouthBorder;
-                jump [isLegalMove(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 3] -> OnNorthBorder;
-                jump [isLegalMove(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 4] -> NearNorthBorder;
-                jump [isLegalMove(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> OnSouthBorder;
-                jump [isLegalMove(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 6] -> NearSouthBorder;
+                move(dir) [isLegalStep(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 3] -> NearNorthBorder;
+                move(dir) [isLegalStep(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> NearSouthBorder;
+                jump(dir) [isLegalJump(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 3] -> OnNorthBorder;
+                jump(dir) [isLegalJump(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 4] -> NearNorthBorder;
+                jump(dir) [isLegalJump(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> OnSouthBorder;
+                jump(dir) [isLegalJump(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 6] -> NearSouthBorder;
             }
             NearSouthBorder{
-                move [isLegalMove(dir) && dir == MoveDirection.South] -> OnSouthBorder;
-                move [isLegalMove(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
-                jump [isLegalMove(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
+                move(dir) [isLegalStep(dir) && dir == MoveDirection.South] -> OnSouthBorder;
+                move(dir) [isLegalStep(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
+                jump(dir) [isLegalJump(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
             }
             OnSouthBorder{
-                move [isLegalMove(dir) && dir == MoveDirection.North] -> NearSouthBorder;
-                jump [isLegalMove(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
+                move(dir) [isLegalStep(dir) && dir == MoveDirection.North] -> NearSouthBorder;
+                jump(dir) [isLegalJump(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
             }
         }
         ||
         ColumnState{
 
             BetweenWestEastBorders{
-            move [isLegalMove(dir) && dir == MoveDirection.West && getCurrentPawnCol() == 3] -> NearWestBorder;
-            move [isLegalMove(dir) && dir == MoveDirection.East && getCurrentPawnCol() == 7] -> NearEastBorder;
-            jump [isLegalMove(dir) && dir == MoveDirection.West && getCurrentPawnCol() == 3] -> OnWestBorder;
-            jump [isLegalMove(dir) && dir == MoveDirection.West && getCurrentPawnCol() == 4] -> NearWestBorder;
-            jump [isLegalMove(dir) && dir == MoveDirection.East && getCurrentPawnCol() == 7] -> OnEastBorder;
-            jump [isLegalMove(dir) && dir == MoveDirection.East && getCurrentPawnCol() == 6] -> NearEastBorder;
+            move(dir) [isLegalStep(dir) && dir == MoveDirection.West && getCurrentPawnColumn() == 3] -> NearWestBorder;
+            move(dir) [isLegalStep(dir) && dir == MoveDirection.East && getCurrentPawnColumn() == 7] -> NearEastBorder;
+            jump(dir) [isLegalJump(dir) && dir == MoveDirection.West && getCurrentPawnColumn() == 3] -> OnWestBorder;
+            jump(dir) [isLegalJump(dir) && dir == MoveDirection.West && getCurrentPawnColumn() == 4] -> NearWestBorder;
+            jump(dir) [isLegalJump(dir) && dir == MoveDirection.East && getCurrentPawnColumn() == 7] -> OnEastBorder;
+            jump(dir) [isLegalJump(dir) && dir == MoveDirection.East && getCurrentPawnColumn() == 6] -> NearEastBorder;
             }
 
             OnWestBorder{
-            move [isLegalMove(dir) && dir == MoveDirection.East] -> NearWestBorder;
-            jump [isLegalMove(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
+            move(dir) [isLegalStep(dir) && dir == MoveDirection.East] -> NearWestBorder;
+            jump(dir) [isLegalJump(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
             }
             NearWestBorder{
-            move [isLegalMove(dir) && dir == MoveDirection.West] -> OnWestBorder;
-            move [isLegalMove(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
-            jump [isLegalMove(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
+            move(dir) [isLegalStep(dir) && dir == MoveDirection.West] -> OnWestBorder;
+            move(dir) [isLegalStep(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
+            jump(dir) [isLegalJump(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
             }
             NearEastBorder{
-            move [isLegalMove(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
-            move [isLegalMove(dir) && dir == MoveDirection.East] -> OnEastBorder;
-            jump [isLegalMove(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
+            move(dir) [isLegalStep(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
+            move(dir) [isLegalStep(dir) && dir == MoveDirection.East] -> OnEastBorder;
+            jump(dir) [isLegalJump(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
             }
             OnEastBorder{
-            move [isLegalMove(dir) && dir == MoveDirection.West] -> NearEastBorder;
-            jump [isLegalMove(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
+            move(dir) [isLegalStep(dir) && dir == MoveDirection.West] -> NearEastBorder;
+            jump(dir) [isLegalJump(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
             }
         }
 
@@ -102,8 +107,8 @@ class PawnBehaviour{
 	    //Compute useful data
 		int initialRow = getCurrentPawnRow();
 		int initialCol = getCurrentPawnColumn();
-		int finalRow;
-		int finalCol;
+		int finalRow = initialRow;
+		int finalCol = initialCol;
 		int otherRow = getOtherPawnRow();       //Row of other pawn
 		int otherCol = getOtherPawnColumn();    //Column of other pawn
 		//Check if the final destination is out of bounds
@@ -116,22 +121,22 @@ class PawnBehaviour{
         }
 		//Get the final coordinates
 		switch( dir ) {
-			case MoveDirection.East:
+			case East:
 				//Compute new position
 				finalRow = initialRow;
 				finalCol = initialCol + 1;
 				break;
-			case MoveDirection.West:
+			case West:
 				//Compute new position
 				finalRow = initialRow;
 				finalCol = initialCol - 1;
 				break;
-			case MoveDirection.North:
+			case North:
 				//Compute new position
 				finalRow = initialRow - 1;
 				finalCol = initialCol;
 				break;
-			case MoveDirection.South:
+			case South:
 				//Compute new position
 				finalRow = initialRow + 1;
 				finalCol = initialCol;
@@ -155,12 +160,12 @@ class PawnBehaviour{
 	    boolean stepWasLegal = true;
 
 		//Compute useful data for calculating
-		initialRow = getCurrentPawnRow();       //Starting row of player's pawn
-		initialCol = getCurrentPawnCol();       //Starting column of player's pawn
-		otherRow = getOtherPawnRow();           //Current row of other player's pawn
-		otherCol = getOtherPawnCol();           //Current column of other player's pawn
-		deltaRow = otherRow - initialRow;       //Displacement between other player's pawn and player's pawn in row.
-		deltaCol = otherCol - initialCol;       //Displacement between other player's pawn and player's pawn in column.
+		int initialRow = getCurrentPawnRow();       //Starting row of player's pawn
+		int initialCol = getCurrentPawnColumn();       //Starting column of player's pawn
+		int otherRow = getOtherPawnRow();           //Current row of other player's pawn
+		int otherCol = getOtherPawnColumn();           //Current column of other player's pawn
+		int deltaRow = otherRow - initialRow;       //Displacement between other player's pawn and player's pawn in row.
+		int deltaCol = otherCol - initialCol;       //Displacement between other player's pawn and player's pawn in column.
 		//First check if the enemy pawn is adjacent. If not, return false.
 		if( initialRow != otherRow && initialCol != otherCol ){
 			stepWasLegal =  false;
@@ -195,6 +200,8 @@ class PawnBehaviour{
 			if( dir == MoveDirection.South) {
 				stepWasLegal =  false; //Moving South of the pawn to your North just returns you back to where you are.
 			}
+		} else {
+			throw new IllegalArgumentException("Detected unacceptable MoveDirection.");
 		}
 		//Now that we know a pawn is adjacent, we need to figure out if there is a wall in between.
 		if( pathIsBlockedByWall( initialRow, initialCol, adjacentPawnDir ) ){
@@ -219,7 +226,7 @@ class PawnBehaviour{
 
 	// Action to be called when an illegal move is attempted
 	void illegalMove() {
-		throw new IllegalMoveException("Detected an illegal move. Do something.");
+		throw new IllegalArgumentException("Detected an illegal move. Do something.");
 		//TODO: Connect this to something in the view so that the player knows their move was illegal.
 		//A pop-up message is easy but not subtle. Consider red warning text appear in the UI instead.
 	}
@@ -271,7 +278,7 @@ class PawnBehaviour{
 	private boolean pathIsBlockedByWall( int row, int col, MoveDirection dir ){
 		for( Wall wall : getAllWallsOnBoard() ){
 			//Check if the wall's orientation is capable of blocking the direction.
-			if( wall.getWallPlaced().getWallDirection() == Direction.Horizontal ){
+			if( wall.getMove().getWallDirection() == Direction.Horizontal ){
 				if( dir == MoveDirection.East || dir == MoveDirection.West ){
 					continue;   //Skip the horizontal wall which can't block horizontal movement.
 				}
@@ -281,12 +288,12 @@ class PawnBehaviour{
 				}
 			}
 			//Compute useful numbers.
-			int wallRow = wall.getWallPlaced().getTargetTile().getRow();
-			int wallCol = wall.getWallPlaced().getTargetTile().getColumn();
+			int wallRow = wall.getMove().getTargetTile().getRow();
+			int wallCol = wall.getMove().getTargetTile().getColumn();
 			int deltaRow = wallRow - row;
 			int deltaCol = wallCol - col;
 			switch ( dir ) {
-				case MoveDirection.East:
+				case East:
 					//Check if the path to the left of col row is blocked by wall. If so, then flag.
 					if( deltaCol == -1 ){
 						if( deltaRow == -1 || deltaRow == 0 ){
@@ -294,7 +301,7 @@ class PawnBehaviour{
 						}
 					}
 					break;
-				case MoveDirection.West:
+				case West:
 					//Check if the path to the right of col row is blocked by wall. If so, then flag.
 					if( deltaCol == 0 ){
 						if( deltaRow == -1 || deltaRow == 0 ){
@@ -302,7 +309,7 @@ class PawnBehaviour{
 						}
 					}
 					break;
-				case MoveDirection.North:
+				case North:
 					//Check if the path to the top of col row is blocked by wall. If so, then flag.
 					if( deltaRow == -1 ){
 						if( deltaCol == -1 || deltaCol == 0 ){
@@ -310,7 +317,7 @@ class PawnBehaviour{
 						}
 					}
 					break;
-				case MoveDirection.South:
+				case South:
 					//Check if the path to the bottom of col row is blocked by wall. If so, then flag.
 					if( deltaRow == 0 ){
 						if( deltaCol == -1 || deltaCol == 0 ){
@@ -328,25 +335,25 @@ class PawnBehaviour{
 		int finalRow;
 		int finalCol;
 		switch( dir ) {
-			case MoveDirection.East:
+			case East:
 				//Check if the player is already on the east border
 				if( initialCol == 9 ){
 					return false;
 				}
 				break;
-			case MoveDirection.West:
+			case West:
 				//Check if the player is already on the west border
 				if( initialCol == 0 ){
 					return false;
 				}
 				break;
-			case MoveDirection.North:
+			case North:
 				//Check if the player is already on the north border
 				if( initialRow == 0 ){
 					return false;
 				}
 				break;
-			case MoveDirection.South:
+			case South:
 				//Check if the player is already on the south border
 				if( initialRow == 9 ){
 					return false;
@@ -363,15 +370,6 @@ class PawnBehaviour{
     //Helper method for knowing if the player has a black pawn
     private boolean playerIsBlack(){
         return player.getGameAsBlack() != null;
-    }
-
-    //API method
-    public void move( MoveDirection dir ){
-        //TODO
-    }
-    //API method
-    public void jump( MoveDirection dir ){
-        //TODO
     }
 
   }
