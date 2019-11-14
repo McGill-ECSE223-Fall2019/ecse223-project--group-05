@@ -1609,11 +1609,11 @@ public class CucumberStepDefinitions {
 		int whiteWallNo = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size();
 		int blackWallNo = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackWallsInStock().size();
 		
-		for (int j = 0; j < whiteWallNo; j++) {
+		for (int j = 1; j <= whiteWallNo; j++) {
 			Wall wall = Wall.getWithId(j);
 			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeWhiteWallsInStock(wall);
 		}
-		for (int j = 0; j < blackWallNo; j++) {
+		for (int j = 1; j <= blackWallNo; j++) {
 			Wall wall = Wall.getWithId(j + 10);
 			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().removeBlackWallsInStock(wall);
 		}
