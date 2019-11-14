@@ -37,6 +37,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.*;
 
+import javax.swing.text.Position;
 import javax.swing.text.View;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -1459,7 +1460,123 @@ public class CucumberStepDefinitions {
 		assertEquals(true, !failedToReadSaveFile);
 		assertEquals(true, receivedInvalidPositionException);
 	}
-	
+
+	/**
+	 * Given method to set player at corresponding position
+	 * @param row
+	 * @param col
+	 * @author Daniel Wu
+	 * @author Alex Masciotra
+	 * @author Thomas Philippon
+	 */
+	@And("The player is located at {int}:{int}")
+	public void thePlayerIsLocatedAt(int row, int col){
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+
+		GamePosition currentPosition = quoridor.getCurrentGame().getCurrentPosition();
+		Player currentPlayer = currentPosition.getPlayerToMove();
+
+		//(row - 1) * 9 + col - 1
+		PlayerPosition currentPlayerPosition;
+
+		if(currentPlayer.hasGameAsWhite()){
+			currentPlayerPosition = currentPosition.getWhitePosition();
+		}else{
+			currentPlayerPosition = currentPosition.getBlackPosition();
+		}
+
+		Tile targetTile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
+
+		currentPlayerPosition.setTile(targetTile);
+	}
+
+	/**
+	 * Given nothing blocking the player to move
+	 * @param dir
+	 * @param side
+	 * @author Daniel Wu
+	 * @author Alex Masciotra
+	 * @author Thomas Philippon
+	 */
+	@And("There are no {string} walls {string} from the player")
+	public void thereAreNoWallsFromPlayer(String dir, String side){
+		//removeWalls();
+	}
+
+	/**
+	 * Method to offSet opponent from player to move
+	 * @param side
+	 * @author Daniel Wu
+	 * @author Alex Masciotra
+	 * @author Thomas Philippon
+	 */
+	@Then("The opponent is not {string} from the player")
+	public void theOpponentIsNotFromPlayer(String side){
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+
+		Boolean playerToOffsetIsWhite;
+		Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
+		Player playerToOffset;
+
+		if(currentPlayer.hasGameAsWhite()){
+			playerToOffset = quoridor.getCurrentGame().getBlackPlayer();
+			playerToOffsetIsWhite = false;
+		}else{
+			playerToOffset = quoridor.getCurrentGame().getWhitePlayer();
+			playerToOffsetIsWhite = true;
+		}
+
+		PlayerPosition currentPlayerPosition;
+		PlayerPosition playerToOffsetPosition;
+
+		if(playerToOffsetIsWhite){
+			currentPlayerPosition = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition();
+			playerToOffsetPosition = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition();
+		}else{
+			currentPlayerPosition = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition();
+			playerToOffsetPosition = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition();
+		}
+
+		//(row - 1) * 9 + col - 1
+		Tile currentPlayerTile = currentPlayerPosition.getTile();
+
+		int row = 0, col = 0;
+		if(side.contains("left")){
+			col = currentPlayerTile.getColumn();
+			col = col - 2;
+			if (col <= 0){
+				col = 9;
+			}
+		} else if(side.contains("right")) {
+			col = currentPlayerTile.getColumn();
+			col = col + 2;
+			if (col >= 10) {
+				col = 1;
+			}
+		} else if(side.contains("up")){
+			row = currentPlayerTile.getRow();
+			row = row - 2;
+			if(row <= 0){
+				row = 9;
+			}
+		} else if(side.contains("down")){
+			row = currentPlayerTile.getRow();
+			row = row + 2;
+			if(row >=10){
+				row = 1;
+			}
+		}else{
+			throw new IllegalArgumentException("Unsupported pawn side inputted");
+		}
+
+		Tile offsetTargetTile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
+
+		playerToOffsetPosition.setTile(offsetTargetTile);
+	}
+
+
+
+
 	
 	
 	// ***********************************************
