@@ -1,5 +1,6 @@
 namespace ca.mcgill.ecse223.quoridor.controller;
 
+use ca.mcgill.ecse223.quoridor.model.MoveDirection;
 use QuoridorGame.ump;
 
 
@@ -11,70 +12,74 @@ class PawnBehaviour{
 
   pawnSM{
 
-    RowState{
+    positionStates{
 
-        initialVerticalState{
-            entry [ playerIsBlack() ] -> OnNorthBorder;
-            entry [ playerIsWhite() ] -> OnSouthBorder;
+        RowState{
+
+            initialVerticalState{
+                entry [ playerIsBlack() ] -> OnNorthBorder;
+                entry [ playerIsWhite() ] -> OnSouthBorder;
+            }
+
+            OnNorthBorder{
+                move [isLegalMove(dir) && dir == MoveDirection.South] -> NearNorthBorder;
+                jump [isLegalMove(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
+            }
+            NearNorthBorder{
+                move [isLegalMove(dir) && dir == MoveDirection.North] -> OnNorthBorder;
+                move [isLegalMove(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
+                jump [isLegalMove(dir) && dir == MoveDirection.South] -> BetweenNorthSouthBorders;
+            }
+            BetweenNorthSouthBorders{
+                move [isLegalMove(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 3] -> NearNorthBorder;
+                move [isLegalMove(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> NearSouthBorder;
+                jump [isLegalMove(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 3] -> OnNorthBorder;
+                jump [isLegalMove(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 4] -> NearNorthBorder;
+                jump [isLegalMove(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> OnSouthBorder;
+                jump [isLegalMove(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 6] -> NearSouthBorder;
+            }
+            NearSouthBorder{
+                move [isLegalMove(dir) && dir == MoveDirection.South] -> OnSouthBorder;
+                move [isLegalMove(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
+                jump [isLegalMove(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
+            }
+            OnSouthBorder{
+                move [isLegalMove(dir) && dir == MoveDirection.North] -> NearSouthBorder;
+                jump [isLegalMove(dir) && dir == MoveDirection.North] -> BetweenNorthSouthBorders;
+            }
+        }
+        ||
+        ColumnState{
+
+            BetweenWestEastBorders{
+            move [isLegalMove(dir) && dir == MoveDirection.West && getCurrentPawnCol() == 3] -> NearWestBorder;
+            move [isLegalMove(dir) && dir == MoveDirection.East && getCurrentPawnCol() == 7] -> NearEastBorder;
+            jump [isLegalMove(dir) && dir == MoveDirection.West && getCurrentPawnCol() == 3] -> OnWestBorder;
+            jump [isLegalMove(dir) && dir == MoveDirection.West && getCurrentPawnCol() == 4] -> NearWestBorder;
+            jump [isLegalMove(dir) && dir == MoveDirection.East && getCurrentPawnCol() == 7] -> OnEastBorder;
+            jump [isLegalMove(dir) && dir == MoveDirection.East && getCurrentPawnCol() == 6] -> NearEastBorder;
+            }
+
+            OnWestBorder{
+            move [isLegalMove(dir) && dir == MoveDirection.East] -> NearWestBorder;
+            jump [isLegalMove(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
+            }
+            NearWestBorder{
+            move [isLegalMove(dir) && dir == MoveDirection.West] -> OnWestBorder;
+            move [isLegalMove(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
+            jump [isLegalMove(dir) && dir == MoveDirection.East] -> BetweenWestEastBorders;
+            }
+            NearEastBorder{
+            move [isLegalMove(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
+            move [isLegalMove(dir) && dir == MoveDirection.East] -> OnEastBorder;
+            jump [isLegalMove(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
+            }
+            OnEastBorder{
+            move [isLegalMove(dir) && dir == MoveDirection.West] -> NearEastBorder;
+            jump [isLegalMove(dir) && dir == MoveDirection.West] -> BetweenWestEastBorders;
+            }
         }
 
-        OnNorthBorder{
-            move [isLegalMove(), dir == MoveDirection.South] -> NearNorthBorder;
-            jump [isLegalMove(), dir == MoveDirection.South] -> BetweenNorthSouthBorders;
-        }
-        NearNorthBorder{
-            move [isLegalMove(), dir == MoveDirection.North] -> OnNorthBorder;
-            move [isLegalMove(), dir == MoveDirection.South] -> BetweenNorthSouthBorders;
-            jump [isLegalMove(), dir == MoveDirection.South] -> BetweenNorthSouthBorders;
-        }
-        BetweenNorthSouthBorders{
-            move [isLegalMove(), dir == MoveDirection.North, getCurrentPawnRow() == 3] -> NearNorthBorder;
-            move [isLegalMove(), dir == MoveDirection.South, getCurrentPawnRow() == 7] -> NearSouthBorder;
-            jump [isLegalMove(), dir == MoveDirection.North, getCurrentPawnRow() == 3] -> OnNorthBorder;
-            jump [isLegalMove(), dir == MoveDirection.North, getCurrentPawnRow() == 4] -> NearNorthBorder;
-            jump [isLegalMove(), dir == MoveDirection.South, getCurrentPawnRow() == 7] -> OnSouthBorder;
-            jump [isLegalMove(), dir == MoveDirection.South, getCurrentPawnRow() == 6] -> NearSouthBorder;
-        }
-        NearSouthBorder{
-            move [isLegalMove(), dir == MoveDirection.South] -> OnSouthBorder;
-            move [isLegalMove(), dir == MoveDirection.North] -> BetweenNorthSouthBorders;
-            jump [isLegalMove(), dir == MoveDirection.North] -> BetweenNorthSouthBorders;
-        }
-        OnSouthBorder{
-            move [isLegalMove(), dir == MoveDirection.North] -> NearSouthBorder;
-            jump [isLegalMove(), dir == MoveDirection.North] -> BetweenNorthSouthBorders;
-        }
-    }
-    ||
-    ColumnState{
-
-        BetweenWestEastBorders{
-        move [isLegalMove(), dir == MoveDirection.West, getCurrentPawnCol() == 3] -> NearWestBorder;
-        move [isLegalMove(), dir == MoveDirection.East, getCurrentPawnCol() == 7] -> NearEastBorder;
-        jump [isLegalMove(), dir == MoveDirection.West, getCurrentPawnCol() == 3] -> OnWestBorder;
-        jump [isLegalMove(), dir == MoveDirection.West, getCurrentPawnCol() == 4] -> NearWestBorder;
-        jump [isLegalMove(), dir == MoveDirection.East, getCurrentPawnCol() == 7] -> OnEastBorder;
-        jump [isLegalMove(), dir == MoveDirection.East, getCurrentPawnCol() == 6] -> NearEastBorder;
-        }
-
-        OnWestBorder{
-        move [isLegalMove(), dir == MoveDirection.East] -> NearWestBorder;
-        jump [isLegalMove(), dir == MoveDirection.East] -> BetweenWestEastBorders;
-        }
-        NearWestBorder{
-        move [isLegalMove(), dir == MoveDirection.West] -> OnWestBorder;
-        move [isLegalMove(), dir == MoveDirection.East] -> BetweenWestEastBorders;
-        jump [isLegalMove(), dir == MoveDirection.East] -> BetweenWestEastBorders;
-        }
-        NearEastBorder{
-        move [isLegalMove(), dir == MoveDirection.West] -> BetweenWestEastBorders;
-        move [isLegalMove(), dir == MoveDirection.East] -> OnEastBorder;
-        jump [isLegalMove(), dir == MoveDirection.West] -> BetweenWestEastBorders;
-        }
-        OnEastBorder{
-        move [isLegalMove(), dir == MoveDirection.West] -> NearEastBorder;
-        jump [isLegalMove(), dir == MoveDirection.West] -> BetweenWestEastBorders;
-        }
     }
 
   }
