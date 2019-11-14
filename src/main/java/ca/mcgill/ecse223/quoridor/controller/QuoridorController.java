@@ -388,7 +388,6 @@ public class QuoridorController {
         //check if the player to move has more walls in stock
         Player playerToMove = game.getCurrentPosition().getPlayerToMove();
         int nbOfWalls = numberOfWallsInStock(playerToMove, game);
-        System.out.println("WALLS: " +nbOfWalls);
 
         if(nbOfWalls >= 1) {
             //the player has more walls in stock
@@ -397,14 +396,10 @@ public class QuoridorController {
             Tile targetTile = quoridor.getBoard().getTile(0); //initialize the wall move candidate to the tile(0,0)
 
             if(playerToMove.getUser().getName().toString().equals(whitePlayerName)) {
-                System.out.println("White walls: " +nbOfWalls);
-
                 wall = playerToMove.getWall(nbOfWalls-1);
                 game.getCurrentPosition().removeWhiteWallsInStock(wall);
             }
             else{
-                System.out.println("Black walls " +nbOfWalls);
-
                 wall = playerToMove.getWall(nbOfWalls-1);
                 game.getCurrentPosition().removeBlackWallsInStock(wall);
             }
@@ -420,8 +415,8 @@ public class QuoridorController {
     /**
      * Query method to get the number of walls in stock for a player
      *
-     * @param Player - A player of the game
-     * @param Game - The game that the player is playing
+     * @param player - A player of the game
+     * @param game - The game that the player is playing
      * @return Integer  - The number of walls in stock for the player
      * @author Thomas Philippon
      */
@@ -434,24 +429,9 @@ public class QuoridorController {
 
         if(player.getUser().getName().toString().equals(whitePlayerName)) {
             nbOfWalls = game.getCurrentPosition().getWhiteWallsInStock().size();
-            //the size the the list is 1 even if it is empty..
-            // Thus we check if it is empty by asserting that the wall is not equal to null
-//            if(nbOfWalls == 1){
-//                if (game.getCurrentPosition().getWhiteWallsInStock().get(0) == null) {
-//                    nbOfWalls = 0;
-//                }
-//            }
-
         }
         else if(player.getUser().getName().toString().equals(blackPlayerName)) {
             nbOfWalls = game.getCurrentPosition().getBlackWallsInStock().size();
-//            if(nbOfWalls == 1){
-//                //the size the the list is 1 even if it is empty..
-//                // Thus we check if it is empty by asserting that the wall is not equal to null
-//                if (game.getCurrentPosition().getBlackWallsInStock().get(0) == null) {
-//                    nbOfWalls = 0;
-//                }
-//            }
         }
         return nbOfWalls;
     }
