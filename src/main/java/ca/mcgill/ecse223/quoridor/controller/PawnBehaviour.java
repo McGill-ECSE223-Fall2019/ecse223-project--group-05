@@ -112,7 +112,7 @@ public class PawnBehaviour
     return wasEventProcessed;
   }
 
-  public boolean move(String dir)
+  public boolean move(MoveDirection dir)
   {
     boolean wasEventProcessed = false;
     
@@ -265,7 +265,7 @@ public class PawnBehaviour
     return wasEventProcessed;
   }
 
-  public boolean jump(String dir)
+  public boolean jump(MoveDirection dir)
   {
     boolean wasEventProcessed = false;
     
