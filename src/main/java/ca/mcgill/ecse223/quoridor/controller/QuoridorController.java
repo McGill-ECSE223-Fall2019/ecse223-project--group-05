@@ -82,11 +82,11 @@ public class QuoridorController {
         GamePosition whitePlayerPosition = new GamePosition(0, whitePlayerStartPosition, blackPlayerStartPosition, whitePlayer, quoridor.getCurrentGame());
 
         //add 10 walls in stock for both players
-        for (int j = 0; j < 10; j++) {
+        for (int j = 1; j <= 10; j++) {
             Wall wall = Wall.getWithId(j);
             whitePlayerPosition.addWhiteWallsInStock(wall);
         }
-        for (int j = 0; j < 10; j++) {
+        for (int j = 1; j <= 10; j++) {
             Wall wall = Wall.getWithId(j + 10);
             whitePlayerPosition.addBlackWallsInStock(wall);
         }
@@ -271,7 +271,7 @@ public class QuoridorController {
         // Create all walls. Walls with lower ID belong to player1,
         // while the second half belongs to player 2
         for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 10; j++) {
+            for (int j = 1; j <= 10; j++) {
                 new Wall(i * 10 + j, players[i]);
             }
         }
@@ -388,8 +388,8 @@ public class QuoridorController {
         //check if the player to move has more walls in stock
         Player playerToMove = game.getCurrentPosition().getPlayerToMove();
         int nbOfWalls = numberOfWallsInStock(playerToMove, game);
+        System.out.println("WALLS: " +nbOfWalls);
 
-        System.out.println(nbOfWalls);
         if(nbOfWalls >= 1) {
             //the player has more walls in stock
             int lastMoveNumber = game.getMoves().size();
@@ -397,10 +397,14 @@ public class QuoridorController {
             Tile targetTile = quoridor.getBoard().getTile(0); //initialize the wall move candidate to the tile(0,0)
 
             if(playerToMove.getUser().getName().toString().equals(whitePlayerName)) {
+                System.out.println("White walls: " +nbOfWalls);
+
                 wall = playerToMove.getWall(nbOfWalls-1);
                 game.getCurrentPosition().removeWhiteWallsInStock(wall);
             }
             else{
+                System.out.println("Black walls " +nbOfWalls);
+
                 wall = playerToMove.getWall(nbOfWalls-1);
                 game.getCurrentPosition().removeBlackWallsInStock(wall);
             }
@@ -432,22 +436,22 @@ public class QuoridorController {
             nbOfWalls = game.getCurrentPosition().getWhiteWallsInStock().size();
             //the size the the list is 1 even if it is empty..
             // Thus we check if it is empty by asserting that the wall is not equal to null
-            if(nbOfWalls == 1){
-                if (game.getCurrentPosition().getWhiteWallsInStock().get(0) == null) {
-                    nbOfWalls = 0;
-                }
-            }
+//            if(nbOfWalls == 1){
+//                if (game.getCurrentPosition().getWhiteWallsInStock().get(0) == null) {
+//                    nbOfWalls = 0;
+//                }
+//            }
 
         }
         else if(player.getUser().getName().toString().equals(blackPlayerName)) {
             nbOfWalls = game.getCurrentPosition().getBlackWallsInStock().size();
-            if(nbOfWalls == 1){
-                //the size the the list is 1 even if it is empty..
-                // Thus we check if it is empty by asserting that the wall is not equal to null
-                if (game.getCurrentPosition().getBlackWallsInStock().get(0) == null) {
-                    nbOfWalls = 0;
-                }
-            }
+//            if(nbOfWalls == 1){
+//                //the size the the list is 1 even if it is empty..
+//                // Thus we check if it is empty by asserting that the wall is not equal to null
+//                if (game.getCurrentPosition().getBlackWallsInStock().get(0) == null) {
+//                    nbOfWalls = 0;
+//                }
+//            }
         }
         return nbOfWalls;
     }
@@ -855,13 +859,22 @@ public class QuoridorController {
     	r.setWidth(curHeight);
     	r.setHeight(curWidth);
 
-    	if (w2h>1){
-            r.setTranslateY(r.getTranslateY()-curWidth/2 + 3);
-            r.setTranslateX(r.getTranslateX()+curWidth/2);
+    	if (w2h>1){ //rotate to vertical
+
+            r.setTranslateY(r.getTranslateY()-curWidth/2 + 2.5);
+            r.setTranslateX(r.getTranslateX()+curWidth/2 - 2.5);
+            r.setWidth(curHeight);
+            r.setHeight(curWidth/0.85);
+            r.setTranslateX(r.getTranslateX() + 1*0.52);
+            r.setTranslateY(r.getTranslateY() - 5.02);
         }
-    	else {
-            r.setTranslateY(r.getTranslateY()+curHeight/2 - 3);
+    	else { //rotate to horizontal
+
+            r.setTranslateY(r.getTranslateY()+curHeight/2 - 2.5);
             r.setTranslateX(r.getTranslateX()-curHeight/2);
+            r.setWidth(curHeight*0.85);
+            r.setHeight(curWidth);
+            r.setTranslateX(r.getTranslateX() + 7);
         }
     	
     }
