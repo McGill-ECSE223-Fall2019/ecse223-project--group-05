@@ -13,23 +13,13 @@ import java.util.*;
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
+import ca.mcgill.ecse223.quoridor.controller.PawnBehaviour;
 import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
-import ca.mcgill.ecse223.quoridor.model.Board;
-import ca.mcgill.ecse223.quoridor.model.Direction;
-import ca.mcgill.ecse223.quoridor.model.Game;
+import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
 import ca.mcgill.ecse223.quoridor.model.Game.MoveMode;
-import ca.mcgill.ecse223.quoridor.model.GamePosition;
-import ca.mcgill.ecse223.quoridor.model.Player;
-import ca.mcgill.ecse223.quoridor.model.PlayerPosition;
-import ca.mcgill.ecse223.quoridor.model.Quoridor;
-import ca.mcgill.ecse223.quoridor.model.Tile;
-import ca.mcgill.ecse223.quoridor.model.User;
-import ca.mcgill.ecse223.quoridor.model.Wall;
-import ca.mcgill.ecse223.quoridor.model.WallMove;
 import ca.mcgill.ecse223.quoridor.view.ViewInterface;
-import cucumber.api.PendingException;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -37,10 +27,12 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.*;
 
-import javax.swing.text.View;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CucumberStepDefinitions {
+
+	PawnBehaviour whitePawnBehaviour = new PawnBehaviour();
+	PawnBehaviour blackPawnBehaviour = new PawnBehaviour();
 
 	private WallMove wallMoveCandidate = null;
 	ArrayList<Player> myPlayers; //Used when trying to set the gameStatus to ReadyToStart as the players are not accessible
@@ -51,6 +43,7 @@ public class CucumberStepDefinitions {
 	boolean userNameSet = true; //used to see if user name was set correctly
 	//Variable for GrabWall test
 	boolean handHasWall = false;
+	boolean pawnMoveSuccesful = false;
 
 
 	//Instance Variables for SavePosition tests
@@ -82,6 +75,12 @@ public class CucumberStepDefinitions {
 		initQuoridorAndBoard();
 		ArrayList<Player> createUsersAndPlayers = createUsersAndPlayers("user1", "user2");
 		createAndStartGame(createUsersAndPlayers);
+		whitePawnBehaviour.setPlayer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer());
+		blackPawnBehaviour.setPlayer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer());
+		whitePawnBehaviour.setCurrentGame(QuoridorApplication.getQuoridor().getCurrentGame());
+		blackPawnBehaviour.setCurrentGame(QuoridorApplication.getQuoridor().getCurrentGame());
+		blackPawnBehaviour.entry();
+		whitePawnBehaviour.entry();
 	}
 
 
@@ -161,7 +160,7 @@ public class CucumberStepDefinitions {
 	// ***********************************************
 	// Scenario and scenario outline step definitions
 	// ***********************************************
-	
+
 	/*
 	 * Start new game step definition
 	 */
@@ -173,7 +172,6 @@ public class CucumberStepDefinitions {
 	 */
     @When("A new game is being initialized")
     public void aNewGameIsBeingInitializing(){
-    	
     	QuoridorController.initializeGame(QuoridorApplication.getQuoridor());
     }
     
@@ -841,7 +839,7 @@ public class CucumberStepDefinitions {
 	/**
      * @author Edwin Pan
      * @author Matthias Arabian made modifications for deliverable 3
-	 * @param player color in string - that is, a string describing the desired player's color as "black" or "white".
+	 * @param playerColorAsString color in string - that is, a string describing the desired player's color as "black" or "white".
 	 * Sets up test preconditions such that the player whose turn it is to play is the provided player.
 	 */
 	@Given("The player to move is {string}")
@@ -857,6 +855,14 @@ public class CucumberStepDefinitions {
 		} else {
 			QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
 		}
+
+//		if(playerColorAsString.equals("white")){
+//			Player whitePlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer();
+//			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().setPlayerToMove(whitePlayer);
+//		}else{
+//			Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
+//			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().setPlayerToMove(blackPlayer);
+//		}
 	}
 	
 	/**
@@ -1464,7 +1470,358 @@ public class CucumberStepDefinitions {
 		assertEquals(true, !failedToReadSaveFile);
 		assertEquals(true, receivedInvalidPositionException);
 	}
-	
+
+	/**
+	 * Given method to set player at corresponding position
+	 * @param row
+	 * @param col
+	 * @author Daniel Wu
+	 * @author Alex Masciotra
+	 * @author Thomas Philippon
+	 */
+	@And("The player is located at {int}:{int}")
+	public void thePlayerIsLocatedAt(int row, int col){
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+
+		GamePosition currentPosition = quoridor.getCurrentGame().getCurrentPosition();
+		Player currentPlayer = currentPosition.getPlayerToMove();
+
+		//first, set the other player's position to
+
+
+		//(row - 1) * 9 + col - 1
+		PlayerPosition currentPlayerPosition;
+		int playerCurrentRow;
+		int playerCurrentColumn;
+
+		if(currentPlayer.hasGameAsWhite()){
+			currentPlayerPosition = currentPosition.getWhitePosition();
+			playerCurrentRow = currentPlayerPosition.getTile().getRow();
+			playerCurrentColumn = currentPlayerPosition.getTile().getColumn();
+			//move to the target pawn column
+			int colOffset = col - 5;
+			if(colOffset > 0){
+				for(int i = 0; i < colOffset; i++){
+					whitePawnBehaviour.move(MoveDirection.East);
+					playerCurrentColumn = playerCurrentColumn+1;
+					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
+					currentPlayerPosition.setTile(targetTile);
+				}
+			}if(colOffset < 0){
+				colOffset = colOffset * -1;
+				for(int i = 0; i < colOffset; i++){
+					whitePawnBehaviour.move(MoveDirection.West);
+					playerCurrentColumn = playerCurrentColumn-1;
+					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
+					currentPlayerPosition.setTile(targetTile);
+				}
+			}
+			//move to the target pawn row
+			for(int i = 0; i < (9 - row); i++){
+				whitePawnBehaviour.move(MoveDirection.North);
+				playerCurrentRow = playerCurrentRow-1;
+				Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow-1) * 9 + playerCurrentColumn - 1);
+				currentPlayerPosition.setTile(targetTile);
+			}
+			QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getGameAsWhite().getCurrentPosition().setWhitePosition(currentPlayerPosition);
+		}else{
+			currentPlayerPosition = currentPosition.getBlackPosition();
+			playerCurrentRow = currentPlayerPosition.getTile().getRow();
+			playerCurrentColumn = currentPlayerPosition.getTile().getColumn();
+			//move to the target pawn column
+			int colOffset = col - 5;
+			if(colOffset > 0){
+				for(int i = 0; i < colOffset; i++){
+					blackPawnBehaviour.move(MoveDirection.East);
+					playerCurrentColumn = playerCurrentColumn+1;
+					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
+					currentPlayerPosition.setTile(targetTile);
+				}
+			}
+			if(colOffset < 0){
+				colOffset = colOffset * -1;
+				for(int i = 0; i < colOffset; i++){
+					blackPawnBehaviour.move(MoveDirection.West);
+					playerCurrentColumn = playerCurrentColumn-1;
+					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
+					currentPlayerPosition.setTile(targetTile);
+				}
+			}
+			//move to the target pawn row
+			for(int i = 0; i < (row - 1); i++){
+				blackPawnBehaviour.move(MoveDirection.South);
+				playerCurrentRow = playerCurrentRow+1;
+				Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
+				currentPlayerPosition.setTile(targetTile);
+			}
+			Tile updatedTile = quoridor.getBoard().getTile((row-1) * 9 + col - 1);
+			QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getGameAsBlack().getCurrentPosition().getBlackPosition().setTile(updatedTile);
+
+		}
+	}
+
+	/**
+	 * Given nothing blocking the player to move
+	 * @param dir
+	 * @param side
+	 * @author Daniel Wu
+	 * @author Alex Masciotra
+	 * @author Thomas Philippon
+	 */
+	@And("There are no {string} walls {string} from the player")
+	public void thereAreNoWallsFromPlayer(String dir, String side){
+		//removeWalls();
+	}
+
+	/**
+	 * Method to offSet opponent from player to move
+	 * @param side
+	 * @author Daniel Wu
+	 * @author Alex Masciotra
+	 * @author Thomas Philippon
+	 */
+	@Then("The opponent is not {string} from the player")
+	public void theOpponentIsNotFromPlayer(String side){
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+
+		Boolean playerToOffsetIsWhite;
+		Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
+		Player playerToOffset;
+
+		if(currentPlayer.hasGameAsWhite()){
+			playerToOffset = quoridor.getCurrentGame().getBlackPlayer();
+			playerToOffsetIsWhite = false;
+		}else{
+			playerToOffset = quoridor.getCurrentGame().getWhitePlayer();
+			playerToOffsetIsWhite = true;
+		}
+
+		PlayerPosition currentPlayerPosition;
+		PlayerPosition playerToOffsetPosition;
+
+		if(playerToOffsetIsWhite){
+			currentPlayerPosition = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition();
+			playerToOffsetPosition = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition();
+		}else{
+			currentPlayerPosition = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition();
+			playerToOffsetPosition = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition();
+		}
+
+		//(row - 1) * 9 + col - 1
+		Tile currentPlayerTile = currentPlayerPosition.getTile();
+
+		int row = 1, col = 1;
+		if(side.equals("left")){
+			col = currentPlayerTile.getColumn();
+			col = col - 2;
+			if (col <= 0){
+				col = 9;
+			}
+		} else if(side.equals("right")) {
+			col = currentPlayerTile.getColumn();
+			col = col + 2;
+			if (col >= 10) {
+				col = 1;
+			}
+		} else if(side.equals("up")){
+			row = currentPlayerTile.getRow();
+			row = row - 2;
+			if(row <= 0){
+				row = 9;
+			}
+		} else if(side.equals("down")){
+			row = currentPlayerTile.getRow();
+			row = row + 2;
+			if(row >=10){
+				row = 1;
+			}
+		}else{
+			throw new IllegalArgumentException("Unsupported pawn side inputted");
+		}
+
+		Tile offsetTargetTile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
+
+		playerToOffsetPosition.setTile(offsetTargetTile);
+	}
+
+	/*
+	 * Jump pawn step definition
+	 */
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn
+	 * Scenario: The game is running
+	 */
+	@Given("The opponent is located at {int}:{int}")
+	public void the_opponent_is_located_at(Integer int1, Integer int2) {
+		Player opponentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove();
+		Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
+		Player whitePlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer();
+
+		PlayerPosition playerPosition;
+
+		if(opponentPlayer.getUser().getName().equals(whitePlayer.getUser().getName())) {
+			playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition();
+		}
+		else {
+			playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition();
+		}
+		Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((int1 - 1) * 9 + int2 - 1);
+		playerPosition.setTile(targetTile);
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn
+	 * Scenario: The game is running
+	 */
+	@Given("There are no {string} walls {string} from the player nearby")
+	public void there_are_no_walls_from_the_player_nearby(String string, String string2) {
+		removeWalls();
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn
+	 * Scenario: Jump of player blocked by wall
+	 */
+	@Given("There is a {string} wall at {int}:{int}")
+	public void there_is_a_wall_at(String dir, Integer row, Integer col) {
+
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+		Direction wallMoveDirection;
+		if (dir.equals("horizontal")) {
+			wallMoveDirection = Direction.Horizontal;
+		} else if (dir.equals("vertical")) {
+			wallMoveDirection = Direction.Vertical;
+		} else {
+			throw new IllegalArgumentException("Unsupported wall direction was provided");
+		}
+		Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((row - 1) * 9 + col - 1);
+		QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setWallDirection(wallMoveDirection);
+		QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setTargetTile(targetTile);
+
+		//release wall
+
+		WallMove wallMoveCandidate = quoridor.getCurrentGame().getWallMoveCandidate();
+		GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
+
+
+		int targetRow = wallMoveCandidate.getTargetTile().getRow();
+		int targetCol = wallMoveCandidate.getTargetTile().getColumn();
+		String targetDir = wallMoveCandidate.getWallDirection().toString();
+
+
+		//if successful complete my move and change turn to next player, if not successful, do not change turn cause still my turn
+
+		Player currentPlayer = currentGamePosition.getPlayerToMove();
+
+
+			quoridor.getCurrentGame().addMove(wallMoveCandidate);
+			if (currentPlayer.hasGameAsWhite()) {
+				currentGamePosition.addWhiteWallsOnBoard(wallMoveCandidate.getWallPlaced());
+			} else {
+				currentGamePosition.addBlackWallsOnBoard(wallMoveCandidate.getWallPlaced());
+			}
+
+	}
+
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn
+	 */
+	@Then("The move {string} shall be {string}")
+	public void the_move_shall_be(String side, String status) {
+		// Write code here that turns the phrase above into concrete actions
+		if(status.equals("success")){
+			assertTrue(pawnMoveSuccesful);
+		}else if (status.equals("illegal")){
+			assertFalse(pawnMoveSuccesful);
+		}else{
+			throw new IllegalArgumentException("Unsupported pawn status was provided");
+		}
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn, MovePawn
+	 */
+	@Then("Player's new position shall be {int}:{int}")
+	public void player_s_new_position_shall_be(int row, int col) {
+		// Write code here that turns the phrase above into concrete actions
+
+		Player currentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove();
+		PlayerPosition playerPosition;
+
+		if(currentPlayer.hasGameAsWhite()){
+			playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition();
+		}else{
+			playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition();
+		}
+
+		assertEquals(row, playerPosition.getTile().getRow());
+		assertEquals(col, playerPosition.getTile().getColumn());
+	}
+
+	/**
+	 * @author Thomas Philippon
+	 *  @author Alex Masciotra
+	 *  @author Daniel Wu
+	 * JumpPawn.feature - Jump Pawn, MovePawn
+	 */
+	@Then("The next player to move shall become {string}")
+	public void the_next_player_to_move_shall_become(String nplayerColor) {
+		// Write code here that turns the phrase above into concrete actions
+		Player currentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove();
+		Player nextPlayer;
+     	if(currentPlayer.hasGameAsWhite() && pawnMoveSuccesful ==true){
+			assertEquals(nplayerColor, "black");
+		}
+     	else if (currentPlayer.hasGameAsWhite() && pawnMoveSuccesful ==false){
+			assertEquals(nplayerColor, "white");
+		}
+     	else if (currentPlayer.hasGameAsBlack() && pawnMoveSuccesful ==true){
+			assertEquals(nplayerColor, "white");
+		}
+     	else if (currentPlayer.hasGameAsBlack() && pawnMoveSuccesful ==false){
+			assertEquals(nplayerColor, "black");
+		}
+	}
+
+	@When("Player {string} initiates to move {string}")
+	public void playerInitiatesToMove(String playerColor, String side){
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		if(playerColor.equals("white")){
+			try {
+				pawnMoveSuccesful = QuoridorController.movePawn(quoridor, side, whitePawnBehaviour);
+			}catch(Exception e){
+				pawnMoveSuccesful = false;
+			}
+		}else{
+			try {
+				pawnMoveSuccesful = QuoridorController.movePawn(quoridor, side, blackPawnBehaviour);
+			}catch(Exception e){
+				pawnMoveSuccesful = false;
+			}
+		}
+	}
+
+
+
+
 	
 	
 	// ***********************************************
@@ -1513,6 +1870,10 @@ public class CucumberStepDefinitions {
 		handIsEmpty = false;
 		handHasWall = false;
 		userNameSet = true;
+		pawnMoveSuccesful = false;
+
+		whitePawnBehaviour = new PawnBehaviour();
+		blackPawnBehaviour = new PawnBehaviour();
 		
 	}
 
@@ -1579,8 +1940,8 @@ public class CucumberStepDefinitions {
 		// There are total 36 tiles in the first four rows and
 		// Tile indices start from 0 -> tiles with indices 4 and 8*9+4=76 are the starting
 		// positions
-		Tile player1StartPos = quoridor.getBoard().getTile(4);
-		Tile player2StartPos = quoridor.getBoard().getTile(76);
+		Tile player1StartPos = quoridor.getBoard().getTile(76);
+		Tile player2StartPos = quoridor.getBoard().getTile(4);
 		
 		Game game = new Game(GameStatus.Running, MoveMode.PlayerMove, quoridor);
 		game.setWhitePlayer(players.get(0));
