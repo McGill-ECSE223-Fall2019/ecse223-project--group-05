@@ -10,7 +10,7 @@ Feature: Load Position
     Then It shall be "<player>"'s turn
     And "<player>" shall be at <p_row>:<p_col>
     And "<opponent>" shall be at <o_row>:<o_col>
-    And "<player>" shall have a <pw_orientation> wall at <pw_row>:<pw_col>
+    And "<player>" shall have a <pw_orientation> wall at <pw_row>:<pw_col>  
     And "<opponent>" shall have a <ow_orientation> wall at <ow_row>:<ow_col>
     And Both players shall have <remaining_walls> in their stacks
     And It shall be "<player>"'s turn
@@ -28,4 +28,5 @@ Feature: Load Position
       | filename                                         |
       | quoridor_test_game_invalid_pawn.dat              |
       | quoridor_test_game_invalid_wall_overlap_.dat     |
+      | quoridor_test_game_invalid_wall_out-of-track.dat |
       
