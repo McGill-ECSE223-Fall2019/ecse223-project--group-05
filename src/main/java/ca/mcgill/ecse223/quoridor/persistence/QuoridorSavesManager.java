@@ -253,23 +253,23 @@ public class QuoridorSavesManager {
 		}
         //Adding the new walls
 		if(blackIsNextToPlay) {
-			for( int i = 0 ; i < 10 ; i ++ ) {
+			for( int i = 1 ; i <= 10 ; i ++ ) {
 				Wall wall = new Wall( i , game.getBlackPlayer() );
 				game.getCurrentPosition().addBlackWallsInStock( wall );
 				game.getBlackPlayer().addWallAt(wall, i);
 			}
-			for( int i = 10 ; i < 20 ; i++ ) {
+			for( int i = 11 ; i <= 20 ; i++ ) {
 				Wall wall = new Wall( i , game.getWhitePlayer() );
 				game.getCurrentPosition().addWhiteWallsInStock( wall );
 				game.getWhitePlayer().addWallAt(wall, i-10);
 			}
 		} else {
-			for( int i = 0 ; i < 10 ; i ++ ) {
+			for( int i = 1 ; i <= 10 ; i ++ ) {
 				Wall wall = new Wall( i , game.getWhitePlayer() );
 				game.getCurrentPosition().addWhiteWallsInStock( wall );
 				game.getWhitePlayer().addWallAt(wall, i);
 			}
-			for( int i = 10 ; i < 20 ; i++ ) {
+			for( int i = 11 ; i <= 20 ; i++ ) {
 				Wall wall = new Wall( i , game.getBlackPlayer() );
 				game.getCurrentPosition().addBlackWallsInStock( wall );
 				game.getBlackPlayer().addWallAt(wall, i-10);

@@ -1,8 +1,8 @@
 //THE IMPORT STATEMENT BELOW IS REQUIRED IN THE .fxml FILE
 //IT GETS DELETED WHEN YOU REGENERATE THE .fxml FILE WITH SCENE BUILDER
 //YOU MUST ADD IT IN MANUALLY WHEN THAT HAPPENS
-
-//g
+//<?import java.util.ArrayList?>
+//<?import java.util.ArrayList?>
 
 
 package ca.mcgill.ecse223.quoridor.view;
@@ -125,6 +125,9 @@ public class ViewInterface {
 	private Timer timer;
 	private Timer RefreshTimer;
 
+	//bool variable to prevent the user from grabbing a second wall during the same turn.
+	private boolean wallGrabbed = false;
+
   //Rotate wall variables
 	private Rectangle wallMoveCandidate;
 
@@ -136,17 +139,25 @@ public class ViewInterface {
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
 	public void GrabWall(MouseEvent mouseEvent) {
-		if(wallSelected!=null){
-			displayIllegalNotification("you must drop the wall before selecting a new one");
-		}
+
 		playerToMove = QuoridorController.getPlayerOfCurrentTurn();
 		Rectangle wall = (Rectangle) mouseEvent.getSource();
 		String wallID = wall.getId();
 		String color = QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor());
 		System.err.print(1);
-		//check if the player to move is grabbing his walls and not the opponent's
-		if(wallID.contains(color)) {
 
+		//if the player selects one of the other player's wall
+		if(!wallID.contains(color)){
+			displayIllegalNotification("This wall does not belong to you");
+		}
+
+		// if the current player to move selects a second wall during the same turn
+		if(wallID.contains(color) && wallGrabbed == true){
+			displayIllegalNotification("You have already selected a wall. Use the ASWD keys to move it on the game board");
+		}
+		//check if the player to move is grabbing his walls and not the opponent's
+		if(wallID.contains(color) && wallGrabbed == false) {
+			wallGrabbed = true; //prevent the user from selecting a second wall during the same turn.
 			boolean grabWallResult;
 			try {
 				grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
@@ -175,8 +186,7 @@ public class ViewInterface {
                     wallSelected.setTranslateY(0);
                     parent.getChildren().remove(wallSelected);
                     getCurrentPage().getChildren().add(wallSelected);
-                    //wallSelected.setX(prevX);
-                    //wallSelected.setY(prevY);
+
                 }
                 System.err.print(3);
 				wallSelected.setLayoutY(0);
@@ -185,6 +195,14 @@ public class ViewInterface {
                 wallSelected.setY(35);
 
                 System.out.println(wallSelected.getX());
+
+                //Validate Position for the tile (1,1)
+				if(QuoridorController.validatePosition(1,1, "Vertical")){
+					wallSelected.setStroke(Color.GREEN);
+				}
+				else{
+					wallSelected.setStroke(Color.RED);
+				}
 
 			}
 		}
@@ -195,17 +213,7 @@ public class ViewInterface {
 	 * This method is called when the user drags the walls
 	 */
 	public void MoveWall(MouseEvent mouseEvent) {
-		/*if(validWallGrab==true) { //check if the user grabbed one of his walls and not the other player's walls
-			Rectangle wall = (Rectangle) mouseEvent.getSource();
-			double offsetX = mouseEvent.getX();
-			double offsetY = mouseEvent.getY();
-			double newTranslateX = wall.getTranslateX() + offsetX;
-			double newTranslateY = wall.getTranslateY() + offsetY;
-			wall.setTranslateX(newTranslateX);
-			wall.setTranslateY(newTranslateY);
-			wallMoveCandidate = wall;
-			wallSelected = wall;
-		}*/
+
 		System.out.println("x: " + mouseEvent.getX());
 		System.out.println("y: " + mouseEvent.getY());
 
@@ -246,7 +254,7 @@ public class ViewInterface {
 				wallSelected.setStroke(Color.RED);
 			}
 			else {
-				wallSelected.setStroke(Color.BLACK);
+				wallSelected.setStroke(Color.GREEN);
 			}
 
 			System.out.println(wallSelected.getTranslateX());
@@ -276,7 +284,9 @@ public class ViewInterface {
 		}
 
 		if (!dropSuccessful){
-			invalidWallPlacement.setText("Invalid Wall Placement");
+		//	invalidWallPlacement.setText("Invalid Wall Placement");
+			displayIllegalNotification("Invalid wall placement");
+
 		}
 		else{
 			validWallGrab=false;
@@ -305,7 +315,8 @@ public class ViewInterface {
 		}
 
 		if (!dropSuccessful){
-			invalidWallPlacement.setText("Invalid Wall Placement");
+			//invalidWallPlacement.setText("Invalid Wall Placement");
+			displayIllegalNotification("Invalid wall placement");
 		}
 		else{
 			validWallGrab=false;
@@ -784,7 +795,7 @@ git s     */
 
     /**
      * @author Matthias Arabian
-     * @param mouseEvent
+     * @param keyEvent
      * detect that the wall should be rotated and acts accordingly.
      * rotates GUI and model wallMoveCandidate.
      */
@@ -806,7 +817,7 @@ git s     */
                 wallSelected.setStroke(Color.RED);
             }
             else {
-                wallSelected.setStroke(Color.BLACK);
+                wallSelected.setStroke(Color.GREEN);
             }
 		}
 
@@ -822,6 +833,30 @@ git s     */
 	 * Other's timer turns on.
 	 */
 	public void switchPlayer(Event e) {
+
+		//dropWall implemented here
+		if (wallSelected != null) {
+			boolean dropSuccessful;
+			try {
+				dropSuccessful = QuoridorController.releaseWall(quoridor);
+			} catch (Exception ee) {
+				throw new java.lang.UnsupportedOperationException("Unable to drop Wall");
+			}
+
+			if (!dropSuccessful) {
+				//invalidWallPlacement.setText("Invalid Wall Placement");
+				displayIllegalNotification("Invalid wall placement");
+				return;
+			} else {
+				invalidWallPlacement.setText("");
+				validWallGrab = false;
+				wallSelected = null;
+				wallMoveCandidate.setStroke(Color.BLACK);
+				wallMoveCandidate = null;
+				wallGrabbed = false; //added by Thomas
+			}
+		} //end dropWall
+
 		Button b = ((Button)e.getSource());
 		if (b.getId().equals(btn_whitePlayerTurn.getId())) {
 			if (btn_whitePlayerTurn.getText().equals("END TURN")) { //starts black player turn
@@ -975,18 +1010,31 @@ git s     */
 
 	}
 	
-	
+
+
+	public void saveGameContainerFunction(Event event){
+		//pause counter
+		QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove()
+				,timer);
+		timer = new Timer();
+
+		saveGame(event); //save game
+
+		//restart counter
+		QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove()
+				,timer);
+	}
+
 	/**
 	 * Event Listener. When the saveGame event is called, this method begins saving the current game instance into a file through dialog windows.
 	 * Known Bug: TODO: saveGame process does not pause the player timers in game.
 	 * @author Edwin Pan
-	 * @param e
+	 * @param event
 	 */
 	public void saveGame(Event event) {
 		//Good reference: https://docs.oracle.com/javafx/2/ui_controls/file-chooser.htm
 		//Look for "Saving Files" section header.
 
-		
 		//Prepare the file choosing window
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save Your Game");
