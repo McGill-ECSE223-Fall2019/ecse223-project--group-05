@@ -850,6 +850,14 @@ public class CucumberStepDefinitions {
 		} else {
 			QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
 		}
+
+//		if(playerColorAsString.equals("white")){
+//			Player whitePlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer();
+//			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().setPlayerToMove(whitePlayer);
+//		}else{
+//			Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
+//			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().setPlayerToMove(blackPlayer);
+//		}
 	}
 	
 	/**
@@ -1510,7 +1518,7 @@ public class CucumberStepDefinitions {
 				Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow-1) * 9 + playerCurrentColumn - 1);
 				currentPlayerPosition.setTile(targetTile);
 			}
-
+			QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer().getGameAsWhite().getCurrentPosition().setWhitePosition(currentPlayerPosition);
 		}else{
 			currentPlayerPosition = currentPosition.getBlackPosition();
 			playerCurrentRow = currentPlayerPosition.getTile().getRow();
@@ -1541,6 +1549,9 @@ public class CucumberStepDefinitions {
 				Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
 				currentPlayerPosition.setTile(targetTile);
 			}
+			Tile updatedTile = quoridor.getBoard().getTile((row-1) * 9 + col - 1);
+			QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer().getGameAsBlack().getCurrentPosition().getBlackPosition().setTile(updatedTile);
+
 		}
 	}
 
@@ -1679,7 +1690,7 @@ public class CucumberStepDefinitions {
 	@Given("There is a {string} wall at {int}:{int}")
 	public void there_is_a_wall_at(String dir, Integer row, Integer col) {
 
-
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
 		QuoridorController.grabWall(QuoridorApplication.getQuoridor());
 		Direction wallMoveDirection;
 		if (dir.equals("horizontal")) {
@@ -1692,7 +1703,30 @@ public class CucumberStepDefinitions {
 		Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((row - 1) * 9 + col - 1);
 		QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setWallDirection(wallMoveDirection);
 		QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setTargetTile(targetTile);
-		QuoridorController.releaseWall(QuoridorApplication.getQuoridor());
+
+		//release wall
+
+		WallMove wallMoveCandidate = quoridor.getCurrentGame().getWallMoveCandidate();
+		GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
+
+
+		int targetRow = wallMoveCandidate.getTargetTile().getRow();
+		int targetCol = wallMoveCandidate.getTargetTile().getColumn();
+		String targetDir = wallMoveCandidate.getWallDirection().toString();
+
+
+		//if successful complete my move and change turn to next player, if not successful, do not change turn cause still my turn
+
+		Player currentPlayer = currentGamePosition.getPlayerToMove();
+
+
+			quoridor.getCurrentGame().addMove(wallMoveCandidate);
+			if (currentPlayer.hasGameAsWhite()) {
+				currentGamePosition.addWhiteWallsOnBoard(wallMoveCandidate.getWallPlaced());
+			} else {
+				currentGamePosition.addBlackWallsOnBoard(wallMoveCandidate.getWallPlaced());
+			}
+
 	}
 
 
@@ -1748,11 +1782,16 @@ public class CucumberStepDefinitions {
 		// Write code here that turns the phrase above into concrete actions
 		Player currentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove();
 		Player nextPlayer;
-		//TODO : ALEX check if it is legit
-			nextPlayer = currentPlayer.getNextPlayer();
-     	if(nextPlayer == null){
+     	if(currentPlayer.hasGameAsWhite() && pawnMoveSuccesful ==true){
+			assertEquals(nplayerColor, "black");
+		}
+     	else if (currentPlayer.hasGameAsWhite() && pawnMoveSuccesful ==false){
 			assertEquals(nplayerColor, "white");
-		}else{
+		}
+     	else if (currentPlayer.hasGameAsBlack() && pawnMoveSuccesful ==true){
+			assertEquals(nplayerColor, "white");
+		}
+     	else if (currentPlayer.hasGameAsBlack() && pawnMoveSuccesful ==false){
 			assertEquals(nplayerColor, "black");
 		}
 	}

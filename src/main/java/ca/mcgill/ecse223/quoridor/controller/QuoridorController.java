@@ -84,10 +84,12 @@ public class QuoridorController {
     public static Boolean movePawn(Quoridor quoridor, String side, PawnBehaviour pawnBehaviour) {
         Boolean pawnMoveSuccessful = false;
 
-
+        String blackPlayerName = quoridor.getCurrentGame().getBlackPlayer().getUser().getName();
+        String whitePlayerName = quoridor.getCurrentGame().getWhitePlayer().getUser().getName();
         Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
+
         PlayerPosition playerPosition;
-        if (currentPlayer.hasGameAsWhite()) {
+        if (currentPlayer.getUser().getName().equals(whitePlayerName)) {
             playerPosition = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition();
         } else {
             playerPosition = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition();
