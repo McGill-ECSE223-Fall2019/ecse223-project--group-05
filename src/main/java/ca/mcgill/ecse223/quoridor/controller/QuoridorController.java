@@ -124,7 +124,7 @@ public class QuoridorController {
                 col = col - 1;
             }
         } else {
-           isLegalJump = pawnBehaviour.jump(pawnMoveDirection);
+          // isLegalJump = pawnBehaviour.jump(pawnMoveDirection);
 
             if (isLegalJump) {
                 pawnMoveSuccessful = true;

@@ -1484,21 +1484,24 @@ public class CucumberStepDefinitions {
 			playerCurrentColumn = currentPlayerPosition.getTile().getColumn();
 			for(int i = 0; i < (9 - row); i++){
 				whitePawnBehaviour.move(MoveDirection.North);
-				Tile targetTile = quoridor.getBoard().getTile(((playerCurrentRow-i+1) - 1) * 9 + playerCurrentColumn - 1);
+				playerCurrentRow = playerCurrentRow-1;
+				Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow-1) * 9 + playerCurrentColumn - 1);
 				currentPlayerPosition.setTile(targetTile);
 			}
 			int colOffset = col - 5;
 			if(colOffset > 0){
 				for(int i = 0; i < colOffset; i++){
 					whitePawnBehaviour.move(MoveDirection.East);
-					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + (playerCurrentColumn+i+1) - 1);
+					playerCurrentColumn = playerCurrentColumn+1;
+					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
 					currentPlayerPosition.setTile(targetTile);
 				}
-			}else if(colOffset < 0){
+			}if(colOffset < 0){
 				colOffset = colOffset * -1;
 				for(int i = 0; i < colOffset; i++){
 					whitePawnBehaviour.move(MoveDirection.West);
-					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + (playerCurrentColumn-i+1) - 1);
+					playerCurrentColumn = playerCurrentColumn-1;
+					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
 					currentPlayerPosition.setTile(targetTile);
 				}
 			}
@@ -1509,29 +1512,28 @@ public class CucumberStepDefinitions {
 			playerCurrentColumn = currentPlayerPosition.getTile().getColumn();
 			for(int i = 0; i < (row - 1); i++){
 				blackPawnBehaviour.move(MoveDirection.South);
-				Tile targetTile = quoridor.getBoard().getTile(((playerCurrentRow+i+1) - 1) * 9 + playerCurrentColumn - 1);
+				playerCurrentRow = playerCurrentRow+1;
+				Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
 				currentPlayerPosition.setTile(targetTile);
 			}
 			int colOffset = col - 5;
 			if(colOffset > 0){
 				for(int i = 0; i < colOffset; i++){
 					blackPawnBehaviour.move(MoveDirection.East);
-					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + (playerCurrentColumn+i-1) - 1);
+					playerCurrentColumn = playerCurrentColumn+1;
+					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
 					currentPlayerPosition.setTile(targetTile);
 				}
 			}else if(colOffset < 0){
 				colOffset = colOffset * -1;
 				for(int i = 0; i < colOffset; i++){
 					blackPawnBehaviour.move(MoveDirection.West);
-					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + (playerCurrentColumn-i-1) - 1);
+					playerCurrentColumn = playerCurrentColumn-1;
+					Tile targetTile = quoridor.getBoard().getTile((playerCurrentRow - 1) * 9 + playerCurrentColumn - 1);
 					currentPlayerPosition.setTile(targetTile);
 				}
 			}
 		}
-
-//		Tile targetTile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
-//
-//		currentPlayerPosition.setTile(targetTile);
 	}
 
 	/**
@@ -1738,13 +1740,9 @@ public class CucumberStepDefinitions {
 		// Write code here that turns the phrase above into concrete actions
 		Player currentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove();
 		Player nextPlayer;
-		if(currentPlayer.hasGameAsWhite()){
+		//TODO : ALEX check if it is legit
 			nextPlayer = currentPlayer.getNextPlayer();
-		}else{
-			nextPlayer = currentPlayer.getNextPlayer();
-		}
-
-		if(nextPlayer.hasGameAsWhite()){
+     	if(nextPlayer == null){
 			assertEquals(nplayerColor, "white");
 		}else{
 			assertEquals(nplayerColor, "black");
