@@ -320,42 +320,42 @@ public class PawnBehaviour
         }
         break;
       case BetweenNorthSouthBorders:
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.North)&&getCurrentPawnRow()==3)
+        if (dir.equals(MoveDirection.North)&&isLegalJump(dir)&&getCurrentPawnRow()==3)
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.OnNorthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.North)&&getCurrentPawnRow()==4)
+        if (dir.equals(MoveDirection.North)&&isLegalJump(dir)&&getCurrentPawnRow()==4)
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.NearNorthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.North)&&getCurrentPawnRow()>=5)
+        if (dir.equals(MoveDirection.North)&&isLegalJump(dir)&&getCurrentPawnRow()>=5)
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.South)&&getCurrentPawnRow()==7)
+        if (dir.equals(MoveDirection.South)&&isLegalJump(dir)&&getCurrentPawnRow()==7)
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.OnSouthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.South)&&getCurrentPawnRow()==6)
+        if (dir.equals(MoveDirection.South)&&isLegalJump(dir)&&getCurrentPawnRow()==6)
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.NearSouthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.South)&&getCurrentPawnRow()<=5)
+        if (dir.equals(MoveDirection.South)&&isLegalJump(dir)&&getCurrentPawnRow()<=5)
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
@@ -388,42 +388,43 @@ public class PawnBehaviour
     switch (aPawnSMPositionStatesColumnStateColumnState)
     {
       case BetweenWestEastBorders:
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.West)&&getCurrentPawnColumn()==3)
+        // TODO ; Thomas-> I put the condition for the direction first. Otherwise the isLegalJump() is called first and returns false event if the move is supposed to be legal.
+        if (dir.equals(MoveDirection.West)&&isLegalJump(dir)&&getCurrentPawnColumn()==3)
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.OnWestBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.West)&&getCurrentPawnColumn()==4)
+        if (dir.equals(MoveDirection.West)&&isLegalJump(dir)&&getCurrentPawnColumn()==4)
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.NearWestBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.West)&&getCurrentPawnColumn()>=5)
+        if (dir.equals(MoveDirection.West)&&isLegalJump(dir)&&getCurrentPawnColumn()>=5)
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.East)&&getCurrentPawnColumn()==7)
+        if (dir.equals(MoveDirection.East)&&isLegalJump(dir)&&getCurrentPawnColumn()==7)
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.OnEastBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.East)&&getCurrentPawnColumn()==6)
+        if (dir.equals(MoveDirection.East)&&isLegalJump(dir)&&getCurrentPawnColumn()==6)
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.NearEastBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.East)&&getCurrentPawnColumn()<=5)
+        if (dir.equals(MoveDirection.East)&&isLegalJump(dir)&&getCurrentPawnColumn()<=5)
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
@@ -751,11 +752,13 @@ public class PawnBehaviour
 		if( initialRow != otherRow && initialCol != otherCol ){
 			stepWasLegal =  false;
 		} else if ( deltaRow == 0 ) {
-			if( deltaCol != 1 || deltaCol != -1 ){
+		  //TODO : Thomas-> I changed the || for a &&
+			if( deltaCol != 1 && deltaCol != -1 ){
 				stepWasLegal =  false;   //If you're on the same row but too far away from another still.
 			}
 		} else if ( deltaCol == 0 ) {
-			if( deltaRow != 1 || deltaCol != -1 ){
+          //TODO : Thomas -> I changed the || for a && and the second deltaCol for DeltaRow
+			if( deltaRow != 1 && deltaRow != -1 ){
 				stepWasLegal =  false;   //If you're on the same column but too far away from another still.
 			}
 		}
