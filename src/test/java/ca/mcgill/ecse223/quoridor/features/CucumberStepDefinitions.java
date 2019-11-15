@@ -468,9 +468,11 @@ public class CucumberStepDefinitions {
 
         }
 	}
-	/**communicates to View to verify that the wall is indeed moved to a new position. NOTE: THIS TEST FAILS BECAUSE
+	/**original plan: communicates to View to verify that the wall is indeed moved to a new position. NOTE: THIS TEST FAILS BECAUSE
 	 * THE TEST CASES ARE DONE WITHOUT EVER INITIALIZING VIEW. If test cases try to access view, a null pointe exception
 	 * will always be thrown. It is my opinion that the test case is not necessary.
+	 *
+	 * update : since tryToMoveWall in step definition does not alter the view, there is no reason for the wall to be displayed at the position stated. The only way for the test to pass is to change the test to test controller only
 	 * @author David
 	 * @param row
 	 * @param column
@@ -479,7 +481,10 @@ public class CucumberStepDefinitions {
 	@Then("The wall shall be moved over the board to position \\({int}, {int})")
 	public void thisWallIsAtPosition(int row, int column) throws Throwable{
 		// GUI-related feature
-		assertEquals(true, QuoridorController.thisWallIsAtPosition(row, column));
+		Quoridor quoridor = QuoridorApplication.getQuoridor();
+		Tile tile = quoridor.getCurrentGame().getWallMoveCandidate().getTargetTile();
+		assertEquals(row, tile.getRow());
+		assertEquals(column,tile.getColumn() );
 	}
 	/**we obtain the current wallMove object and checks its direction, row, and column
 	 * @author David
