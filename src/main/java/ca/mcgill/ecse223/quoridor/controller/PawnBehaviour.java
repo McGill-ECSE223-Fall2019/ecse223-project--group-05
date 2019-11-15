@@ -788,9 +788,16 @@ public class PawnBehaviour
 		if( pathIsBlockedByWall( initialRow, initialCol, adjacentPawnDir ) ){
 			stepWasLegal =  false;   //If the move is prevented by a wall blocking access to the adjacent pawn.
 		}
-		//Now that we know we are clear, let us now see if moving in the provided direction from the adjacent pawn is blocked.
+		//Now that we know we are clear, let us now see if moving in the provided direction from the adjacent pawn is blocked by a wall.
 		if( pathIsBlockedByWall( otherRow, otherCol, dir ) ){
 			stepWasLegal =  false;   //The jump is blocked from the adjacent pawn's position.
+		}
+		//The check before checks to see if there is a wall in the way to jumping over the opponent, but does not consider that a wall needs to be behind the opponent for jumping to the opp's side.
+		//Now we check, if the jump is a valid direction and not to the opposite side, if there was that requisite board.
+		if( dir != adjacentPawnDir ){	//If we are jumping to the side of the opponent, not behind
+			if( !pathIsBlockedByWall( otherRow, otherCol, adjacentPawnDir ) ) {	//If there is no wall behind the opponent
+				stepWasLegal = false;
+			}
 		}
 		//Let's not forget that we need to check that the final destination is on the board.
 		if(!moveIsInBounds( otherRow, otherCol, dir )){
@@ -809,7 +816,7 @@ public class PawnBehaviour
   /**
    * Action to be called when an illegal move is attempted
    */
-  // line 237 "../../../../../PawnStateMachine.ump"
+  // line 244 "../../../../../PawnStateMachine.ump"
   public void illegalMove(){
     throw new IllegalArgumentException("Detected an illegal move. Do something.");
 		//TODO: Connect this to something in the view so that the player knows their move was illegal.
@@ -824,7 +831,7 @@ public class PawnBehaviour
    * enum MoveDirection { East, South, West, North; }
    * Helper: Gets the current position of the player
    */
-  // line 252 "../../../../../PawnStateMachine.ump"
+  // line 259 "../../../../../PawnStateMachine.ump"
    private PlayerPosition getCurrentPlayerPosition(){
     PlayerPosition playerPosition;
 		if( player.getGameAsWhite() != null ){
@@ -839,7 +846,7 @@ public class PawnBehaviour
   /**
    * Helper: Gets the current position of the other player
    */
-  // line 262 "../../../../../PawnStateMachine.ump"
+  // line 269 "../../../../../PawnStateMachine.ump"
    private PlayerPosition getCurrentOtherPlayerPosition(){
     PlayerPosition playerPosition;
 		if( player.getGameAsWhite() != null ){
@@ -854,7 +861,7 @@ public class PawnBehaviour
   /**
    * Helper: Gets the current row number of the other player
    */
-  // line 272 "../../../../../PawnStateMachine.ump"
+  // line 279 "../../../../../PawnStateMachine.ump"
    private int getOtherPawnRow(){
     return getCurrentOtherPlayerPosition().getTile().getRow();
   }
@@ -863,7 +870,7 @@ public class PawnBehaviour
   /**
    * Helper: Gets the current column number of the other player
    */
-  // line 276 "../../../../../PawnStateMachine.ump"
+  // line 283 "../../../../../PawnStateMachine.ump"
    private int getOtherPawnColumn(){
     return getCurrentOtherPlayerPosition().getTile().getColumn();
   }
@@ -872,7 +879,7 @@ public class PawnBehaviour
   /**
    * Helper: Gets all of the walls placed onto the board
    */
-  // line 280 "../../../../../PawnStateMachine.ump"
+  // line 287 "../../../../../PawnStateMachine.ump"
    private List<Wall> getAllWallsOnBoard(){
     List<Wall> placedWalls = new ArrayList<Wall>();
 		placedWalls.addAll( currentGame.getCurrentPosition().getBlackWallsOnBoard() );
@@ -884,7 +891,7 @@ public class PawnBehaviour
   /**
    * Helper: Returns if a path off of a provided tile, through row and column, towards a direction is blocked by a wall
    */
-  // line 287 "../../../../../PawnStateMachine.ump"
+  // line 294 "../../../../../PawnStateMachine.ump"
    private boolean pathIsBlockedByWall(int row, int col, MoveDirection dir){
     for( Wall wall : getAllWallsOnBoard() ){
 			//Check if the wall's orientation is capable of blocking the direction.
@@ -904,16 +911,16 @@ public class PawnBehaviour
 			int deltaCol = wallCol - col;
 			switch ( dir ) {
 				case East:
-					//Check if the path to the left of col row is blocked by wall. If so, then flag.
-					if( deltaCol == -1 ){
+					//Check if the path to the right of col row is blocked by wall. If so, then flag.
+					if( deltaCol == 0 ){
 						if( deltaRow == -1 || deltaRow == 0 ){
 							return true;    //Return true for path is blocked by wall
 						}
 					}
 					break;
 				case West:
-					//Check if the path to the right of col row is blocked by wall. If so, then flag.
-					if( deltaCol == 0 ){
+					//Check if the path to the left of col row is blocked by wall. If so, then flag.
+					if( deltaCol == -1 ){
 						if( deltaRow == -1 || deltaRow == 0 ){
 							return true;    //Return true for path is blocked by wall
 						}
@@ -945,7 +952,7 @@ public class PawnBehaviour
   /**
    * Helper: Returns if a move in the dir off of the provided tile coordinates is valid
    */
-  // line 343 "../../../../../PawnStateMachine.ump"
+  // line 350 "../../../../../PawnStateMachine.ump"
    private boolean moveIsInBounds(int initialRow, int initialCol, MoveDirection dir){
     int finalRow;
 		int finalCol;
@@ -983,7 +990,7 @@ public class PawnBehaviour
   /**
    * Helper method for knowing if the player has a white pawn
    */
-  // line 376 "../../../../../PawnStateMachine.ump"
+  // line 383 "../../../../../PawnStateMachine.ump"
    private boolean playerIsWhite(){
     return player.getGameAsWhite() != null;
   }
@@ -992,7 +999,7 @@ public class PawnBehaviour
   /**
    * Helper method for knowing if the player has a black pawn
    */
-  // line 380 "../../../../../PawnStateMachine.ump"
+  // line 387 "../../../../../PawnStateMachine.ump"
    private boolean playerIsBlack(){
     return player.getGameAsBlack() != null;
   }

@@ -215,9 +215,16 @@ class PawnBehaviour{
 		if( pathIsBlockedByWall( initialRow, initialCol, adjacentPawnDir ) ){
 			stepWasLegal =  false;   //If the move is prevented by a wall blocking access to the adjacent pawn.
 		}
-		//Now that we know we are clear, let us now see if moving in the provided direction from the adjacent pawn is blocked.
+		//Now that we know we are clear, let us now see if moving in the provided direction from the adjacent pawn is blocked by a wall.
 		if( pathIsBlockedByWall( otherRow, otherCol, dir ) ){
 			stepWasLegal =  false;   //The jump is blocked from the adjacent pawn's position.
+		}
+		//The check before checks to see if there is a wall in the way to jumping over the opponent, but does not consider that a wall needs to be behind the opponent for jumping to the opp's side.
+		//Now we check, if the jump is a valid direction and not to the opposite side, if there was that requisite board.
+		if( dir != adjacentPawnDir ){	//If we are jumping to the side of the opponent, not behind
+			if( !pathIsBlockedByWall( otherRow, otherCol, adjacentPawnDir ) ) {	//If there is no wall behind the opponent
+				stepWasLegal = false;
+			}
 		}
 		//Let's not forget that we need to check that the final destination is on the board.
 		if(!moveIsInBounds( otherRow, otherCol, dir )){
@@ -302,16 +309,16 @@ class PawnBehaviour{
 			int deltaCol = wallCol - col;
 			switch ( dir ) {
 				case East:
-					//Check if the path to the left of col row is blocked by wall. If so, then flag.
-					if( deltaCol == -1 ){
+					//Check if the path to the right of col row is blocked by wall. If so, then flag.
+					if( deltaCol == 0 ){
 						if( deltaRow == -1 || deltaRow == 0 ){
 							return true;    //Return true for path is blocked by wall
 						}
 					}
 					break;
 				case West:
-					//Check if the path to the right of col row is blocked by wall. If so, then flag.
-					if( deltaCol == 0 ){
+					//Check if the path to the left of col row is blocked by wall. If so, then flag.
+					if( deltaCol == -1 ){
 						if( deltaRow == -1 || deltaRow == 0 ){
 							return true;    //Return true for path is blocked by wall
 						}
