@@ -37,11 +37,15 @@ class PawnBehaviour{
             }
             BetweenNorthSouthBorders{
                 move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 3] -> NearNorthBorder;
-                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> NearSouthBorder;
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.North && getCurrentPawnRow() >= 4] -> BetweenNorthSouthBorders;	//Self Transition
                 jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 3] -> OnNorthBorder;
                 jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.North && getCurrentPawnRow() == 4] -> NearNorthBorder;
+                jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.North && getCurrentPawnRow() >= 5] -> BetweenNorthSouthBorders;	//Self Transition
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> NearSouthBorder;
+                move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.South && getCurrentPawnRow() <= 6] -> BetweenNorthSouthBorders;	//Self Transition
                 jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 7] -> OnSouthBorder;
                 jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.South && getCurrentPawnRow() == 6] -> NearSouthBorder;
+                jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.South && getCurrentPawnRow() <= 5] -> BetweenNorthSouthBorders;	//Self Transition
             }
             NearSouthBorder{
                 move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.South] -> OnSouthBorder;
@@ -58,11 +62,15 @@ class PawnBehaviour{
 
             BetweenWestEastBorders{
             move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.West && getCurrentPawnColumn() == 3] -> NearWestBorder;
-            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.East && getCurrentPawnColumn() == 7] -> NearEastBorder;
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.West && getCurrentPawnColumn() >= 4] -> BetweenWestEastBorders;	//Self Transition
             jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.West && getCurrentPawnColumn() == 3] -> OnWestBorder;
             jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.West && getCurrentPawnColumn() == 4] -> NearWestBorder;
+            jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.West && getCurrentPawnColumn() >= 5] -> BetweenWestEastBorders;	//Self Transition
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.East && getCurrentPawnColumn() == 7] -> NearEastBorder;
+            move(MoveDirection dir) [isLegalStep(dir) && dir == MoveDirection.East && getCurrentPawnColumn() <= 6] -> BetweenWestEastBorders;	//Self Transition
             jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.East && getCurrentPawnColumn() == 7] -> OnEastBorder;
             jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.East && getCurrentPawnColumn() == 6] -> NearEastBorder;
+            jump(MoveDirection dir) [isLegalJump(dir) && dir == MoveDirection.East && getCurrentPawnColumn() <= 5] -> BetweenWestEastBorders;	//Self Transition
             }
 
             OnWestBorder{
