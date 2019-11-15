@@ -106,7 +106,12 @@ public class QuoridorController {
             throw new IllegalArgumentException("Unsupported pawn direction was provided");
         }
 
-        boolean isLegalStep = pawnBehaviour.move(pawnMoveDirection);
+        boolean isLegalStep = false;
+        try {
+            isLegalStep = pawnBehaviour.move(pawnMoveDirection);
+        }catch(Exception e){
+            isLegalStep = false;
+        }
         boolean isLegalJump = false;
 
         int row = playerPosition.getTile().getRow();
@@ -124,7 +129,7 @@ public class QuoridorController {
                 col = col - 1;
             }
         } else {
-          // isLegalJump = pawnBehaviour.jump(pawnMoveDirection);
+          isLegalJump = pawnBehaviour.jump(pawnMoveDirection);
 
             if (isLegalJump) {
                 pawnMoveSuccessful = true;
