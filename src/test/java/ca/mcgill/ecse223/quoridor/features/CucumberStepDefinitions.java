@@ -850,14 +850,6 @@ public class CucumberStepDefinitions {
 		} else {
 			QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
 		}
-
-//		if(playerColorAsString.equals("white")){
-//			Player whitePlayer = QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer();
-//			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().setPlayerToMove(whitePlayer);
-//		}else{
-//			Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
-//			QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().setPlayerToMove(blackPlayer);
-//		}
 	}
 	
 	/**
