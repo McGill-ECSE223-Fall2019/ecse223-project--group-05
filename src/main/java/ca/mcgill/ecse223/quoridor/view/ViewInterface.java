@@ -374,7 +374,7 @@ git s     */
 	    //get list of files whose ending corresponds with the endings of game files (.dat)
 		File[] gameFiles = directory.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
-		    	return name.endsWith("dat");
+		    	return name.endsWith("mov");
 		    }
 		});
 //		System.out.println(gameFiles); //debugging flag
@@ -693,7 +693,23 @@ git s     */
 			return null;
 	}
 
-
+    /**
+     *
+     */
+    EventHandler<MouseEvent> hoverEffect = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            ImageView img = (ImageView)e.getSource();
+            img.setOpacity(0.5);
+        }
+    };
+    EventHandler<MouseEvent> cancelHoverEffect = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            ImageView img = (ImageView)e.getSource();
+            img.setOpacity(1);
+        }
+    };
 	/**
 	 * @author Matthias Arabian
 	 * initializes the FXML components. this code runs once the application is launched but before the GUI is displayed.
@@ -711,7 +727,10 @@ git s     */
 				tmp.setFitWidth(25);
 				tmp.setFitHeight(30);
 				Game_Board.add(tmp , row, col);
-			}
+
+				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //add event handler used for jump/move pawn
+                tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //add event handler used for jump/move pawn
+            }
 		}
 
 
