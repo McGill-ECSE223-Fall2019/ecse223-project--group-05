@@ -74,7 +74,7 @@ class PawnBehaviour{
 	            move(MoveDirection dir) [dir == MoveDirection.West && getCurrentPawnColumn() == 3 && isLegalStep(dir)] -> NearWestBorder;
 	            move(MoveDirection dir) [dir == MoveDirection.West && getCurrentPawnColumn() >= 4 && isLegalStep(dir)] -> BetweenWestEastBorders;	//Self Transition
 	            jump(MoveDirection dir) [(dir == MoveDirection.NorthWest || dir == MoveDirection.SouthWest) && getCurrentPawnColumn() == 3 && isLegalJump(dir)] -> NearWestBorder;
-	            jump(MoveDirection dir) [(dir == MoveDirection.NorthWest || dir == MoveDirection.SouthWest) && getCurrentPawnColumn() >= 4 && isLegalJump(dir)] -> BetweenNorthSouthBorders;	//Self Transition
+	            jump(MoveDirection dir) [(dir == MoveDirection.NorthWest || dir == MoveDirection.SouthWest) && getCurrentPawnColumn() >= 4 && isLegalJump(dir)] -> BetweenWestEastBorders;	//Self Transition
 	            jump(MoveDirection dir) [dir == MoveDirection.West && getCurrentPawnColumn() == 3 && isLegalJump(dir)] -> OnWestBorder;
 	            jump(MoveDirection dir) [dir == MoveDirection.West && getCurrentPawnColumn() == 4 && isLegalJump(dir)] -> NearWestBorder;
 	            jump(MoveDirection dir) [dir == MoveDirection.West && getCurrentPawnColumn() >= 5 && isLegalJump(dir)] -> BetweenWestEastBorders;	//Self Transition
@@ -133,7 +133,7 @@ class PawnBehaviour{
 	    boolean stepWasLegal = true;
 
 		//First, sanity check that no diagonal moves are being asked. Diagonal moves are exclusive for jumps.
-		if( dir == MoveDirection.NorthEast || dir == MoveDirection.NorthWest || dir == MoveDirection.SouthEast || dir == Movedirection.SouthWest ){
+		if( dir == MoveDirection.NorthEast || dir == MoveDirection.NorthWest || dir == MoveDirection.SouthEast || dir == MoveDirection.SouthWest ){
 			illegalMove();
 			return false;
 		}
@@ -203,7 +203,7 @@ class PawnBehaviour{
 		int deltaCol = otherCol - initialCol;       //Displacement between other player's pawn and player's pawn in column.
 		//First check if the enemy pawn is adjacent. If not, return false.
 		if( initialRow != otherRow && initialCol != otherCol ){
-			stepWasLegal =  false;
+			caughtIllegalSymptoms =  true;
 		} else if ( deltaRow == 0 ) {
 			if( deltaCol != 1 && deltaCol != -1 ){
 				caughtIllegalSymptoms =  true;   //If you're on the same row but too far away from another still.
@@ -231,7 +231,7 @@ class PawnBehaviour{
 			throw new IllegalArgumentException("Detected unacceptable MoveDirection.");
 		}
 		//Now that we know what direction our adjacent pawn is, let us derive what is the relative direction from that adjacent pawn that our directional input is.
-		MoveDirection relativeJumpDirectionToAdjacentPawn;
+		MoveDirection relativeJumpDirectionToAdjacentPawn = null;
 		if( adjacentPawnDir == MoveDirection.North ){
 			if( dir == MoveDirection.North ){
 				relativeJumpDirectionToAdjacentPawn = MoveDirection.North;
@@ -246,7 +246,7 @@ class PawnBehaviour{
 		} else if( adjacentPawnDir == MoveDirection.East ){
 			if( dir == MoveDirection.East ){
 				relativeJumpDirectionToAdjacentPawn = MoveDirection.East;
-			} else if( dir == Movedirection.NorthEast ){
+			} else if( dir == MoveDirection.NorthEast ){
 				relativeJumpDirectionToAdjacentPawn = MoveDirection.North;
 			} else if( dir == MoveDirection.SouthEast ){
 				relativeJumpDirectionToAdjacentPawn = MoveDirection.South;
