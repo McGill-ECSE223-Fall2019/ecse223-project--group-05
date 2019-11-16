@@ -90,6 +90,7 @@ public class QuoridorController {
      * @return true/false, true if the move was successful, false if an exception was thrown from statemachine
      * @author Thomas Philippon
      * @author Alex Masciotra
+     * @author Daniel Wu
      */
     public static Boolean movePawn(Quoridor quoridor, String side, PawnBehaviour pawnBehaviour) {
         Boolean pawnMoveSuccessful = false;
