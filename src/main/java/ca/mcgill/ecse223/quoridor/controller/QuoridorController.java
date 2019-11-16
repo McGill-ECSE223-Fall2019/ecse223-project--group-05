@@ -81,6 +81,16 @@ public class QuoridorController {
         startPlayerTimer(whitePlayer, timer); //call the controller method "startClock"
     }
 
+    /**
+     * Method to Move Pawn across the board, will jump if blocked by another pawn
+     *
+     * @param quoridor      quoridor object, can access whole model from this and persist changes
+     * @param side          the direction the pawn wants to move
+     * @param pawnBehaviour the statemachine associated with either the white or black pawn
+     * @return true/false, true if the move was successful, false if an exception was thrown from statemachine
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     */
     public static Boolean movePawn(Quoridor quoridor, String side, PawnBehaviour pawnBehaviour) {
         Boolean pawnMoveSuccessful = false;
 
@@ -111,7 +121,7 @@ public class QuoridorController {
         boolean isLegalStep = false;
         try {
             isLegalStep = pawnBehaviour.move(pawnMoveDirection);
-        }catch(Exception e){
+        } catch (Exception e) {
             isLegalStep = false;
         }
         boolean isLegalJump = false;
@@ -134,7 +144,7 @@ public class QuoridorController {
 
             try {
                 isLegalJump = pawnBehaviour.jump(pawnMoveDirection);
-            }catch(Exception e){
+            } catch (Exception e) {
                 isLegalStep = false;
             }
 
