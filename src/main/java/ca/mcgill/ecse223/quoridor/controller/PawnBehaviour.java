@@ -121,7 +121,7 @@ public class PawnBehaviour
     switch (aPawnSMPositionStatesRowStateRowState)
     {
       case OnNorthBorder:
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.South))
+        if (dir.equals(MoveDirection.South)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.NearNorthBorder);
@@ -130,14 +130,14 @@ public class PawnBehaviour
         }
         break;
       case NearNorthBorder:
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.North))
+        if (dir.equals(MoveDirection.North)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.OnNorthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.South))
+        if (dir.equals(MoveDirection.South)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
@@ -146,28 +146,28 @@ public class PawnBehaviour
         }
         break;
       case BetweenNorthSouthBorders:
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.North)&&getCurrentPawnRow()==3)
+        if (dir.equals(MoveDirection.North)&&getCurrentPawnRow()==3&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.NearNorthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.North)&&getCurrentPawnRow()>=4)
+        if (dir.equals(MoveDirection.North)&&getCurrentPawnRow()>=4&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.South)&&getCurrentPawnRow()==7)
+        if (dir.equals(MoveDirection.South)&&getCurrentPawnRow()==7&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.NearSouthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.South)&&getCurrentPawnRow()<=6)
+        if (dir.equals(MoveDirection.South)&&getCurrentPawnRow()<=6&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
@@ -176,14 +176,14 @@ public class PawnBehaviour
         }
         break;
       case NearSouthBorder:
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.South))
+        if (dir.equals(MoveDirection.South)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.OnSouthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.North))
+        if (dir.equals(MoveDirection.North)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
@@ -192,7 +192,7 @@ public class PawnBehaviour
         }
         break;
       case OnSouthBorder:
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.North))
+        if (dir.equals(MoveDirection.North)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.NearSouthBorder);
@@ -207,28 +207,28 @@ public class PawnBehaviour
     switch (aPawnSMPositionStatesColumnStateColumnState)
     {
       case BetweenWestEastBorders:
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.West)&&getCurrentPawnColumn()==3)
+        if (dir.equals(MoveDirection.West)&&getCurrentPawnColumn()==3&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.NearWestBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.West)&&getCurrentPawnColumn()>=4)
+        if (dir.equals(MoveDirection.West)&&getCurrentPawnColumn()>=4&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.East)&&getCurrentPawnColumn()==7)
+        if (dir.equals(MoveDirection.East)&&getCurrentPawnColumn()==7&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.NearEastBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.East)&&getCurrentPawnColumn()<=6)
+        if (dir.equals(MoveDirection.East)&&getCurrentPawnColumn()<=6&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
@@ -237,7 +237,7 @@ public class PawnBehaviour
         }
         break;
       case OnWestBorder:
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.East))
+        if (dir.equals(MoveDirection.East)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.NearWestBorder);
@@ -246,14 +246,14 @@ public class PawnBehaviour
         }
         break;
       case NearWestBorder:
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.West))
+        if (dir.equals(MoveDirection.West)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.OnWestBorder);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.East))
+        if (dir.equals(MoveDirection.East)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
@@ -262,14 +262,14 @@ public class PawnBehaviour
         }
         break;
       case NearEastBorder:
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.West))
+        if (dir.equals(MoveDirection.West)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
           wasEventProcessed = true;
           break;
         }
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.East))
+        if (dir.equals(MoveDirection.East)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.OnEastBorder);
@@ -278,7 +278,7 @@ public class PawnBehaviour
         }
         break;
       case OnEastBorder:
-        if (isLegalStep(dir)&&dir.equals(MoveDirection.West))
+        if (dir.equals(MoveDirection.West)&&isLegalStep(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.NearEastBorder);
@@ -302,7 +302,7 @@ public class PawnBehaviour
     switch (aPawnSMPositionStatesRowStateRowState)
     {
       case OnNorthBorder:
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.South))
+        if (dir.equals(MoveDirection.South)&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
@@ -311,7 +311,7 @@ public class PawnBehaviour
         }
         break;
       case NearNorthBorder:
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.South))
+        if (dir.equals(MoveDirection.South)&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
@@ -320,42 +320,42 @@ public class PawnBehaviour
         }
         break;
       case BetweenNorthSouthBorders:
-        if (dir.equals(MoveDirection.North)&&isLegalJump(dir)&&getCurrentPawnRow()==3)
+        if (dir.equals(MoveDirection.North)&&getCurrentPawnRow()==3&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.OnNorthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (dir.equals(MoveDirection.North)&&isLegalJump(dir)&&getCurrentPawnRow()==4)
+        if (dir.equals(MoveDirection.North)&&getCurrentPawnRow()==4&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.NearNorthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (dir.equals(MoveDirection.North)&&isLegalJump(dir)&&getCurrentPawnRow()>=5)
+        if (dir.equals(MoveDirection.North)&&getCurrentPawnRow()>=5&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
           wasEventProcessed = true;
           break;
         }
-        if (dir.equals(MoveDirection.South)&&isLegalJump(dir)&&getCurrentPawnRow()==7)
+        if (dir.equals(MoveDirection.South)&&getCurrentPawnRow()==7&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.OnSouthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (dir.equals(MoveDirection.South)&&isLegalJump(dir)&&getCurrentPawnRow()==6)
+        if (dir.equals(MoveDirection.South)&&getCurrentPawnRow()==6&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.NearSouthBorder);
           wasEventProcessed = true;
           break;
         }
-        if (dir.equals(MoveDirection.South)&&isLegalJump(dir)&&getCurrentPawnRow()<=5)
+        if (dir.equals(MoveDirection.South)&&getCurrentPawnRow()<=5&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
@@ -364,7 +364,7 @@ public class PawnBehaviour
         }
         break;
       case NearSouthBorder:
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.North))
+        if (dir.equals(MoveDirection.North)&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
@@ -373,7 +373,7 @@ public class PawnBehaviour
         }
         break;
       case OnSouthBorder:
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.North))
+        if (dir.equals(MoveDirection.North)&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesRowStateRowState();
           setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.BetweenNorthSouthBorders);
@@ -388,43 +388,42 @@ public class PawnBehaviour
     switch (aPawnSMPositionStatesColumnStateColumnState)
     {
       case BetweenWestEastBorders:
-        // TODO ; Thomas-> I put the condition for the direction first. Otherwise the isLegalJump() is called first and returns false event if the move is supposed to be legal.
-        if (dir.equals(MoveDirection.West)&&isLegalJump(dir)&&getCurrentPawnColumn()==3)
+        if (dir.equals(MoveDirection.West)&&getCurrentPawnColumn()==3&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.OnWestBorder);
           wasEventProcessed = true;
           break;
         }
-        if (dir.equals(MoveDirection.West)&&isLegalJump(dir)&&getCurrentPawnColumn()==4)
+        if (dir.equals(MoveDirection.West)&&getCurrentPawnColumn()==4&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.NearWestBorder);
           wasEventProcessed = true;
           break;
         }
-        if (dir.equals(MoveDirection.West)&&isLegalJump(dir)&&getCurrentPawnColumn()>=5)
+        if (dir.equals(MoveDirection.West)&&getCurrentPawnColumn()>=5&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
           wasEventProcessed = true;
           break;
         }
-        if (dir.equals(MoveDirection.East)&&isLegalJump(dir)&&getCurrentPawnColumn()==7)
+        if (dir.equals(MoveDirection.East)&&getCurrentPawnColumn()==7&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.OnEastBorder);
           wasEventProcessed = true;
           break;
         }
-        if (dir.equals(MoveDirection.East)&&isLegalJump(dir)&&getCurrentPawnColumn()==6)
+        if (dir.equals(MoveDirection.East)&&getCurrentPawnColumn()==6&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.NearEastBorder);
           wasEventProcessed = true;
           break;
         }
-        if (dir.equals(MoveDirection.East)&&isLegalJump(dir)&&getCurrentPawnColumn()<=5)
+        if (dir.equals(MoveDirection.East)&&getCurrentPawnColumn()<=5&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
@@ -433,7 +432,7 @@ public class PawnBehaviour
         }
         break;
       case OnWestBorder:
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.East))
+        if (dir.equals(MoveDirection.East)&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
@@ -442,7 +441,7 @@ public class PawnBehaviour
         }
         break;
       case NearWestBorder:
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.East))
+        if (dir.equals(MoveDirection.East)&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
@@ -451,7 +450,7 @@ public class PawnBehaviour
         }
         break;
       case NearEastBorder:
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.West))
+        if (dir.equals(MoveDirection.West)&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
@@ -460,7 +459,7 @@ public class PawnBehaviour
         }
         break;
       case OnEastBorder:
-        if (isLegalJump(dir)&&dir.equals(MoveDirection.West))
+        if (dir.equals(MoveDirection.West)&&isLegalJump(dir))
         {
           exitPawnSMPositionStatesColumnStateColumnState();
           setPawnSMPositionStatesColumnStateColumnState(PawnSMPositionStatesColumnStateColumnState.BetweenWestEastBorders);
@@ -752,12 +751,10 @@ public class PawnBehaviour
 		if( initialRow != otherRow && initialCol != otherCol ){
 			stepWasLegal =  false;
 		} else if ( deltaRow == 0 ) {
-		  //TODO : Thomas-> I changed the || for a &&
 			if( deltaCol != 1 && deltaCol != -1 ){
 				stepWasLegal =  false;   //If you're on the same row but too far away from another still.
 			}
 		} else if ( deltaCol == 0 ) {
-          //TODO : Thomas -> I changed the || for a && and the second deltaCol for DeltaRow
 			if( deltaRow != 1 && deltaRow != -1 ){
 				stepWasLegal =  false;   //If you're on the same column but too far away from another still.
 			}
@@ -822,8 +819,6 @@ public class PawnBehaviour
   // line 244 "../../../../../PawnStateMachine.ump"
   public void illegalMove(){
     throw new IllegalArgumentException("Detected an illegal move. Do something.");
-		//TODO: Connect this to something in the view so that the player knows their move was illegal.
-		//A pop-up message is easy but not subtle. Consider red warning text appear in the UI instead.
   }
 
 
@@ -834,7 +829,7 @@ public class PawnBehaviour
    * enum MoveDirection { East, South, West, North; }
    * Helper: Gets the current position of the player
    */
-  // line 259 "../../../../../PawnStateMachine.ump"
+  // line 257 "../../../../../PawnStateMachine.ump"
    private PlayerPosition getCurrentPlayerPosition(){
     PlayerPosition playerPosition;
 		if( player.getGameAsWhite() != null ){
@@ -849,7 +844,7 @@ public class PawnBehaviour
   /**
    * Helper: Gets the current position of the other player
    */
-  // line 269 "../../../../../PawnStateMachine.ump"
+  // line 267 "../../../../../PawnStateMachine.ump"
    private PlayerPosition getCurrentOtherPlayerPosition(){
     PlayerPosition playerPosition;
 		if( player.getGameAsWhite() != null ){
@@ -864,7 +859,7 @@ public class PawnBehaviour
   /**
    * Helper: Gets the current row number of the other player
    */
-  // line 279 "../../../../../PawnStateMachine.ump"
+  // line 277 "../../../../../PawnStateMachine.ump"
    private int getOtherPawnRow(){
     return getCurrentOtherPlayerPosition().getTile().getRow();
   }
@@ -873,7 +868,7 @@ public class PawnBehaviour
   /**
    * Helper: Gets the current column number of the other player
    */
-  // line 283 "../../../../../PawnStateMachine.ump"
+  // line 281 "../../../../../PawnStateMachine.ump"
    private int getOtherPawnColumn(){
     return getCurrentOtherPlayerPosition().getTile().getColumn();
   }
@@ -882,7 +877,7 @@ public class PawnBehaviour
   /**
    * Helper: Gets all of the walls placed onto the board
    */
-  // line 287 "../../../../../PawnStateMachine.ump"
+  // line 285 "../../../../../PawnStateMachine.ump"
    private List<Wall> getAllWallsOnBoard(){
     List<Wall> placedWalls = new ArrayList<Wall>();
 		placedWalls.addAll( currentGame.getCurrentPosition().getBlackWallsOnBoard() );
@@ -894,7 +889,7 @@ public class PawnBehaviour
   /**
    * Helper: Returns if a path off of a provided tile, through row and column, towards a direction is blocked by a wall
    */
-  // line 294 "../../../../../PawnStateMachine.ump"
+  // line 292 "../../../../../PawnStateMachine.ump"
    private boolean pathIsBlockedByWall(int row, int col, MoveDirection dir){
     for( Wall wall : getAllWallsOnBoard() ){
 			//Check if the wall's orientation is capable of blocking the direction.
@@ -955,7 +950,7 @@ public class PawnBehaviour
   /**
    * Helper: Returns if a move in the dir off of the provided tile coordinates is valid
    */
-  // line 350 "../../../../../PawnStateMachine.ump"
+  // line 348 "../../../../../PawnStateMachine.ump"
    private boolean moveIsInBounds(int initialRow, int initialCol, MoveDirection dir){
     int finalRow;
 		int finalCol;
@@ -993,7 +988,7 @@ public class PawnBehaviour
   /**
    * Helper method for knowing if the player has a white pawn
    */
-  // line 383 "../../../../../PawnStateMachine.ump"
+  // line 381 "../../../../../PawnStateMachine.ump"
    private boolean playerIsWhite(){
     return player.getGameAsWhite() != null;
   }
@@ -1002,7 +997,7 @@ public class PawnBehaviour
   /**
    * Helper method for knowing if the player has a black pawn
    */
-  // line 387 "../../../../../PawnStateMachine.ump"
+  // line 385 "../../../../../PawnStateMachine.ump"
    private boolean playerIsBlack(){
     return player.getGameAsBlack() != null;
   }
