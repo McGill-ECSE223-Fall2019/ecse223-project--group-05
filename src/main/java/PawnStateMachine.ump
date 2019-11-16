@@ -301,6 +301,7 @@ class PawnBehaviour{
 			stepWasLegal =  false;   //If the move is prevented by a wall blocking access to the adjacent pawn.
 		}
 		//Now that we know the first step of the jump is clear of walls, let us now see if moving in the provided direction from the adjacent pawn is blocked by a wall.
+		//Note that the edge of the board behaves exactly like a wall.
 		if( pathIsBlockedByWall( otherRow, otherCol, dir ) ){
 			stepWasLegal =  false;   //The jump is blocked from the adjacent pawn's position.
 		}
@@ -374,6 +375,15 @@ class PawnBehaviour{
 	}
 	//Helper: Returns if a path off of a provided tile, through row and column, towards a direction is blocked by a wall
 	private boolean pathIsBlockedByWall( int row, int col, MoveDirection dir ){
+		//For checking against the edge of the board, which behaves like a wall.
+		if( col == 1 && dir == MoveDirection.West	||
+			col == 9 && dir == MoveDirection.East	||
+			row == 1 && dir == MoveDirection.North	||
+			row == 9 && dir == MoveDirection.South		) 
+		{
+			return true;
+		}
+		//For checking actual walls
 		for( Wall wall : getAllWallsOnBoard() ){
 			//Check if the wall's orientation is capable of blocking the direction.
 			if( wall.getMove().getWallDirection() == Direction.Horizontal ){
