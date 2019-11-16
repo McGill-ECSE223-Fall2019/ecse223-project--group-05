@@ -1,3 +1,8 @@
 Button:hover{
     -fx-cursor: hand;
 }
+
+.thingy {
+
+    -fx-: url("textures/pawn_black.png");
+}

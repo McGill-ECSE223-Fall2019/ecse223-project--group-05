@@ -25,5 +25,7 @@ public class PlayerTimer extends TimerTask{
         Time updatedTime = new Time(timeRemaining);
         //System.out.println(updatedTime);
         player.setRemainingTime(updatedTime);
+        if (timeRemaining == 0)
+            System.out.println("timer reached 0!!!");
     }
 }

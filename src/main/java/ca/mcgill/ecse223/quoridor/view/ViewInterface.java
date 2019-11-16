@@ -33,6 +33,7 @@ import ca.mcgill.ecse223.quoridor.model.Game;
 import ca.mcgill.ecse223.quoridor.model.Player;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import ca.mcgill.ecse223.quoridor.model.User;
+import com.sun.javafx.scene.control.skin.Utils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -43,6 +44,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -97,10 +100,12 @@ public class ViewInterface {
 	@FXML private Label lbl_directory;
     @FXML ListView loadedGameList;
     private int counter = 0; //used for debugging of listView
+
 	//Game Session Page
 	@FXML private GridPane Game_Board;
 	@FXML private Rectangle whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6, whiteWall7, whiteWall8, whiteWall9, whiteWall10;
-	@FXML private Rectangle blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6, blackWall7, blackWall8, blackWall9, wblackWall10;
+	@FXML private Rectangle blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6, blackWall7, blackWall8, blackWall9, blackWall10;
+	@FXML private HBox blackStock, whiteStock;
 	@FXML private Label gameSessionNotificationLabel;
 	@FXML private Label whiteTimer;
 	@FXML private Label blackTimer;
@@ -228,10 +233,12 @@ public class ViewInterface {
 
 	@FXML
 	public static void MoveWall(KeyEvent keyEvent) {
+		//ensure that a wall is selected
+
 		boolean isValid = true;
 		try {
-			if(wallSelected==null && (keyEvent.getCode()== KeyCode.W||keyEvent.getCode()==KeyCode.A||keyEvent.getCode()==KeyCode.S||keyEvent.getCode()==KeyCode.D)){
-				throw new IllegalArgumentException("no wall was selected.");
+			if(wallSelected==null){
+				return; //don't do anything, since you cannot move a nonexistant wall
 			}
 			if(keyEvent.getCode()==KeyCode.W) {
 				isValid = QuoridorController.moveWall("up");
@@ -401,7 +408,63 @@ git s     */
 	 * Changes the GUI CurrentPage to the Main Page.
 	 */
 	public void Goto_Main_Page() {
+		clearGUI_game_session_page();
+		QuoridorController.clearGame();
 		Goto_Page(Page.MAIN_PAGE);
+	}
+
+	/**
+	 * @author Matthias Arabian
+	 * resets the state of the GameSessionPage to allow users to start a new game after exiting a previous one
+	 */
+	private void clearGUI_game_session_page() {
+		//set the current player to be WhitePlayer
+		resetGUI_playerTurn();
+
+		//reset the player usernames
+		whiteExistingName.getSelectionModel().clearSelection();
+		whiteExistingName.valueProperty().setValue(null);
+		blackExistingName.getSelectionModel().clearSelection();
+		blackExistingName.valueProperty().setValue(null);
+
+		//reset the GUI wall related global variables
+		invalidWallPlacement.setText("");
+		validWallGrab = false;
+		wallSelected = null;
+		if (wallMoveCandidate != null)
+			wallMoveCandidate.setStroke(Color.BLACK);
+		wallMoveCandidate = null;
+		wallGrabbed = false; //added by Thomas
+
+		//put all blackWalls back into their stock positions
+		Rectangle[] blackWalls = {blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6
+				,blackWall7,blackWall8, blackWall9, blackWall10};
+		for (Rectangle r : blackWalls){
+			Node p = r.getParent();
+			if (!p.getClass().getName().contains("HBox")) {
+				AnchorPane parent = (AnchorPane) r.getParent();
+				parent.getChildren().remove(r);
+				blackStock.getChildren().add(r);
+				r.setTranslateX(0);
+				r.setTranslateY(0);
+				QuoridorController.resetGUIWall(r);
+			}
+		}
+
+		//put all whiteWalls back into their stock positions
+		Rectangle[] whiteWalls = {whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6
+				, whiteWall7, whiteWall8, whiteWall9, whiteWall10};
+		for (Rectangle r : whiteWalls){
+			Node p = r.getParent();
+			if (!p.getClass().getName().contains("HBox")) {
+				AnchorPane parent = (AnchorPane) r.getParent();
+				parent.getChildren().remove(r);
+				whiteStock.getChildren().add(r);
+				r.setTranslateX(0);
+				r.setTranslateY(0);
+				QuoridorController.resetGUIWall(r);
+			}
+		}
 	}
 
 	/**
@@ -637,11 +700,16 @@ git s     */
 	 */
 	public void initialize() {
 		resetGUItoMainPage();
+
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
-				AnchorPane tmp = new AnchorPane();
+				ImageView tmp = new ImageView();
 				tmp.setStyle("-fx-background-color: #ffffff");
+				tmp.getStyleClass().add("thingy");
+				tmp.setImage(new Image("textures/tile_main.png"));
+				tmp.setFitWidth(25);
+				tmp.setFitHeight(30);
 				Game_Board.add(tmp , row, col);
 			}
 		}
@@ -654,9 +722,7 @@ git s     */
 		//Hides the save game button
 		btn_saveGame.setVisible(false);
 
-		quoridor =QuoridorApplication.getQuoridor();
-
-
+		quoridor = QuoridorApplication.getQuoridor();
 	}
 
 	/**
@@ -697,10 +763,11 @@ git s     */
 			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
 		}
 
-		userNameToSet = whiteExistingName.getEditor().getText();
+		userNameToSet = ((String)whiteExistingName.getSelectionModel().getSelectedItem());
 
 		try {
 			QuoridorController.selectExistingUserName(userNameToSet, quoridor);
+			whiteUsernameExistsLabel.setText("");
 		} catch (Exception e) {
 			throw new java.lang.UnsupportedOperationException("Unable to select Existing UserName");
 		}
@@ -718,10 +785,11 @@ git s     */
 		} catch (Exception e) {
 			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
 		}
-		String userNameToSet = blackExistingName.getEditor().getText();
+		String userNameToSet = ((String)blackExistingName.getSelectionModel().getSelectedItem());
 
 		try {
 			QuoridorController.selectExistingUserName(userNameToSet, quoridor);
+			blackUsernameExistsLabel.setText("");
 		} catch (Exception e) {
 			throw new java.lang.UnsupportedOperationException("Unable to select Existing UserName");
 		}
@@ -753,7 +821,11 @@ git s     */
 
 		if (!isValid){
 			whiteUsernameExistsLabel.setText(userNameToSet + " already exists");
+		} else {
+			whiteExistingName.getSelectionModel().select(userNameToSet);
+			whiteUsernameExistsLabel.setText("");
 		}
+		whiteNewName.setText("");
 	}
 
 	/**
@@ -783,7 +855,11 @@ git s     */
 
 		if (!isValid){
 			blackUsernameExistsLabel.setText(userNameToSet + " already exists");
+		} else {
+			blackExistingName.getSelectionModel().select(userNameToSet);
+			blackUsernameExistsLabel.setText("");
 		}
+		blackNewName.setText("");
 	}
 	/**
 	 * @author Matthias Arabian
@@ -801,6 +877,9 @@ git s     */
      */
 	public static void rotateWallEvent(KeyEvent keyEvent) {
 
+		//ensure that a wall is selected
+		if (wallSelected == null)
+			return;
 		//get the rectangle that is grabbed
 		//Rectangle wall = (Rectangle) mouseEvent.getSource();
 		//ROTATE WALL WILL RUN DURING THE MOVE WALL EVENT
@@ -895,6 +974,20 @@ git s     */
                 QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
 			}
 		}
+	}
+
+	private void resetGUI_playerTurn(){
+		if (QuoridorApplication.getQuoridor().hasBoard() == false)
+			return;
+		if (QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).toLowerCase().equals("black")){
+			btn_whitePlayerTurn.setText("END TURN");
+			lbl_white_awaitingMove.setText("");
+			btn_blackPlayerTurn.setText("NOT BLACK TURN");
+			lbl_white_awaitingMove.setText("It is your turn!");
+			lbl_black_awaitingMove.setText("AWAITING MOVE");
+		}
+		timer.cancel();
+		timer = new Timer(); //stop the player timers
 	}
 
 
