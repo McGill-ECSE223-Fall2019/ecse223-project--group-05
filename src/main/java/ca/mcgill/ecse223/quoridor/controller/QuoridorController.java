@@ -149,6 +149,14 @@ public class QuoridorController {
             pawnMoveDirection = MoveDirection.East;
         } else if (side.equals("left")) {
             pawnMoveDirection = MoveDirection.West;
+        } else if( side.equals("upleft") ) {
+        	pawnMoveDirection = MoveDirection.NorthWest;
+        } else if( side.equals("upright") ) {
+        	pawnMoveDirection = MoveDirection.NorthEast;
+        } else if( side.equals("downleft") ) {
+        	pawnMoveDirection = MoveDirection.SouthWest;
+        } else if( side.equals("downright") ) {
+        	pawnMoveDirection = MoveDirection.SouthEast;
         } else {
             throw new IllegalArgumentException("Unsupported pawn direction was provided");
         }
@@ -193,7 +201,19 @@ public class QuoridorController {
                     col = col + 2;
                 } else if (side.equals("left")) {
                     col = col - 2;
-                }
+                } else if( side.equals("upleft") ) {
+                	row = row - 1;
+                	col = col - 1;
+                } else if( side.equals("upright") ) {
+                	row = row - 1;
+                	col = col + 1;
+                } else if( side.equals("downleft") ) {
+                	row = row + 1;
+                	col = col - 1;
+                } else if( side.equals("downright") ) {
+                	row = row + 1;
+                	col = col + 1;
+                } 
             }
         }
 
