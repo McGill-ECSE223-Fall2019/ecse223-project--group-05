@@ -1,5 +1,16 @@
 package ca.mcgill.ecse223.quoridor.controller;
 
+
+import javafx.scene.paint.Color;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+
+import javafx.scene.shape.Rectangle;
+
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
@@ -21,6 +32,29 @@ import java.util.Timer;
 
 public class QuoridorController {
 
+    /**
+     * @author Matthias Arabian
+     *
+     */
+    public static boolean clearGame(){
+
+        Quoridor q = QuoridorApplication.getQuoridor();
+        List<User> u = q.getUsers();
+        List<String> s = new ArrayList<>();
+        for (User r : u)
+            s.add(r.getName());
+        q.delete();
+
+        for (String str : s) {
+            if (str.equals("user1") || str.equals("user2"))
+                continue; //do not add user1 and user2 to the list, b/c those names are created when the game is initialized
+            try {
+                q.addUser(str);
+            } catch (Exception e) {
+            }
+        }
+        return true;
+    }
     /**
      * Gherkin feature: Initialize Board
      * This controller method is responsible for initializing the board. It sets the current player to move to the white player.
@@ -346,9 +380,10 @@ public class QuoridorController {
             //or have a popup showup to tell the player if they are sure or something
         }*/
         Game game = new Game(GameStatus.Initializing, Game.MoveMode.PlayerMove, quoridor);
-        User user1 = quoridor.addUser("user1");
-        User user2 = quoridor.addUser("user2");
-
+        User user1 = null;
+        User user2 = null;
+        user1 = quoridor.addUser("user1");
+        user2 = quoridor.addUser("user2");
         int thinkingTime = 180;
 
         Player player1 = new Player(new Time(thinkingTime), user1, 9, Direction.Horizontal);
@@ -581,7 +616,6 @@ public class QuoridorController {
 
             quoridor.getCurrentGame().getWhitePlayer().setNextPlayer(whitePlayer);
         } else if (color.equals("black")) {
-
             quoridor.getCurrentGame().getWhitePlayer().setNextPlayer(blackPlayer);
         } else {
 
@@ -899,7 +933,28 @@ public class QuoridorController {
 
 
     /**
-     * @param newDir the direction that the GUI wall entity should be rotated to
+     * Helper method to reset the GUI wall direction and border color to their initial values
+     * Vertical direction
+     * Black border
+     * @param r
+     */
+    public static void resetGUIWall(Rectangle r) {
+        if (r == null)
+            throw new UnsupportedOperationException("No GUI wall entity exists");
+
+        double curWidth = r.getWidth();
+        double curHeight = r.getHeight();
+        double w2h = curWidth/curHeight;
+
+        if (w2h > 1) {
+            r.setWidth(curHeight);
+            r.setHeight(curWidth/0.85);
+        }
+
+        r.setStroke(Color.BLACK);
+    }
+
+    /**
      * @throws UnsupportedOperationException if there is not GUI wall to rotate or the function fails to rotate the wall
      *                                       <p>
      *                                       Rotates the GUI wallMoveCandidate to the desired direction.
@@ -1074,7 +1129,6 @@ public class QuoridorController {
      *
      * @param filename  (no extension will be added)
      * @param game
-     * @param overwrite
      * @return savingStatus enum
      * @throws IOException
      * @author Edwin Pan
@@ -1113,7 +1167,7 @@ public class QuoridorController {
      * There are NO PROTECTIVE MEASURES for ensuring that the game instance exists
      * for this method to obtain the player from.
      *
-     * @param string of either "Black" or "White" in either upper or lower cases.
+     * @param color of either "Black" or "White" in either upper or lower cases.
      * @return Player instance of the asked color for the current game.
      * @throws IllegalArgumentException if your color is invalid (not white or black)
      * @author Edwin Pan
@@ -1241,8 +1295,6 @@ public class QuoridorController {
     public static String playerThinkingTime(Player player) {
         return player.getRemainingTime().toString();
     }
-
-
 }
 
 
