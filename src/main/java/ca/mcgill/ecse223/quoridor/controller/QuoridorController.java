@@ -81,6 +81,17 @@ public class QuoridorController {
         startPlayerTimer(whitePlayer, timer); //call the controller method "startClock"
     }
 
+    /**
+     * Method to Move Pawn across the board, will jump if blocked by another pawn
+     *
+     * @param quoridor      quoridor object, can access whole model from this and persist changes
+     * @param side          the direction the pawn wants to move
+     * @param pawnBehaviour the statemachine associated with either the white or black pawn
+     * @return true/false, true if the move was successful, false if an exception was thrown from statemachine
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * @author Daniel Wu
+     */
     public static Boolean movePawn(Quoridor quoridor, String side, PawnBehaviour pawnBehaviour) {
         Boolean pawnMoveSuccessful = false;
 
@@ -104,6 +115,14 @@ public class QuoridorController {
             pawnMoveDirection = MoveDirection.East;
         } else if (side.equals("left")) {
             pawnMoveDirection = MoveDirection.West;
+        } else if( side.equals("upleft") ) {
+        	pawnMoveDirection = MoveDirection.NorthWest;
+        } else if( side.equals("upright") ) {
+        	pawnMoveDirection = MoveDirection.NorthEast;
+        } else if( side.equals("downleft") ) {
+        	pawnMoveDirection = MoveDirection.SouthWest;
+        } else if( side.equals("downright") ) {
+        	pawnMoveDirection = MoveDirection.SouthEast;
         } else {
             throw new IllegalArgumentException("Unsupported pawn direction was provided");
         }
@@ -111,7 +130,7 @@ public class QuoridorController {
         boolean isLegalStep = false;
         try {
             isLegalStep = pawnBehaviour.move(pawnMoveDirection);
-        }catch(Exception e){
+        } catch (Exception e) {
             isLegalStep = false;
         }
         boolean isLegalJump = false;
@@ -134,7 +153,7 @@ public class QuoridorController {
 
             try {
                 isLegalJump = pawnBehaviour.jump(pawnMoveDirection);
-            }catch(Exception e){
+            } catch (Exception e) {
                 isLegalStep = false;
             }
 
@@ -148,7 +167,19 @@ public class QuoridorController {
                     col = col + 2;
                 } else if (side.equals("left")) {
                     col = col - 2;
-                }
+                } else if( side.equals("upleft") ) {
+                	row = row - 1;
+                	col = col - 1;
+                } else if( side.equals("upright") ) {
+                	row = row - 1;
+                	col = col + 1;
+                } else if( side.equals("downleft") ) {
+                	row = row + 1;
+                	col = col - 1;
+                } else if( side.equals("downright") ) {
+                	row = row + 1;
+                	col = col + 1;
+                } 
             }
         }
 
