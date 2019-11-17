@@ -768,7 +768,11 @@ public class ViewInterface {
             else{
             	currentSM = QuoridorApplication.getWhitePawnBehaviour(QuoridorController.getCurrentWhitePlayer());
 			}
-			boolean success = QuoridorController.movePawn(quoridor,convertTileToDirection(row,col), currentSM);
+            boolean success;
+			try{success = QuoridorController.movePawn(quoridor,convertTileToDirection(row,col), currentSM);}
+			catch(Throwable t){
+				success = false;
+			}
 			if(!success) return;
 
 
@@ -1606,12 +1610,63 @@ public class ViewInterface {
 		int colDiff = col-currentCol;
 		String dir = "";
 
-		if(rowDiff>0){
+		switch (rowDiff){
+			case -2:
+				if(QuoridorController.isPlayerOnTile(currentRow-1,currentCol)){
+					dir = "up";
+					return dir;
+				}
+				break;
+			case -1:
+				dir = "up";
+				break;
+			case 1:
+				dir = "down";
+				break;
+			case 2:
+				if(QuoridorController.isPlayerOnTile(currentRow+1,currentCol)){
+					dir = "down";
+					return dir;
+				}
+				break;
+			default:
+				break;
+
+		}
+
+		switch (colDiff){
+			case -2:
+				if(QuoridorController.isPlayerOnTile(currentRow,currentCol-1)){
+					dir = "left";
+					return dir;
+				}
+				break;
+			case -1:
+				dir = "left";
+				break;
+			case 1:
+				dir = "right";
+				break;
+			case 2:
+				if(QuoridorController.isPlayerOnTile(currentRow,currentCol+1)){
+					dir = "right";
+					return dir;
+				}
+				break;
+			default:
+				break;
+
+		}
+		return dir;
+		/*if(rowDiff>0){
+
 			dir = "down";
+
 		}
 		else if(rowDiff<0){
 			dir = "up";
 		}
+
 		if(colDiff>0){
 			dir = dir + "right";
 		}
@@ -1619,7 +1674,8 @@ public class ViewInterface {
 			dir = dir + "left";
 		}
 
-		return dir;
+		return dir;*/
+
 
 	}
 

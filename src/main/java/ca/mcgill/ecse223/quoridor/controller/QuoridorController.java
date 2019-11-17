@@ -1343,6 +1343,23 @@ public class QuoridorController {
     public static String playerThinkingTime(Player player) {
         return player.getRemainingTime().toString();
     }
+
+    /**
+     * @author David
+     * @param row
+     * @param col
+     * @return true if there is a pawn on that tile, false otherwise
+     */
+    public static boolean isPlayerOnTile(int row, int col){
+        int blackRow = getCurrentGame().getCurrentPosition().getBlackPosition().getTile().getRow();
+        int blackCol = getCurrentGame().getCurrentPosition().getBlackPosition().getTile().getColumn();
+        int whiteRow = getCurrentGame().getCurrentPosition().getWhitePosition().getTile().getRow();
+        int whiteCol = getCurrentGame().getCurrentPosition().getWhitePosition().getTile().getColumn();
+        if((blackRow==row && blackCol==col)||(whiteRow==row && whiteCol==col)){
+            return true;
+        }
+        return false;
+    }
 }
 
 
