@@ -33,6 +33,7 @@ import ca.mcgill.ecse223.quoridor.model.Game;
 import ca.mcgill.ecse223.quoridor.model.Player;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import ca.mcgill.ecse223.quoridor.model.User;
+import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
 import com.sun.javafx.scene.control.skin.Utils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -489,6 +490,7 @@ public class ViewInterface {
 		}
 
 		//move the pawns back to their initial positions
+		//TODO not correct if won game
         setTileImage(whitePlayerTile, TileImage.TILE_STANDARD);
         setTileImage(blackPlayerTile, TileImage.TILE_STANDARD);
         whitePlayerTile = initial_whitePlayerTile;
@@ -782,7 +784,15 @@ public class ViewInterface {
             int row, col;
             row = Integer.parseInt(id.substring(0,1));
             col = Integer.parseInt(id.substring(2));
-
+            PawnBehaviour currentSM;
+            if(QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black")){
+            	currentSM = QuoridorApplication.getBlackPawnBehaviour(QuoridorController.getCurrentBlackPlayer());
+			}
+            else{
+            	currentSM = QuoridorApplication.getWhitePawnBehaviour(QuoridorController.getCurrentWhitePlayer());
+			}
+			boolean success = QuoridorController.movePawn(quoridor,convertTileToDirection(row,col), currentSM);
+			if(!success) return;
 
 
             if (!wallGrabbed) { //only allow the player to move if they haven't done anything this turn
@@ -872,10 +882,10 @@ public class ViewInterface {
 
                 //initialize the tiles on the top and bottom to their special image
                 if (row == 0){
-                    setTileImage(tmp, TileImage.TILE_TARGET_BLACK);
+                    setTileImage(tmp, TileImage.TILE_TARGET_WHITE);
                 }
                 else if (row/2 == 8) {
-                    setTileImage(tmp, TileImage.TILE_TARGET_WHITE);
+                    setTileImage(tmp, TileImage.TILE_TARGET_BLACK);
                 }
 
                 //initialize the GUI pawn positions to be at the top/bottom row and center column of the field
@@ -887,11 +897,11 @@ public class ViewInterface {
                         initial_whitePlayerTile = tmp;
                         setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
                     }
-                    else if (row/2 == 8) //black pawn
+                    else if (row/2 == 8)
                     {
-                        blackPlayerTile = tmp;
-                        initial_blackPlayerTile = tmp;
-                        setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
+                        whitePlayerTile = tmp;
+                        initial_whitePlayerTile = tmp;
+                        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
                     }
                 }
         }
@@ -1620,6 +1630,36 @@ public class ViewInterface {
 		} else {
 			stage.setMaximized(true);
 		}
+	}
+
+	/**
+	 *
+	 * @param row
+	 * @param col
+	 * @return direction as a String, with the possible eight directions.
+	 */
+	private String convertTileToDirection(int row, int col){
+		int currentRow = QuoridorController.getCurrentPawnTilePos(0);
+		int currentCol = QuoridorController.getCurrentPawnTilePos(1);
+		int rowDiff = row-currentRow;
+		int colDiff = col-currentCol;
+		String dir = "";
+
+		if(rowDiff>0){
+			dir = "down";
+		}
+		else if(rowDiff<0){
+			dir = "up";
+		}
+		if(colDiff>0){
+			dir = dir + "right";
+		}
+		else if(colDiff<0){
+			dir = dir + "left";
+		}
+
+		return dir;
+
 	}
 
 }

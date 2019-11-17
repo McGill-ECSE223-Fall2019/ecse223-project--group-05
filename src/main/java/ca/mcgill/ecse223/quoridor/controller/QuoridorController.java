@@ -89,9 +89,9 @@ public class QuoridorController {
         Player blackPlayer = quoridor.getCurrentGame().getBlackPlayer();
 
         //Set the white and the black player's pawn to their initial positions
-        int whiteRow = 1;
+        int whiteRow = 9;
         int whiteCol = 5;
-        int blackRow = 9;
+        int blackRow = 1;
         int blackCol = 5;
         Tile whitePlayerStartTile = quoridor.getBoard().getTile((whiteRow - 1) * 9 + whiteCol - 1);
         Tile blackPlayerStartTile = quoridor.getBoard().getTile((blackRow - 1) * 9 + blackCol - 1);
@@ -412,6 +412,7 @@ public class QuoridorController {
         Player player1 = new Player(new Time(thinkingTime), user1, 9, Direction.Horizontal);
         Player player2 = new Player(new Time(thinkingTime), user2, 1, Direction.Horizontal);
 
+
         Player[] players = {player1, player2};
         // Create all walls. Walls with lower ID belong to player1,
         // while the second half belongs to player 2
@@ -423,6 +424,9 @@ public class QuoridorController {
 
         game.setWhitePlayer(player1);
         game.setBlackPlayer(player2);
+        QuoridorApplication.getWhitePawnBehaviour(player1);
+
+        QuoridorApplication.getBlackPawnBehaviour(player2);
         return true;
     }
 
@@ -1302,6 +1306,30 @@ public class QuoridorController {
             color = "black";
         }
         return color;
+    }
+
+    //input parameter: 0=row, 1=col
+    public static int getCurrentPawnTilePos(int specifyRowOrCol){
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        String colour = getColorOfPlayerToMove(quoridor);
+        Tile temp;
+        if(colour.equals("white")){
+            temp = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition().getTile();
+        }
+        else{
+            temp = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition().getTile();
+        }
+        if(specifyRowOrCol==0){
+            return temp.getRow();
+        }
+        else if(specifyRowOrCol==1){
+            return temp.getColumn();
+        }
+        else{
+            return -1;
+        }
+
+
     }
 
     /**
