@@ -745,6 +745,29 @@ public class ViewInterface {
             img.setOpacity(1);
         }
     };
+    /**
+     * @Author Matthias Arabian
+     */
+    EventHandler<MouseEvent> hoverEffect2 = new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    if (!wallGrabbed) {
+                        HBox img = (HBox) e.getSource();
+                        img.setOpacity(0.5);
+                    }
+                }
+            };
+
+    /**
+     *@Author Matthias Arabian
+     */
+    EventHandler<MouseEvent> cancelHoverEffect2 = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            HBox img = (HBox)e.getSource();
+            img.setOpacity(1);
+        }
+    };
 
     /**
      * @author Matthias Arabian
@@ -821,7 +844,8 @@ public class ViewInterface {
 	 */
 	public void initialize() {
 		resetGUItoMainPage();
-
+        blackStock.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect2); //event handler used for hover animation
+        blackStock.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect2); //event handler used to end hover animation
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
@@ -1147,7 +1171,10 @@ public class ViewInterface {
 	 * Other's timer turns on.
 	 */
 	public void switchPlayer(Event e) {
-
+        //wallGrabbed is used as a flag to assert thta the player has completed an action.
+        //wallGrabbed is set to true when a pawn is moved AND when a wall is grabbed.
+	    if (!wallGrabbed)
+            return;
 		//dropWall implemented here
 		if (wallSelected != null) {
 			boolean dropSuccessful;
