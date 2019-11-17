@@ -1371,4 +1371,34 @@ git s     */
 		}
 	}
 
+	/**
+	 *
+	 * @param row
+	 * @param col
+	 * @return direction as a String, with the possible eight directions.
+	 */
+	private String convertTileToDirection(int row, int col){
+		int currentRow = QuoridorController.getCurrentPawnTilePos(0);
+		int currentCol = QuoridorController.getCurrentPawnTilePos(1);
+		int rowDiff = row-currentRow;
+		int colDiff = col-currentCol;
+		String dir = "";
+
+		if(rowDiff>0){
+			dir = "up";
+		}
+		else if(rowDiff<0){
+			dir = "down";
+		}
+		if(colDiff>0){
+			dir = dir + "right";
+		}
+		else if(colDiff<0){
+			dir = dir + "left";
+		}
+
+		return dir;
+
+	}
+
 }

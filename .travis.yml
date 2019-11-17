@@ -1,5 +1,0 @@
-matrix:
-  include:
-  - language: java
-    script:
-    - "./gradlew build -xtest"
