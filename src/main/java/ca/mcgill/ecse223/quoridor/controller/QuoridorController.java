@@ -34,27 +34,30 @@ public class QuoridorController {
 
     /**
      * @author Matthias Arabian
-     *
+     * resets the quoridor object of the QuoridorApplication to allow users to play consecutive games.
      */
-    public static boolean clearGame(){
+    public static void clearGame(){
 
         Quoridor q = QuoridorApplication.getQuoridor();
+
+        //before reseting the model, store the usernames. They should not be reset after each game
         List<User> u = q.getUsers();
         List<String> s = new ArrayList<>();
         for (User r : u)
             s.add(r.getName());
-        q.delete();
+        q.delete(); //reset the model
 
+        //add the usernames into the clean model
         for (String str : s) {
             if (str.equals("user1") || str.equals("user2"))
                 continue; //do not add user1 and user2 to the list, b/c those names are created when the game is initialized
             try {
-                q.addUser(str);
+                q.addUser(str); //will throw an exception if the user being added already exists
             } catch (Exception e) {
             }
         }
-        return true;
     }
+
     /**
      * Gherkin feature: Initialize Board
      * This controller method is responsible for initializing the board. It sets the current player to move to the white player.
