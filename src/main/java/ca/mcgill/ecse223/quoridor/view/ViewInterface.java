@@ -78,6 +78,14 @@ public class ViewInterface {
 		CHOOSE_OPPONENT_PAGE;
 	};
 
+	private enum TileImage {
+	    TILE_STANDARD,
+        TILE_GRAY,
+        WHITE_PAWN,
+        WHITE_PAWN_SELECTED,
+        BLACK_PAWN,
+        BLACK_PAWN_SELECTED;
+    };
 	//this list is initialized in the fxml file and is populated with
 	//GUI pages that the user can travel to/interact with.
 //////ORDER MATTERS. IF YOU ADD PAGES IN THE FXML PAGE, MAKE SURE THAT	////////
@@ -120,12 +128,15 @@ public class ViewInterface {
 	private boolean whiteTimeIsUp = false;
 	private boolean blackTimeISUp = false;
 
+	//movePawn varaibles
+    ImageView whitePlayerTile, blackPlayerTile, initial_whitePlayerTile, initial_blackPlayerTile;
 	//Grab and Drag wall variables
 	double wallXPosition, wallYPosition;
 
 	public static boolean isIllegalNotificationDisplayed = true;
 	private static final double HORIZONTALSTEP = 35;
 	private static final double VERTICALSTEP = 35;
+    private static final double WALL_WIDTH = 5;
 	private static Rectangle wallSelected;
 	private static Quoridor quoridor;
 	private Player whitePlayer, blackPlayer, playerToMove;
@@ -467,6 +478,15 @@ git s     */
 				QuoridorController.resetGUIWall(r);
 			}
 		}
+
+		//move the pawns back to their initial positions
+        setTileImage(whitePlayerTile, TileImage.TILE_STANDARD);
+        setTileImage(blackPlayerTile, TileImage.TILE_STANDARD);
+        whitePlayerTile = initial_whitePlayerTile;
+		blackPlayerTile = initial_blackPlayerTile;
+        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
+        setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
+
 	}
 
 	/**
@@ -507,7 +527,7 @@ git s     */
 
 			whitePlayerName.setText(QuoridorController.getPlayerName(whitePlayer));
 			blackPlayerName.setText(QuoridorController.getPlayerName(blackPlayer));
-			
+
 			/*
 			 * Addition made by Edwin Pan for SaveGame button to show on the game_session_page
 			 */
@@ -578,14 +598,14 @@ git s     */
 	 * Disables and turns the past page invisible.
 	 */
 	private void Goto_Page(Page p) {
-		
+
 		/*
 		 * The following line has been added by Edwin Pan in order to have the SaveGame button on the ButtonBar
 		 */
 		if( p != Page.GAME_SESSION_PAGE) {
 			btn_saveGame.setVisible(false);
 		}
-		
+
 		CurrentPage = getCurrentPage();
 
 //		Restrict page to page movement when the current page is disabled
@@ -712,6 +732,40 @@ git s     */
             img.setOpacity(1);
         }
     };
+
+    /**
+     * @author Matthias Arabian
+     * Event handler used to trigger pawn moves.
+     */
+    EventHandler<MouseEvent> tryToMovePawn = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            ImageView img = (ImageView)e.getSource();
+            String id = img.getId();
+            int row, col;
+            row = Integer.parseInt(id.substring(0,1));
+            col = Integer.parseInt(id.substring(2));
+
+            if (QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black"))
+            {
+                if (getTileImage(img)!=TileImage.WHITE_PAWN) {
+                    setTileImage(blackPlayerTile, TileImage.TILE_STANDARD);
+                    setTileImage(img, TileImage.BLACK_PAWN);
+                    blackPlayerTile = img;
+                }
+            }
+            else
+            {
+                if (getTileImage(img)!=TileImage.BLACK_PAWN) {
+                    setTileImage(whitePlayerTile, TileImage.TILE_STANDARD);
+                    setTileImage(img, TileImage.WHITE_PAWN);
+                    whitePlayerTile = img;
+                }
+            }
+
+            img.setOpacity(1);
+        }
+    };
 	/**
 	 * @author Matthias Arabian
 	 * initializes the FXML components. this code runs once the application is launched but before the GUI is displayed.
@@ -728,17 +782,35 @@ git s     */
 
 				ImageView tmp = new ImageView();
 				tmp.getStyleClass().add("thingy");
-				tmp.setImage(new Image("textures/tile_main.png"));
+                setTileImage(tmp, TileImage.TILE_STANDARD);
 				p.getChildren().add(tmp);
 				Bounds b = Game_Board. getCellBounds(row,col);
 
-				tmp.setFitWidth(30);
-				tmp.setFitHeight(30);
-				Game_Board.add(p , row, col);
+				tmp.setFitWidth(HORIZONTALSTEP - WALL_WIDTH);
+				tmp.setFitHeight(VERTICALSTEP - WALL_WIDTH);
+				Game_Board.add(p , col, row);
+                tmp.setId("" + row/2 + "," + col/2);
 
 				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //add event handler used for jump/move pawn
                 tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //add event handler used for jump/move pawn
-            }
+                tmp.addEventFilter(MouseEvent.MOUSE_CLICKED, tryToMovePawn); //add event handler used for jump/move pawn
+
+                if (col/2 == 4)
+                {
+                    if (row/2 == 0)
+                    {
+                        whitePlayerTile = tmp;
+                        initial_whitePlayerTile = tmp;
+                        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
+                    }
+                    else if (row/2 == 8)
+                    {
+                        blackPlayerTile = tmp;
+                        initial_blackPlayerTile = tmp;
+                        setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
+                    }
+                }
+        }
 		}
 
 
@@ -751,6 +823,47 @@ git s     */
 
 		quoridor = QuoridorApplication.getQuoridor();
 	}
+
+    private void setTileImage(ImageView tile, TileImage newImage){
+	    switch (newImage){
+            case TILE_GRAY:
+                tile.setImage(new Image("textures/tile_monochrome.png"));
+                break;
+            case BLACK_PAWN:
+                tile.setImage(new Image("textures/pawn_black.png"));
+                break;
+            case WHITE_PAWN:
+                tile.setImage(new Image("textures/pawn_white.png"));
+                break;
+            case TILE_STANDARD:
+                tile.setImage(new Image("textures/tile_main.png"));
+                break;
+            case BLACK_PAWN_SELECTED:
+                tile.setImage(new Image("textures/pawn_black_glowing.png"));
+                break;
+            case WHITE_PAWN_SELECTED:
+                tile.setImage(new Image("textures/pawn_white_glowing.png"));
+                break;
+        }
+    }
+
+    private TileImage getTileImage(ImageView tile){
+	    String url = tile.getImage().getUrl();
+	    System.out.println(url);
+	    if (url.contains("tile_monochrome.png"))
+	        return TileImage.TILE_GRAY;
+        if (url.contains("tile_main.png"))
+            return TileImage.TILE_STANDARD;
+        if (url.contains("pawn_black.png"))
+            return TileImage.BLACK_PAWN;
+        if (url.contains("pawn_black_glowing.png"))
+            return TileImage.BLACK_PAWN_SELECTED;
+        if (url.contains("pawn_white.png"))
+            return TileImage.WHITE_PAWN;
+        if (url.contains("pawn_white_glowing.png"))
+            return TileImage.WHITE_PAWN_SELECTED;
+        return null;
+    }
 
 	/**
 	 * Method to display ExistingUserNames
@@ -1129,7 +1242,7 @@ git s     */
 		return lbl_black_awaitingMove.getText();
 
 	}
-	
+
 
 
 	public void saveGameContainerFunction(Event event){
@@ -1166,11 +1279,11 @@ git s     */
 		fileChooser.setInitialFileName("newgamesave.dat");
 		SaveConfig.createGameSavesFolder();
 		fileChooser.setInitialDirectory( new File(SaveConfig.getGameSavesFolder()) );
-		
+
 		//Show the file choosing window and await response
 		Stage stage = new Stage();
 		File file = fileChooser.showSaveDialog(stage);
-		
+
 		//If the user did not choose a file, let them know they did not choose a file and finish.
 		if( file == null ) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -1180,7 +1293,7 @@ git s     */
 			alert.showAndWait();
 			return;
 		}
-		
+
 		//If the user chose a file, then attempt to save the file.
 		try {
 			SavingStatus saveStatus = QuoridorController.saveGame( file.getAbsolutePath() , QuoridorController.getCurrentGame() );
@@ -1194,7 +1307,7 @@ git s     */
 					//receive from alert
 					Optional<ButtonType> overwriteConfirmation = alert.showAndWait();
 					if( overwriteConfirmation.get() == ButtonType.OK ) {	//If we are good to overwrite
-						
+
 						//Now attempt to overwrite the file.
 						SavingStatus saveStatus2 = QuoridorController.saveGame( file.getAbsolutePath() , QuoridorController.getCurrentGame(), SavePriority.FORCE_OVERWRITE );
 						switch( saveStatus2 ) {
@@ -1214,13 +1327,13 @@ git s     */
 								alert3.setContentText("... You have to be looking for these bugs... Like how did you even do that? Tell you what: how about you go skirt along, writing down what steps you took, and mail'em to some rando named Edwin Pan? He won't respond but at least your strange antiques will have finally amazed someone. Thanks!");
 								alert3.showAndWait();
 								return;
-								
+
 						}
-						
+
 					}
 					//If the user does not want to overwrite; it is canceled. so we stop all here.
 					return;
-					
+
 				case FAILED:			//If the save failed, let the player know and stop the saving.
 					Alert alert4 = new Alert(AlertType.ERROR);
 					alert4.setTitle("Failed To Save");
@@ -1228,10 +1341,10 @@ git s     */
 					alert4.setContentText(null);
 					alert4.showAndWait();
 					return;
-					
+
 				case SAVED:				//If the save succeeded, no need to do anything.
 					return;
-					
+
 				default:
 					Alert alert5 = new Alert(AlertType.ERROR);
 					alert5.setTitle("wut");
@@ -1239,9 +1352,9 @@ git s     */
 					alert5.setContentText("So uhhhh You just broke the code here! I'm not even sure how you got here.... How about this? Write down or remember how you got here, and go look for some rando named Edwin Pan who worked on this and tell him you done fucked up? Thanks!");
 					alert5.showAndWait();
 					return;
-					
+
 			}
-			
+
 		} catch (IOException err) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Save Game Failed Warning");
@@ -1250,11 +1363,11 @@ git s     */
 			alert.showAndWait();
 			return;
 		}
-		
-		
+
+
 	}
-	
-	
+
+
 	/**
 	 * Event Listener for a button. When the button for continuing a selected previous game is pressed, this method attempts to load in the data of that save file. If the save file cannot be loaded, Alert dialog messages are popped; if the save file is loaded, the application then
 	 * heads straight for the game session page.
@@ -1271,7 +1384,7 @@ git s     */
 			return;
 		}
 		String selectedPath = this.loadedGameList.getSelectionModel().getSelectedItem().toString();
-		
+
 		//Find the players to used for reloading into this game.
 		//Because game saves in sprint3-format do not contain player data, I am unfortunately forced to use random users
 		//THERE IS ALSO A BUG IN MY QUORIDORSAVESMANAGER CODE: the load game should require user input, not player input, as player input would give no choice in destination.
@@ -1285,7 +1398,7 @@ git s     */
 		}
 		Player player1 = new Player( new Time((10*60+10)*1000) , user1 , 1 , Direction.Horizontal );
 		Player player2 = new Player( new Time((10*60+10)*1000) , user1 , 9 , Direction.Horizontal );
-		
+
 		//Attempt to load the save game.
 		try{
 			QuoridorController.loadSavedGame(selectedPath, player1, player2);
@@ -1311,11 +1424,11 @@ git s     */
 			alert.showAndWait();
 			return;
 		}
-		
+
 		//Once we're doing loading in the game, go on and actually continue the game in the game session page.
 		this.Goto_Game_Session_Page();
 	}
-	
+
 	private void resetGUItoMainPage(){
 		for (Page p : Page.values()){
 			getPage(p).setVisible(false);
