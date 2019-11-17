@@ -81,6 +81,10 @@ public class ViewInterface {
 	private enum TileImage {
 	    TILE_STANDARD,
         TILE_GRAY,
+        TILE_TARGET_WHITE,
+        TILE_TARGET_BLACK,
+        TILE_TARGET_WHITE_CENTER,
+        TILE_TARGET_BLACK_CENTER,
         WHITE_PAWN,
         WHITE_PAWN_SELECTED,
         BLACK_PAWN,
@@ -171,7 +175,10 @@ public class ViewInterface {
 
 		// if the current player to move selects a second wall during the same turn
 		if(wallID.contains(color) && wallGrabbed == true){
-			displayIllegalNotification("You have already selected a wall. Use the ASWD keys to move it on the game board");
+		    if (wallSelected == null)
+                displayIllegalNotification("You moved your pawn, so you cannot grab a wall this turn!");
+            else
+                displayIllegalNotification("You have already selected a wall. Use the ASWD keys to move it on the game board");
 		}
 		//check if the player to move is grabbing his walls and not the opponent's
 		if(wallID.contains(color) && wallGrabbed == false) {
@@ -721,8 +728,10 @@ public class ViewInterface {
     EventHandler<MouseEvent> hoverEffect = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            ImageView img = (ImageView)e.getSource();
-            img.setOpacity(0.5);
+            if (!wallGrabbed) {
+                ImageView img = (ImageView) e.getSource();
+                img.setOpacity(0.5);
+            }
         }
     };
 
@@ -744,34 +753,59 @@ public class ViewInterface {
     EventHandler<MouseEvent> tryToMovePawn = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            //get the tile object, row and column
+            //get the tile object that was clicked, row and column
             ImageView img = (ImageView)e.getSource();
             String id = img.getId();
             int row, col;
             row = Integer.parseInt(id.substring(0,1));
             col = Integer.parseInt(id.substring(2));
 
-            //update the GUI by moving the pawn to the new position.
-            if (QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black"))
-            {
-                if (getTileImage(img)!=TileImage.WHITE_PAWN) { //don't allow pawn to be moved on top of other pawn
-                    setTileImage(blackPlayerTile, TileImage.TILE_STANDARD);
-                    setTileImage(img, TileImage.BLACK_PAWN);
-                    blackPlayerTile = img;
-                }
-            }
-            else
-            {
-                if (getTileImage(img)!=TileImage.BLACK_PAWN) { //don't allow pawn to be moved on top of other pawn
-                    setTileImage(whitePlayerTile, TileImage.TILE_STANDARD);
-                    setTileImage(img, TileImage.WHITE_PAWN);
-                    whitePlayerTile = img;
-                }
-            }
 
-            img.setOpacity(1); //hovering over a tile sets the opacity to 0.5, so this resets it to 1 to make the pawn move look better.
+
+            if (!wallGrabbed) { //only allow the player to move if they haven't done anything this turn
+                //update the GUI by moving the pawn to the new position.
+                if (QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black")) {
+                    if (getTileImage(img) != TileImage.WHITE_PAWN) { //don't allow pawn to be moved on top of other pawn
+                        setTileImage(blackPlayerTile, emptyTileShouldBe(blackPlayerTile));
+                        setTileImage(img, TileImage.BLACK_PAWN);
+                        blackPlayerTile = img;
+                        wallGrabbed = true; //flag used to restrict player from grabbing a wall or moving again
+                    }
+                } else {
+                    if (getTileImage(img) != TileImage.BLACK_PAWN) { //don't allow pawn to be moved on top of other pawn
+                        setTileImage(whitePlayerTile, emptyTileShouldBe(whitePlayerTile));
+                        setTileImage(img, TileImage.WHITE_PAWN);
+                        whitePlayerTile = img;
+                        wallGrabbed = true; //flag used to restrict player from grabbing a wall or moving again
+                    }
+                }
+
+                img.setOpacity(1); //hovering over a tile sets the opacity to 0.5, so this resets it to 1 to make the pawn move look better.
+            }
         }
     };
+    private TileImage emptyTileShouldBe(ImageView img){
+        //get row and column of tile
+        String id = img.getId();
+        int row, col;
+        row = Integer.parseInt(id.substring(0,1));
+        col = Integer.parseInt(id.substring(2));
+
+        //that tile's image will be replaced based on its coordinates because some positions have special tiles associated with them
+        if (row == 1){
+            if (col == 5)
+                return TileImage.TILE_TARGET_BLACK_CENTER;
+            else
+                return TileImage.TILE_TARGET_BLACK;
+        }
+        if (row == 9){
+            if (col == 5)
+                return TileImage.TILE_TARGET_WHITE_CENTER;
+            else
+                return TileImage.TILE_TARGET_WHITE;
+        }
+        return TileImage.TILE_STANDARD;
+    }
 
 	/**
 	 * @author Matthias Arabian
@@ -797,12 +831,18 @@ public class ViewInterface {
 				tmp.setFitWidth(HORIZONTALSTEP - WALL_WIDTH);
 				tmp.setFitHeight(VERTICALSTEP - WALL_WIDTH);
 				Game_Board.add(p , col, row);
-                tmp.setId("" + row/2 + "," + col/2);
+                tmp.setId("" + (row/2+1) + "," + (col/2+1));
 
 				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //add event handler used for jump/move pawn
                 tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //add event handler used for jump/move pawn
                 tmp.addEventFilter(MouseEvent.MOUSE_CLICKED, tryToMovePawn); //add event handler used for jump/move pawn
 
+                if (row == 0){
+                    setTileImage(tmp, TileImage.TILE_TARGET_BLACK);
+                }
+                else if (row/2 == 8) {
+                    setTileImage(tmp, TileImage.TILE_TARGET_WHITE);
+                }
                 if (col/2 == 4)
                 {
                     if (row/2 == 0)
@@ -844,14 +884,26 @@ public class ViewInterface {
             case TILE_GRAY:
                 tile.setImage(new Image("textures/tile_monochrome.png"));
                 break;
+            case TILE_STANDARD:
+                tile.setImage(new Image("textures/tile_main.png"));
+                break;
+            case TILE_TARGET_BLACK:
+                tile.setImage(new Image("textures/tile_blackTarget.png"));
+                break;
+            case TILE_TARGET_WHITE:
+                tile.setImage(new Image("textures/tile_whiteTarget.png"));
+                break;
+            case TILE_TARGET_BLACK_CENTER:
+                tile.setImage(new Image("textures/tile_blackTarget_whiteSpawn.png"));
+                break;
+            case TILE_TARGET_WHITE_CENTER:
+                tile.setImage(new Image("textures/tile_whiteTarget_blackSpawn.png"));
+                break;
             case BLACK_PAWN:
                 tile.setImage(new Image("textures/pawn_black.png"));
                 break;
             case WHITE_PAWN:
                 tile.setImage(new Image("textures/pawn_white.png"));
-                break;
-            case TILE_STANDARD:
-                tile.setImage(new Image("textures/tile_main.png"));
                 break;
             case BLACK_PAWN_SELECTED:
                 tile.setImage(new Image("textures/pawn_black_glowing.png"));
@@ -875,6 +927,16 @@ public class ViewInterface {
 	        return TileImage.TILE_GRAY;
         if (url.contains("tile_main.png"))
             return TileImage.TILE_STANDARD;
+
+        if (url.contains("tile_blackTarget.png"))
+            return TileImage.TILE_TARGET_BLACK;
+        if (url.contains("tile_whiteTarget.png"))
+            return TileImage.TILE_TARGET_WHITE;
+        if (url.contains("tile_blackTarget_whiteSpawn.png"))
+            return TileImage.TILE_TARGET_BLACK_CENTER;
+        if (url.contains("tile_whiteTarget_blackSpawn.png"))
+            return TileImage.TILE_TARGET_WHITE_CENTER;
+
         if (url.contains("pawn_black.png"))
             return TileImage.BLACK_PAWN;
         if (url.contains("pawn_black_glowing.png"))
@@ -1096,6 +1158,8 @@ public class ViewInterface {
 				wallGrabbed = false; //added by Thomas
 			}
 		} //end dropWall
+
+        wallGrabbed = false; //reset flag even if no wall has been placed b/c movePawn uses it as well.
 
 		Button b = ((Button)e.getSource());
 		if (b.getId().equals(btn_whitePlayerTurn.getId())) {
