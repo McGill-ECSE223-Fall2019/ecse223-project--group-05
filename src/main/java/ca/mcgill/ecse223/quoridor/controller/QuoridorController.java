@@ -45,6 +45,9 @@ public class QuoridorController {
         List<String> s = new ArrayList<>();
         for (User r : u)
             s.add(r.getName());
+
+        QuoridorApplication.clearBlackPawnBehaviour();
+        QuoridorApplication.clearWhitePawnBehaviour();
         q.delete(); //reset the model
 
         //add the usernames into the clean model

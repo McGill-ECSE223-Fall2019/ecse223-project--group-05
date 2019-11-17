@@ -157,6 +157,13 @@ public class ViewInterface {
 	//For moving the window
     double x,y;
 
+    private HBox getStockOf(String color){
+    	if (color.toLowerCase().equals("black"))
+    		return blackStock;
+    	else
+    		return whiteStock;
+	}
+
 	/**
 	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
@@ -164,9 +171,27 @@ public class ViewInterface {
 	public void GrabWall(MouseEvent mouseEvent) {
 
 		playerToMove = QuoridorController.getPlayerOfCurrentTurn();
-		Rectangle wall = (Rectangle) mouseEvent.getSource();
-		String wallID = wall.getId();
+		HBox source = (HBox)mouseEvent.getSource();
 		String color = QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor());
+
+		if (source.getChildren().size() <= 0 && source.equals(getStockOf(color)))
+		{
+			if (wallMoveCandidate == null)
+				gameSessionNotificationLabel.setText("You have no more walls in stock...");
+			else
+			{
+				//TODO Return the wall in the model as well as the GUI
+				returnWallToStock(wallMoveCandidate, getStockOf(color));
+				wallGrabbed = false;
+				wallSelected = null;
+				wallMoveCandidate = null;
+			}
+			return;
+		}
+		Rectangle wall = (Rectangle) source.getChildren().get(0);
+
+		String wallID = wall.getId();
+
 		System.err.print(1);
 
 		//if the player selects one of the other player's wall
@@ -178,8 +203,14 @@ public class ViewInterface {
 		if(wallID.contains(color) && wallGrabbed == true){
 		    if (wallSelected == null)
                 displayIllegalNotification("You moved your pawn, so you cannot grab a wall this turn!");
-            else
-                displayIllegalNotification("You have already selected a wall. Use the ASWD keys to move it on the game board");
+            else{
+            	//TODO Return the wall in the model as well as the GUI
+            	returnWallToStock(wallMoveCandidate, getStockOf(color));
+            	wallGrabbed = false;
+            	wallSelected = null;
+            	wallMoveCandidate = null;
+            	return;
+			}
 		}
 		//check if the player to move is grabbing his walls and not the opponent's
 		if(wallID.contains(color) && wallGrabbed == false) {
@@ -193,7 +224,7 @@ public class ViewInterface {
 
 			if (grabWallResult == false) {
 				gameSessionNotificationLabel.setText("You have no more walls in stock...");
-			}
+		}
 			else{
 				validWallGrab = true;
 				wallMoveCandidate = wall;
@@ -452,6 +483,7 @@ public class ViewInterface {
 
 		//reset the GUI wall related global variables
 		invalidWallPlacement.setText("");
+		gameSessionNotificationLabel.setText("");
 		validWallGrab = false;
 		wallSelected = null;
 		if (wallMoveCandidate != null)
@@ -463,36 +495,19 @@ public class ViewInterface {
 		Rectangle[] blackWalls = {blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6
 				,blackWall7,blackWall8, blackWall9, blackWall10};
 		for (Rectangle r : blackWalls){
-			Node p = r.getParent();
-			if (!p.getClass().getName().contains("HBox")) {
-				AnchorPane parent = (AnchorPane) r.getParent();
-				parent.getChildren().remove(r);
-				blackStock.getChildren().add(r);
-				r.setTranslateX(0);
-				r.setTranslateY(0);
-				QuoridorController.resetGUIWall(r);
-			}
+			returnWallToStock(r, blackStock);
 		}
 
 		//put all whiteWalls back into their stock positions
 		Rectangle[] whiteWalls = {whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6
 				, whiteWall7, whiteWall8, whiteWall9, whiteWall10};
 		for (Rectangle r : whiteWalls){
-			Node p = r.getParent();
-			if (!p.getClass().getName().contains("HBox")) {
-				AnchorPane parent = (AnchorPane) r.getParent();
-				parent.getChildren().remove(r);
-				whiteStock.getChildren().add(r);
-				r.setTranslateX(0);
-				r.setTranslateY(0);
-				QuoridorController.resetGUIWall(r);
-			}
+			returnWallToStock(r, whiteStock);
 		}
 
 		//move the pawns back to their initial positions
-		//TODO not correct if won game
-        setTileImage(whitePlayerTile, TileImage.TILE_STANDARD);
-        setTileImage(blackPlayerTile, TileImage.TILE_STANDARD);
+        setTileImage(whitePlayerTile, emptyTileShouldBe(whitePlayerTile));
+        setTileImage(blackPlayerTile, emptyTileShouldBe(blackPlayerTile));
         whitePlayerTile = initial_whitePlayerTile;
 		blackPlayerTile = initial_blackPlayerTile;
         setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
@@ -500,6 +515,17 @@ public class ViewInterface {
 
 	}
 
+	private void returnWallToStock(Rectangle r, HBox b){
+		Node p = r.getParent();
+		if (!p.getClass().getName().contains("HBox")) {
+			AnchorPane parent = (AnchorPane) r.getParent();
+			parent.getChildren().remove(r);
+			b.getChildren().add(r);
+			r.setTranslateX(0);
+			r.setTranslateY(0);
+			QuoridorController.resetGUIWall(r);
+		}
+	}
 	/**
 	 * @author Daniel Wu
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
@@ -835,15 +861,15 @@ public class ViewInterface {
         //that tile's image will be replaced based on its coordinates because some positions have special tiles associated with them
         if (row == 1){
             if (col == 5)
-                return TileImage.TILE_TARGET_BLACK_CENTER;
-            else
-                return TileImage.TILE_TARGET_BLACK;
-        }
-        if (row == 9){
-            if (col == 5)
                 return TileImage.TILE_TARGET_WHITE_CENTER;
             else
                 return TileImage.TILE_TARGET_WHITE;
+        }
+        if (row == 9){
+            if (col == 5)
+                return TileImage.TILE_TARGET_BLACK_CENTER;
+            else
+                return TileImage.TILE_TARGET_BLACK;
         }
         return TileImage.TILE_STANDARD;
     }
@@ -862,14 +888,14 @@ public class ViewInterface {
 			    //store the images inside panes to have a background.
 			    Pane p = new Pane();
 			    p.toFront();
-                p.setStyle("-fx-background-color: #ffffff");
+                p.setStyle("-fx-background-color: #3d6b99");
 
                 //actual tile is an ImageView b/c we want to be able to change its image
 				ImageView tmp = new ImageView();
                 setTileImage(tmp, TileImage.TILE_STANDARD);
 				p.getChildren().add(tmp);
 				Bounds b = Game_Board. getCellBounds(row,col);
-
+//poopoo
 				//initialize the tile with a set width, height.
 				tmp.setFitWidth(HORIZONTALSTEP - WALL_WIDTH);
 				tmp.setFitHeight(VERTICALSTEP - WALL_WIDTH);
@@ -891,13 +917,13 @@ public class ViewInterface {
                 //initialize the GUI pawn positions to be at the top/bottom row and center column of the field
                 if (col/2 == 4)
                 {
-                    if (row/2 == 0) //white pawn
+                    if (row/2 == 0) //black pawn
                     {
-                        whitePlayerTile = tmp;
-                        initial_whitePlayerTile = tmp;
-                        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
+                        blackPlayerTile = tmp;
+                        initial_blackPlayerTile = tmp;
+                        setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
                     }
-                    else if (row/2 == 8)
+                    else if (row/2 == 8) //white pawn
                     {
                         whitePlayerTile = tmp;
                         initial_whitePlayerTile = tmp;
@@ -1200,6 +1226,7 @@ public class ViewInterface {
 				return;
 			} else {
 				invalidWallPlacement.setText("");
+				gameSessionNotificationLabel.setText("");
 				validWallGrab = false;
 				wallSelected = null;
 				wallMoveCandidate.setStroke(Color.BLACK);

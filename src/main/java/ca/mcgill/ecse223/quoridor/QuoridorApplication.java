@@ -131,6 +131,25 @@ public class QuoridorApplication extends Application{
 		return blackPawnBehaviour;
 	}
 
+	public static PawnBehaviour clearWhitePawnBehaviour() {
+
+		if (whitePawnBehaviour != null)
+			whitePawnBehaviour.delete();
+
+		whitePawnBehaviour = null;
+
+		return whitePawnBehaviour;
+	}
+
+	public static PawnBehaviour clearBlackPawnBehaviour() {
+		if (blackPawnBehaviour != null)
+			blackPawnBehaviour.delete();
+
+		blackPawnBehaviour = null;
+
+		return blackPawnBehaviour;
+	}
+
 	public static ViewInterface getViewInterface() {
 
 		return c;
