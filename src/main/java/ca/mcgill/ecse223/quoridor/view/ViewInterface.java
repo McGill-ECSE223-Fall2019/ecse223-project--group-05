@@ -784,6 +784,14 @@ public class ViewInterface {
             }
         }
     };
+
+    /**
+     * @author Matthias Arabian
+     * @param img the tile whose image will be changed
+     * @return a reference to the image the tile should be updated with
+     * This method uses a tile's coordinates to determine what its image should be when there are not pawns on it.
+     * (e.g tiles in the middle of the field would be the standard image. Tiles at the to and bottom have crosses to flag that that's the player's target area)
+     */
     private TileImage emptyTileShouldBe(ImageView img){
         //get row and column of tile
         String id = img.getId();
@@ -822,36 +830,40 @@ public class ViewInterface {
 			    p.toFront();
                 p.setStyle("-fx-background-color: #ffffff");
 
+                //actual tile is an ImageView b/c we want to be able to change its image
 				ImageView tmp = new ImageView();
-				tmp.getStyleClass().add("thingy");
                 setTileImage(tmp, TileImage.TILE_STANDARD);
 				p.getChildren().add(tmp);
 				Bounds b = Game_Board. getCellBounds(row,col);
 
+				//initialize the tile with a set width, height.
 				tmp.setFitWidth(HORIZONTALSTEP - WALL_WIDTH);
 				tmp.setFitHeight(VERTICALSTEP - WALL_WIDTH);
-				Game_Board.add(p , col, row);
-                tmp.setId("" + (row/2+1) + "," + (col/2+1));
+                tmp.setId("" + (row/2+1) + "," + (col/2+1)); //store the tile's corrdinates as its ID for later reference
+                Game_Board.add(p , col, row); //add tile to game board
 
-				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //add event handler used for jump/move pawn
-                tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //add event handler used for jump/move pawn
-                tmp.addEventFilter(MouseEvent.MOUSE_CLICKED, tryToMovePawn); //add event handler used for jump/move pawn
+				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //event handler used for hover animation
+                tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //event handler used to end hover animation
+                tmp.addEventFilter(MouseEvent.MOUSE_CLICKED, tryToMovePawn); //event handler used for jump/move pawn
 
+                //initialize the tiles on the top and bottom to their special image
                 if (row == 0){
                     setTileImage(tmp, TileImage.TILE_TARGET_BLACK);
                 }
                 else if (row/2 == 8) {
                     setTileImage(tmp, TileImage.TILE_TARGET_WHITE);
                 }
+
+                //initialize the GUI pawn positions to be at the top/bottom row and center column of the field
                 if (col/2 == 4)
                 {
-                    if (row/2 == 0)
+                    if (row/2 == 0) //white pawn
                     {
                         whitePlayerTile = tmp;
                         initial_whitePlayerTile = tmp;
                         setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
                     }
-                    else if (row/2 == 8)
+                    else if (row/2 == 8) //black pawn
                     {
                         blackPlayerTile = tmp;
                         initial_blackPlayerTile = tmp;
