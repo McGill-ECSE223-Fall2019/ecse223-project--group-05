@@ -29,6 +29,7 @@ public class PawnBehaviour
   //PawnBehaviour Associations
   private Game currentGame;
   private Player player;
+  private int playerIndex;//0=white, 1=black
 
   //------------------------
   // CONSTRUCTOR
@@ -36,6 +37,7 @@ public class PawnBehaviour
 
   public PawnBehaviour()
   {
+
     setPawnSMPositionStatesRowState(PawnSMPositionStatesRowState.Null);
     setPawnSMPositionStatesRowStateRowState(PawnSMPositionStatesRowStateRowState.Null);
     setPawnSMPositionStatesColumnState(PawnSMPositionStatesColumnState.Null);

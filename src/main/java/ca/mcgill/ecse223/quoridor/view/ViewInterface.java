@@ -33,6 +33,7 @@ import ca.mcgill.ecse223.quoridor.model.Game;
 import ca.mcgill.ecse223.quoridor.model.Player;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import ca.mcgill.ecse223.quoridor.model.User;
+import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
 import com.sun.javafx.scene.control.skin.Utils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -489,6 +490,7 @@ public class ViewInterface {
 		}
 
 		//move the pawns back to their initial positions
+		//TODO not correct if won game
         setTileImage(whitePlayerTile, TileImage.TILE_STANDARD);
         setTileImage(blackPlayerTile, TileImage.TILE_STANDARD);
         whitePlayerTile = initial_whitePlayerTile;
@@ -759,7 +761,15 @@ public class ViewInterface {
             int row, col;
             row = Integer.parseInt(id.substring(0,1));
             col = Integer.parseInt(id.substring(2));
-
+            PawnBehaviour currentSM;
+            if(QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black")){
+            	currentSM = QuoridorApplication.getBlackPawnBehaviour(QuoridorController.getCurrentBlackPlayer());
+			}
+            else{
+            	currentSM = QuoridorApplication.getWhitePawnBehaviour(QuoridorController.getCurrentWhitePlayer());
+			}
+			boolean success = QuoridorController.movePawn(quoridor,convertTileToDirection(row,col), currentSM);
+			if(!success) return;
 
 
             if (!wallGrabbed) { //only allow the player to move if they haven't done anything this turn
@@ -838,24 +848,24 @@ public class ViewInterface {
                 tmp.addEventFilter(MouseEvent.MOUSE_CLICKED, tryToMovePawn); //add event handler used for jump/move pawn
 
                 if (row == 0){
-                    setTileImage(tmp, TileImage.TILE_TARGET_BLACK);
+                    setTileImage(tmp, TileImage.TILE_TARGET_WHITE);
                 }
                 else if (row/2 == 8) {
-                    setTileImage(tmp, TileImage.TILE_TARGET_WHITE);
+                    setTileImage(tmp, TileImage.TILE_TARGET_BLACK);
                 }
                 if (col/2 == 4)
                 {
                     if (row/2 == 0)
                     {
-                        whitePlayerTile = tmp;
-                        initial_whitePlayerTile = tmp;
-                        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
-                    }
-                    else if (row/2 == 8)
-                    {
                         blackPlayerTile = tmp;
                         initial_blackPlayerTile = tmp;
                         setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
+                    }
+                    else if (row/2 == 8)
+                    {
+                        whitePlayerTile = tmp;
+                        initial_whitePlayerTile = tmp;
+                        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
                     }
                 }
         }
@@ -1597,10 +1607,10 @@ public class ViewInterface {
 		String dir = "";
 
 		if(rowDiff>0){
-			dir = "up";
+			dir = "down";
 		}
 		else if(rowDiff<0){
-			dir = "down";
+			dir = "up";
 		}
 		if(colDiff>0){
 			dir = dir + "right";
