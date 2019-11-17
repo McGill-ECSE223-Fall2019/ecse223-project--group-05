@@ -41,6 +41,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -52,6 +53,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -122,7 +124,7 @@ public class ViewInterface {
 	double wallXPosition, wallYPosition;
 
 	public static boolean isIllegalNotificationDisplayed = true;
-	private static final double HORIZONTALSTEP = 30;
+	private static final double HORIZONTALSTEP = 35;
 	private static final double VERTICALSTEP = 35;
 	private static Rectangle wallSelected;
 	private static Quoridor quoridor;
@@ -196,8 +198,8 @@ public class ViewInterface {
                 System.err.print(3);
 				wallSelected.setLayoutY(0);
 				wallSelected.setLayoutX(0);
-				wallSelected.setX(192.5);
-                wallSelected.setY(35);
+				wallSelected.setX(189);
+                wallSelected.setY(23);
 
                 System.out.println(wallSelected.getX());
 
@@ -720,13 +722,19 @@ git s     */
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
+			    Pane p = new Pane();
+			    p.toFront();
+                p.setStyle("-fx-background-color: #ffffff");
+
 				ImageView tmp = new ImageView();
-				tmp.setStyle("-fx-background-color: #ffffff");
 				tmp.getStyleClass().add("thingy");
 				tmp.setImage(new Image("textures/tile_main.png"));
-				tmp.setFitWidth(25);
+				p.getChildren().add(tmp);
+				Bounds b = Game_Board. getCellBounds(row,col);
+
+				tmp.setFitWidth(30);
 				tmp.setFitHeight(30);
-				Game_Board.add(tmp , row, col);
+				Game_Board.add(p , row, col);
 
 				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //add event handler used for jump/move pawn
                 tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //add event handler used for jump/move pawn

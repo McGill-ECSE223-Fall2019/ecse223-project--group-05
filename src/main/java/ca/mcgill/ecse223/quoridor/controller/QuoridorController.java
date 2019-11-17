@@ -968,7 +968,7 @@ public class QuoridorController {
 
         if (w2h > 1) {
             r.setWidth(curHeight);
-            r.setHeight(curWidth/0.85);
+            r.setHeight(curWidth);
         }
 
         r.setStroke(Color.BLACK);
@@ -998,19 +998,16 @@ public class QuoridorController {
 
         if (w2h > 1) { //rotate to vertical
 
-            r.setTranslateY(r.getTranslateY() - curWidth / 2 + 2.5);
+            r.setTranslateY(r.getTranslateY() - curWidth / 2 + 4);
             r.setTranslateX(r.getTranslateX() + curWidth / 2 - 2.5);
             r.setWidth(curHeight);
-            r.setHeight(curWidth / 0.85);
-            r.setTranslateX(r.getTranslateX() + 1 * 0.52);
-            r.setTranslateY(r.getTranslateY() - 5.02);
+            r.setHeight(curWidth);
         } else { //rotate to horizontal
 
-            r.setTranslateY(r.getTranslateY() + curHeight / 2 - 2.5);
-            r.setTranslateX(r.getTranslateX() - curHeight / 2);
-            r.setWidth(curHeight * 0.85);
+            r.setTranslateY(r.getTranslateY() + curHeight / 2 - 4);
+            r.setTranslateX(r.getTranslateX() - curHeight / 2 + 2.5);
+            r.setWidth(curHeight);
             r.setHeight(curWidth);
-            r.setTranslateX(r.getTranslateX() + 7);
         }
 
     }
