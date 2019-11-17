@@ -356,7 +356,7 @@ public class ViewInterface {
     /**
      * @author Matthias Arabian
      * opens a DialogWindow prompting the user to select a directory that contains game files.
-git s     */
+     */
 	public void addToLoadedGameList() {
 	    //directory chooser dialog window
 		Stage stage = new Stage();
@@ -402,7 +402,6 @@ git s     */
      * @author Matthias Arabian
      * This function is used as a debugging tool to detect javaFX listView events visually as they occur.
      */
-
 	public void gotSelected() {
 		System.out.println(loadedGameList.getSelectionModel().getSelectedItem());
 	}
@@ -419,10 +418,11 @@ git s     */
 	/**
 	 * @author Matthias Arabian
 	 * Changes the GUI CurrentPage to the Main Page.
+     * Reset the game, if it was initialized.
 	 */
 	public void Goto_Main_Page() {
-		clearGUI_game_session_page();
-		QuoridorController.clearGame();
+		clearGUI_game_session_page();       //reset the GUI section of the QuoridorApplication
+		QuoridorController.clearGame();     //reset the model section of the QuoridorApplication
 		Goto_Page(Page.MAIN_PAGE);
 	}
 
@@ -439,6 +439,8 @@ git s     */
 		whiteExistingName.valueProperty().setValue(null);
 		blackExistingName.getSelectionModel().clearSelection();
 		blackExistingName.valueProperty().setValue(null);
+		whiteNewName.setText("");
+        blackNewName.setText("");
 
 		//reset the GUI wall related global variables
 		invalidWallPlacement.setText("");
@@ -649,9 +651,7 @@ git s     */
 		getPage(Page.RULES_PAGE).setVisible(true);
 		getPage(Page.RULES_PAGE).toFront();
 		getPage(Page.RULES_PAGE).setDisable(false);
-		System.out.println("Rules openend");
 		getPage(Page.TOP_BUTTONS).toFront(); //those need to be on top of the rules to allow for clicking on Rules label to close rules
-
 	}
 
 	/**
@@ -716,7 +716,7 @@ git s     */
 	}
 
     /**
-     *
+     * @Author Matthias Arabian
      */
     EventHandler<MouseEvent> hoverEffect = new EventHandler<MouseEvent>() {
         @Override
@@ -725,6 +725,10 @@ git s     */
             img.setOpacity(0.5);
         }
     };
+
+    /**
+     *@Author Matthias Arabian
+     */
     EventHandler<MouseEvent> cancelHoverEffect = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
@@ -740,15 +744,17 @@ git s     */
     EventHandler<MouseEvent> tryToMovePawn = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
+            //get the tile object, row and column
             ImageView img = (ImageView)e.getSource();
             String id = img.getId();
             int row, col;
             row = Integer.parseInt(id.substring(0,1));
             col = Integer.parseInt(id.substring(2));
 
+            //update the GUI by moving the pawn to the new position.
             if (QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black"))
             {
-                if (getTileImage(img)!=TileImage.WHITE_PAWN) {
+                if (getTileImage(img)!=TileImage.WHITE_PAWN) { //don't allow pawn to be moved on top of other pawn
                     setTileImage(blackPlayerTile, TileImage.TILE_STANDARD);
                     setTileImage(img, TileImage.BLACK_PAWN);
                     blackPlayerTile = img;
@@ -756,16 +762,17 @@ git s     */
             }
             else
             {
-                if (getTileImage(img)!=TileImage.BLACK_PAWN) {
+                if (getTileImage(img)!=TileImage.BLACK_PAWN) { //don't allow pawn to be moved on top of other pawn
                     setTileImage(whitePlayerTile, TileImage.TILE_STANDARD);
                     setTileImage(img, TileImage.WHITE_PAWN);
                     whitePlayerTile = img;
                 }
             }
 
-            img.setOpacity(1);
+            img.setOpacity(1); //hovering over a tile sets the opacity to 0.5, so this resets it to 1 to make the pawn move look better.
         }
     };
+
 	/**
 	 * @author Matthias Arabian
 	 * initializes the FXML components. this code runs once the application is launched but before the GUI is displayed.
@@ -776,6 +783,7 @@ git s     */
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
+			    //store the images inside panes to have a background.
 			    Pane p = new Pane();
 			    p.toFront();
                 p.setStyle("-fx-background-color: #ffffff");
@@ -824,6 +832,13 @@ git s     */
 		quoridor = QuoridorApplication.getQuoridor();
 	}
 
+    /**
+     * @author Matthias Arabian
+     * @param tile tile whose image to change
+     * @param newImage the identifier of the new image
+     *
+     * Change the image of the tile object to the one given by the newImage parameter
+     */
     private void setTileImage(ImageView tile, TileImage newImage){
 	    switch (newImage){
             case TILE_GRAY:
@@ -847,6 +862,12 @@ git s     */
         }
     }
 
+    /**
+     * @author Matthias Arabian
+     * @param tile tile whose image we want to get
+     * @return TileImage enum representing the parameter tile 's image
+     * Method to get the tile's image in a format that is easily assertable
+     */
     private TileImage getTileImage(ImageView tile){
 	    String url = tile.getImage().getUrl();
 	    System.out.println(url);
@@ -1116,6 +1137,11 @@ git s     */
 		}
 	}
 
+    /**
+     * @author Matthias Arabian
+     * Resets all GUI elements that are related to player turns to their default values
+     * e.g. It should be the White player's turn. All timers should be off.
+     */
 	private void resetGUI_playerTurn(){
 		if (QuoridorApplication.getQuoridor().hasBoard() == false)
 			return;
@@ -1244,16 +1270,21 @@ git s     */
 	}
 
 
-
+    /**
+     * @author Matthias Arabian
+     * @param event this parameter is sent to the saveGame function to allow it to work properly
+     *
+     * Method used to pause and resume the player timers while saving a game.
+     */
 	public void saveGameContainerFunction(Event event){
-		//pause counter
+		//pause timer
 		QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove()
 				,timer);
 		timer = new Timer();
 
 		saveGame(event); //save game
 
-		//restart counter
+		//restart timer
 		QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove()
 				,timer);
 	}
@@ -1429,6 +1460,10 @@ git s     */
 		this.Goto_Game_Session_Page();
 	}
 
+    /**
+     * @author Matthias Arabian
+     * Method used to ensure that the view's scenes are properly initialized to their default values.
+     */
 	private void resetGUItoMainPage(){
 		for (Page p : Page.values()){
 			getPage(p).setVisible(false);
