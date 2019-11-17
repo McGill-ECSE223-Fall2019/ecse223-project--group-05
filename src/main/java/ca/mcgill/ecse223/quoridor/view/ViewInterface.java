@@ -747,6 +747,29 @@ public class ViewInterface {
             img.setOpacity(1);
         }
     };
+    /**
+     * @Author Matthias Arabian
+     */
+    EventHandler<MouseEvent> hoverEffect2 = new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    if (!wallGrabbed) {
+                        HBox img = (HBox) e.getSource();
+                        img.setOpacity(0.5);
+                    }
+                }
+            };
+
+    /**
+     *@Author Matthias Arabian
+     */
+    EventHandler<MouseEvent> cancelHoverEffect2 = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            HBox img = (HBox)e.getSource();
+            img.setOpacity(1);
+        }
+    };
 
     /**
      * @author Matthias Arabian
@@ -794,6 +817,14 @@ public class ViewInterface {
             }
         }
     };
+
+    /**
+     * @author Matthias Arabian
+     * @param img the tile whose image will be changed
+     * @return a reference to the image the tile should be updated with
+     * This method uses a tile's coordinates to determine what its image should be when there are not pawns on it.
+     * (e.g tiles in the middle of the field would be the standard image. Tiles at the to and bottom have crosses to flag that that's the player's target area)
+     */
     private TileImage emptyTileShouldBe(ImageView img){
         //get row and column of tile
         String id = img.getId();
@@ -823,7 +854,8 @@ public class ViewInterface {
 	 */
 	public void initialize() {
 		resetGUItoMainPage();
-
+        blackStock.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect2); //event handler used for hover animation
+        blackStock.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect2); //event handler used to end hover animation
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
@@ -832,34 +864,38 @@ public class ViewInterface {
 			    p.toFront();
                 p.setStyle("-fx-background-color: #ffffff");
 
+                //actual tile is an ImageView b/c we want to be able to change its image
 				ImageView tmp = new ImageView();
-				tmp.getStyleClass().add("thingy");
                 setTileImage(tmp, TileImage.TILE_STANDARD);
 				p.getChildren().add(tmp);
 				Bounds b = Game_Board. getCellBounds(row,col);
 
+				//initialize the tile with a set width, height.
 				tmp.setFitWidth(HORIZONTALSTEP - WALL_WIDTH);
 				tmp.setFitHeight(VERTICALSTEP - WALL_WIDTH);
-				Game_Board.add(p , col, row);
-                tmp.setId("" + (row/2+1) + "," + (col/2+1));
+                tmp.setId("" + (row/2+1) + "," + (col/2+1)); //store the tile's corrdinates as its ID for later reference
+                Game_Board.add(p , col, row); //add tile to game board
 
-				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //add event handler used for jump/move pawn
-                tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //add event handler used for jump/move pawn
-                tmp.addEventFilter(MouseEvent.MOUSE_CLICKED, tryToMovePawn); //add event handler used for jump/move pawn
+				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //event handler used for hover animation
+                tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //event handler used to end hover animation
+                tmp.addEventFilter(MouseEvent.MOUSE_CLICKED, tryToMovePawn); //event handler used for jump/move pawn
 
+                //initialize the tiles on the top and bottom to their special image
                 if (row == 0){
                     setTileImage(tmp, TileImage.TILE_TARGET_WHITE);
                 }
                 else if (row/2 == 8) {
                     setTileImage(tmp, TileImage.TILE_TARGET_BLACK);
                 }
+
+                //initialize the GUI pawn positions to be at the top/bottom row and center column of the field
                 if (col/2 == 4)
                 {
-                    if (row/2 == 0)
+                    if (row/2 == 0) //white pawn
                     {
-                        blackPlayerTile = tmp;
-                        initial_blackPlayerTile = tmp;
-                        setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
+                        whitePlayerTile = tmp;
+                        initial_whitePlayerTile = tmp;
+                        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
                     }
                     else if (row/2 == 8)
                     {
@@ -1145,7 +1181,10 @@ public class ViewInterface {
 	 * Other's timer turns on.
 	 */
 	public void switchPlayer(Event e) {
-
+        //wallGrabbed is used as a flag to assert thta the player has completed an action.
+        //wallGrabbed is set to true when a pawn is moved AND when a wall is grabbed.
+	    if (!wallGrabbed)
+            return;
 		//dropWall implemented here
 		if (wallSelected != null) {
 			boolean dropSuccessful;
