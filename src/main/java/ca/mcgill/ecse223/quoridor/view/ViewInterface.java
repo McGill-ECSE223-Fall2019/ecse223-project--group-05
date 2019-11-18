@@ -217,7 +217,7 @@ public class ViewInterface {
                 displayIllegalNotification("You moved your pawn, so you cannot grab a wall this turn!");
             else{
             	//TODO Return the wall in the model as well as the GUI
-				//otherwise, return teh grabbed wall to the stock
+				//otherwise, return the grabbed wall to the stock
                 QuoridorController.cancelWallGrabbed(quoridor);
             	returnWallToStock(wallMoveCandidate, getStockOf(color));
                 validWallGrab = false;
@@ -1225,6 +1225,34 @@ public class ViewInterface {
 
 	}
 
+    private void doDropWallLogicAtEndOfTurn(){
+        //dropWall implemented here
+        if (wallSelected != null) {
+            boolean dropSuccessful;
+            try {
+                dropSuccessful = QuoridorController.releaseWall(quoridor);
+            } catch (Exception ee) {
+                throw new java.lang.UnsupportedOperationException("Unable to drop Wall");
+            }
+
+            if (!dropSuccessful) {
+                //invalidWallPlacement.setText("Invalid Wall Placement");
+                displayIllegalNotification("Invalid wall placement");
+                return;
+            } else {
+                invalidWallPlacement.setText("");
+                gameSessionNotificationLabel.setText("");
+                validWallGrab = false;
+                wallSelected = null;
+                wallMoveCandidate.setStroke(Color.BLACK);
+                wallMoveCandidate = null;
+                wallGrabbed = false; //added by Thomas
+            }
+        } //end dropWall
+
+        wallGrabbed = false; //reset flag even if no wall has been placed b/c movePawn uses it as well.
+    }
+
 	/**
 	 * @author Matthias Arabian
 	 * @param e
@@ -1238,36 +1266,12 @@ public class ViewInterface {
         //wallGrabbed is set to true when a pawn is moved AND when a wall is grabbed.
 	    if (!wallGrabbed)
             return;
-		//dropWall implemented here
-		if (wallSelected != null) {
-			boolean dropSuccessful;
-			try {
-				dropSuccessful = QuoridorController.releaseWall(quoridor);
-			} catch (Exception ee) {
-				throw new java.lang.UnsupportedOperationException("Unable to drop Wall");
-			}
-
-			if (!dropSuccessful) {
-				//invalidWallPlacement.setText("Invalid Wall Placement");
-				displayIllegalNotification("Invalid wall placement");
-				return;
-			} else {
-				invalidWallPlacement.setText("");
-				gameSessionNotificationLabel.setText("");
-				validWallGrab = false;
-				wallSelected = null;
-				wallMoveCandidate.setStroke(Color.BLACK);
-				wallMoveCandidate = null;
-				wallGrabbed = false; //added by Thomas
-			}
-		} //end dropWall
-
-        wallGrabbed = false; //reset flag even if no wall has been placed b/c movePawn uses it as well.
 
 		Button b = ((Button)e.getSource());
 		if (b.getId().equals(btn_whitePlayerTurn.getId())) {
 			if (btn_whitePlayerTurn.getText().equals("END TURN")) { //starts black player turn
-				//change opacity of wall stocks
+                doDropWallLogicAtEndOfTurn();
+			    //change opacity of wall stocks
 				whiteStock.setOpacity(0.5);
 				blackStock.setOpacity(1);
 
@@ -1290,11 +1294,15 @@ public class ViewInterface {
 			}
 		}
 		else { //starts white player turn
-			//change opacity of wall stocks
-			whiteStock.setOpacity(1);
-			blackStock.setOpacity(0.5);
+
 
 			if (btn_blackPlayerTurn.getText().equals("END TURN")) {
+                //change opacity of wall stocks
+                whiteStock.setOpacity(1);
+                blackStock.setOpacity(0.5);
+
+                //do the drop wall logic
+                doDropWallLogicAtEndOfTurn();
 				btn_whitePlayerTurn.setText("END TURN");
 				lbl_white_awaitingMove.setText("");
 				QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
