@@ -157,7 +157,12 @@ public class ViewInterface {
 	//For moving the window
     double x,y;
 
-    private HBox getStockOf(String color){
+	/**
+	 * @author Matthias Arabian
+	 * @param color the color of the HBox to return
+	 * @return the Hbox of <>color</> player
+	 */
+	private HBox getStockOf(String color){
     	if (color.toLowerCase().equals("black"))
     		return blackStock;
     	else
@@ -167,20 +172,25 @@ public class ViewInterface {
 	/**
 	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
+	 *
+	 * Matthias edited this for deliverable 4. Not called by the walls, but by the HBoxes storing the walls.
+	 * Allows player to put the wall back into their stock if they would like.
 	 */
 	public void GrabWall(MouseEvent mouseEvent) {
 
 		playerToMove = QuoridorController.getPlayerOfCurrentTurn();
-		HBox source = (HBox)mouseEvent.getSource();
+		HBox source = (HBox)mouseEvent.getSource(); //get wall stock
 		String color = QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor());
 
+		//if no more walls in stock
 		if (source.getChildren().size() <= 0 && source.equals(getStockOf(color)))
 		{
-			if (wallMoveCandidate == null)
+			if (wallMoveCandidate == null) //if the player hasn't grabbed a wall this turn, don't do anything
 				gameSessionNotificationLabel.setText("You have no more walls in stock...");
 			else
 			{
 				//TODO Return the wall in the model as well as the GUI
+				//return the wall to the stock
 				returnWallToStock(wallMoveCandidate, getStockOf(color));
 				wallGrabbed = false;
 				wallSelected = null;
@@ -188,10 +198,10 @@ public class ViewInterface {
 			}
 			return;
 		}
+
+
 		Rectangle wall = (Rectangle) source.getChildren().get(0);
-
 		String wallID = wall.getId();
-
 		System.err.print(1);
 
 		//if the player selects one of the other player's wall
@@ -201,10 +211,11 @@ public class ViewInterface {
 
 		// if the current player to move selects a second wall during the same turn
 		if(wallID.contains(color) && wallGrabbed == true){
-		    if (wallSelected == null)
+		    if (wallSelected == null) //only send an error if they did not grab a wall this turn
                 displayIllegalNotification("You moved your pawn, so you cannot grab a wall this turn!");
             else{
             	//TODO Return the wall in the model as well as the GUI
+				//otherwise, return teh grabbed wall to the stock
             	returnWallToStock(wallMoveCandidate, getStockOf(color));
             	wallGrabbed = false;
             	wallSelected = null;
@@ -515,6 +526,12 @@ public class ViewInterface {
 
 	}
 
+	/**
+	 * return the wall r to the stock b
+	 * @author Matthias Arabian
+	 * @param r wall to return to stock
+	 * @param b stock that'll be receiving the wall
+	 */
 	private void returnWallToStock(Rectangle r, HBox b){
 		Node p = r.getParent();
 		if (!p.getClass().getName().contains("HBox")) {
@@ -776,7 +793,7 @@ public class ViewInterface {
     /**
      * @Author Matthias Arabian
      */
-    EventHandler<MouseEvent> hoverEffect2 = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> hoverEffect_HBOX = new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
                     if (!wallGrabbed) {
@@ -789,7 +806,7 @@ public class ViewInterface {
     /**
      *@Author Matthias Arabian
      */
-    EventHandler<MouseEvent> cancelHoverEffect2 = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> cancelHoverEffect_HBOX = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
             HBox img = (HBox)e.getSource();
@@ -880,8 +897,8 @@ public class ViewInterface {
 	 */
 	public void initialize() {
 		resetGUItoMainPage();
-        blackStock.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect2); //event handler used for hover animation
-        blackStock.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect2); //event handler used to end hover animation
+        blackStock.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect_HBOX); //event handler used for hover animation
+        blackStock.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect_HBOX); //event handler used to end hover animation
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
@@ -1431,7 +1448,6 @@ public class ViewInterface {
 
 	/**
 	 * Event Listener. When the saveGame event is called, this method begins saving the current game instance into a file through dialog windows.
-	 * Known Bug: TODO: saveGame process does not pause the player timers in game.
 	 * @author Edwin Pan
 	 * @param event
 	 */
@@ -1660,7 +1676,6 @@ public class ViewInterface {
 	}
 
 	/**
-	 *
 	 * @param row
 	 * @param col
 	 * @return direction as a String, with the possible eight directions.
