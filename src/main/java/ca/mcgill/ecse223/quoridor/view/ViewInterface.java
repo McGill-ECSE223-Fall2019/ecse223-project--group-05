@@ -834,7 +834,11 @@ public class ViewInterface {
             else{
             	currentSM = QuoridorApplication.getWhitePawnBehaviour(QuoridorController.getCurrentWhitePlayer());
 			}
-			boolean success = QuoridorController.movePawn(quoridor,convertTileToDirection(row,col), currentSM);
+            boolean success;
+			try{success = QuoridorController.movePawn(quoridor,convertTileToDirection(row,col), currentSM);}
+			catch(Throwable t){
+				success = false;
+			}
 			if(!success) return;
 
 
@@ -1675,7 +1679,14 @@ public class ViewInterface {
 		}
 	}
 
-	/**
+	/**This method is used by mouse click event handler to convert row and column clicked
+	 * to a direction to be fed to controller movepawn method
+	 *
+	 * The method checks for possible positions of tiles clicked. The method only
+	 * returns a non-empty direction only if the tile clicked is immediately close of the tile
+	 * of pawn, or if tile clicked is separated by pawn by one other pawn, or if tile clicked is diagonal to
+	 * tile of pawn
+	 * @author David
 	 * @param row
 	 * @param col
 	 * @return direction as a String, with the possible eight directions.
@@ -1687,12 +1698,68 @@ public class ViewInterface {
 		int colDiff = col-currentCol;
 		String dir = "";
 
-		if(rowDiff>0){
+		if((rowDiff>2 || rowDiff < -2) || colDiff < -2 || colDiff >2) return dir;
+
+		switch (rowDiff){
+			case -2:
+				if(colDiff == 0 && QuoridorController.isPlayerOnTile(currentRow-1,currentCol)){
+					dir = "up";
+
+				}
+				return dir;
+			case -1:
+				dir = "up";
+				break;
+			case 1:
+				dir = "down";
+				break;
+			case 2:
+				if(colDiff==0 && QuoridorController.isPlayerOnTile(currentRow+1,currentCol)){
+					dir = "down";
+
+				}
+				return dir;
+			default:
+				break;
+
+		}
+
+		switch (colDiff){
+			case -2:
+				if(rowDiff == 0 && QuoridorController.isPlayerOnTile(currentRow,currentCol-1)){
+					dir = "left";
+					return dir;
+
+				}
+				return "";
+			case -1:
+				dir = dir + "left";
+				break;
+			case 1:
+				dir = dir + "right";
+				break;
+			case 2:
+				if(rowDiff == 0 && QuoridorController.isPlayerOnTile(currentRow,currentCol+1)){
+					dir = "right";
+					return dir;
+
+				}
+				return "";
+			default:
+				break;
+
+		}
+
+		return dir;
+		/*if(rowDiff>0){
+
 			dir = "down";
+
 		}
 		else if(rowDiff<0){
 			dir = "up";
 		}
+
 		if(colDiff>0){
 			dir = dir + "right";
 		}
@@ -1700,7 +1767,8 @@ public class ViewInterface {
 			dir = dir + "left";
 		}
 
-		return dir;
+		return dir;*/
+
 
 	}
 

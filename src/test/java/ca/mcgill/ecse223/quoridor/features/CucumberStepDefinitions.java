@@ -291,7 +291,7 @@ public class CucumberStepDefinitions {
     @And("White's pawn shall be in its initial position")
     public void whitesPawnShallBeInItsInitialPosition() {
         //the initial tile for the white player is the tile 4
-        assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(4), QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile());
+        assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(76), QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile());
     }
 
     /**
@@ -300,7 +300,7 @@ public class CucumberStepDefinitions {
     @And("Black's pawn shall be in its initial position")
     public void blacksPawnShallBeInItsInitialPosition() {
         //the initial tile for the black player is the tile 76
-        assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(76), QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile());
+        assertEquals(QuoridorApplication.getQuoridor().getBoard().getTile(4), QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile());
     }
 
     /**
