@@ -411,6 +411,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 
 ö  Scenario: Start wall placement                                    [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/GrabWall.feature:10[0m
 ë    [32mGiven [0m[32mI have more walls on stock[0m                                [90m# CucumberStepDefinitions.iHaveMoreWallsOnStock()[0m
+nb of walls in stock: 10
 ñ    [32mWhen [0m[32mI try to grab a wall from my stock[0m                         [90m# CucumberStepDefinitions.iTryToGrabAWallFromMyStock()[0m
 ≠    [32mThen [0m[32mA wall move candidate shall be created at initial position[0m [90m# CucumberStepDefinitions.aWallMoveCandidateShallBeCreatedAtInitialPosition()[0m
 ü    [32mAnd [0m[32mI shall have a wall in my hand over the board[0m               [90m# CucumberStepDefinitions.iShallHaveAWallInMyHandOverTheBoard()[0m
@@ -423,6 +424,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 
 ç  Scenario: No more walls in stock                     [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/GrabWall.feature:17[0m
 Ü    [32mGiven [0m[32mI have no more walls on stock[0m                [90m# CucumberStepDefinitions.iHaveNoMoreWallsOnStock()[0m
+nb of walls in stock: 0
 â    [32mWhen [0m[32mI try to grab a wall from my stock[0m            [90m# CucumberStepDefinitions.iTryToGrabAWallFromMyStock()[0m
 î    [32mThen [0m[32mI shall be notified that I have no more walls[0m [90m# CucumberStepDefinitions.iShouldBeNotifiedThatIHaveNoMoreWalls()[0m
 à    [32mAnd [0m[32mI shall have no walls in my hand[0m               [90m# CucumberStepDefinitions.iShallHaveNoWallsInMyHand()[0m
@@ -747,6 +749,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 4ó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 4´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 4π    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m2[0m               [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+4nb of walls in stock: 10
 4Œ    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m2[0m            [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 4≤    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"left"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 4Æ    [32mThen [0m[32mThe move [0m[32m[1m"left"[0m[32m shall be [0m[32m[1m"illegal"[0m          [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -760,6 +763,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 5ó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 5´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 5π    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m2[0m               [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+5nb of walls in stock: 10
 5Œ    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m1[0m            [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 5≤    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"left"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 5Æ    [32mThen [0m[32mThe move [0m[32m[1m"left"[0m[32m shall be [0m[32m[1m"illegal"[0m          [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -773,6 +777,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 6ó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 6´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 6π    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m4[0m               [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+6nb of walls in stock: 10
 6Œ    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m            [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 6≤    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"right"[0m    [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 6Æ    [32mThen [0m[32mThe move [0m[32m[1m"right"[0m[32m shall be [0m[32m[1m"illegal"[0m         [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -786,6 +791,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 7ó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 7´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 7π    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m4[0m               [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+7nb of walls in stock: 10
 7Œ    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m4[0m            [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 7≤    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"right"[0m    [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 7Æ    [32mThen [0m[32mThe move [0m[32m[1m"right"[0m[32m shall be [0m[32m[1m"illegal"[0m         [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -799,6 +805,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 8ó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 8´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 8π    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m               [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+8nb of walls in stock: 10
 8Œ    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m2[0m          [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 8≤    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"up"[0m       [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 8Æ    [32mThen [0m[32mThe move [0m[32m[1m"up"[0m[32m shall be [0m[32m[1m"illegal"[0m            [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -812,6 +819,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 9ó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 9´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 9π    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m               [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+9nb of walls in stock: 10
 9Œ    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m1[0m[32m:[0m[32m[1m3[0m          [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 9≤    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"up"[0m       [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 9Æ    [32mThen [0m[32mThe move [0m[32m[1m"up"[0m[32m shall be [0m[32m[1m"illegal"[0m            [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -825,6 +833,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 :ó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 :´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 :π    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m4[0m[32m:[0m[32m[1m3[0m               [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+:nb of walls in stock: 10
 :Œ    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m4[0m[32m:[0m[32m[1m2[0m          [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 :≤    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"down"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 :Æ    [32mThen [0m[32mThe move [0m[32m[1m"down"[0m[32m shall be [0m[32m[1m"illegal"[0m          [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -838,6 +847,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 ;ó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 ;´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 ;π    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m4[0m[32m:[0m[32m[1m3[0m               [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+;nb of walls in stock: 10
 ;Œ    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m          [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 ;≤    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"down"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 ;Æ    [32mThen [0m[32mThe move [0m[32m[1m"down"[0m[32m shall be [0m[32m[1m"illegal"[0m          [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -863,6 +873,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 <õ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 <Ø    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 <Ω    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m2[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+<nb of walls in stock: 10
 <“    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m1[0m                [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 <∂    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"upleft"[0m       [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 <≤    [32mThen [0m[32mThe move [0m[32m[1m"upleft"[0m[32m shall be [0m[32m[1m"success"[0m            [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -876,6 +887,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 =õ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 =Ø    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 =Ω    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m2[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+=nb of walls in stock: 10
 =“    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m1[0m                [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 =∂    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"downleft"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 =≤    [32mThen [0m[32mThe move [0m[32m[1m"downleft"[0m[32m shall be [0m[32m[1m"success"[0m          [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -889,6 +901,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 >õ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 >Ø    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 >Ω    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m2[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+>nb of walls in stock: 10
 >“    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m2[0m                [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 >∂    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"upleft"[0m       [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 >≤    [32mThen [0m[32mThe move [0m[32m[1m"upleft"[0m[32m shall be [0m[32m[1m"illegal"[0m            [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -902,6 +915,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 ?õ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 ?Ø    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 ?Ω    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m2[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+?nb of walls in stock: 10
 ?“    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m2[0m                [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 ?∂    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"downleft"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 ?≤    [32mThen [0m[32mThe move [0m[32m[1m"downleft"[0m[32m shall be [0m[32m[1m"illegal"[0m          [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -915,6 +929,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 @õ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 @Ø    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 @Ω    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m4[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+@nb of walls in stock: 10
 @“    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m4[0m                [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 @∂    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"upright"[0m      [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 @≤    [32mThen [0m[32mThe move [0m[32m[1m"upright"[0m[32m shall be [0m[32m[1m"success"[0m           [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -928,6 +943,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Aõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 AØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 AΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m4[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Anb of walls in stock: 10
 A“    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m4[0m                [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 A∂    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"downright"[0m    [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 A≤    [32mThen [0m[32mThe move [0m[32m[1m"downright"[0m[32m shall be [0m[32m[1m"success"[0m         [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -941,6 +957,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Bõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 BØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 BΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m4[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Bnb of walls in stock: 10
 B“    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m                [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 B∂    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"upright"[0m      [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 B≤    [32mThen [0m[32mThe move [0m[32m[1m"upright"[0m[32m shall be [0m[32m[1m"illegal"[0m           [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -954,6 +971,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Cõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 CØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 CΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m3[0m[32m:[0m[32m[1m4[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Cnb of walls in stock: 10
 C“    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m                [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 C∂    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"downright"[0m    [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 C≤    [32mThen [0m[32mThe move [0m[32m[1m"downright"[0m[32m shall be [0m[32m[1m"illegal"[0m         [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -967,6 +985,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Dõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 DØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 DΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Dnb of walls in stock: 10
 D“    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m1[0m[32m:[0m[32m[1m3[0m              [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 D∂    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"upleft"[0m       [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 D≤    [32mThen [0m[32mThe move [0m[32m[1m"upleft"[0m[32m shall be [0m[32m[1m"success"[0m            [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -980,6 +999,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Eõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 EØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 EΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Enb of walls in stock: 10
 E“    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m1[0m[32m:[0m[32m[1m3[0m              [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 E∂    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"upright"[0m      [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 E≤    [32mThen [0m[32mThe move [0m[32m[1m"upright"[0m[32m shall be [0m[32m[1m"success"[0m           [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -993,6 +1013,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Fõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 FØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 FΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Fnb of walls in stock: 10
 F“    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m2[0m              [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 F∂    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"upleft"[0m       [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 F≤    [32mThen [0m[32mThe move [0m[32m[1m"upleft"[0m[32m shall be [0m[32m[1m"illegal"[0m            [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -1006,6 +1027,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Gõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 GØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 GΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Gnb of walls in stock: 10
 G“    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m2[0m              [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 G∂    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"upright"[0m      [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 G≤    [32mThen [0m[32mThe move [0m[32m[1m"upright"[0m[32m shall be [0m[32m[1m"illegal"[0m           [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -1019,6 +1041,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Hõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 HØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 HΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m4[0m[32m:[0m[32m[1m3[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Hnb of walls in stock: 10
 H“    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m4[0m[32m:[0m[32m[1m2[0m              [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 H∂    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"downleft"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 H≤    [32mThen [0m[32mThe move [0m[32m[1m"downleft"[0m[32m shall be [0m[32m[1m"success"[0m          [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -1032,6 +1055,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Iõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 IØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 IΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m4[0m[32m:[0m[32m[1m3[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Inb of walls in stock: 10
 I“    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m4[0m[32m:[0m[32m[1m2[0m              [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 I∂    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"downright"[0m    [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 I≤    [32mThen [0m[32mThe move [0m[32m[1m"downright"[0m[32m shall be [0m[32m[1m"success"[0m         [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -1045,6 +1069,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Jõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 JØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 JΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m4[0m[32m:[0m[32m[1m3[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Jnb of walls in stock: 10
 J“    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m              [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 J∂    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"downleft"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 J≤    [32mThen [0m[32mThe move [0m[32m[1m"downleft"[0m[32m shall be [0m[32m[1m"illegal"[0m          [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -1058,6 +1083,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 Kõ    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m                  [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 KØ    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                     [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
 KΩ    [32mAnd [0m[32mThe opponent is located at [0m[32m[1m4[0m[32m:[0m[32m[1m3[0m                   [90m# CucumberStepDefinitions.the_opponent_is_located_at(Integer,Integer)[0m
+Knb of walls in stock: 10
 K“    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m              [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 K∂    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"downright"[0m    [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
 K≤    [32mThen [0m[32mThe move [0m[32m[1m"downright"[0m[32m shall be [0m[32m[1m"illegal"[0m         [90m# CucumberStepDefinitions.the_move_shall_be(String,String)[0m
@@ -1438,8 +1464,8 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 b∏    [31mWhen [0m[31mI initiate to load a saved game [0m[31m[1m"quoridor_test_game_invalid_pawn_move.mov"[0m [90m# CucumberStepDefinitions.iInitiateToLoadASavedGame(String)[0m
 b*      [31mjava.lang.NullPointerException
 bu	at ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager.loadGamePawnsAndWalls(QuoridorSavesManager.java:193)
-bi	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:1080)
-b}	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1357)
+bi	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:1120)
+b}	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1365)
 b§	at ‚úΩ.I initiate to load a saved game "quoridor_test_game_invalid_pawn_move.mov"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadGame.feature:39)
 b[0m
 bv    [33mAnd [0m[33mThe game to load has an invalid move[0m                                        [90m# null[0m
@@ -1452,8 +1478,8 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 c∏    [31mWhen [0m[31mI initiate to load a saved game [0m[31m[1m"quoridor_test_game_invalid_wall_move.mov"[0m [90m# CucumberStepDefinitions.iInitiateToLoadASavedGame(String)[0m
 c*      [31mjava.lang.NullPointerException
 cu	at ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager.loadGamePawnsAndWalls(QuoridorSavesManager.java:193)
-ci	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:1080)
-c}	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1357)
+ci	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:1120)
+c}	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1365)
 c§	at ‚úΩ.I initiate to load a saved game "quoridor_test_game_invalid_wall_move.mov"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadGame.feature:39)
 c[0m
 cv    [33mAnd [0m[33mThe game to load has an invalid move[0m                                        [90m# null[0m
@@ -1466,8 +1492,8 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 d∏    [31mWhen [0m[31mI initiate to load a saved game [0m[31m[1m"quoridor_test_game_invalid_jump_move.mov"[0m [90m# CucumberStepDefinitions.iInitiateToLoadASavedGame(String)[0m
 d*      [31mjava.lang.NullPointerException
 du	at ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager.loadGamePawnsAndWalls(QuoridorSavesManager.java:193)
-di	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:1080)
-d}	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1357)
+di	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:1120)
+d}	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1365)
 d§	at ‚úΩ.I initiate to load a saved game "quoridor_test_game_invalid_jump_move.mov"(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadGame.feature:39)
 d[0m
 dv    [33mAnd [0m[33mThe game to load has an invalid move[0m                                        [90m# null[0m
@@ -1516,8 +1542,8 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 f©  Scenario Outline: Load invalid position                                      [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/LoadPosition.feature:29[0m
  fbca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException: The players are on the same tile!
  fu	at ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager.loadGamePawnsAndWalls(QuoridorSavesManager.java:359)
- fi	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:1080)
- f}	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1357)
+ fi	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:1120)
+ f}	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1365)
  fS	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
  fe	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
  fm	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1613,8 +1639,8 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
  g
  gv	at ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager.sanityCheckWallOverlap(QuoridorSavesManager.java:574)
  gu	at ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager.loadGamePawnsAndWalls(QuoridorSavesManager.java:375)
- gi	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:1080)
- g}	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1357)
+ gi	at ca.mcgill.ecse223.quoridor.controller.QuoridorController.loadSavedGame(QuoridorController.java:1120)
+ g}	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.iInitiateToLoadASavedGame(CucumberStepDefinitions.java:1365)
  gS	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
  ge	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
  gm	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -1838,6 +1864,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 pã  Scenario Outline: Move of player blocked by wall   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePawn.feature:41[0m
 pó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 p´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
+pnb of walls in stock: 10
 pŒ    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m2[0m            [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 p£    [32mAnd [0m[32mThe opponent is not [0m[32m[1m"left"[0m[32m from the player[0m   [90m# CucumberStepDefinitions.theOpponentIsNotFromPlayer(String)[0m
 p≤    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"left"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
@@ -1851,6 +1878,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 qã  Scenario Outline: Move of player blocked by wall   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePawn.feature:42[0m
 qó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 q´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
+qnb of walls in stock: 10
 qŒ    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m2[0m            [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 q£    [32mAnd [0m[32mThe opponent is not [0m[32m[1m"left"[0m[32m from the player[0m   [90m# CucumberStepDefinitions.theOpponentIsNotFromPlayer(String)[0m
 q≤    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"left"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
@@ -1864,6 +1892,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 rã  Scenario Outline: Move of player blocked by wall   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePawn.feature:43[0m
 ró    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 r´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
+rnb of walls in stock: 10
 rŒ    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m            [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 r£    [32mAnd [0m[32mThe opponent is not [0m[32m[1m"right"[0m[32m from the player[0m  [90m# CucumberStepDefinitions.theOpponentIsNotFromPlayer(String)[0m
 r≤    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"right"[0m    [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
@@ -1877,6 +1906,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 sã  Scenario Outline: Move of player blocked by wall   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePawn.feature:44[0m
 só    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 s´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
+snb of walls in stock: 10
 sŒ    [32mAnd [0m[32mThere is a [0m[32m[1m"vertical"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m            [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 s£    [32mAnd [0m[32mThe opponent is not [0m[32m[1m"right"[0m[32m from the player[0m  [90m# CucumberStepDefinitions.theOpponentIsNotFromPlayer(String)[0m
 s≤    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"right"[0m    [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
@@ -1890,6 +1920,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 tã  Scenario Outline: Move of player blocked by wall   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePawn.feature:45[0m
 tó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 t´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
+tnb of walls in stock: 10
 tŒ    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m2[0m          [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 t£    [32mAnd [0m[32mThe opponent is not [0m[32m[1m"up"[0m[32m from the player[0m     [90m# CucumberStepDefinitions.theOpponentIsNotFromPlayer(String)[0m
 t≤    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"up"[0m       [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
@@ -1903,6 +1934,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 uã  Scenario Outline: Move of player blocked by wall   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePawn.feature:46[0m
 uó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 u´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
+unb of walls in stock: 10
 uŒ    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m2[0m[32m:[0m[32m[1m3[0m          [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 u£    [32mAnd [0m[32mThe opponent is not [0m[32m[1m"up"[0m[32m from the player[0m     [90m# CucumberStepDefinitions.theOpponentIsNotFromPlayer(String)[0m
 u≤    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"up"[0m       [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
@@ -1916,6 +1948,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 vã  Scenario Outline: Move of player blocked by wall   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePawn.feature:47[0m
 vó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"white"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 v´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
+vnb of walls in stock: 10
 vŒ    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m2[0m          [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 v£    [32mAnd [0m[32mThe opponent is not [0m[32m[1m"down"[0m[32m from the player[0m   [90m# CucumberStepDefinitions.theOpponentIsNotFromPlayer(String)[0m
 v≤    [32mWhen [0m[32mPlayer [0m[32m[1m"white"[0m[32m initiates to move [0m[32m[1m"down"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
@@ -1929,6 +1962,7 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 wã  Scenario Outline: Move of player blocked by wall   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MovePawn.feature:48[0m
 wó    [32mGiven [0m[32mThe player to move is [0m[32m[1m"black"[0m              [90m# CucumberStepDefinitions.thePlayerToMoveIsPlayer(String)[0m
 w´    [32mAnd [0m[32mThe player is located at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m                 [90m# CucumberStepDefinitions.thePlayerIsLocatedAt(int,int)[0m
+wnb of walls in stock: 10
 wŒ    [32mAnd [0m[32mThere is a [0m[32m[1m"horizontal"[0m[32m wall at [0m[32m[1m3[0m[32m:[0m[32m[1m3[0m          [90m# CucumberStepDefinitions.there_is_a_wall_at(String,Integer,Integer)[0m
 w£    [32mAnd [0m[32mThe opponent is not [0m[32m[1m"down"[0m[32m from the player[0m   [90m# CucumberStepDefinitions.theOpponentIsNotFromPlayer(String)[0m
 w≤    [32mWhen [0m[32mPlayer [0m[32m[1m"black"[0m[32m initiates to move [0m[32m[1m"down"[0m     [90m# CucumberStepDefinitions.playerInitiatesToMove(String,String)[0m
@@ -1959,17 +1993,8 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 xÏ    [32mGiven [0m[32mA wall move candidate exists with [0m[32m[1m"vertical"[0m[32m at position ([0m[32m[1m2[0m[32m, [0m[32m[1m3[0m[32m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
 x∞    [32mAnd [0m[32mThe wall candidate is not at the [0m[32m[1m"left"[0m[32m edge of the board[0m            [90m# CucumberStepDefinitions.wallIsNotAtEdge(String)[0m
 x•    [32mWhen [0m[32mI try to move the wall [0m[32m[1m"left"[0m                                       [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
-xÃ    [31mThen [0m[31mThe wall shall be moved over the board to position ([0m[31m[1m2[0m[31m, [0m[31m[1m2[0m[31m)[0m           [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
-xR      [31morg.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-xF	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55)
-xN	at org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62)
-xK	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
-xK	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
-xH	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1124)
-xw	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thisWallIsAtPosition(CucumberStepDefinitions.java:483)
-xì	at ‚úΩ.The wall shall be moved over the board to position (2, 2)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:15)
-x[0m
-xÓ    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"vertical"[0m[36m at position ([0m[36m[1m2[0m[36m, [0m[36m[1m2[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+xÃ    [32mThen [0m[32mThe wall shall be moved over the board to position ([0m[32m[1m2[0m[32m, [0m[32m[1m2[0m[32m)[0m           [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
+xÓ    [32mAnd [0m[32mA wall move candidate shall exist with [0m[32m[1m"vertical"[0m[32m at position ([0m[32m[1m2[0m[32m, [0m[32m[1m2[0m[32m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
 y
 yÖ  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
 yx    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
@@ -1980,17 +2005,8 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 yÓ    [32mGiven [0m[32mA wall move candidate exists with [0m[32m[1m"horizontal"[0m[32m at position ([0m[32m[1m2[0m[32m, [0m[32m[1m3[0m[32m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
 y≤    [32mAnd [0m[32mThe wall candidate is not at the [0m[32m[1m"right"[0m[32m edge of the board[0m             [90m# CucumberStepDefinitions.wallIsNotAtEdge(String)[0m
 yß    [32mWhen [0m[32mI try to move the wall [0m[32m[1m"right"[0m                                        [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
-yŒ    [31mThen [0m[31mThe wall shall be moved over the board to position ([0m[31m[1m2[0m[31m, [0m[31m[1m4[0m[31m)[0m             [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
-yR      [31morg.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-yF	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55)
-yN	at org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62)
-yK	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
-yK	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
-yH	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1124)
-yw	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thisWallIsAtPosition(CucumberStepDefinitions.java:483)
-yì	at ‚úΩ.The wall shall be moved over the board to position (2, 4)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:15)
-y[0m
-y    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"horizontal"[0m[36m at position ([0m[36m[1m2[0m[36m, [0m[36m[1m4[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+yŒ    [32mThen [0m[32mThe wall shall be moved over the board to position ([0m[32m[1m2[0m[32m, [0m[32m[1m4[0m[32m)[0m             [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
+y    [32mAnd [0m[32mA wall move candidate shall exist with [0m[32m[1m"horizontal"[0m[32m at position ([0m[32m[1m2[0m[32m, [0m[32m[1m4[0m[32m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
 z
 zÖ  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
 zx    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
@@ -2001,17 +2017,8 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 zÏ    [32mGiven [0m[32mA wall move candidate exists with [0m[32m[1m"vertical"[0m[32m at position ([0m[32m[1m5[0m[32m, [0m[32m[1m6[0m[32m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
 z∞    [32mAnd [0m[32mThe wall candidate is not at the [0m[32m[1m"up"[0m[32m edge of the board[0m              [90m# CucumberStepDefinitions.wallIsNotAtEdge(String)[0m
 z•    [32mWhen [0m[32mI try to move the wall [0m[32m[1m"up"[0m                                         [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
-zÃ    [31mThen [0m[31mThe wall shall be moved over the board to position ([0m[31m[1m4[0m[31m, [0m[31m[1m6[0m[31m)[0m           [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
-zR      [31morg.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-zF	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55)
-zN	at org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62)
-zK	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
-zK	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
-zH	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1124)
-zw	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thisWallIsAtPosition(CucumberStepDefinitions.java:483)
-zì	at ‚úΩ.The wall shall be moved over the board to position (4, 6)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:15)
-z[0m
-zÓ    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"vertical"[0m[36m at position ([0m[36m[1m4[0m[36m, [0m[36m[1m6[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+zÃ    [32mThen [0m[32mThe wall shall be moved over the board to position ([0m[32m[1m4[0m[32m, [0m[32m[1m6[0m[32m)[0m           [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
+zÓ    [32mAnd [0m[32mA wall move candidate shall exist with [0m[32m[1m"vertical"[0m[32m at position ([0m[32m[1m4[0m[32m, [0m[32m[1m6[0m[32m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
 {
 {Ö  Background:                                   [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:6[0m
 {x    [32mGiven [0m[32mThe game is running[0m                   [90m# CucumberStepDefinitions.theGameIsRunning()[0m
@@ -2022,17 +2029,8 @@ d    [33mThen [0m[33mPath is available for "both" player(s)[0m              
 {Ó    [32mGiven [0m[32mA wall move candidate exists with [0m[32m[1m"horizontal"[0m[32m at position ([0m[32m[1m5[0m[32m, [0m[32m[1m6[0m[32m)[0m    [90m# CucumberStepDefinitions.wallMoveCandidateExists(String,int,int)[0m
 {≤    [32mAnd [0m[32mThe wall candidate is not at the [0m[32m[1m"down"[0m[32m edge of the board[0m              [90m# CucumberStepDefinitions.wallIsNotAtEdge(String)[0m
 {ß    [32mWhen [0m[32mI try to move the wall [0m[32m[1m"down"[0m                                         [90m# CucumberStepDefinitions.tryToMoveWall(String)[0m
-{Œ    [31mThen [0m[31mThe wall shall be moved over the board to position ([0m[31m[1m6[0m[31m, [0m[31m[1m6[0m[31m)[0m             [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
-{R      [31morg.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-{F	at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55)
-{N	at org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62)
-{K	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
-{K	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
-{H	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1124)
-{w	at ca.mcgill.ecse223.quoridor.features.CucumberStepDefinitions.thisWallIsAtPosition(CucumberStepDefinitions.java:483)
-{ì	at ‚úΩ.The wall shall be moved over the board to position (6, 6)(file:src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:15)
-{[0m
-{    [36mAnd [0m[36mA wall move candidate shall exist with [0m[36m[1m"horizontal"[0m[36m at position ([0m[36m[1m6[0m[36m, [0m[36m[1m6[0m[36m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
+{Œ    [32mThen [0m[32mThe wall shall be moved over the board to position ([0m[32m[1m6[0m[32m, [0m[32m[1m6[0m[32m)[0m             [90m# CucumberStepDefinitions.thisWallIsAtPosition(int,int)[0m
+{    [32mAnd [0m[32mA wall move candidate shall exist with [0m[32m[1m"horizontal"[0m[32m at position ([0m[32m[1m6[0m[32m, [0m[32m[1m6[0m[32m)[0m [90m# CucumberStepDefinitions.wallMoveCandidateExistsAt(String,int,int)[0m
 |
 |ç  Scenario Outline: Move wall at the edge of the board [90m# src/test/resources/ca/mcgill/ecse223/quoridor/features/MoveWall.feature:25[0m
 |X    [36mGiven A wall move candidate exists with "<dir>" at position (<row>, <col>)[0m
