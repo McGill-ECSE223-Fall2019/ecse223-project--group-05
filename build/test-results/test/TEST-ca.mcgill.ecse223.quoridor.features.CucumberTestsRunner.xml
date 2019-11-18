@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" tests="175" skipped="0" failures="69" errors="0" timestamp="2019-11-18T18:42:51" hostname="Alexs-MacBook-Pro-3.local" time="9.443">
+<testsuite name="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" tests="175" skipped="0" failures="69" errors="0" timestamp="2019-11-18T18:55:09" hostname="Alexs-MacBook-Pro-3.local" time="7.773">
   <properties/>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.261">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.32">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 3:7&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;both&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 3:7&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined
@@ -94,7 +94,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.126">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.057">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 4:2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;both&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 4:2&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined
@@ -187,7 +187,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.06">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.038">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 3:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;none&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 3:5&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined
@@ -280,7 +280,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.041">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.045">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 3:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 2:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;both&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 3:5&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 6:5&quot; is undefined
@@ -373,7 +373,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.083">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.038">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 3:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 3:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;white&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 3:5&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined
@@ -466,7 +466,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.049">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.098">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 3:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 5:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;black&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;horizontal&quot; wall move candidate exists at position 3:5&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 5:5&quot; is undefined
@@ -559,7 +559,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.052">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.019">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 2:4&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;both&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 2:4&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined
@@ -652,7 +652,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.099">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.049">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 3:4&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;none&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 3:4&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined
@@ -745,7 +745,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.078">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.073">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 3:4&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 2:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;both&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 3:4&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 6:5&quot; is undefined
@@ -838,7 +838,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.045">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.041">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 3:4&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 5:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;black&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 3:4&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 5:5&quot; is undefined
@@ -931,7 +931,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.111">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.078">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 1:6&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;both&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 1:6&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:5&quot; is undefined
@@ -1024,7 +1024,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.033">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.062">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 1:6&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:7&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;white&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 1:6&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 2:7&quot; is undefined
@@ -1117,7 +1117,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.021">
+  <testcase name="Path to target area is not blocked" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.047">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 1:6&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 6:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The white player is located at 2:7&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Check path existence is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Path is available for &quot;both&quot; player(s)&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;A &quot;vertical&quot; wall move candidate exists at position 1:6&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The black player is located at 6:5&quot; is undefined
@@ -1210,13 +1210,13 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Valid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.217"/>
-  <testcase name="Valid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.012"/>
-  <testcase name="Invalid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016"/>
+  <testcase name="Valid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.182"/>
+  <testcase name="Valid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.026"/>
+  <testcase name="Invalid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.043"/>
+  <testcase name="Invalid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.073"/>
+  <testcase name="Invalid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.011"/>
   <testcase name="Invalid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.022"/>
-  <testcase name="Invalid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.022"/>
-  <testcase name="Invalid wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.028"/>
-  <testcase name="Entering replay mode" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006">
+  <testcase name="Entering replay mode" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.009">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (2 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall be in replay mode&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (2 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall be in replay mode&quot; is undefined
@@ -1306,7 +1306,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Continue an unfinished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.02">
+  <testcase name="Continue an unfinished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game does not have a final result&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 1.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to continue game&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The remaining moves of the game shall be removed&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -1400,7 +1400,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Continue an unfinished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005">
+  <testcase name="Continue an unfinished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.039">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game does not have a final result&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to continue game&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The remaining moves of the game shall be removed&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -1494,7 +1494,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Continue an unfinished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.013">
+  <testcase name="Continue an unfinished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.018">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game does not have a final result&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to continue game&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The remaining moves of the game shall be removed&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -1588,7 +1588,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Continue an unfinished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005">
+  <testcase name="Continue an unfinished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.025">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game does not have a final result&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 3.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to continue game&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The remaining moves of the game shall be removed&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -1682,7 +1682,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Continue a finished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
+  <testcase name="Continue a finished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.015">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (7 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game has a final result&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 1.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to continue game&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall be in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I shall be notified that finished games cannot be continued&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (7 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -1777,7 +1777,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Continue a finished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.023">
+  <testcase name="Continue a finished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.01">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (7 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game has a final result&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to continue game&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall be in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I shall be notified that finished games cannot be continued&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (7 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -1872,7 +1872,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Continue a finished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.031">
+  <testcase name="Continue a finished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.12">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (7 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game has a final result&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to continue game&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall be in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I shall be notified that finished games cannot be continued&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (7 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -1967,7 +1967,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Continue a finished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003">
+  <testcase name="Continue a finished game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (7 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game has a final result&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 4.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to continue game&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall be in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I shall be notified that finished games cannot be continued&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (7 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -2062,9 +2062,9 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Start wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.035"/>
-  <testcase name="No more walls in stock" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.019"/>
-  <testcase name="Player repeats for the third time" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.031">
+  <testcase name="Start wall placement" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.031"/>
+  <testcase name="No more walls in stock" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
+  <testcase name="Player repeats for the third time" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves were executed:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The last move of &quot;white&quot; is pawn move to 8:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Checking of game result is initated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;Drawn&quot;&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall no longer be running&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves were executed:&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined
@@ -2158,7 +2158,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player deviates for the third time" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.05">
+  <testcase name="Player deviates for the third time" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves were executed:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The last move of &quot;white&quot; is pawn move to 8:4&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Checking of game result is initated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;Pending&quot;&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves were executed:&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined
@@ -2251,7 +2251,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player deviates for the third time" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008">
+  <testcase name="Player deviates for the third time" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves were executed:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The last move of &quot;white&quot; is pawn move to 8:6&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Checking of game result is initated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;Pending&quot;&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves were executed:&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined
@@ -2344,7 +2344,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player is on the middle of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.011">
+  <testcase name="Player is on the middle of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.02">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;white&quot; is 1:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The clock of &quot;white&quot; is more than zero&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Checking of game result is initated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;pending&quot;&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;white&quot; is 1:5&quot; is undefined
@@ -2437,7 +2437,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player is on the middle of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007">
+  <testcase name="Player is on the middle of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.022">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;white&quot; is 8:5&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The clock of &quot;white&quot; is more than zero&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Checking of game result is initated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;pending&quot;&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;white&quot; is 8:5&quot; is undefined
@@ -2530,7 +2530,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player is on the middle of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005">
+  <testcase name="Player is on the middle of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.024">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;black&quot; has just completed his move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;black&quot; is 2:4&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The clock of &quot;black&quot; is more than zero&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Checking of game result is initated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;pending&quot;&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;black&quot; has just completed his move&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;black&quot; is 2:4&quot; is undefined
@@ -2623,7 +2623,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player is on the middle of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.011">
+  <testcase name="Player is on the middle of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.04">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;black&quot; has just completed his move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;black&quot; is 9:4&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The clock of &quot;black&quot; is more than zero&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Checking of game result is initated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;pending&quot;&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (5 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;black&quot; has just completed his move&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;black&quot; is 9:4&quot; is undefined
@@ -2716,7 +2716,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player reaches target area" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.023">
+  <testcase name="Player reaches target area" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.242">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;white&quot; is 9:4&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The clock of &quot;white&quot; is more than zero&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Checking of game result is initated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;whiteWon&quot;&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall no longer be running&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;white&quot; has just completed his move&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;white&quot; is 9:4&quot; is undefined
@@ -2810,7 +2810,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player reaches target area" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007">
+  <testcase name="Player reaches target area" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.01">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;black&quot; has just completed his move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;black&quot; is 1:3&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The clock of &quot;black&quot; is more than zero&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Checking of game result is initated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;blackWon&quot;&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall no longer be running&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player &quot;black&quot; has just completed his move&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The new position of &quot;black&quot; is 1:3&quot; is undefined
@@ -2904,7 +2904,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player's time is exceeded" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.127">
+  <testcase name="Player's time is exceeded" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.111">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The clock of &quot;white&quot; counts down to zero&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;blackWon&quot;&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall no longer be running&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The clock of &quot;white&quot; counts down to zero&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;blackWon&quot;&quot; is undefined
@@ -2995,7 +2995,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player's time is exceeded" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.009">
+  <testcase name="Player's time is exceeded" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The clock of &quot;black&quot; counts down to zero&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;whiteWon&quot;&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall no longer be running&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The clock of &quot;black&quot; counts down to zero&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;whiteWon&quot;&quot; is undefined
@@ -3086,48 +3086,48 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Initialize board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="2.04"/>
-  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.01"/>
+  <testcase name="Initialize board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="2.037"/>
+  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.012"/>
+  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007"/>
+  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
   <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
-  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016"/>
-  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
-  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.034"/>
-  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.011"/>
-  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.027"/>
-  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.02"/>
-  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.035"/>
-  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.012"/>
-  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.025"/>
+  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
+  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
+  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
+  <testcase name="Jump over opponent" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
+  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
+  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
+  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.14"/>
+  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.024"/>
+  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.017"/>
   <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.01"/>
-  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.013"/>
-  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016"/>
-  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008"/>
-  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.048"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.01"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.022"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.015"/>
+  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.015"/>
+  <testcase name="Jump of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.014"/>
   <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.038"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.037"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.108"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.013"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.012"/>
   <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.017"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.015"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.018"/>
   <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
   <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
-  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.018"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
+  <testcase name="Diagonal jumps of a player near wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
   <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
-  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.01"/>
+  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.011"/>
+  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
+  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007"/>
+  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.04"/>
   <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
-  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
-  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.012"/>
-  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.019"/>
-  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.033"/>
-  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.017"/>
-  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.027">
+  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
+  <testcase name="Diagonal jump over opponent at edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008"/>
+  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 5.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,6)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 9 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -3224,7 +3224,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006">
+  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.002">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 1.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 5.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,6)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 9 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -3321,7 +3321,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.017">
+  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 5.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,6)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 9 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -3418,7 +3418,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.014">
+  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 5.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,6)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 9 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -3515,7 +3515,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.031">
+  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 3.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 5.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,6)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 9 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -3612,7 +3612,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.022">
+  <testcase name="Jump to final" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 4.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 5.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,6)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 9 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -3709,7 +3709,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Jump to start" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
+  <testcase name="Jump to start" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (9,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (1,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -3806,7 +3806,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Jump to start" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.042">
+  <testcase name="Jump to start" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 1.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (9,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (1,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -3903,7 +3903,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Jump to start" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007">
+  <testcase name="Jump to start" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.025">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (9,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (1,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -4000,7 +4000,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Jump to start" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.097">
+  <testcase name="Jump to start" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.033">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (9,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (1,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -4097,7 +4097,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Jump to start" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.022">
+  <testcase name="Jump to start" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.011">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 3.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Jump to start position is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (9,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (1,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -4194,7 +4194,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Load valid incomplete game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005">
+  <testcase name="Load valid incomplete game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to load a game in &quot;quoridor_test_game_1.mov&quot;&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Each game move is valid&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game has no final results&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to load a game in &quot;quoridor_test_game_1.mov&quot;&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Each game move is valid&quot; is undefined
@@ -4285,7 +4285,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Load valid incomplete game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006">
+  <testcase name="Load valid incomplete game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.009">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to load a game in &quot;quoridor_test_game_2.mov&quot;&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Each game move is valid&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game has no final results&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to load a game in &quot;quoridor_test_game_2.mov&quot;&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Each game move is valid&quot; is undefined
@@ -4376,7 +4376,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Load valid incomplete game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007">
+  <testcase name="Load valid incomplete game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (4 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to load a game in &quot;quoridor_test_game_3.mov&quot;&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Each game move is valid&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game has a final result&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall be in replay mode&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (4 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;I initiate to load a game in &quot;quoridor_test_game_3.mov&quot;&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Each game move is valid&quot; is undefined
@@ -4468,7 +4468,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Invalid move in game file" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.029">
+  <testcase name="Invalid move in game file" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.311">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)&#10;&#9;java.lang.NullPointerException: &lt;no message&gt;&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game to load has an invalid move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall notify the user that the game file is invalid&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)
 	java.lang.NullPointerException: &lt;no message&gt;
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game to load has an invalid move&quot; is undefined
@@ -4559,7 +4559,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Invalid move in game file" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.134">
+  <testcase name="Invalid move in game file" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)&#10;&#9;java.lang.NullPointerException: &lt;no message&gt;&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game to load has an invalid move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall notify the user that the game file is invalid&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)
 	java.lang.NullPointerException: &lt;no message&gt;
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game to load has an invalid move&quot; is undefined
@@ -4650,7 +4650,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Invalid move in game file" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.023">
+  <testcase name="Invalid move in game file" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)&#10;&#9;java.lang.NullPointerException: &lt;no message&gt;&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game to load has an invalid move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall notify the user that the game file is invalid&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)
 	java.lang.NullPointerException: &lt;no message&gt;
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game to load has an invalid move&quot; is undefined
@@ -4741,40 +4741,40 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Load position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.093"/>
-  <testcase name="Load invalid position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.035"/>
-  <testcase name="Load invalid position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.269"/>
-  <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.009"/>
+  <testcase name="Load position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.022"/>
+  <testcase name="Load invalid position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.02"/>
+  <testcase name="Load invalid position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.08"/>
+  <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.017"/>
+  <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.019"/>
+  <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.073"/>
   <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
-  <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.043"/>
   <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
-  <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.088"/>
-  <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
-  <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
   <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
-  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.027"/>
-  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008"/>
-  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008"/>
-  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.017"/>
+  <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
+  <testcase name="Move one tile" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
+  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
+  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
+  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
+  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
+  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.002"/>
   <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.009"/>
-  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.02"/>
-  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.021"/>
-  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.031"/>
-  <testcase name="Move wall over the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.072"/>
+  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
+  <testcase name="Move of player blocked by wall" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.025"/>
+  <testcase name="Move wall over the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
+  <testcase name="Move wall over the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.012"/>
+  <testcase name="Move wall over the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
   <testcase name="Move wall over the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
-  <testcase name="Move wall over the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.023"/>
-  <testcase name="Move wall over the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.011"/>
-  <testcase name="Move wall at the edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.076"/>
-  <testcase name="Move wall at the edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007"/>
+  <testcase name="Move wall at the edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.057"/>
+  <testcase name="Move wall at the edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
+  <testcase name="Move wall at the edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.002"/>
   <testcase name="Move wall at the edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
-  <testcase name="Move wall at the edge of the board" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
-  <testcase name="Select existing user name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007"/>
+  <testcase name="Select existing user name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
   <testcase name="Select existing user name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
-  <testcase name="Create new user name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008"/>
-  <testcase name="Create new user name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
-  <testcase name="User name already exists" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.036"/>
-  <testcase name="User name already exists" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.03"/>
-  <testcase name="EMPTY_NAME" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008">
+  <testcase name="Create new user name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.013"/>
+  <testcase name="Create new user name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.031"/>
+  <testcase name="User name already exists" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
+  <testcase name="User name already exists" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.025"/>
+  <testcase name="EMPTY_NAME" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is no longer running&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The final result shall be displayed&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White's clock shall not be counting down&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black's clock shall not be counting down&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White shall be unable to move&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black shall be unable to move&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (6 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is no longer running&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The final result shall be displayed&quot; is undefined
@@ -4868,7 +4868,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player resigns" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.023">
+  <testcase name="Player resigns" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.009">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player initates to resign&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;BlackWon&quot;&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall no longer be running&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player initates to resign&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;BlackWon&quot;&quot; is undefined
@@ -4959,7 +4959,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Player resigns" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.01">
+  <testcase name="Player resigns" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Player initates to resign&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;WhiteWon&quot;&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game shall no longer be running&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (3 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Player initates to resign&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;Game result shall be &quot;WhiteWon&quot;&quot; is undefined
@@ -5050,19 +5050,19 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
+  <testcase name="Flip wall from horizontal to vertical or vice versa" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.01"/>
   <testcase name="Flip wall from horizontal to vertical or vice versa" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
-  <testcase name="Flip wall from horizontal to vertical or vice versa" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
-  <testcase name="Save game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.505"/>
-  <testcase name="Save game with existing file name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.01"/>
-  <testcase name="Save game cancelled due to existing file name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.032"/>
-  <testcase name="Save position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
-  <testcase name="Save position with existing file name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008"/>
+  <testcase name="Save game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.271"/>
+  <testcase name="Save game with existing file name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008"/>
+  <testcase name="Save game cancelled due to existing file name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.026"/>
+  <testcase name="Save position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007"/>
+  <testcase name="Save position with existing file name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016"/>
   <testcase name="Save position cancelled due to existing file name" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.026"/>
-  <testcase name="Set thinking time for players" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.027"/>
-  <testcase name="Set thinking time for players" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.017"/>
-  <testcase name="Initiate a new game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.027"/>
-  <testcase name="Start clock" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.024"/>
-  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.023">
+  <testcase name="Set thinking time for players" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
+  <testcase name="Set thinking time for players" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003"/>
+  <testcase name="Initiate a new game" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
+  <testcase name="Start clock" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
+  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.009">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (9,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (1,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -5159,7 +5159,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008">
+  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 1.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (9,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (1,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -5256,7 +5256,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007">
+  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.01">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 1.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (8,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (1,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -5353,7 +5353,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.02">
+  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.011">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 2.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (8,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (2,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -5450,7 +5450,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.023">
+  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 3.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 2.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (2,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -5644,7 +5644,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
+  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.04">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 4.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 3.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -5741,7 +5741,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003">
+  <testcase name="Step Backward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.032">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 4.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 4.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 9 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -5838,7 +5838,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.026">
+  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 1.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 1.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (8,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (1,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -5935,7 +5935,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.009">
+  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 1.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 2.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (8,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (2,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -6032,7 +6032,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.023">
+  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 2.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (2,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -6129,7 +6129,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.027">
+  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 2.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 3.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -6226,7 +6226,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.012">
+  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 3.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 3.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 10 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -6323,7 +6323,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.002">
+  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 3.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 4.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 9 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -6420,7 +6420,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.018">
+  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.003">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 4.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 4.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 9 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -6517,7 +6517,7 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007">
+  <testcase name="Step Forward" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005">
     <failure message="org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move is 4.2&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Step backward is initiated&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;The next move shall be 5.1&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White player's position shall be (7,5)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black player's position shall be (3,6)&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;White has &lt;wwallno&gt; on stock&quot; is undefined&#10;&#9;io.cucumber.junit.UndefinedThrowable: The step &quot;Black has 9 on stock&quot; is undefined" type="org.opentest4j.MultipleFailuresError">org.opentest4j.MultipleFailuresError: Multiple Failures (9 failures)
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The game is in replay mode&quot; is undefined
 	io.cucumber.junit.UndefinedThrowable: The step &quot;The following moves have been played in game:&quot; is undefined
@@ -6614,18 +6614,18 @@
 	at java.base/java.lang.Thread.run(Thread.java:834)
 </failure>
   </testcase>
-  <testcase name="Switch current player" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.014"/>
-  <testcase name="Switch current player" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.012"/>
-  <testcase name="Validate pawn position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
-  <testcase name="Validate pawn position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.054"/>
-  <testcase name="Validate pawn position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.05"/>
-  <testcase name="Validate wall position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.062"/>
+  <testcase name="Switch current player" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.034"/>
+  <testcase name="Switch current player" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.015"/>
+  <testcase name="Validate pawn position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.015"/>
+  <testcase name="Validate pawn position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007"/>
+  <testcase name="Validate pawn position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.002"/>
+  <testcase name="Validate wall position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.007"/>
+  <testcase name="Validate wall position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016"/>
   <testcase name="Validate wall position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008"/>
-  <testcase name="Validate wall position" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.006"/>
-  <testcase name="Validate overlapping walls (all valid)" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.005"/>
-  <testcase name="Validate overlapping walls (invalid-1)" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.032"/>
-  <testcase name="Validate overlapping walls (invalid-2)" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.011"/>
-  <testcase name="Validate overlapping walls (invalid-3)" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.016"/>
+  <testcase name="Validate overlapping walls (all valid)" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.002"/>
+  <testcase name="Validate overlapping walls (invalid-1)" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.004"/>
+  <testcase name="Validate overlapping walls (invalid-2)" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.008"/>
+  <testcase name="Validate overlapping walls (invalid-3)" classname="ca.mcgill.ecse223.quoridor.features.CucumberTestsRunner" time="0.002"/>
   <system-out><![CDATA[Feature: Check if path exists
   As a player, I want the app to verify current wall placement that 
   at least one path is still available that leads to my target area (i.e. the first row of my opponent).
