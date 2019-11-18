@@ -34,27 +34,33 @@ public class QuoridorController {
 
     /**
      * @author Matthias Arabian
-     *
+     * resets the quoridor object of the QuoridorApplication to allow users to play consecutive games.
      */
-    public static boolean clearGame(){
+    public static void clearGame(){
 
         Quoridor q = QuoridorApplication.getQuoridor();
+
+        //before reseting the model, store the usernames. They should not be reset after each game
         List<User> u = q.getUsers();
         List<String> s = new ArrayList<>();
         for (User r : u)
             s.add(r.getName());
-        q.delete();
 
+        QuoridorApplication.clearBlackPawnBehaviour();
+        QuoridorApplication.clearWhitePawnBehaviour();
+        q.delete(); //reset the model
+
+        //add the usernames into the clean model
         for (String str : s) {
             if (str.equals("user1") || str.equals("user2"))
                 continue; //do not add user1 and user2 to the list, b/c those names are created when the game is initialized
             try {
-                q.addUser(str);
+                q.addUser(str); //will throw an exception if the user being added already exists
             } catch (Exception e) {
             }
         }
-        return true;
     }
+
     /**
      * Gherkin feature: Initialize Board
      * This controller method is responsible for initializing the board. It sets the current player to move to the white player.
@@ -86,9 +92,9 @@ public class QuoridorController {
         Player blackPlayer = quoridor.getCurrentGame().getBlackPlayer();
 
         //Set the white and the black player's pawn to their initial positions
-        int whiteRow = 1;
+        int whiteRow = 9;
         int whiteCol = 5;
-        int blackRow = 9;
+        int blackRow = 1;
         int blackCol = 5;
         Tile whitePlayerStartTile = quoridor.getBoard().getTile((whiteRow - 1) * 9 + whiteCol - 1);
         Tile blackPlayerStartTile = quoridor.getBoard().getTile((blackRow - 1) * 9 + blackCol - 1);
@@ -409,6 +415,7 @@ public class QuoridorController {
         Player player1 = new Player(new Time(thinkingTime), user1, 9, Direction.Horizontal);
         Player player2 = new Player(new Time(thinkingTime), user2, 1, Direction.Horizontal);
 
+
         Player[] players = {player1, player2};
         // Create all walls. Walls with lower ID belong to player1,
         // while the second half belongs to player 2
@@ -420,6 +427,9 @@ public class QuoridorController {
 
         game.setWhitePlayer(player1);
         game.setBlackPlayer(player2);
+        QuoridorApplication.getWhitePawnBehaviour(player1);
+
+        QuoridorApplication.getBlackPawnBehaviour(player2);
         return true;
     }
 
@@ -522,36 +532,69 @@ public class QuoridorController {
      * @author Thomas Philippon
      */
     public static boolean grabWall(Quoridor quoridor) {
-        // throw new java.lang.UnsupportedOperationException("This controller method is not implemented yet");
         boolean returnVal = false;
+
         Game game = quoridor.getCurrentGame();
         String whitePlayerName = game.getWhitePlayer().getUser().getName();
         Wall wall;
         //check if the player to move has more walls in stock
         Player playerToMove = game.getCurrentPosition().getPlayerToMove();
         int nbOfWalls = numberOfWallsInStock(playerToMove, game);
+        System.out.println("nb of walls in stock: "+nbOfWalls);
 
         if (nbOfWalls >= 1) {
             //the player has more walls in stock
             int lastMoveNumber = game.getMoves().size();
             int roundNumber = game.getCurrentPosition().getId();
+
             Tile targetTile = quoridor.getBoard().getTile(0); //initialize the wall move candidate to the tile(0,0)
 
             if (playerToMove.getUser().getName().toString().equals(whitePlayerName)) {
                 wall = playerToMove.getWall(nbOfWalls - 1);
                 game.getCurrentPosition().removeWhiteWallsInStock(wall);
+
             } else {
                 wall = playerToMove.getWall(nbOfWalls - 1);
                 game.getCurrentPosition().removeBlackWallsInStock(wall);
             }
-
             WallMove wallMoveCandidate = new WallMove(lastMoveNumber + 1, roundNumber, playerToMove, targetTile, game, Direction.Vertical, wall);
             game.setWallMoveCandidate(wallMoveCandidate);
+
             returnVal = true;
         }
         return returnVal;
 
     }
+
+    /**
+     * This controller method
+     *
+     * @param quoridor - Quoridor application
+     * @return Boolean - Returns 1 if a wall candidate object was created and 0 if not
+     * @author Thomas Philippon
+     */
+    public static void cancelWallGrabbed(Quoridor quoridor){
+        Player playerToMove = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
+        Game game = quoridor.getCurrentGame();
+        String whitePlayerName = quoridor.getCurrentGame().getWhitePlayer().getUser().getName();
+        WallMove wallCandidate;
+        try{
+            wallCandidate = quoridor.getCurrentGame().getWallMoveCandidate();
+            Wall wall = wallCandidate.getWallPlaced();
+            int nbOfWalls = numberOfWallsInStock(playerToMove, game);
+            if (playerToMove.getUser().getName().equals(whitePlayerName)) {
+                game.getCurrentPosition().addWhiteWallsInStock(wall);
+            } else {
+                game.getCurrentPosition().addBlackWallsInStock(wall);
+            }
+            playerToMove.addWall(wall);
+            game.getWallMoveCandidate().delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Query method to get the number of walls in stock for a player
@@ -968,7 +1011,7 @@ public class QuoridorController {
 
         if (w2h > 1) {
             r.setWidth(curHeight);
-            r.setHeight(curWidth/0.85);
+            r.setHeight(curWidth);
         }
 
         r.setStroke(Color.BLACK);
@@ -998,19 +1041,16 @@ public class QuoridorController {
 
         if (w2h > 1) { //rotate to vertical
 
-            r.setTranslateY(r.getTranslateY() - curWidth / 2 + 2.5);
+            r.setTranslateY(r.getTranslateY() - curWidth / 2 + 4);
             r.setTranslateX(r.getTranslateX() + curWidth / 2 - 2.5);
             r.setWidth(curHeight);
-            r.setHeight(curWidth / 0.85);
-            r.setTranslateX(r.getTranslateX() + 1 * 0.52);
-            r.setTranslateY(r.getTranslateY() - 5.02);
+            r.setHeight(curWidth);
         } else { //rotate to horizontal
 
-            r.setTranslateY(r.getTranslateY() + curHeight / 2 - 2.5);
-            r.setTranslateX(r.getTranslateX() - curHeight / 2);
-            r.setWidth(curHeight * 0.85);
+            r.setTranslateY(r.getTranslateY() + curHeight / 2 - 4);
+            r.setTranslateX(r.getTranslateX() - curHeight / 2 + 2.5);
+            r.setWidth(curHeight);
             r.setHeight(curWidth);
-            r.setTranslateX(r.getTranslateX() + 7);
         }
 
     }
@@ -1304,6 +1344,30 @@ public class QuoridorController {
         return color;
     }
 
+    //input parameter: 0=row, 1=col
+    public static int getCurrentPawnTilePos(int specifyRowOrCol){
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        String colour = getColorOfPlayerToMove(quoridor);
+        Tile temp;
+        if(colour.equals("white")){
+            temp = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition().getTile();
+        }
+        else{
+            temp = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition().getTile();
+        }
+        if(specifyRowOrCol==0){
+            return temp.getRow();
+        }
+        else if(specifyRowOrCol==1){
+            return temp.getColumn();
+        }
+        else{
+            return -1;
+        }
+
+
+    }
+
     /**
      * GUI query method
      * Returns Thinking of a player
@@ -1314,6 +1378,23 @@ public class QuoridorController {
      */
     public static String playerThinkingTime(Player player) {
         return player.getRemainingTime().toString();
+    }
+
+    /**
+     * @author David
+     * @param row
+     * @param col
+     * @return true if there is a pawn on that tile, false otherwise
+     */
+    public static boolean isPlayerOnTile(int row, int col){
+        int blackRow = getCurrentGame().getCurrentPosition().getBlackPosition().getTile().getRow();
+        int blackCol = getCurrentGame().getCurrentPosition().getBlackPosition().getTile().getColumn();
+        int whiteRow = getCurrentGame().getCurrentPosition().getWhitePosition().getTile().getRow();
+        int whiteCol = getCurrentGame().getCurrentPosition().getWhitePosition().getTile().getColumn();
+        if((blackRow==row && blackCol==col)||(whiteRow==row && whiteCol==col)){
+            return true;
+        }
+        return false;
     }
 }
 

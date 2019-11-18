@@ -2,6 +2,8 @@ package ca.mcgill.ecse223.quoridor;
 
 
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
+import ca.mcgill.ecse223.quoridor.controller.PawnBehaviour;
+import ca.mcgill.ecse223.quoridor.model.Player;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
 import ca.mcgill.ecse223.quoridor.persistence.QuoridorSettingsManager;
@@ -31,7 +33,8 @@ public class QuoridorApplication extends Application{
 	private static Quoridor quoridor;
 
 
-
+	private static PawnBehaviour whitePawnBehaviour;
+	private static PawnBehaviour blackPawnBehaviour;
 	private static ViewInterface c = null;
 
 	//scaling variables (for resizing of window)
@@ -108,7 +111,44 @@ public class QuoridorApplication extends Application{
 		}
  		return quoridor;
 	}
-	
+
+	public static PawnBehaviour getWhitePawnBehaviour(Player player){
+		if(whitePawnBehaviour==null){
+			whitePawnBehaviour = new PawnBehaviour();
+			whitePawnBehaviour.setPlayer(player);
+			whitePawnBehaviour.setCurrentGame(getQuoridor().getCurrentGame());
+			whitePawnBehaviour.entry();
+		}
+		return whitePawnBehaviour;
+	}
+	public static PawnBehaviour getBlackPawnBehaviour(Player player){
+		if(blackPawnBehaviour==null){
+			blackPawnBehaviour = new PawnBehaviour();
+			blackPawnBehaviour.setPlayer(player);
+			blackPawnBehaviour.setCurrentGame(getQuoridor().getCurrentGame());
+			blackPawnBehaviour.entry();
+		}
+		return blackPawnBehaviour;
+	}
+
+	public static PawnBehaviour clearWhitePawnBehaviour() {
+
+		if (whitePawnBehaviour != null)
+			whitePawnBehaviour.delete();
+
+		whitePawnBehaviour = null;
+
+		return whitePawnBehaviour;
+	}
+
+	public static PawnBehaviour clearBlackPawnBehaviour() {
+		if (blackPawnBehaviour != null)
+			blackPawnBehaviour.delete();
+
+		blackPawnBehaviour = null;
+
+		return blackPawnBehaviour;
+	}
 
 	public static ViewInterface getViewInterface() {
 
