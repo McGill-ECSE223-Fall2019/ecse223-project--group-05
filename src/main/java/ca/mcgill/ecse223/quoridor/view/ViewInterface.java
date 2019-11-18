@@ -158,15 +158,50 @@ public class ViewInterface {
     double x,y;
 
 	/**
+	 * @author Matthias Arabian
+	 * @param color the color of the HBox to return
+	 * @return the Hbox of <>color</> player
+	 */
+	private HBox getStockOf(String color){
+    	if (color.toLowerCase().equals("black"))
+    		return blackStock;
+    	else
+    		return whiteStock;
+	}
+
+	/**
 	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
+	 *
+	 * Matthias edited this for deliverable 4. Not called by the walls, but by the HBoxes storing the walls.
+	 * Allows player to put the wall back into their stock if they would like.
 	 */
 	public void GrabWall(MouseEvent mouseEvent) {
 
 		playerToMove = QuoridorController.getPlayerOfCurrentTurn();
-		Rectangle wall = (Rectangle) mouseEvent.getSource();
-		String wallID = wall.getId();
+		HBox source = (HBox)mouseEvent.getSource(); //get wall stock
 		String color = QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor());
+
+		//if no more walls in stock
+		if (source.getChildren().size() <= 0 && source.equals(getStockOf(color)))
+		{
+			if (wallMoveCandidate == null) //if the player hasn't grabbed a wall this turn, don't do anything
+				gameSessionNotificationLabel.setText("You have no more walls in stock...");
+			else
+			{
+				//TODO Return the wall in the model as well as the GUI
+				//return the wall to the stock
+				returnWallToStock(wallMoveCandidate, getStockOf(color));
+				wallGrabbed = false;
+				wallSelected = null;
+				wallMoveCandidate = null;
+			}
+			return;
+		}
+
+
+		Rectangle wall = (Rectangle) source.getChildren().get(0);
+		String wallID = wall.getId();
 		System.err.print(1);
 
 		//if the player selects one of the other player's wall
@@ -176,10 +211,17 @@ public class ViewInterface {
 
 		// if the current player to move selects a second wall during the same turn
 		if(wallID.contains(color) && wallGrabbed == true){
-		    if (wallSelected == null)
+		    if (wallSelected == null) //only send an error if they did not grab a wall this turn
                 displayIllegalNotification("You moved your pawn, so you cannot grab a wall this turn!");
-            else
-                displayIllegalNotification("You have already selected a wall. Use the ASWD keys to move it on the game board");
+            else{
+            	//TODO Return the wall in the model as well as the GUI
+				//otherwise, return teh grabbed wall to the stock
+            	returnWallToStock(wallMoveCandidate, getStockOf(color));
+            	wallGrabbed = false;
+            	wallSelected = null;
+            	wallMoveCandidate = null;
+            	return;
+			}
 		}
 		//check if the player to move is grabbing his walls and not the opponent's
 		if(wallID.contains(color) && wallGrabbed == false) {
@@ -193,7 +235,7 @@ public class ViewInterface {
 
 			if (grabWallResult == false) {
 				gameSessionNotificationLabel.setText("You have no more walls in stock...");
-			}
+		}
 			else{
 				validWallGrab = true;
 				wallMoveCandidate = wall;
@@ -452,6 +494,7 @@ public class ViewInterface {
 
 		//reset the GUI wall related global variables
 		invalidWallPlacement.setText("");
+		gameSessionNotificationLabel.setText("");
 		validWallGrab = false;
 		wallSelected = null;
 		if (wallMoveCandidate != null)
@@ -463,36 +506,19 @@ public class ViewInterface {
 		Rectangle[] blackWalls = {blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6
 				,blackWall7,blackWall8, blackWall9, blackWall10};
 		for (Rectangle r : blackWalls){
-			Node p = r.getParent();
-			if (!p.getClass().getName().contains("HBox")) {
-				AnchorPane parent = (AnchorPane) r.getParent();
-				parent.getChildren().remove(r);
-				blackStock.getChildren().add(r);
-				r.setTranslateX(0);
-				r.setTranslateY(0);
-				QuoridorController.resetGUIWall(r);
-			}
+			returnWallToStock(r, blackStock);
 		}
 
 		//put all whiteWalls back into their stock positions
 		Rectangle[] whiteWalls = {whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6
 				, whiteWall7, whiteWall8, whiteWall9, whiteWall10};
 		for (Rectangle r : whiteWalls){
-			Node p = r.getParent();
-			if (!p.getClass().getName().contains("HBox")) {
-				AnchorPane parent = (AnchorPane) r.getParent();
-				parent.getChildren().remove(r);
-				whiteStock.getChildren().add(r);
-				r.setTranslateX(0);
-				r.setTranslateY(0);
-				QuoridorController.resetGUIWall(r);
-			}
+			returnWallToStock(r, whiteStock);
 		}
 
 		//move the pawns back to their initial positions
-		//TODO not correct if won game
-        setTileImage(whitePlayerTile, TileImage.TILE_STANDARD);
-        setTileImage(blackPlayerTile, TileImage.TILE_STANDARD);
+        setTileImage(whitePlayerTile, emptyTileShouldBe(whitePlayerTile));
+        setTileImage(blackPlayerTile, emptyTileShouldBe(blackPlayerTile));
         whitePlayerTile = initial_whitePlayerTile;
 		blackPlayerTile = initial_blackPlayerTile;
         setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
@@ -500,6 +526,23 @@ public class ViewInterface {
 
 	}
 
+	/**
+	 * return the wall r to the stock b
+	 * @author Matthias Arabian
+	 * @param r wall to return to stock
+	 * @param b stock that'll be receiving the wall
+	 */
+	private void returnWallToStock(Rectangle r, HBox b){
+		Node p = r.getParent();
+		if (!p.getClass().getName().contains("HBox")) {
+			AnchorPane parent = (AnchorPane) r.getParent();
+			parent.getChildren().remove(r);
+			b.getChildren().add(r);
+			r.setTranslateX(0);
+			r.setTranslateY(0);
+			QuoridorController.resetGUIWall(r);
+		}
+	}
 	/**
 	 * @author Daniel Wu
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
@@ -747,6 +790,29 @@ public class ViewInterface {
             img.setOpacity(1);
         }
     };
+    /**
+     * @Author Matthias Arabian
+     */
+    EventHandler<MouseEvent> hoverEffect_HBOX = new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    if (!wallGrabbed) {
+                        HBox img = (HBox) e.getSource();
+                        img.setOpacity(0.5);
+                    }
+                }
+            };
+
+    /**
+     *@Author Matthias Arabian
+     */
+    EventHandler<MouseEvent> cancelHoverEffect_HBOX = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            HBox img = (HBox)e.getSource();
+            img.setOpacity(1);
+        }
+    };
 
     /**
      * @author Matthias Arabian
@@ -798,6 +864,14 @@ public class ViewInterface {
             }
         }
     };
+
+    /**
+     * @author Matthias Arabian
+     * @param img the tile whose image will be changed
+     * @return a reference to the image the tile should be updated with
+     * This method uses a tile's coordinates to determine what its image should be when there are not pawns on it.
+     * (e.g tiles in the middle of the field would be the standard image. Tiles at the to and bottom have crosses to flag that that's the player's target area)
+     */
     private TileImage emptyTileShouldBe(ImageView img){
         //get row and column of tile
         String id = img.getId();
@@ -808,15 +882,15 @@ public class ViewInterface {
         //that tile's image will be replaced based on its coordinates because some positions have special tiles associated with them
         if (row == 1){
             if (col == 5)
-                return TileImage.TILE_TARGET_BLACK_CENTER;
-            else
-                return TileImage.TILE_TARGET_BLACK;
-        }
-        if (row == 9){
-            if (col == 5)
                 return TileImage.TILE_TARGET_WHITE_CENTER;
             else
                 return TileImage.TILE_TARGET_WHITE;
+        }
+        if (row == 9){
+            if (col == 5)
+                return TileImage.TILE_TARGET_BLACK_CENTER;
+            else
+                return TileImage.TILE_TARGET_BLACK;
         }
         return TileImage.TILE_STANDARD;
     }
@@ -827,45 +901,50 @@ public class ViewInterface {
 	 */
 	public void initialize() {
 		resetGUItoMainPage();
-
+        blackStock.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect_HBOX); //event handler used for hover animation
+        blackStock.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect_HBOX); //event handler used to end hover animation
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
 			    //store the images inside panes to have a background.
 			    Pane p = new Pane();
 			    p.toFront();
-                p.setStyle("-fx-background-color: #ffffff");
+                p.setStyle("-fx-background-color: #3d6b99");
 
+                //actual tile is an ImageView b/c we want to be able to change its image
 				ImageView tmp = new ImageView();
-				tmp.getStyleClass().add("thingy");
                 setTileImage(tmp, TileImage.TILE_STANDARD);
 				p.getChildren().add(tmp);
 				Bounds b = Game_Board. getCellBounds(row,col);
-
+//poopoo
+				//initialize the tile with a set width, height.
 				tmp.setFitWidth(HORIZONTALSTEP - WALL_WIDTH);
 				tmp.setFitHeight(VERTICALSTEP - WALL_WIDTH);
-				Game_Board.add(p , col, row);
-                tmp.setId("" + (row/2+1) + "," + (col/2+1));
+                tmp.setId("" + (row/2+1) + "," + (col/2+1)); //store the tile's corrdinates as its ID for later reference
+                Game_Board.add(p , col, row); //add tile to game board
 
-				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //add event handler used for jump/move pawn
-                tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //add event handler used for jump/move pawn
-                tmp.addEventFilter(MouseEvent.MOUSE_CLICKED, tryToMovePawn); //add event handler used for jump/move pawn
+				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //event handler used for hover animation
+                tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //event handler used to end hover animation
+                tmp.addEventFilter(MouseEvent.MOUSE_CLICKED, tryToMovePawn); //event handler used for jump/move pawn
 
+                //initialize the tiles on the top and bottom to their special image
                 if (row == 0){
                     setTileImage(tmp, TileImage.TILE_TARGET_WHITE);
                 }
                 else if (row/2 == 8) {
                     setTileImage(tmp, TileImage.TILE_TARGET_BLACK);
                 }
+
+                //initialize the GUI pawn positions to be at the top/bottom row and center column of the field
                 if (col/2 == 4)
                 {
-                    if (row/2 == 0)
+                    if (row/2 == 0) //black pawn
                     {
                         blackPlayerTile = tmp;
                         initial_blackPlayerTile = tmp;
                         setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
                     }
-                    else if (row/2 == 8)
+                    else if (row/2 == 8) //white pawn
                     {
                         whitePlayerTile = tmp;
                         initial_whitePlayerTile = tmp;
@@ -1149,7 +1228,10 @@ public class ViewInterface {
 	 * Other's timer turns on.
 	 */
 	public void switchPlayer(Event e) {
-
+        //wallGrabbed is used as a flag to assert thta the player has completed an action.
+        //wallGrabbed is set to true when a pawn is moved AND when a wall is grabbed.
+	    if (!wallGrabbed)
+            return;
 		//dropWall implemented here
 		if (wallSelected != null) {
 			boolean dropSuccessful;
@@ -1165,6 +1247,7 @@ public class ViewInterface {
 				return;
 			} else {
 				invalidWallPlacement.setText("");
+				gameSessionNotificationLabel.setText("");
 				validWallGrab = false;
 				wallSelected = null;
 				wallMoveCandidate.setStroke(Color.BLACK);
@@ -1369,7 +1452,6 @@ public class ViewInterface {
 
 	/**
 	 * Event Listener. When the saveGame event is called, this method begins saving the current game instance into a file through dialog windows.
-	 * Known Bug: TODO: saveGame process does not pause the player timers in game.
 	 * @author Edwin Pan
 	 * @param event
 	 */
