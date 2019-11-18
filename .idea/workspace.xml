@@ -2,17 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="20474773-93fb-4996-a7b9-fcc6cd7dc114" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/advs.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/advs.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ca/mcgill/ecse223/quoridor/controller/QuoridorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ca/mcgill/ecse223/quoridor/controller/QuoridorController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ca/mcgill/ecse223/quoridor/view/ViewInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ca/mcgill/ecse223/quoridor/view/ViewInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/advs.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/advs.fxml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -156,9 +148,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.GithubRepo [run]" />
         <item itemvalue="Gradle.GithubRepo [build]" />
         <item itemvalue="Gradle.GithubRepo [clean]" />
-        <item itemvalue="Gradle.GithubRepo [run]" />
       </list>
     </recent_temporary>
   </component>
@@ -173,7 +165,8 @@
       <option name="presentableId" value="Default" />
       <updated>1573853009966</updated>
       <workItem from="1573853125606" duration="40608000" />
-      <workItem from="1573997767335" duration="18591000" />
+      <workItem from="1573997767335" duration="18857000" />
+      <workItem from="1574041434185" duration="2640000" />
     </task>
     <servers />
   </component>

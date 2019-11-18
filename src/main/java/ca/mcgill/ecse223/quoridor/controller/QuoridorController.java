@@ -584,12 +584,12 @@ public class QuoridorController {
             } else {
                 game.getCurrentPosition().addBlackWallsInStock(wall);
             }
+            playerToMove.addWall(wall);
             game.setWallMoveCandidate(null);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 

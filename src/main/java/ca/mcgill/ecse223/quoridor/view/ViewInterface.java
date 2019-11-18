@@ -191,10 +191,12 @@ public class ViewInterface {
 			{
 				//TODO Return the wall in the model as well as the GUI
 				//return the wall to the stock
+                QuoridorController.cancelWallGrabbed(quoridor);
 				returnWallToStock(wallMoveCandidate, getStockOf(color));
-				wallGrabbed = false;
-				wallSelected = null;
-				wallMoveCandidate = null;
+                validWallGrab = false;
+                wallSelected = null;
+                wallMoveCandidate = null;
+                wallGrabbed = false; //added by Thomas
 			}
 			return;
 		}
@@ -216,10 +218,12 @@ public class ViewInterface {
             else{
             	//TODO Return the wall in the model as well as the GUI
 				//otherwise, return teh grabbed wall to the stock
+                QuoridorController.cancelWallGrabbed(quoridor);
             	returnWallToStock(wallMoveCandidate, getStockOf(color));
-            	wallGrabbed = false;
-            	wallSelected = null;
-            	wallMoveCandidate = null;
+                validWallGrab = false;
+                wallSelected = null;
+                wallMoveCandidate = null;
+                wallGrabbed = false; //added by Thomas
             	return;
 			}
 		}
