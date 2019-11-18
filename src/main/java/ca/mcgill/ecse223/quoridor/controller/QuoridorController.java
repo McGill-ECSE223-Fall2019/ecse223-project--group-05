@@ -532,31 +532,34 @@ public class QuoridorController {
      * @author Thomas Philippon
      */
     public static boolean grabWall(Quoridor quoridor) {
-        // throw new java.lang.UnsupportedOperationException("This controller method is not implemented yet");
         boolean returnVal = false;
+
         Game game = quoridor.getCurrentGame();
         String whitePlayerName = game.getWhitePlayer().getUser().getName();
         Wall wall;
         //check if the player to move has more walls in stock
         Player playerToMove = game.getCurrentPosition().getPlayerToMove();
         int nbOfWalls = numberOfWallsInStock(playerToMove, game);
+        System.out.println("nb of walls in stock: "+nbOfWalls);
 
         if (nbOfWalls >= 1) {
             //the player has more walls in stock
             int lastMoveNumber = game.getMoves().size();
             int roundNumber = game.getCurrentPosition().getId();
+
             Tile targetTile = quoridor.getBoard().getTile(0); //initialize the wall move candidate to the tile(0,0)
 
             if (playerToMove.getUser().getName().toString().equals(whitePlayerName)) {
                 wall = playerToMove.getWall(nbOfWalls - 1);
                 game.getCurrentPosition().removeWhiteWallsInStock(wall);
+
             } else {
                 wall = playerToMove.getWall(nbOfWalls - 1);
                 game.getCurrentPosition().removeBlackWallsInStock(wall);
             }
-
             WallMove wallMoveCandidate = new WallMove(lastMoveNumber + 1, roundNumber, playerToMove, targetTile, game, Direction.Vertical, wall);
             game.setWallMoveCandidate(wallMoveCandidate);
+
             returnVal = true;
         }
         return returnVal;
@@ -585,7 +588,7 @@ public class QuoridorController {
                 game.getCurrentPosition().addBlackWallsInStock(wall);
             }
             playerToMove.addWall(wall);
-            game.setWallMoveCandidate(null);
+            game.getWallMoveCandidate().delete();
 
         } catch (Exception e) {
             e.printStackTrace();
