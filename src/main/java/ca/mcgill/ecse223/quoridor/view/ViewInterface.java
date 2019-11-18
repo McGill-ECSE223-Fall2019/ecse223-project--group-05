@@ -901,8 +901,6 @@ public class ViewInterface {
 	 */
 	public void initialize() {
 		resetGUItoMainPage();
-        blackStock.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect_HBOX); //event handler used for hover animation
-        blackStock.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect_HBOX); //event handler used to end hover animation
 		//Populate game board with colorful tiles
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
@@ -916,7 +914,7 @@ public class ViewInterface {
                 setTileImage(tmp, TileImage.TILE_STANDARD);
 				p.getChildren().add(tmp);
 				Bounds b = Game_Board. getCellBounds(row,col);
-//poopoo
+
 				//initialize the tile with a set width, height.
 				tmp.setFitWidth(HORIZONTALSTEP - WALL_WIDTH);
 				tmp.setFitHeight(VERTICALSTEP - WALL_WIDTH);
@@ -951,6 +949,10 @@ public class ViewInterface {
                         setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
                     }
                 }
+
+				//change opacity of wall stocks
+				whiteStock.setOpacity(1);
+				blackStock.setOpacity(0.5);
         }
 		}
 
@@ -1261,6 +1263,11 @@ public class ViewInterface {
 		Button b = ((Button)e.getSource());
 		if (b.getId().equals(btn_whitePlayerTurn.getId())) {
 			if (btn_whitePlayerTurn.getText().equals("END TURN")) { //starts black player turn
+				//change opacity of wall stocks
+				whiteStock.setOpacity(0.5);
+				blackStock.setOpacity(1);
+
+				//change the text of the GUI and turn timers on/off
 				btn_blackPlayerTurn.setText("END TURN");
 				lbl_black_awaitingMove.setText("");
                 QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
@@ -1279,6 +1286,10 @@ public class ViewInterface {
 			}
 		}
 		else { //starts white player turn
+			//change opacity of wall stocks
+			whiteStock.setOpacity(1);
+			blackStock.setOpacity(0.5);
+
 			if (btn_blackPlayerTurn.getText().equals("END TURN")) {
 				btn_whitePlayerTurn.setText("END TURN");
 				lbl_white_awaitingMove.setText("");

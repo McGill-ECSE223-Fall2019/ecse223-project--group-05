@@ -10,7 +10,9 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/advs.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/advs.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ca/mcgill/ecse223/quoridor/view/ViewInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ca/mcgill/ecse223/quoridor/view/ViewInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/advs.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/advs.fxml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -171,7 +173,7 @@
       <option name="presentableId" value="Default" />
       <updated>1573853009966</updated>
       <workItem from="1573853125606" duration="40608000" />
-      <workItem from="1573997767335" duration="17395000" />
+      <workItem from="1573997767335" duration="18591000" />
     </task>
     <servers />
   </component>
