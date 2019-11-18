@@ -564,6 +564,36 @@ public class QuoridorController {
     }
 
     /**
+     * This controller method
+     *
+     * @param quoridor - Quoridor application
+     * @return Boolean - Returns 1 if a wall candidate object was created and 0 if not
+     * @author Thomas Philippon
+     */
+    public static void cancelWallGrabbed(Quoridor quoridor){
+        Player playerToMove = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
+        Game game = quoridor.getCurrentGame();
+        String whitePlayerName = quoridor.getCurrentGame().getWhitePlayer().getUser().getName();
+        WallMove wallCandidate;
+        try{
+            wallCandidate = quoridor.getCurrentGame().getWallMoveCandidate();
+            Wall wall = wallCandidate.getWallPlaced();
+            int nbOfWalls = numberOfWallsInStock(playerToMove, game);
+            if (playerToMove.getUser().getName().equals(whitePlayerName)) {
+                game.getCurrentPosition().addWhiteWallsInStock(wall);
+            } else {
+                game.getCurrentPosition().addBlackWallsInStock(wall);
+            }
+            game.setWallMoveCandidate(null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
      * Query method to get the number of walls in stock for a player
      *
      * @param player - A player of the game
