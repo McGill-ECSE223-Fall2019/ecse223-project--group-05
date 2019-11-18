@@ -370,7 +370,7 @@ public class CucumberStepDefinitions {
     @When("I try to grab a wall from my stock")
     public void iTryToGrabAWallFromMyStock() {
 
-        handHasWall = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+       handHasWall = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
     }
 
     /**
@@ -994,7 +994,6 @@ public class CucumberStepDefinitions {
         Boolean b = currentPlayer.equals(currentPlayerShouldBe);
         assertEquals(b, true);
     }
-
 
     /**
      * @param dir
@@ -1996,7 +1995,6 @@ public class CucumberStepDefinitions {
 
         game.setCurrentPosition(gamePosition);
     }
-
 
     /**
      * Removes the wall in stock for both players
