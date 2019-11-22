@@ -518,7 +518,7 @@ public class ViewInterface {
 		for (Rectangle r : whiteWalls){
 			returnWallToStock(r, whiteStock);
 		}
-		//set wall stock opacity back to default values (it is white player's turn)
+		//set wall stock opacity back to default values (it will be white player's turn)
 		blackStock.setOpacity(0.5);
 		whiteStock.setOpacity(1);
 
@@ -528,7 +528,7 @@ public class ViewInterface {
         setTileImage(blackPlayerTile, emptyTileShouldBe(blackPlayerTile));
         whitePlayerTile = initial_whitePlayerTile;
 		blackPlayerTile = initial_blackPlayerTile;
-        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
+        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN_SELECTED);
         setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
 
 	}
@@ -953,7 +953,7 @@ public class ViewInterface {
                     {
                         whitePlayerTile = tmp;
                         initial_whitePlayerTile = tmp;
-                        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
+                        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN_SELECTED);
                     }
                 }
 
@@ -1278,6 +1278,10 @@ public class ViewInterface {
 				whiteStock.setOpacity(0.5);
 				blackStock.setOpacity(1);
 
+				//change image of players accordingly
+				setTileImage(blackPlayerTile, TileImage.BLACK_PAWN_SELECTED);
+				setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
+
 				//change the text of the GUI and turn timers on/off
 				btn_blackPlayerTurn.setText("END TURN");
 				lbl_black_awaitingMove.setText("");
@@ -1303,6 +1307,10 @@ public class ViewInterface {
                 //change opacity of wall stocks
                 whiteStock.setOpacity(1);
                 blackStock.setOpacity(0.5);
+
+				//change image of players accordingly
+                setTileImage(whitePlayerTile, TileImage.WHITE_PAWN_SELECTED);
+                setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
 
                 //do the drop wall logic
                 doDropWallLogicAtEndOfTurn();
