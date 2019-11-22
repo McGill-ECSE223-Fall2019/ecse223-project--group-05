@@ -34,7 +34,6 @@ import ca.mcgill.ecse223.quoridor.model.Player;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
-import com.sun.javafx.scene.control.skin.Utils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -519,6 +518,10 @@ public class ViewInterface {
 		for (Rectangle r : whiteWalls){
 			returnWallToStock(r, whiteStock);
 		}
+		//set wall stock opacity back to default values (it is white player's turn)
+		blackStock.setOpacity(0.5);
+		whiteStock.setOpacity(1);
+
 
 		//move the pawns back to their initial positions
         setTileImage(whitePlayerTile, emptyTileShouldBe(whitePlayerTile));
