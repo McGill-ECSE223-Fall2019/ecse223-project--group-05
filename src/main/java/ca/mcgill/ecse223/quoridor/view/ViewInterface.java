@@ -34,7 +34,6 @@ import ca.mcgill.ecse223.quoridor.model.Player;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
-import com.sun.javafx.scene.control.skin.Utils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -120,11 +119,11 @@ public class ViewInterface {
 	@FXML private GridPane Game_Board;
 	@FXML private Rectangle whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6, whiteWall7, whiteWall8, whiteWall9, whiteWall10;
 	@FXML private Rectangle blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6, blackWall7, blackWall8, blackWall9, blackWall10;
+	@FXML private Button btn_dropWall;
 	@FXML private HBox blackStock, whiteStock;
 	@FXML private Label gameSessionNotificationLabel;
 	@FXML private Label whiteTimer;
 	@FXML private Label blackTimer;
-	@FXML private Button btn_whitePlayerTurn, btn_blackPlayerTurn, btn_blackPlayerDropWall, btn_whitePlayerDropWall;
 	@FXML private Label lbl_black_awaitingMove, lbl_white_awaitingMove;
 	@FXML private Label whitePlayerName;
 	@FXML private Label blackPlayerName;
@@ -169,17 +168,34 @@ public class ViewInterface {
     		return whiteStock;
 	}
 
+    public void GrabWall(MouseEvent mouseEvent){
+	    HBox source = (HBox)mouseEvent.getSource();
+	    GrabWall_move(source);
+    }
 	/**
 	 * @author Thomas Philippon
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 *
 	 * Matthias edited this for deliverable 4. Not called by the walls, but by the HBoxes storing the walls.
 	 * Allows player to put the wall back into their stock if they would like.
+     * Matthias edited this for deliverable 5. Can be called programatically
 	 */
-	public void GrabWall(MouseEvent mouseEvent) {
+	public void GrabWall_move(HBox stockClicked) {
 
 		playerToMove = QuoridorController.getPlayerOfCurrentTurn();
-		HBox source = (HBox)mouseEvent.getSource(); //get wall stock
+
+        //get wall stock based on current player
+        HBox source;
+		if (stockClicked == null) //event triggered programatically
+        {
+            if (playerToMove.equals(whitePlayer)) {source = whiteStock;}
+            else { source = blackStock; }
+        }
+		else{
+		    source = stockClicked;
+        }
+
+
 		String color = QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor());
 
 		//if no more walls in stock
@@ -189,7 +205,6 @@ public class ViewInterface {
 				gameSessionNotificationLabel.setText("You have no more walls in stock...");
 			else
 			{
-				//TODO Return the wall in the model as well as the GUI
 				//return the wall to the stock
                 QuoridorController.cancelWallGrabbed(quoridor);
 				returnWallToStock(wallMoveCandidate, getStockOf(color));
@@ -197,6 +212,10 @@ public class ViewInterface {
                 wallSelected = null;
                 wallMoveCandidate = null;
                 wallGrabbed = false; //added by Thomas
+
+                //turn btn_dropWall to disabled and invisible
+                btn_dropWall.setDisable(true);
+                btn_dropWall.setVisible(false);
 			}
 			return;
 		}
@@ -216,7 +235,6 @@ public class ViewInterface {
 		    if (wallSelected == null) //only send an error if they did not grab a wall this turn
                 displayIllegalNotification("You moved your pawn, so you cannot grab a wall this turn!");
             else{
-            	//TODO Return the wall in the model as well as the GUI
 				//otherwise, return the grabbed wall to the stock
                 QuoridorController.cancelWallGrabbed(quoridor);
             	returnWallToStock(wallMoveCandidate, getStockOf(color));
@@ -224,6 +242,10 @@ public class ViewInterface {
                 wallSelected = null;
                 wallMoveCandidate = null;
                 wallGrabbed = false; //added by Thomas
+
+                //turn btn_dropWall to disabled and invisible
+                btn_dropWall.setDisable(true);
+                btn_dropWall.setVisible(false);
             	return;
 			}
 		}
@@ -241,6 +263,10 @@ public class ViewInterface {
 				gameSessionNotificationLabel.setText("You have no more walls in stock...");
 		}
 			else{
+                //turn btn_dropWall to enabled and visible
+                btn_dropWall.setDisable(false);
+                btn_dropWall.setVisible(true);
+
 				validWallGrab = true;
 				wallMoveCandidate = wall;
 				wallSelected = wall;
@@ -281,16 +307,6 @@ public class ViewInterface {
 	}
 
 	/**
-	 * @author Thomas Philippon
-	 * This method is called when the user drags the walls
-	 */
-	public void MoveWall(MouseEvent mouseEvent) {
-
-		System.out.println("x: " + mouseEvent.getX());
-		System.out.println("y: " + mouseEvent.getY());
-
-	}
-	/**
 	 * @author David Deng
 	 * This method is called when the user moves the wall using the keyboard.
 	 * It is suppsoed to change the rectangle to red if the position is invalid.
@@ -299,15 +315,29 @@ public class ViewInterface {
 	 */
 
 	@FXML
-	public static void MoveWall(KeyEvent keyEvent) {
+	public void MoveWall(KeyEvent keyEvent) {
 		//ensure that a wall is selected
 
 		boolean isValid = true;
 		try {
 			if(wallSelected==null){
+                if (keyEvent.getCode()==KeyCode.Q) //if press q -> grab wall from stock
+                    GrabWall_move(null);
 				return; //don't do anything, since you cannot move a nonexistant wall
 			}
-			if(keyEvent.getCode()==KeyCode.W) {
+            if (keyEvent.getCode()==KeyCode.Q) { //if press q -> put wall back in stock
+                GrabWall_move(null);
+                return;
+            }
+			else if(keyEvent.getCode().equals(KeyCode.ENTER)|| keyEvent.getCharacter().getBytes()[0] == '\n' || keyEvent.getCharacter().getBytes()[0] == '\r') {
+				System.out.println("dropping wall detected");
+				if (wallSelected.getStroke().equals(Color.GREEN))
+                {
+                    switchPlayer();
+                }
+				return;
+			}
+			else if(keyEvent.getCode()==KeyCode.W) {
 				isValid = QuoridorController.moveWall("up");
 				wallSelected.setTranslateY(wallSelected.getTranslateY()-VERTICALSTEP);//translates the rectangle by a tilewidth
 				System.out.println("detected");
@@ -323,7 +353,9 @@ public class ViewInterface {
 			else if(keyEvent.getCode()==KeyCode.D) {
 				isValid = QuoridorController.moveWall("right");
 				wallSelected.setTranslateX(wallSelected.getTranslateX()+HORIZONTALSTEP);
-			}
+			} else {
+			    return;
+            }
 			if(!isValid) {
 				wallSelected.setStroke(Color.RED);
 			}
@@ -476,10 +508,23 @@ public class ViewInterface {
 	 */
 	public void Goto_Main_Page() {
 		clearGUI_game_session_page();       //reset the GUI section of the QuoridorApplication
-		QuoridorController.clearGame();     //reset the model section of the QuoridorApplication
-		Goto_Page(Page.MAIN_PAGE);
+        clearGUI_new_game_page();
+        QuoridorController.clearGame();     //reset the model section of the QuoridorApplication
+        Goto_Page(Page.MAIN_PAGE);
 	}
 
+
+    /**
+     * @author Matthias Arabian
+     * resets the state of the NewGamePage to allow users to interact with it as if
+     * it were the first time they accessed that page
+     */
+    private void clearGUI_new_game_page() {
+        whiteNewName.setText("");
+        blackNewName.setText("");
+        whiteUsernameExistsLabel.setText("");
+        whiteUsernameExistsLabel.setText("");
+    }
 	/**
 	 * @author Matthias Arabian
 	 * resets the state of the GameSessionPage to allow users to start a new game after exiting a previous one
@@ -519,13 +564,21 @@ public class ViewInterface {
 		for (Rectangle r : whiteWalls){
 			returnWallToStock(r, whiteStock);
 		}
+		//set wall stock opacity back to default values (it will be white player's turn)
+		blackStock.setOpacity(0.5);
+		whiteStock.setOpacity(1);
+
+        //turn btn_dropWall to disabled and invisible
+        btn_dropWall.setDisable(true);
+        btn_dropWall.setVisible(false);
+
 
 		//move the pawns back to their initial positions
         setTileImage(whitePlayerTile, emptyTileShouldBe(whitePlayerTile));
         setTileImage(blackPlayerTile, emptyTileShouldBe(blackPlayerTile));
         whitePlayerTile = initial_whitePlayerTile;
 		blackPlayerTile = initial_blackPlayerTile;
-        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
+        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN_SELECTED);
         setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
 
 	}
@@ -854,6 +907,8 @@ public class ViewInterface {
                         setTileImage(img, TileImage.BLACK_PAWN);
                         blackPlayerTile = img;
                         wallGrabbed = true; //flag used to restrict player from grabbing a wall or moving again
+						switchPlayer();
+
                     }
                 } else {
                     if (getTileImage(img) != TileImage.BLACK_PAWN) { //don't allow pawn to be moved on top of other pawn
@@ -861,6 +916,7 @@ public class ViewInterface {
                         setTileImage(img, TileImage.WHITE_PAWN);
                         whitePlayerTile = img;
                         wallGrabbed = true; //flag used to restrict player from grabbing a wall or moving again
+						switchPlayer();
                     }
                 }
 
@@ -950,13 +1006,17 @@ public class ViewInterface {
                     {
                         whitePlayerTile = tmp;
                         initial_whitePlayerTile = tmp;
-                        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
+                        setTileImage(whitePlayerTile, TileImage.WHITE_PAWN_SELECTED);
                     }
                 }
 
 				//change opacity of wall stocks
 				whiteStock.setOpacity(1);
 				blackStock.setOpacity(0.5);
+
+				//turn btn_dropWall to disabled and invisible
+                btn_dropWall.setDisable(true);
+                btn_dropWall.setVisible(false);
         }
 		}
 
@@ -1120,9 +1180,9 @@ public class ViewInterface {
 	/**
 	 * Method to create new username for white player
 	 * @author Alex Masciotra
-	 * @param mouseEvent when done is pressed
+	 * @param event when done is pressed or entered is pressed
 	 */
-	public void whitePlayerSelectsNewUserName(MouseEvent mouseEvent) {
+	public void whitePlayerSelectsNewUserName(Event event) {
 
 		Boolean isValid = true;
 
@@ -1155,7 +1215,7 @@ public class ViewInterface {
 	 * @author Alex Masciotra
 	 * @param mouseEvent when done is pressed
 	 */
-	public void blackPlayerSelectsNewUserName(MouseEvent mouseEvent) {
+	public void blackPlayerSelectsNewUserName(Event mouseEvent) {
 
 		Boolean isValid = true;
 
@@ -1255,69 +1315,75 @@ public class ViewInterface {
 
 	/**
 	 * @author Matthias Arabian
-	 * @param e
 	 * Triggered when a user presses a button that might end a turn. Checks that that is a valid operation
 	 * and acts accordingly.
 	 * If the button can be pressed, then the player's turn is over. Its timer is turned off, and the other player's turn begins.
 	 * Other's timer turns on.
 	 */
-	public void switchPlayer(Event e) {
-        //wallGrabbed is used as a flag to assert thta the player has completed an action.
+	public void switchPlayer() {
+        //wallGrabbed is used as a flag to assert that the player has completed an action.
         //wallGrabbed is set to true when a pawn is moved AND when a wall is grabbed.
-	    if (!wallGrabbed)
+	    String color = QuoridorController.getColorOfPlayerToMove(quoridor);
+
+		if (!wallGrabbed)
             return;
 
-		Button b = ((Button)e.getSource());
-		if (b.getId().equals(btn_whitePlayerTurn.getId())) {
-			if (btn_whitePlayerTurn.getText().equals("END TURN")) { //starts black player turn
-                doDropWallLogicAtEndOfTurn();
-			    //change opacity of wall stocks
-				whiteStock.setOpacity(0.5);
-				blackStock.setOpacity(1);
+        //turn btn_dropWall to disabled and invisible
+        btn_dropWall.setDisable(true);
+        btn_dropWall.setVisible(false);
+        //clear the wall error strings
+        invalidWallPlacement.setText("");
+        gameSessionNotificationLabel.setText("");
 
-				//change the text of the GUI and turn timers on/off
-				btn_blackPlayerTurn.setText("END TURN");
-				lbl_black_awaitingMove.setText("");
-                QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
-                        ,timer);
-                timer = new Timer();
-				btn_whitePlayerTurn.setText("NOT WHITE TURN");
-				lbl_white_awaitingMove.setText("AWAITING MOVE");
-				lbl_black_awaitingMove.setText("It is your turn!");
+		if (color.equals("white")) {
+			 //starts black player turn
+			doDropWallLogicAtEndOfTurn();
+			//change opacity of wall stocks
+			whiteStock.setOpacity(0.5);
+			blackStock.setOpacity(1);
 
-				QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
-                        ,timer);
+			//change image of players accordingly
+			setTileImage(blackPlayerTile, TileImage.BLACK_PAWN_SELECTED);
+			setTileImage(whitePlayerTile, TileImage.WHITE_PAWN);
 
-                //update the model
-                Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
-                QuoridorController.completePlayerTurn(whitePlayer); //If it's WhitePlayer's turn, end it. If not, nothing happens.
-			}
+			//change the text of the GUI and turn timers on/off
+			lbl_black_awaitingMove.setText("");
+			QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
+					,timer);
+			timer = new Timer();
+			lbl_white_awaitingMove.setText("AWAITING MOVE");
+			lbl_black_awaitingMove.setText("It is your turn!");
+
+			QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
+					,timer);
+
+			//update the model
+			Player whitePlayer = QuoridorController.getCurrentWhitePlayer();
+			QuoridorController.completePlayerTurn(whitePlayer); //If it's WhitePlayer's turn, end it. If not, nothing happens.
 		}
 		else { //starts white player turn
+			//change opacity of wall stocks
+			whiteStock.setOpacity(1);
+			blackStock.setOpacity(0.5);
 
+			//change image of players accordingly
+			setTileImage(whitePlayerTile, TileImage.WHITE_PAWN_SELECTED);
+			setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
 
-			if (btn_blackPlayerTurn.getText().equals("END TURN")) {
-                //change opacity of wall stocks
-                whiteStock.setOpacity(1);
-                blackStock.setOpacity(0.5);
+			//do the drop wall logic
+			doDropWallLogicAtEndOfTurn();
+			lbl_white_awaitingMove.setText("");
+			QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
+					,timer);
+			timer = new Timer();
+			lbl_white_awaitingMove.setText("It is your turn!");
+			lbl_black_awaitingMove.setText("AWAITING MOVE");
+			QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
+					,timer);
 
-                //do the drop wall logic
-                doDropWallLogicAtEndOfTurn();
-				btn_whitePlayerTurn.setText("END TURN");
-				lbl_white_awaitingMove.setText("");
-				QuoridorController.stopPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer()
-                        ,timer);
-				timer = new Timer();
-				btn_blackPlayerTurn.setText("NOT BLACK TURN");
-				lbl_white_awaitingMove.setText("It is your turn!");
-				lbl_black_awaitingMove.setText("AWAITING MOVE");
-                QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer()
-                        ,timer);
-
-				//update the model
-                Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
-                QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
-			}
+			//update the model
+			Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
+			QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
 		}
 	}
 
@@ -1330,9 +1396,7 @@ public class ViewInterface {
 		if (QuoridorApplication.getQuoridor().hasBoard() == false)
 			return;
 		if (QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).toLowerCase().equals("black")){
-			btn_whitePlayerTurn.setText("END TURN");
 			lbl_white_awaitingMove.setText("");
-			btn_blackPlayerTurn.setText("NOT BLACK TURN");
 			lbl_white_awaitingMove.setText("It is your turn!");
 			lbl_black_awaitingMove.setText("AWAITING MOVE");
 		}
@@ -1466,7 +1530,15 @@ public class ViewInterface {
 				,timer);
 		timer = new Timer();
 
+		//disable page
+        getCurrentPage().setDisable(true);
+        getPage(Page.TOP_BUTTONS).setDisable(true);
+
 		saveGame(event); //save game
+
+        //enable page
+        getCurrentPage().setDisable(false);
+        getPage(Page.TOP_BUTTONS).setDisable(false);
 
 		//restart timer
 		QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove()
