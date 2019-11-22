@@ -878,6 +878,10 @@ public class ViewInterface {
     EventHandler<MouseEvent> tryToMovePawn = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
+
+            if (wallGrabbed) //only allow the player to move if they haven't done anything this turn
+                return;
+
             //get the tile object that was clicked, row and column
             ImageView img = (ImageView)e.getSource();
             String id = img.getId();
@@ -899,29 +903,27 @@ public class ViewInterface {
 			if(!success) return;
 
 
-            if (!wallGrabbed) { //only allow the player to move if they haven't done anything this turn
-                //update the GUI by moving the pawn to the new position.
-                if (QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black")) {
-                    if (getTileImage(img) != TileImage.WHITE_PAWN) { //don't allow pawn to be moved on top of other pawn
-                        setTileImage(blackPlayerTile, emptyTileShouldBe(blackPlayerTile));
-                        setTileImage(img, TileImage.BLACK_PAWN);
-                        blackPlayerTile = img;
-                        wallGrabbed = true; //flag used to restrict player from grabbing a wall or moving again
-						switchPlayer();
+            //update the GUI by moving the pawn to the new position.
+            if (QuoridorController.getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black")) {
+                if (getTileImage(img) != TileImage.WHITE_PAWN) { //don't allow pawn to be moved on top of other pawn
+                    setTileImage(blackPlayerTile, emptyTileShouldBe(blackPlayerTile));
+                    setTileImage(img, TileImage.BLACK_PAWN);
+                    blackPlayerTile = img;
+                    wallGrabbed = true; //flag used to restrict player from grabbing a wall or moving again
+                    switchPlayer();
 
-                    }
-                } else {
-                    if (getTileImage(img) != TileImage.BLACK_PAWN) { //don't allow pawn to be moved on top of other pawn
-                        setTileImage(whitePlayerTile, emptyTileShouldBe(whitePlayerTile));
-                        setTileImage(img, TileImage.WHITE_PAWN);
-                        whitePlayerTile = img;
-                        wallGrabbed = true; //flag used to restrict player from grabbing a wall or moving again
-						switchPlayer();
-                    }
                 }
-
-                img.setOpacity(1); //hovering over a tile sets the opacity to 0.5, so this resets it to 1 to make the pawn move look better.
+            } else {
+                if (getTileImage(img) != TileImage.BLACK_PAWN) { //don't allow pawn to be moved on top of other pawn
+                    setTileImage(whitePlayerTile, emptyTileShouldBe(whitePlayerTile));
+                    setTileImage(img, TileImage.WHITE_PAWN);
+                    whitePlayerTile = img;
+                    wallGrabbed = true; //flag used to restrict player from grabbing a wall or moving again
+                    switchPlayer();
+                }
             }
+
+            img.setOpacity(1); //hovering over a tile sets the opacity to 0.5, so this resets it to 1 to make the pawn move look better.
         }
     };
 
