@@ -329,7 +329,7 @@ public class ViewInterface {
                 GrabWall_move(null);
                 return;
             }
-			else if(keyEvent.getCode().equals(KeyCode.ENTER)) {
+			else if(keyEvent.getCode().equals(KeyCode.ENTER)|| keyEvent.getCharacter().getBytes()[0] == '\n' || keyEvent.getCharacter().getBytes()[0] == '\r') {
 				System.out.println("dropping wall detected");
 				if (wallSelected.getStroke().equals(Color.GREEN))
                 {
@@ -508,10 +508,23 @@ public class ViewInterface {
 	 */
 	public void Goto_Main_Page() {
 		clearGUI_game_session_page();       //reset the GUI section of the QuoridorApplication
-		QuoridorController.clearGame();     //reset the model section of the QuoridorApplication
-		Goto_Page(Page.MAIN_PAGE);
+        clearGUI_new_game_page();
+        QuoridorController.clearGame();     //reset the model section of the QuoridorApplication
+        Goto_Page(Page.MAIN_PAGE);
 	}
 
+
+    /**
+     * @author Matthias Arabian
+     * resets the state of the NewGamePage to allow users to interact with it as if
+     * it were the first time they accessed that page
+     */
+    private void clearGUI_new_game_page() {
+        whiteNewName.setText("");
+        blackNewName.setText("");
+        whiteUsernameExistsLabel.setText("");
+        whiteUsernameExistsLabel.setText("");
+    }
 	/**
 	 * @author Matthias Arabian
 	 * resets the state of the GameSessionPage to allow users to start a new game after exiting a previous one
@@ -1167,9 +1180,9 @@ public class ViewInterface {
 	/**
 	 * Method to create new username for white player
 	 * @author Alex Masciotra
-	 * @param mouseEvent when done is pressed
+	 * @param event when done is pressed or entered is pressed
 	 */
-	public void whitePlayerSelectsNewUserName(MouseEvent mouseEvent) {
+	public void whitePlayerSelectsNewUserName(Event event) {
 
 		Boolean isValid = true;
 
@@ -1202,7 +1215,7 @@ public class ViewInterface {
 	 * @author Alex Masciotra
 	 * @param mouseEvent when done is pressed
 	 */
-	public void blackPlayerSelectsNewUserName(MouseEvent mouseEvent) {
+	public void blackPlayerSelectsNewUserName(Event mouseEvent) {
 
 		Boolean isValid = true;
 
@@ -1308,7 +1321,7 @@ public class ViewInterface {
 	 * Other's timer turns on.
 	 */
 	public void switchPlayer() {
-        //wallGrabbed is used as a flag to assert thta the player has completed an action.
+        //wallGrabbed is used as a flag to assert that the player has completed an action.
         //wallGrabbed is set to true when a pawn is moved AND when a wall is grabbed.
 	    String color = QuoridorController.getColorOfPlayerToMove(quoridor);
 
@@ -1318,6 +1331,9 @@ public class ViewInterface {
         //turn btn_dropWall to disabled and invisible
         btn_dropWall.setDisable(true);
         btn_dropWall.setVisible(false);
+        //clear the wall error strings
+        invalidWallPlacement.setText("");
+        gameSessionNotificationLabel.setText("");
 
 		if (color.equals("white")) {
 			 //starts black player turn

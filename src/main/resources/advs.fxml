@@ -75,7 +75,7 @@
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="New_Game_Page" fx:id="New_Game_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0" visible="false">
+                        <AnchorPane id="New_Game_Page" fx:id="New_Game_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0">
                            <children>
                               <Button fx:id="Create_New_Game_btn_StartGame" layoutX="247.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#Goto_Game_Session_Page" style="-fx-background-color: #ffd800;" text="Start Game">
                                  <font>
@@ -98,7 +98,7 @@
                                     <ComboBox fx:id="whiteExistingName" onAction="#whitePlayerSelectsExistingUserName" onMouseClicked="#displayExistingUserNames" prefWidth="150.0" promptText="&lt;select username&gt;" />
                                     <HBox prefHeight="26.0" prefWidth="150.0">
                                        <children>
-                                          <TextField fx:id="whiteNewName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
+                                          <TextField fx:id="whiteNewName" onAction="#whitePlayerSelectsNewUserName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
                                           <Button mnemonicParsing="false" onMouseClicked="#whitePlayerSelectsNewUserName" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
                                        </children>
                                     </HBox>
@@ -122,7 +122,7 @@
                                     <ComboBox fx:id="blackExistingName" onAction="#blackPlayerSelectsExistingUserName" onMouseClicked="#displayExistingUserNames" prefWidth="150.0" promptText="&lt;select username&gt;" />
                                     <HBox prefHeight="26.0" prefWidth="150.0">
                                        <children>
-                                          <TextField fx:id="blackNewName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
+                                          <TextField fx:id="blackNewName" onAction="#blackPlayerSelectsNewUserName" prefHeight="26.0" prefWidth="152.0" promptText="new name" />
                                           <Button mnemonicParsing="false" onMouseClicked="#blackPlayerSelectsNewUserName" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #ddbb0f;" text="Done" />
                                        </children>
                                     </HBox>
@@ -179,7 +179,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" prefWidth="397.0">
+                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" disable="true" prefWidth="397.0" visible="false">
                            <children>
                               <HBox prefHeight="356.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
