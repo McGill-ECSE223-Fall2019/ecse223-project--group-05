@@ -979,6 +979,22 @@ public class QuoridorController {
         return true;
     }
 
+    public static Boolean pathExistenceCheck(){
+        //check if row is blocked by walls, basically i need to check the pos of the player and get all the walls above the player
+        //above meaning in front when going towards their own destinations
+        //need to somehow get the destination of each player and get the current position of the player + the directionality
+        //so an interval from player position to destination position, i check the row for horizontal and column for vertical
+        //how to get walls now, prolly gonna do the same as i did in validate position and get all the walls into a list,
+        //nah this is stupid, it would require for me to loop thru to much shit every time
+        //maybe incorporate this function into validateposition
+        //So whenever u place a wall, check all the walls with the same values of row or column, then add to some count,
+        //when the count reaches 4 or 5 and the value is between the interval, then there is no path
+        //how would this work with load position or load game,
+        //it would only work if they load one move at a time, or one wall at a time, which is probably has to
+        //i think this is good for now
+        return true;
+    }
+
 
     //Getter for gamestate
 
