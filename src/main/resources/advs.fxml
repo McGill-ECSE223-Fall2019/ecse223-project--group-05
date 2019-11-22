@@ -191,7 +191,6 @@
                                                 <Font name="System Bold" size="15.0" />
                                              </font></Label>
                                           <Label fx:id="lbl_black_awaitingMove" textFill="#5ba0e5" />
-                                          <Button fx:id="btn_blackPlayerTurn" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="NOT BLACK TURN" textFill="#735c2d" />
                                           <Label fx:id="blackTimer" alignment="CENTER" prefHeight="82.0" prefWidth="113.0" text="Black Timer" textAlignment="CENTER">
                                              <font>
                                                 <Font size="21.0" />
@@ -202,7 +201,6 @@
                                                 <Font name="System Bold" size="15.0" />
                                              </font></Label>
                                           <Label fx:id="lbl_white_awaitingMove" textFill="#5ba0e5" />
-                                          <Button fx:id="btn_whitePlayerTurn" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #60a9f2; -fx-border-color: #5ba0e5;" text="END TURN" textFill="#3d6b99" />
                                           <Label fx:id="whiteTimer" alignment="CENTER" prefHeight="84.0" prefWidth="120.0" text="White Timer" textAlignment="CENTER" textFill="WHITE">
                                              <font>
                                                 <Font size="21.0" />
@@ -262,6 +260,7 @@
                                              </font>
                                           </Label>
                                           <Label fx:id="gameSessionNotificationLabel" prefHeight="41.0" prefWidth="134.0" textFill="RED" wrapText="true" />
+                                          <Button fx:id="btn_dropWall" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="Drop wall" textFill="#735c2d" />
                                           <HBox id="blackStock" fx:id="blackStock" alignment="CENTER" maxWidth="100.0" minWidth="100.0" onMouseClicked="#GrabWall" prefHeight="71.0" prefWidth="100.0" style="-fx-background-color: #60a9f2;">
                                              <children>
                                                 <Rectangle fx:id="blackWall1" arcHeight="5.0" arcWidth="5.0" height="67.0" stroke="BLACK" strokeType="INSIDE" width="5.0" />
