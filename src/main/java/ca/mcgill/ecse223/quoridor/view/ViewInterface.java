@@ -1701,6 +1701,12 @@ public class ViewInterface {
 			stage.setMaximized(true);
 		}
 	}
+	public boolean isBlackTimeUp(){
+		return blackTimeISUp;
+	}
+	public boolean isWhiteTimeUp(){
+		return whiteTimeIsUp;
+	}
 
 	/**This method is used by mouse click event handler to convert row and column clicked
 	 * to a direction to be fed to controller movepawn method

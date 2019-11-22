@@ -46,6 +46,8 @@ public class CucumberStepDefinitions {
     private boolean failedToReadSaveFile = false;
     private boolean receivedInvalidPositionException = false;
 
+
+
     //Timer object for starting and stopping the player clock
     Timer timer = new Timer();
     // ***********************************************
@@ -2333,4 +2335,164 @@ public class CucumberStepDefinitions {
             System.out.println(e.toString());
         }
     }
+    private String convertTileToDirection(int currentRow, int currentCol, int row, int col){
+        int rowDiff = row-currentRow;
+        int colDiff = col-currentCol;
+        String dir = "";
+
+        if((rowDiff>2 || rowDiff < -2) || colDiff < -2 || colDiff >2) return dir;
+
+        switch (rowDiff){
+            case -2:
+                if(colDiff == 0 && QuoridorController.isPlayerOnTile(currentRow-1,currentCol)){
+                    dir = "up";
+
+                }
+                return dir;
+            case -1:
+                dir = "up";
+                break;
+            case 1:
+                dir = "down";
+                break;
+            case 2:
+                if(colDiff==0 && QuoridorController.isPlayerOnTile(currentRow+1,currentCol)){
+                    dir = "down";
+
+                }
+                return dir;
+            default:
+                break;
+
+        }
+
+        switch (colDiff){
+            case -2:
+                if(rowDiff == 0 && QuoridorController.isPlayerOnTile(currentRow,currentCol-1)){
+                    dir = "left";
+                    return dir;
+
+                }
+                return "";
+            case -1:
+                dir = dir + "left";
+                break;
+            case 1:
+                dir = dir + "right";
+                break;
+            case 2:
+                if(rowDiff == 0 && QuoridorController.isPlayerOnTile(currentRow,currentCol+1)){
+                    dir = "right";
+                    return dir;
+
+                }
+                return "";
+            default:
+                break;
+
+        }
+
+        return dir;
+    }
+
+    @Given("^The following moves were executed:$")
+    public void executeMove(DataTable dt){
+        List<Map<String, String>> list = dt.asMaps(String.class, String.class);
+        int currentWhiteRow = 9;
+        int currentWhiteCol = 5;
+        int currentBlackRow = 1;
+        int currentBlackCol = 5;
+        for(int i = 0; i <list.size(); i++){
+            int nextRow = list.get(i).get("row");
+            int nextCol = list.get(i).get("col");
+            String dir;
+            if(i%2==0){
+                dir = convertTileToDirection(currentWhiteRow,currentWhiteCol,nextRow, nextCol);
+                QuoridorController.movePawn(QuoridorApplication.getQuoridor(),dir,QuoridorApplication.getWhitePawnBehaviour(QuoridorController.getCurrentWhitePlayer()));
+                QuoridorController.completePlayerTurn(QuoridorController.getCurrentWhitePlayer());
+                currentWhiteRow = nextRow;
+                currentWhiteCol = nextCol;
+            }
+            else{
+                dir = convertTileToDirection(currentBlackRow,currentBlackCol,nextRow, nextCol);
+                QuoridorController.movePawn(QuoridorApplication.getQuoridor(),dir,QuoridorApplication.getBlackPawnBehaviour(QuoridorController.getCurrentBlackPlayer()));
+                QuoridorController.completePlayerTurn(QuoridorController.getCurrentBlackPlayer());
+                currentWhiteRow = nextRow;
+                currentWhiteCol = nextCol;
+            }
+
+
+
+
+        }
+
+    }
+
+    /**the input into the test cases need to be either "white" or "black"
+     * @author David
+     * @param playerString either "white" or "black"
+     */
+    @Given("Player {String} has just completed his move")
+    public void completeMove(String playerString){
+        if(playerString.equals("white")){
+            QuoridorController.completePlayerTurn(QuoridorController.getCurrentWhitePlayer());
+        }
+        else{
+            QuoridorController.completePlayerTurn(QuoridorController.getCurrentBlackPlayer());
+        }
+    }
+
+    /**Moves the pawn to a specified coordinate
+     * @author David
+     * @param playerString can only be "white" or "black"
+     * @param row
+     * @param col
+     */
+    @And("The last move of {String} is pawn move to {int}:{int}")
+    public void moveLast(String playerString, int row, int col) {
+        int currentRow, currentCol;
+        PawnBehaviour pb;
+        if(playerString.equals("white")){
+            pb = QuoridorApplication.getWhitePawnBehaviour();
+        }
+        else{
+            pb = QuoridorApplication.getBlackPawnBehaviour();
+        }
+
+        currentRow = QuoridorController.getCurrentPawnTilePos(0);
+        currentCol = QuoridorController.getCurrentPawnTilePos(1);
+        QuoridorController.movePawn(QuoridorApplication.getQuoridor(),convertTileToDirection(currentRow,currentCol,row,col),pb);
+    }
+
+    @When("Checking of game result is initated")
+    public void initiateResultCheck(){
+        QuoridorController.checkResult();
+    }
+
+    @Then("Game result shall be {String}")
+    public void gameResultShallBe(String input){
+        assertEquals(true,QuoridorController.getGameResult().equals(input));
+
+    }
+
+    @And("The game shall no longer be running")
+    public void gameShallNoLongerBeRunning(){
+        if(QuoridorController.isGameRunning(QuoridorController.getCurrentGame())){
+            fail();
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
