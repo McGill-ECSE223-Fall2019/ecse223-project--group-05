@@ -2,6 +2,8 @@ package ca.mcgill.ecse223.quoridor.timer;
 
 import java.sql.Time;
 import java.util.TimerTask;
+
+import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.model.*;
 import javafx.scene.control.Label;
 
@@ -25,7 +27,9 @@ public class PlayerTimer extends TimerTask{
         Time updatedTime = new Time(timeRemaining);
         //System.out.println(updatedTime);
         player.setRemainingTime(updatedTime);
-        if (timeRemaining == 0)
+        if (timeRemaining == 0) {
             System.out.println("timer reached 0!!!");
+            QuoridorController.timerUp(player);
+        }
     }
 }

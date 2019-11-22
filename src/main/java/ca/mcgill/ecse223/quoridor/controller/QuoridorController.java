@@ -1396,6 +1396,82 @@ public class QuoridorController {
         }
         return false;
     }
+
+    /** Feature: Identify GameDrawn
+     *
+     * This method is check if the game is won based on player positions, and it is also supposed stop the game if it is.
+     * @author David
+     * @return "pending" or "Drawn" or "blackWon" or "whiteWon"
+     */
+    public static String checkResult(){
+        //TODO: this method needs to be called after each move (before end of turn)
+        Player black = getCurrentBlackPlayer();
+        Player white = getCurrentWhitePlayer();
+
+        //check for white win
+        if(getPlayerOfCurrentTurn().equals(white)){
+            if(getCurrentPawnTilePos(0)==1 ){
+                endGame();
+                getCurrentGame().setGameStatus(GameStatus.WhiteWon);
+                return "whiteWon";
+            }
+        }
+        //check for black win
+        else{
+            if(getCurrentPawnTilePos(0)==9){
+                endGame();
+                getCurrentGame().setGameStatus(GameStatus.BlackWon);
+                return "blackWon";
+            }
+        }
+        //check for draw
+        //TODO
+
+        return "";
+    }
+
+    /**This method is called by the playerTimer object if timer reaches zero
+     * @author David
+     * @param player whose timer reaches zero
+     */
+    public static void timerUp(Player player){
+        if(player.hasGameAsWhite()){
+            endGame();
+            getCurrentGame().setGameStatus(GameStatus.BlackWon);
+        }
+        else{
+            endGame();
+            getCurrentGame().setGameStatus(GameStatus.WhiteWon);
+        }
+    }
+    private static void endGame(){
+        //TODO disable all pages
+    }
+
+    /**Returns result of game as a string
+     * Features: identify game won, identify game drawn
+     * @author David
+     * @return
+     */
+    public static String getGameResult(){
+        GameStatus current = getCurrentGame().getGameStatus();
+        if(current.equals(GameStatus.BlackWon)){
+            return "blackWon";
+        }
+        if(current.equals(GameStatus.WhiteWon)){
+            return "whiteWon";
+        }
+        if(current.equals(GameStatus.Draw)){
+            return "Drawn";
+        }
+        return "Pending";
+    }
+
+
+
+
+
+
 }
 
 
