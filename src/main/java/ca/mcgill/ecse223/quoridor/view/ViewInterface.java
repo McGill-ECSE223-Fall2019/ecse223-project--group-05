@@ -1514,7 +1514,15 @@ public class ViewInterface {
 				,timer);
 		timer = new Timer();
 
+		//disable page
+        getCurrentPage().setDisable(true);
+        getPage(Page.TOP_BUTTONS).setDisable(true);
+
 		saveGame(event); //save game
+
+        //enable page
+        getCurrentPage().setDisable(false);
+        getPage(Page.TOP_BUTTONS).setDisable(false);
 
 		//restart timer
 		QuoridorController.startPlayerTimer(QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove()
