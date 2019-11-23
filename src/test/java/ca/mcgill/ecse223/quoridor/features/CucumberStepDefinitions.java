@@ -1374,6 +1374,15 @@ public class CucumberStepDefinitions {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * This is a duplicate function of the "When I initiate to load a saved game {string}" since it literally does the exact same thing.
+     * @author Edwin Pan
+     */
+    @When("I initiate to load a game in {string}")
+    public void iInitiateToLoadAGameIn(String fileName) {
+    	this.iInitiateToLoadASavedGame(fileName);
+    }
 
     /**
      * Ensures that the loaded positions are valid and legal/playable.
@@ -1387,6 +1396,69 @@ public class CucumberStepDefinitions {
         assertEquals(false, receivedInvalidPositionException);
     }
 
+    /**
+     * This is a duplicate function of "The position to load is valid".
+     * @author Edwin Pan
+     */
+    @And("Each game move is valid")
+    public void eachGameMoveIsValid() {
+    	this.thePositionToLoadIsValid();
+    }
+    
+    /**
+     * This is a duplicate function of "The position to load is invalid".
+     * @author Edwin Pan
+     */
+    @And("The game to load has an invalid move")
+    public void theGameToLoadHasAnInvalidMove() {
+    	assertEquals(false, this.failedToReadSaveFile);
+    	assertEquals(true, this.receivedInvalidPositionException);
+    }
+    
+    /**
+     * Checks that the game has not ended
+     * @author Edwin Pan
+     */
+    @And("The game has no final results")
+    public void theGameHasNoFinalResults() {
+    	GameStatus gameState = QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus();
+    	assertNotEquals( GameStatus.BlackWon, gameState );
+    	assertNotEquals( GameStatus.WhiteWon, gameState );
+    	assertNotEquals( GameStatus.Draw, gameState );
+    }
+    
+    /**
+     * Checks that the game has a final result
+     */
+    @And("The game has a final result")
+    public void theGameHasAFinalResult() {
+    	GameStatus gameState = QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus();
+    	assertNotEquals( gameState, GameStatus.Initializing );
+    	assertNotEquals( gameState, GameStatus.ReadyToStart );
+    	assertNotEquals( gameState, GameStatus.Replay );
+    	assertNotEquals( gameState, GameStatus.Running );
+    }
+    
+    /**
+     * Checks that the game is in replay mode.
+     * @author Edwin Pan
+     */
+    @Then("The game shall be in replay mode")
+    public void theGameShallBeInReplayMode() {
+    	assertEquals( GameStatus.Replay, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus() );
+    }
+    
+    /**
+     * Checks that there was a message that indicate the game was corrupted.
+     * @author Edwin Pan
+     */
+    @Then("The game shall notify the user that the game file is invalid")
+    public void theGameShallNotifyTheUserThatTheGameFileIsInvalid() {
+    	assertEquals(false, this.failedToReadSaveFile);
+    	assertEquals(true, this.receivedInvalidPositionException);
+    }
+    
+    
     /**
      * Ensures that the player whose turn it is to play is the right player.
      *
