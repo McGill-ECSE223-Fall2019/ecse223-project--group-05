@@ -37,13 +37,13 @@ import ca.mcgill.ecse223.quoridor.model.WallMove;
 public class QuoridorSavesManager {
 	
 	/**
-	 * Writes into the file system sprint3-format data about the black and white pawns and walls. 
-	 * Only the name of the file with its extension need to be provided. Returns false in the case of an IOException.
-	 * @param game in the form of an active current game.
-	 * @param filename in the form of the file's name and its extension, but not its path.
+	 * Writes into the file system sprint3 and sprint5 desired types of saves. That is, it saves into two files: .dat files and .mov files - not to be confused with the movie format lul.
+	 * The Filename SHOULD NOT INCLUDE AN EXTENSION. If .dat is provided, then only the .dat will be saved; if a .mov is provided, then only the .mov will be saved. If no extension is
+	 * provided, then both will be saved; and if an invalid extension is provided, it will be removed and a .dat and .mov will be saved.
+	 * @param filename in the form of the file's name and DISCOURAGEDLY its extension, but not its path.
 	 * @return
 	 */
-	public static SavingStatus saveGamePawnsAndWalls( Game game , String filename, SavePriority save_enforcement_type) {
+	public static SavingStatus saveGame( Game game , String filename, SavePriority save_enforcement_type) {
 		/*
 		 * CANCELATION CHECK
 		 */
@@ -53,45 +53,105 @@ public class QuoridorSavesManager {
 		
 		
 		/*
-		 * FILE SYSTEM CHECK
+		 * EXTENSION CHECK: Check if .dat or .mov were provided. If they were, save only of the provided type. Otherwise set the booleans to have us save both.
+		 * Also checks if we have garbage input.
+		 */
+		boolean saveDatRequired = true;
+		boolean saveMovRequired = true;
+		String baseFilename = filename.trim();
+		boolean hasDefinedExtension = (baseFilename.lastIndexOf(".") != -1);
+		if(hasDefinedExtension) {
+			if( baseFilename.substring( baseFilename.lastIndexOf(".") ).equals( SaveConfig.gameMovesExtension) ){
+				saveDatRequired = false;
+			} else if( baseFilename.substring( baseFilename.lastIndexOf(".") ).equals( SaveConfig.gamePositionExtension ) ) {
+				saveMovRequired = false;
+			}
+			baseFilename = baseFilename.substring( 0 , baseFilename.lastIndexOf(".") );
+		}
+		
+		
+		/*
+		 * OVERWRITE CHECK: Pulls out if the file already exists and we don't have an overwrite order.
 		 */
 		//First, check if the game already exists. If it does, then check if the user wants to overwrite it; inform them that it already exists if not.
 		//If the game does not exist, but the operation is being used with FORCE_OVERWRITE as an argument, someone's not using this method properly.
-		File file;
-		if( filename.charAt(0) == 'C' || filename.charAt(0) == 'c' ) {
-			file = new File(filename);
-		} else {
-			file = new File( SaveConfig.getGameSaveFilePath(filename) );
-		}
-		if( file.exists() ) {
-			if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
+		if( saveDatRequired ) {
+			File file = new File( SaveConfig.getGameSaveFilePath( baseFilename + SaveConfig.gamePositionExtension ) );
+			if( file.exists() ) {
+				if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
 				return SavingStatus.ALREADY_EXISTS;
-			} 
-		} else {
-			if( save_enforcement_type == SavePriority.FORCE_OVERWRITE) {
-				throw new IllegalArgumentException("Programmer has made improper use of save_enforcement_type. Did not check that the file already exists before using FORCE_OVERWRITE: Detected use of FORCE_OVERWRITE with a non-existing file.");
+				} 
+			} else {
+				if( save_enforcement_type == SavePriority.FORCE_OVERWRITE) {
+					throw new IllegalArgumentException("Programmer has made improper use of save_enforcement_type. Did not check that the file already exists before using FORCE_OVERWRITE: Detected use of FORCE_OVERWRITE with a non-existing file.");
+				}
+			}
+		}
+		if( saveMovRequired ) {
+			File file = new File( SaveConfig.getGameSaveFilePath( baseFilename + SaveConfig.gameMovesExtension ) );
+			if( file.exists() ) {
+				if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
+				return SavingStatus.ALREADY_EXISTS;
+				} 
+			} else {
+				if( save_enforcement_type == SavePriority.FORCE_OVERWRITE) {
+					throw new IllegalArgumentException("Programmer has made improper use of save_enforcement_type. Did not check that the file already exists before using FORCE_OVERWRITE: Detected use of FORCE_OVERWRITE with a non-existing file.");
+				}
 			}
 		}
 		
 		
 		/*
-		 * GAME INSTANCE DATA CHECK
+		 * INPUT-GAME SANITY CHECK: Checks if the game is empty and therefore unsaveable. 
 		 */
-		String datacheck = "";
-		datacheck = datacheck + "gameAsWhite : " + game.getWhitePlayer() + "\n";
-		datacheck = datacheck + "gameAsBlack : " + game.getBlackPlayer() + "\n";
-		datacheck = datacheck + "gamePositions : " + game.getPositions() + "\n";
-		datacheck = datacheck + "currentPosition : " + game.getCurrentPosition() + "\n";
-		datacheck = datacheck + "moves : " + game.getMoves() + "\n";
 		if( game.getWhitePlayer() == null || game.getBlackPlayer() == null || game.getPositions() == null || game.getCurrentPosition() == null || game.getMoves() == null ) {
+			String datacheck = "";
+			datacheck = datacheck + "gameAsWhite : " + game.getWhitePlayer() + "\n";
+			datacheck = datacheck + "gameAsBlack : " + game.getBlackPlayer() + "\n";
+			datacheck = datacheck + "gamePositions : " + game.getPositions() + "\n";
+			datacheck = datacheck + "currentPosition : " + game.getCurrentPosition() + "\n";
+			datacheck = datacheck + "moves : " + game.getMoves() + "\n";
 			throw new RuntimeException(datacheck);
 		}
 		
 		
 		/*
-		 * FILE WRITING
+		 * FILE WRITER CALLS
 		 */
-		//Dual line setup
+		//Variable for checking how things went
+		SavingStatus saveStatusDat = SavingStatus.SAVED;
+		SavingStatus saveStatusMov = SavingStatus.SAVED;
+		//Actual saving
+		if( saveDatRequired ) {
+			File file = new File( SaveConfig.getGameSaveFilePath( baseFilename + SaveConfig.gamePositionExtension ) );
+			saveStatusDat = savePosition(game, file , save_enforcement_type);
+		}
+		if( saveMovRequired ) {
+			File file = new File( SaveConfig.getGameSaveFilePath( baseFilename + SaveConfig.gameMovesExtension ) );
+			saveStatusMov = saveMoves(game, file , save_enforcement_type);
+		}
+		//Checking how things went and reporting on it.
+		if( saveStatusDat == SavingStatus.FAILED || saveStatusMov == SavingStatus.FAILED ) {
+			return SavingStatus.FAILED;
+		} else if( saveStatusDat == SavingStatus.OVERWRITTEN || saveStatusMov == SavingStatus.OVERWRITTEN ) {
+			return SavingStatus.OVERWRITTEN;
+		} else {
+			return SavingStatus.SAVED;
+		}
+		
+	}
+	
+	/**
+	 * Saves the items as required in sprint3: that is, just the most recent state of the board in the form of the positions of pawns and walls. That's it.
+	 * @param game
+	 * @param file
+	 * @param save_enforcement_type
+	 * @return
+	 */
+	private static SavingStatus savePosition( Game game , File file, SavePriority save_enforcement_type) {
+		/*
+		 * Output String Parsing
+		 */
 		String line1 = "";
 		String line2 = "";
 		//Getting the descriptor lines for Black and White pawns and walls
@@ -106,7 +166,9 @@ public class QuoridorSavesManager {
 			line2 = blackPosition;
 		}
 		
-		//File System Writing
+		/*
+		 * Output File Writing
+		 */
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
 			bufferedWriter.write(line1);
@@ -115,13 +177,108 @@ public class QuoridorSavesManager {
 		} catch (IOException e) {
 			return SavingStatus.FAILED;
 		}
-		
-		//Success confirmation
+
+		/*
+		 * Success Responding
+		 */
 		if( save_enforcement_type == SavePriority.FORCE_OVERWRITE ) {
 			return SavingStatus.OVERWRITTEN;
 		}
 		return SavingStatus.SAVED;
 	}
+	
+	/**
+	 * Saves the items as required in sprint5: that is, just an ordered list of all the moves that have taken place in the game, but no information about the players that made it (colour is implied; but user are ignored.)
+	 * @param game
+	 * @param file
+	 * @param save_enforcement_type
+	 * @return
+	 */
+	private static SavingStatus saveMoves( Game game , File file, SavePriority save_enforcement_type) {
+		/*
+		 * Output String Parsing
+		 */
+		//Instantiate useful variables.
+		String lines = "";				//We'll use this to temporarily store the entire contents of the file in memory before writing into the file system.
+		String whitePosition = "e9";	//We'll use this to keep track of the current white position
+		String blackPosition = "e1";	//We'll use this to keep track of the current black position
+		//Instantiate the list of all wall moves, since we need to differentiate between wall moves and other moves.
+		ArrayList<WallMove> allWallMoves = new ArrayList<WallMove>();
+		for( Wall blackWall: game.getCurrentPosition().getBlackWallsOnBoard() ) {
+			allWallMoves.add(blackWall.getMove());
+		}
+		for( Wall whiteWall: game.getCurrentPosition().getWhiteWallsOnBoard() ) {
+			allWallMoves.add(whiteWall.getMove());
+		}
+		//String building
+		int totalMoves = game.getMoves().size();
+		for( int i = 1 ; i <= totalMoves ; i++ ) {
+			
+			Move move = game.getMove(i-1);
+			
+			//While we don't need to differentiate between Step and Jump move, we do need to keep check of WallMove. Here, we check if we have a wallmove.
+			boolean isWallMove = false;
+			for( WallMove wallMove : allWallMoves ) {
+				if( wallMove.getMoveNumber() == move.getMoveNumber() ) {
+					isWallMove = true;
+					break;
+				}
+			}
+			
+			//Now we need to know whether or not to be referring to whitePosition or blackPosition for initial coordinates in the case of a non-wallMove.
+			boolean isBlackPawnMove = i % 2 == 0;
+			
+			//Now we build the text of our textfile into the String lines.
+			if( isWallMove ) {	//If we're saving a wall move.
+				//Get the string version of the wall's position
+				String wallPosition = "";
+				wallPosition = wallPosition + columnIntToChar(move.getTargetTile().getColumn());
+				wallPosition = wallPosition + move.getTargetTile().getRow();
+				wallPosition = wallPosition + ( ((WallMove)move).getWallDirection() == Direction.Horizontal ? "h" : "v" );
+				//Write the new line.
+				lines = lines + i + "." + wallPosition + "\n";
+				
+			} else {			//If we're saving a pawn move.
+				//Figure out what the second argument of this new line is.
+				String currentPosition = isBlackPawnMove ? blackPosition : whitePosition ;
+				//Figure out what the third argument of this new line is.
+				String nextPosition = "";
+				nextPosition = nextPosition + columnIntToChar(move.getTargetTile().getColumn());
+				nextPosition = nextPosition + move.getTargetTile().getRow();
+				//Write the new line
+				lines = lines + i + "." + currentPosition + " " + nextPosition +"\n";
+				//Update the currentPosition of the desired pawn.
+				if(isBlackPawnMove) {
+					blackPosition = nextPosition;
+				} else {
+					whitePosition = nextPosition;
+				}
+				
+			}
+			
+		}
+		
+		/*
+		 * Output File Writing
+		 */
+		try {
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+			bufferedWriter.write(lines);
+			bufferedWriter.close();
+		} catch (IOException e) {
+			return SavingStatus.FAILED;
+		}
+		
+		/*
+		 * Success Responding
+		 */
+		if( save_enforcement_type == SavePriority.FORCE_OVERWRITE ) {
+			return SavingStatus.OVERWRITTEN;
+		}
+		return SavingStatus.SAVED;
+	}
+	
+	
 	
 	/**
 	 * Reads from the file system a file of provided filename written in sprint3-format data about

@@ -38,17 +38,23 @@ public class CucumberTest_LoadPosition_TestFileWriters {
 		SaveConfig.createGameSavesFolder();
 		File file = new File( SaveConfig.getGameSaveFilePath(filename) );
 		try {
-			BufferedWriter bufferedWriter = new BufferedWriter( new FileWriter(file) );
 			if(filename.equals(goodtestfile)) {
+				BufferedWriter bufferedWriter = new BufferedWriter( new FileWriter(file) );
 				bufferedWriter.write(goodtestfile_content);
+				bufferedWriter.close();
 			} else if(filename.equals(badpawntestfile)) {
+				BufferedWriter bufferedWriter = new BufferedWriter( new FileWriter(file) );
 				bufferedWriter.write(badpawntestfile_content);
+				bufferedWriter.close();
 			} else if(filename.equals(overlappingwalltestfile)) {
+				BufferedWriter bufferedWriter = new BufferedWriter( new FileWriter(file) );
 				bufferedWriter.write(overlappingwalltestfile_content);
+				bufferedWriter.close();
 			} else if(filename.equals(outoftrackwalltestfile)) {
+				BufferedWriter bufferedWriter = new BufferedWriter( new FileWriter(file) );
 				bufferedWriter.write(outoftrackwalltestfile_content);
+				bufferedWriter.close();
 			}
-			bufferedWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

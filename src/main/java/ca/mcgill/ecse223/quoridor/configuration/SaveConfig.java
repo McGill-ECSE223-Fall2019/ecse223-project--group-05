@@ -23,6 +23,8 @@ public class SaveConfig {
 	private static final String		gameSavesDataFolderName		= "saves\\";								//Folder of the saves that the user can use to reinstantiate games
 	public static final String		runtimeDataExtension		= ".qdata";									//Extension for serialized runtime data
 	public static final String		gameSavesDataExtension 		= ".qsave";									//Extension for data of individual games
+	public static final String		gamePositionExtension		= ".dat";									//The types of saves desired by the system designers. Just for storing the most recent position of pawns and walls, and not the players and their details.
+	public static final String		gameMovesExtension			= ".mov";									//The types of saves desired by the system designers. Just for storing the moves of the game, but not the details of the players that made them.
 	public static final String		usersDatabaseFilename		= "users" + runtimeDataExtension;			//Name of file which contains serialized Quoridor, User, Board, and Tiles.
 	public static final String		autosaveFilename			= "snapshot" + runtimeDataExtension;		//Name of file which contains a complete serialized dataset of the full quoridor application automatically.
 	public static final String		localSettingsFilename		= "settings" + runtimeDataExtension;		//Name of file which contains peripheral data to do with non-model related settings, such as the GUI.
