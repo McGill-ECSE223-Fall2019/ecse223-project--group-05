@@ -331,10 +331,7 @@ public class ViewInterface {
             }
 			else if(keyEvent.getCode().equals(KeyCode.ENTER)|| keyEvent.getCharacter().getBytes()[0] == '\n' || keyEvent.getCharacter().getBytes()[0] == '\r') {
 				System.out.println("dropping wall detected");
-				if (wallSelected.getStroke().equals(Color.GREEN))
-                {
-                    switchPlayer();
-                }
+				switchPlayer();
 				return;
 			}
 			else if(keyEvent.getCode()==KeyCode.W) {
@@ -1328,6 +1325,10 @@ public class ViewInterface {
 	    String color = QuoridorController.getColorOfPlayerToMove(quoridor);
 
 		if (!wallGrabbed)
+            return;
+
+		//if there is a wall on the board, make sure it's in a legal position
+        if (wallMoveCandidate != null && !wallSelected.getStroke().equals((Color.GREEN)))
             return;
 
         //turn btn_dropWall to disabled and invisible

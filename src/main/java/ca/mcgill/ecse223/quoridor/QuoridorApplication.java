@@ -17,6 +17,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -90,8 +91,6 @@ public class QuoridorApplication extends Application{
 					System.exit(0);
 				}
 			});
-
-
 		} catch (IOException e) {e.printStackTrace();}
 	}
 
@@ -166,6 +165,8 @@ public class QuoridorApplication extends Application{
 	}
 
 
+	private void goThroughSceneElements(Node n){
 
+	}
 
 }
