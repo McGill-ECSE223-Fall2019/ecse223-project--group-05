@@ -36,6 +36,8 @@ public class CucumberStepDefinitions {
     boolean handHasWall = false;
     boolean pawnMoveSuccesful = false;
 
+    boolean thereIsWhitePath = false;
+    boolean thereIsBlackPath = false;
 
     //Instance Variables for SavePosition tests
     private String testGameSaveFilename = "";
@@ -2224,6 +2226,84 @@ public class CucumberStepDefinitions {
         // Write code here that turns the phrase above into concrete actions
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         QuoridorController.jumpToFinal(quoridor);
+    /**
+     * CheckIfPathExists.feature - Check If Path Exists
+     * Scenario: Path to target area is not blocked
+     *
+     * @param dir
+     * @param frow
+     * @param fcol
+     * @author Daniel Wu
+     */
+    @Given("A {string} wall move candidate exists at position {int}:{int}")
+    public void aWallMoveCandidateExistsAtPosition(String dir, int frow, int fcol){
+        //same as given wall exists at position? or do we have to do something special?
+    }
+
+    /**
+     * CheckIfPathExists.feature - Check If Path Exists
+     * Scenario: Path to target area is not blocked
+     *
+     * @param brow
+     * @param bcol
+     * @author Daniel Wu
+     */
+    @And("The black player is located at {int}:{int}")
+    public void theBlackPlayerIsLocatedAt(int brow, int bcol){
+        PlayerPosition playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition();
+
+        Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((brow - 1) * 9 + bcol - 1);
+        playerPosition.setTile(targetTile);
+    }
+
+    /**
+     * CheckIfPathExists.feature - Check If Path Exists
+     * Scenario: Path to target area is not blocked
+     *
+     * @param wrow
+     * @param wcol
+     * @author Daniel Wu
+     */
+    @And("The white player is located at {int}:{int}")
+    public void theWhitePlayerIsLocatedAt(int wrow, int wcol){
+        PlayerPosition playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition();
+
+        Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((wrow - 1) * 9 + wcol - 1);
+        playerPosition.setTile(targetTile);
+    }
+
+    /**
+     * CheckIfPathExists.feature - Check If Path Exists
+     * Scenario: Path to target area is not blocked
+     *
+     * @author Daniel Wu
+     */
+    @When("Check path existence is initiated")
+    public void checkPathExistenceIsInitiated(){
+        //need to set if thereiswhitepath and if thereisbackpath
+        QuoridorController.pathExistenceCheck();
+    }
+
+    /**
+     *
+     * @param result
+     * @author Daniel Wu
+     */
+    @Then("Path is available for {string} player(s)")
+    public void pathIsAvailableForPlayer(String result){
+        String myResult = "";
+        if (thereIsWhitePath){
+            if (thereIsBlackPath){
+                myResult = "both";
+            }else {
+                myResult = "white";
+            }
+        } else if (thereIsBlackPath){
+            myResult = "black";
+        } else {
+            myResult = "none";
+        }
+        assertEquals(myResult, result);
     }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //RESIGN GAME
@@ -2349,6 +2429,8 @@ public class CucumberStepDefinitions {
         whitePawnBehaviour = new PawnBehaviour();
         blackPawnBehaviour = new PawnBehaviour();
 
+        thereIsWhitePath = false;
+        thereIsBlackPath = false;
     }
 
     // ***********************************************

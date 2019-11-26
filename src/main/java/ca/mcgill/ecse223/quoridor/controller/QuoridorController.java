@@ -992,6 +992,7 @@ public class QuoridorController {
         //how would this work with load position or load game,
         //it would only work if they load one move at a time, or one wall at a time, which is probably has to
         //i think this is good for now
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
         return true;
     }
 
