@@ -1855,8 +1855,6 @@ public class CucumberStepDefinitions {
         }
     }
 
-
-
     /*
      * Step Backward Step definition
      */
@@ -1876,7 +1874,7 @@ public class CucumberStepDefinitions {
         game.setBlackPlayer(players.get(1));
     }
 
-    @Given("The following moves have been played in game:")
+    @And("The following moves have been played in game:")
     public void the_following_moves_have_been_played_in_game(io.cucumber.datatable.DataTable dataTable) {
         // Write code here that turns the phrase above into concrete actions
         // For automatic transformation, change DataTable to one of
@@ -1890,7 +1888,7 @@ public class CucumberStepDefinitions {
 
     }
 
-    @Given("The next move is {double}")
+    @And("The next move is {double}")
     public void the_next_move_is(Double double1) {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
@@ -1908,25 +1906,25 @@ public class CucumberStepDefinitions {
         throw new cucumber.api.PendingException();
     }
 
-    @Then("White player's position shall be \\({double})")
+    @And("White player's position shall be \\({double})")
     public void white_player_s_position_shall_be(Double double1) {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
 
-    @Then("Black player's position shall be \\({double})")
+    @And("Black player's position shall be \\({double})")
     public void black_player_s_position_shall_be(Double double1) {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
 
-    @Then("White has {int} on stock")
+    @And("White has {int} on stock")
     public void white_has_on_stock(Integer int1) {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
     }
 
-    @Then("Black has {int} on stock")
+    @And("Black has {int} on stock")
     public void black_has_on_stock(Integer int1) {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
@@ -1936,7 +1934,7 @@ public class CucumberStepDefinitions {
     /*
      * Step Forward Step definition
      */
-    @When("Step backward is initiated")
+    @When("Step forward is initiated")
     public void step_forward_is_initiated() {
         // Write code here that turns the phrase above into concrete actions
         throw new cucumber.api.PendingException();
