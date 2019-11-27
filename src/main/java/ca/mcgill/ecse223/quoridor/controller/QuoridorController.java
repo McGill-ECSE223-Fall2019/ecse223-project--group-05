@@ -544,7 +544,9 @@ public class QuoridorController {
 
         if (nbOfWalls >= 1) {
             //the player has more walls in stock
-            int lastMoveNumber = game.getMoves().size();
+            int lastMoveNumber = game.numberOfMoves();
+            //TODO
+           // int lastPlayer = game.
             int roundNumber = game.getCurrentPosition().getId();
 
             Tile targetTile = quoridor.getBoard().getTile(0); //initialize the wall move candidate to the tile(0,0)
