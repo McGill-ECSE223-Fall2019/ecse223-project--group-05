@@ -130,6 +130,7 @@ public class QuoridorApplication extends Application{
 		return blackPawnBehaviour;
 	}
 
+
 	public static PawnBehaviour clearWhitePawnBehaviour() {
 
 		if (whitePawnBehaviour != null)
