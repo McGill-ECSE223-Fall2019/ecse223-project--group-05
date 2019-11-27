@@ -138,11 +138,14 @@ public class QuoridorController {
         String blackPlayerName = quoridor.getCurrentGame().getBlackPlayer().getUser().getName();
         String whitePlayerName = quoridor.getCurrentGame().getWhitePlayer().getUser().getName();
         Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
+        int roundNumber;
 
         PlayerPosition playerPosition;
         if (currentPlayer.getUser().getName().equals(whitePlayerName)) {
+            roundNumber = 1;
             playerPosition = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition();
         } else {
+            roundNumber = 2;
             playerPosition = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition();
         }
 
@@ -226,8 +229,11 @@ public class QuoridorController {
         if (pawnMoveSuccessful) {
             Tile targetTile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
             playerPosition.setTile(targetTile);
-            int moveNumber = quoridor.getCurrentGame().getMoves().size() + 1;
-            int roundNumber = quoridor.getCurrentGame().getCurrentPosition().getId();
+
+            int moves = (quoridor.getCurrentGame().getPositions().size() +1)/2;
+            int moveNumber = (moves+1) / 2;
+            System.out.println("mv nb"+ moveNumber);
+
             if (!isLegalJump) {
                 StepMove stepMove = new StepMove(moveNumber, roundNumber, currentPlayer, targetTile, quoridor.getCurrentGame());
                 quoridor.getCurrentGame().addMove(stepMove);
@@ -544,10 +550,11 @@ public class QuoridorController {
 
         if (nbOfWalls >= 1) {
             //the player has more walls in stock
-            int lastMoveNumber = game.getPositions().size();
-            System.out.println("last move number: "+lastMoveNumber);
-            //TODO
-           // int lastPlayer = game.
+            int moves = (quoridor.getCurrentGame().getPositions().size() +1)/2;
+            int lastMoveNumber = (moves+1) / 2;
+            System.out.println("mv nb wall"+ lastMoveNumber);
+
+            // int lastPlayer = game.
             int roundNumber = game.getCurrentPosition().getId();
 
             Tile targetTile = quoridor.getBoard().getTile(0); //initialize the wall move candidate to the tile(0,0)
@@ -555,14 +562,14 @@ public class QuoridorController {
             if (playerToMove.getUser().getName().toString().equals(whitePlayerName)) {
                 wall = playerToMove.getWall(nbOfWalls - 1);
                 game.getCurrentPosition().removeWhiteWallsInStock(wall);
-                WallMove wallMoveCandidate = new WallMove(lastMoveNumber + 1, 1, playerToMove, targetTile, game, Direction.Vertical, wall);
+                WallMove wallMoveCandidate = new WallMove(lastMoveNumber, 1, playerToMove, targetTile, game, Direction.Vertical, wall);
 //                int a = lastMoveNumber+1;
 //                System.out.println("white : "+a);
                 game.setWallMoveCandidate(wallMoveCandidate);
             } else {
                 wall = playerToMove.getWall(nbOfWalls - 1);
                 game.getCurrentPosition().removeBlackWallsInStock(wall);
-                WallMove wallMoveCandidate = new WallMove(lastMoveNumber + 1, 2, playerToMove, targetTile, game, Direction.Vertical, wall);
+                WallMove wallMoveCandidate = new WallMove(lastMoveNumber, 2, playerToMove, targetTile, game, Direction.Vertical, wall);
 //                int a = lastMoveNumber+1;
 //                System.out.println("Black : "+a);
                 game.setWallMoveCandidate(wallMoveCandidate);
@@ -1280,7 +1287,6 @@ public class QuoridorController {
         int gamePositionId;
         gamePositionId = quoridor.getCurrentGame().getPositions().size();
         gamePositionId = quoridor.getCurrentGame().getPosition(gamePositionId-1).getId();
-        System.out.println(gamePositionId);
 
         //Create new player positions
         Player whitePlayer = quoridor.getCurrentGame().getWhitePlayer();

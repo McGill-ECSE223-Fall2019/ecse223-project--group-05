@@ -370,7 +370,7 @@ public class CucumberStepDefinitions {
     @When("I try to grab a wall from my stock")
     public void iTryToGrabAWallFromMyStock() {
 
-       handHasWall = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+        handHasWall = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
     }
 
     /**
@@ -471,7 +471,7 @@ public class CucumberStepDefinitions {
      * original plan: communicates to View to verify that the wall is indeed moved to a new position. NOTE: THIS ORIGINAL (COMMENTED-OUT) TEST FAILS BECAUSE
      * THE TEST CASES ARE DONE WITHOUT EVER INITIALIZING VIEW. If test cases try to access view, a null pointe exception
      * will always be thrown. It is my opinion that the test case is not necessary.
-     *
+     * <p>
      * update: since tryToMoveWall in step definition does not alter the view, there is no reason for the wall to be displayed at the position stated. The only way for the test to pass is to change the test to test controller only.
      * And this is what we have done.
      *
@@ -1492,7 +1492,7 @@ public class CucumberStepDefinitions {
 
     /**
      * Given method to set player at corresponding position
-	 * Jump pawn step definition, MovePawn.feature stepDefinition
+     * Jump pawn step definition, MovePawn.feature stepDefinition
      *
      * @param row current player row position
      * @param col current player col position
@@ -1597,6 +1597,7 @@ public class CucumberStepDefinitions {
     /**
      * Method to offSet opponent from player to move
      * JumpPawn.feature - Jump Pawn, MovePawn.feature
+     *
      * @param side side to make sure opponent is not current player side
      * @author Daniel Wu
      * @author Alex Masciotra
@@ -1671,16 +1672,17 @@ public class CucumberStepDefinitions {
      */
 
 
-	/**
-	 * method to set opponent pawn posiiton
-	 * JumpPawn.feature - Jump Pawn, MovePawn.feature
-	 * @param orow
-	 * @param ocol
-	 * @author Thomas Philippon
-	 * @author Alex Masciotra
-	 * @author Daniel Wu
-	 */
-	@And("The opponent is located at {int}:{int}")
+    /**
+     * method to set opponent pawn posiiton
+     * JumpPawn.feature - Jump Pawn, MovePawn.feature
+     *
+     * @param orow
+     * @param ocol
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * @author Daniel Wu
+     */
+    @And("The opponent is located at {int}:{int}")
     public void the_opponent_is_located_at(Integer orow, Integer ocol) {
         Player opponentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove();
         Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
@@ -1698,13 +1700,13 @@ public class CucumberStepDefinitions {
     }
 
     /**
+     * @param string  direction of walls
+     * @param string2 side of player
+     *                JumpPawn.feature - Jump Pawn
+     *                Scenario: The game is running
      * @author Thomas Philippon
      * @author Alex Masciotra
      * @author Daniel Wu
-	 * @param string direction of walls
-	 * @param string2 side of player
-     * JumpPawn.feature - Jump Pawn
-     * Scenario: The game is running
      */
     @And("There are no {string} walls {string} from the player nearby")
     public void there_are_no_walls_from_the_player_nearby(String string, String string2) {
@@ -1758,11 +1760,12 @@ public class CucumberStepDefinitions {
 
 
     /**
-	 * Assertion if illegal or success pawn move
+     * Assertion if illegal or success pawn move
+     *
      * @author Thomas Philippon
      * @author Alex Masciotra
      * @author Daniel Wu
-	 *
+     * <p>
      * JumpPawn.feature - Jump Pawn, MovePawn.feature
      */
     @Then("The move {string} shall be {string}")
@@ -1777,15 +1780,16 @@ public class CucumberStepDefinitions {
         }
     }
 
-	/**
-	 * Assertion that the move was registered at the targetted tile
-	 * JumpPawn.feature - Jump Pawn, MovePawn
-	 * @author Thomas Philippon
-	 * @author Alex Masciotra
-	 * @author Daniel Wu
-	 * @param row new row
-	 * @param col new col
-	 */
+    /**
+     * Assertion that the move was registered at the targetted tile
+     * JumpPawn.feature - Jump Pawn, MovePawn
+     *
+     * @param row new row
+     * @param col new col
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * @author Daniel Wu
+     */
     @And("Player's new position shall be {int}:{int}")
     public void player_s_new_position_shall_be(int row, int col) {
         // Write code here that turns the phrase above into concrete actions
@@ -1804,12 +1808,13 @@ public class CucumberStepDefinitions {
     }
 
     /**
-	 * Assertion of completion of move
+     * Assertion of completion of move
+     *
+     * @param nplayerColor player color of the next player
+     *                     JumpPawn.feature - Jump Pawn, MovePawn.feature
      * @author Thomas Philippon
      * @author Alex Masciotra
      * @author Daniel Wu
-	 * @param nplayerColor player color of the next player
-     * JumpPawn.feature - Jump Pawn, MovePawn.feature
      */
     @And("The next player to move shall become {string}")
     public void the_next_player_to_move_shall_become(String nplayerColor) {
@@ -1831,11 +1836,11 @@ public class CucumberStepDefinitions {
      * Method that calls QuoridorController to move the pawn
      *
      * @param playerColor color of currentplayer
-     * @param side direction the pawn wants to move in
-	 * @author Alex Masciotra
-	 * @author Thomas Philippon
-	 * @author Daniel Wu
-	 * JumpPawn.feature - Jump Pawn, MovePawn.feature
+     * @param side        direction the pawn wants to move in
+     * @author Alex Masciotra
+     * @author Thomas Philippon
+     * @author Daniel Wu
+     * JumpPawn.feature - Jump Pawn, MovePawn.feature
      */
     @When("Player {string} initiates to move {string}")
     public void playerInitiatesToMove(String playerColor, String side) {
@@ -1861,17 +1866,27 @@ public class CucumberStepDefinitions {
 
     /**
      * @author Thomas Philippon
+     * @author Alex Masciotra
      * StepBackward.feature - StepBackward
-     * Scenario: Step Backward
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
      */
     @Given("The game is in replay mode")
     public void the_game_is_in_replay_mode() {
         //need to create an empty game and
         initQuoridorAndBoard();
         ArrayList<Player> players = createUsersAndPlayers("user1", "user2");
-        Game game = new Game(GameStatus.Replay, MoveMode.PlayerMove, QuoridorApplication.getQuoridor());
-        game.setWhitePlayer(players.get(0));
-        game.setBlackPlayer(players.get(1));
+        createAndStartGame(players);
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+        game.setGameStatus(GameStatus.Replay);
+//        Game game = new Game(GameStatus.Replay, MoveMode.PlayerMove, QuoridorApplication.getQuoridor());
+//        game.setWhitePlayer(players.get(0));
+//        game.setBlackPlayer(players.get(1));
+        whitePawnBehaviour.setPlayer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer());
+        blackPawnBehaviour.setPlayer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer());
+        whitePawnBehaviour.setCurrentGame(QuoridorApplication.getQuoridor().getCurrentGame());
+        blackPawnBehaviour.setCurrentGame(QuoridorApplication.getQuoridor().getCurrentGame());
+        blackPawnBehaviour.entry();
+        whitePawnBehaviour.entry();
     }
 
     @And("The following moves have been played in game:")
@@ -1883,9 +1898,93 @@ public class CucumberStepDefinitions {
         // Double, Byte, Short, Long, BigInteger or BigDecimal.
         //
         // For other transformations you can register a DataTableType.
-        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
 
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        List<Map<String, String>> valueMaps = dataTable.asMaps();
 
+        for (Map<String, String> map : valueMaps) {
+            Integer mv = Integer.decode(map.get("mv"));
+            Integer rnd = Integer.decode(map.get("rnd"));
+            String move = map.get("move");
+
+            Direction direction;
+            String colrow = move.substring(0, 2);
+
+            char[] arr = colrow.toCharArray();
+            Integer col = arr[0] - 'a' + 1;
+            Integer row = arr[1] - '0';
+
+            if (move.length() == 3) {
+                //wall move
+                //get direction
+                String dir = move.substring(2);
+                switch (dir) {
+                    case "h":
+                        direction = Direction.Horizontal;
+                        break;
+                    case "v":
+                        direction = Direction.Vertical;
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unsupported wall direction was provided");
+                }
+
+                QuoridorController.grabWall(quoridor);
+                Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((row - 1) * 9 + col - 1);
+                QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setWallDirection(direction);
+                QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setTargetTile(targetTile);
+
+                //drop wall
+                QuoridorController.releaseWall(quoridor);
+
+                if (rnd.equals(1)) {
+                    QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getWhitePlayer());
+                } else {
+                    QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getBlackPlayer());
+                }
+            } else {
+                //pawn move
+                if (rnd.equals(1)) {
+                    //white
+                    PlayerPosition currentWhitePlayerPosition = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition();
+                    Integer currentWhiteRow = currentWhitePlayerPosition.getTile().getRow();
+                    Integer currentWhiteCol = currentWhitePlayerPosition.getTile().getColumn();
+
+                    String side;
+                    if (col > currentWhiteCol) {
+                        side = "right";
+                    } else if (col < currentWhiteCol) {
+                        side = "left";
+                    } else if (row > currentWhiteRow) {
+                        side = "down";
+                    } else {
+                        side = "up";
+                    }
+                    QuoridorController.movePawn(quoridor, side, whitePawnBehaviour);
+                    QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getWhitePlayer());
+
+                } else {
+                    //black
+                    PlayerPosition currentBlackPlayerPosition = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition();
+                    Integer currentBlackRow = currentBlackPlayerPosition.getTile().getRow();
+                    Integer currentBlackCol = currentBlackPlayerPosition.getTile().getColumn();
+
+                    String side;
+                    if (col > currentBlackCol) {
+                        side = "right";
+                    } else if (col < currentBlackCol) {
+                        side = "left";
+                    } else if (row > currentBlackRow) {
+                        side = "down";
+                    } else {
+                        side = "up";
+                    }
+
+                    QuoridorController.movePawn(quoridor, side, blackPawnBehaviour);
+                    QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getBlackPlayer());
+                }
+            }
+        }
     }
 
     @And("The next move is {double}")
@@ -1944,9 +2043,22 @@ public class CucumberStepDefinitions {
      * Jump to start Step definition
      */
 
+    @When("Jump to start position is initiated")
+    public void jump_to_start_position_is_initiated() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+
+
     /*
      * Jump to final Step definition
      */
+
+    @When("Jump to final position is initiated")
+    public void jump_to_final_position_is_initiated() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
 
     // ***********************************************
     // Clean up
@@ -2125,7 +2237,5 @@ public class CucumberStepDefinitions {
             System.out.println(e.toString());
         }
     }
-
-
 
 }
