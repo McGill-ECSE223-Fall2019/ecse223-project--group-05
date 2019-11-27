@@ -62,9 +62,9 @@
                         </Button>
                      </children>
                   </AnchorPane>
-                  <StackPane id="Stacked_Pages" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="356.0" prefWidth="600.0">
+                  <StackPane id="Stacked_Pages" fx:id="mama_pane" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="356.0" prefWidth="600.0">
                      <children>
-                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" visible="false">
+                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
                            <children>
                               <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
                               <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
@@ -73,9 +73,10 @@
                                     <Image url="@logo.png" />
                                  </image>
                               </ImageView>
+                              <Button fx:id="Main_Page_btn_Tutorial" layoutX="262.0" layoutY="295.0" mnemonicParsing="false" onMouseClicked="#Start_Tutorial" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: #ffd800;" text="Tutorial" textFill="#2b393a" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="New_Game_Page" fx:id="New_Game_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0">
+                        <AnchorPane id="New_Game_Page" fx:id="New_Game_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0" visible="false">
                            <children>
                               <Button fx:id="Create_New_Game_btn_StartGame" layoutX="247.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#Goto_Game_Session_Page" style="-fx-background-color: #ffd800;" text="Start Game">
                                  <font>
@@ -183,7 +184,7 @@
                            <children>
                               <HBox prefHeight="356.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <VBox alignment="TOP_CENTER" prefHeight="356.0" prefWidth="159.0" spacing="5.0">
+                                    <VBox id="playerInfo" fx:id="playerInfo" alignment="TOP_CENTER" prefHeight="356.0" prefWidth="159.0" spacing="5.0">
                                        <children>
                                           <Separator orientation="VERTICAL" prefHeight="22.0" prefWidth="4.0" visible="false" />
                                           <Label fx:id="blackPlayerName" text="[BLACK PAWN PLAYER NAME]">
@@ -207,7 +208,7 @@
                                              </font></Label>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER" prefHeight="356.0" prefWidth="300.0">
+                                    <VBox id="gameBoard" fx:id="gameBoard" alignment="CENTER" prefHeight="356.0" prefWidth="300.0">
                                        <children>
                                           <GridPane fx:id="Game_Board" alignment="CENTER" gridLinesVisible="true">
                                             <columnConstraints>
@@ -251,7 +252,7 @@
                                           </GridPane>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="TOP_CENTER" prefHeight="356.0" prefWidth="128.0" spacing="5.0">
+                                    <VBox id="wallStocks" fx:id="wallStocks" alignment="TOP_CENTER" prefHeight="356.0" prefWidth="128.0" spacing="5.0">
                                        <children>
                                           <Separator prefHeight="43.0" prefWidth="167.0" visible="false" />
                                           <Label fx:id="invalidWallPlacement" prefHeight="8.0" prefWidth="118.0" textFill="#f50303" wrapText="true">

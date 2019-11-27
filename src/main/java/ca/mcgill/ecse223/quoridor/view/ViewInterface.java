@@ -27,12 +27,7 @@ import java.io.IOException;
 import java.sql.Time;
 import java.util.TimerTask;
 
-import ca.mcgill.ecse223.quoridor.model.Destination;
-import ca.mcgill.ecse223.quoridor.model.Direction;
-import ca.mcgill.ecse223.quoridor.model.Game;
-import ca.mcgill.ecse223.quoridor.model.Player;
-import ca.mcgill.ecse223.quoridor.model.Quoridor;
-import ca.mcgill.ecse223.quoridor.model.User;
+import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -45,15 +40,13 @@ import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -66,7 +59,8 @@ public class ViewInterface {
 
 
 
-	//these are the pages that the user can travel to/interact with
+
+    //these are the pages that the user can travel to/interact with
 	private enum Page {
 		TOP_BUTTONS,
 		MAIN_PAGE,
@@ -131,6 +125,13 @@ public class ViewInterface {
 	private boolean validWallGrab = false; //boolean set to true when a used grabs one of his walls
 	private boolean whiteTimeIsUp = false;
 	private boolean blackTimeISUp = false;
+    private ImageView[] gameBTiles;
+
+
+	//tutorial variables
+    @FXML private StackPane mama_pane;
+    private boolean isInTutorial;
+
 
 	//movePawn varaibles
     ImageView whitePlayerTile, blackPlayerTile, initial_whitePlayerTile, initial_blackPlayerTile;
@@ -266,7 +267,7 @@ public class ViewInterface {
                 //turn btn_dropWall to enabled and visible
                 btn_dropWall.setDisable(false);
                 btn_dropWall.setVisible(true);
-
+                btn_dropWall.setFocusTraversable(false);
 				validWallGrab = true;
 				wallMoveCandidate = wall;
 				wallSelected = wall;
@@ -504,6 +505,8 @@ public class ViewInterface {
      * Reset the game, if it was initialized.
 	 */
 	public void Goto_Main_Page() {
+	    //when going to main page, not in tutorial anymore
+        isInTutorial = false;
 		clearGUI_game_session_page();       //reset the GUI section of the QuoridorApplication
         clearGUI_new_game_page();
         QuoridorController.clearGame();     //reset the model section of the QuoridorApplication
@@ -529,6 +532,7 @@ public class ViewInterface {
 	private void clearGUI_game_session_page() {
 		//set the current player to be WhitePlayer
 		resetGUI_playerTurn();
+		resetGUI_tutorial();
 
 		//reset the player usernames
 		whiteExistingName.getSelectionModel().clearSelection();
@@ -673,7 +677,7 @@ public class ViewInterface {
 					});
 				}
 			}, 0, 1000);
-
+            setPossibleMoveTiles();
 			Goto_Page(Page.GAME_SESSION_PAGE);
 		}
 		catch(Exception e) {
@@ -829,10 +833,29 @@ public class ViewInterface {
         public void handle(MouseEvent e) {
             if (!wallGrabbed) {
                 ImageView img = (ImageView) e.getSource();
-                img.setOpacity(0.5);
+                if (img!= blackPlayerTile && img!= whitePlayerTile)
+                    img.setOpacity(0.5);
             }
         }
     };
+    private void adjustImg_canMoveTo(ImageView img){
+        //Instantiating the ColorAdjust class
+        ColorAdjust colorAdjust = new ColorAdjust();
+
+        //Setting the contrast value
+        colorAdjust.setContrast(0.8);
+
+        //Setting the hue value
+        //colorAdjust.setHue(-0.05);
+
+        //setting brightness
+        //colorAdjust.setBrightness(0.5);
+        //Setting the saturation value
+        colorAdjust.setSaturation(0.5);
+
+        //Applying coloradjust effect to the ImageView node
+        img.setEffect(colorAdjust);
+    }
 
     /**
      *@Author Matthias Arabian
@@ -925,6 +948,77 @@ public class ViewInterface {
     };
 
     /**
+     * Change the opacity of tiles that the current player can move to.
+     */
+    private void setPossibleMoveTiles(){
+        for (int i = 0; i < 81; i++) //clear previous effects
+            gameBTiles[i].setEffect(null);
+
+        //array used to store moves
+        MoveDirection[] dir = {
+        null,   null,           MoveDirection.North,    null,           null,
+        null,   MoveDirection.NorthWest,    MoveDirection.North,    MoveDirection.NorthEast,    null,
+        MoveDirection.West, MoveDirection.West,         null,       MoveDirection.East,         MoveDirection.East,
+        null,   MoveDirection.SouthWest,    MoveDirection.South,    MoveDirection.SouthEast,    null,
+        null,   null,           MoveDirection.South,    null,           null
+        };
+        //array used to decide if stepMove
+        boolean[] canStep = {
+                false, false,   false,  false, false,
+                false, false,   true,   false, false,
+                false, true,    true,   true, false,
+                false, false,   true,   false, false,
+                false, false,   false,  false, false
+        };
+
+        //get current player
+        Player p = QuoridorController.getPlayerOfCurrentTurn();
+        //get position of current player
+        ImageView img;
+        PawnBehaviour sm;
+        if (p.equals(QuoridorController.getPlayerOfProvidedColorstring("black"))) {
+            img = blackPlayerTile;
+            sm = QuoridorApplication.getBlackPawnBehaviour(p);
+        }
+        else {
+            img = whitePlayerTile;
+            sm = QuoridorApplication.getWhitePawnBehaviour(p);
+        }
+
+        //get row and column of tile
+        String id = img.getId();
+        int row, col;
+        row = Integer.parseInt(id.substring(0,1)) -1;
+        col = Integer.parseInt(id.substring(2)) -1;
+
+        MoveDirection tmpMove;
+        for(int r = row-2; r <= row + 2;r++)
+        {
+            for(int c = col-2; c <= col + 2;c++)
+            {
+                //check that position is on board
+                if (r >= 0 && r < 9 && c >= 0 && c < 9){
+                    tmpMove = dir[(r-(row-2))*5 + (c-(col-2))];
+                    if (r != row || c != col)
+                    {
+                        try {
+                            if (canStep[(r - (row - 2)) * 5 + (c - (col - 2))]) {
+                                if (sm.isLegalStep(tmpMove))
+                                    adjustImg_canMoveTo(gameBTiles[r * 9 + c]);
+                            } else {
+                                if (sm.isLegalJump(tmpMove))
+                                    adjustImg_canMoveTo(gameBTiles[r * 9 + c]);
+                            }
+                        }
+                        catch (Exception e){};
+                    }
+
+                }
+            }
+        }
+
+    }
+    /**
      * @author Matthias Arabian
      * @param img the tile whose image will be changed
      * @return a reference to the image the tile should be updated with
@@ -959,8 +1053,11 @@ public class ViewInterface {
 	 * initializes the FXML components. this code runs once the application is launched but before the GUI is displayed.
 	 */
 	public void initialize() {
-		resetGUItoMainPage();
+		resetGUItoMainPage(); //setGUI pages to right visibility
+
+
 		//Populate game board with colorful tiles
+        gameBTiles = new ImageView[81];
 		for (int row = 0; row < 17; row+=2) {
 			for (int col = 0; col < 17; col+=2) {
 			    //store the images inside panes to have a background.
@@ -972,13 +1069,14 @@ public class ViewInterface {
 				ImageView tmp = new ImageView();
                 setTileImage(tmp, TileImage.TILE_STANDARD);
 				p.getChildren().add(tmp);
-				Bounds b = Game_Board. getCellBounds(row,col);
+				Bounds b = Game_Board.getCellBounds(row,col);
 
 				//initialize the tile with a set width, height.
 				tmp.setFitWidth(HORIZONTALSTEP - WALL_WIDTH);
 				tmp.setFitHeight(VERTICALSTEP - WALL_WIDTH);
                 tmp.setId("" + (row/2+1) + "," + (col/2+1)); //store the tile's corrdinates as its ID for later reference
                 Game_Board.add(p , col, row); //add tile to game board
+                gameBTiles[(row/2)*9 + (col/2)] = tmp; //add tile to accessible game board
 
 				tmp.addEventFilter(MouseEvent.MOUSE_ENTERED, hoverEffect); //event handler used for hover animation
                 tmp.addEventFilter(MouseEvent.MOUSE_EXITED, cancelHoverEffect); //event handler used to end hover animation
@@ -1388,6 +1486,8 @@ public class ViewInterface {
 			Player blackPlayer = QuoridorController.getCurrentBlackPlayer();
 			QuoridorController.completePlayerTurn(blackPlayer); //If it's BlackPlayer's turn, end it. If not, nothing happens.
 		}
+        //draw all legal moves the new player can make;
+        setPossibleMoveTiles();
 	}
 
     /**
@@ -1875,5 +1975,54 @@ public class ViewInterface {
 
 
 	}
+
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //TUTORIAL METHODS
+    public void Start_Tutorial(){
+        isInTutorial = true;
+    }
+
+    public boolean isInTutorial() {
+        return isInTutorial;
+    }
+
+    private void resetGUI_tutorial() {
+        for (Node child : mama_pane.getChildren()){
+            AnchorPane c = (AnchorPane)child;
+            if (c.getId().equals("Game_Session_Page"))
+            {
+                HBox papa_container = (HBox)c.getChildren().get(0);
+                for (Node kid: papa_container.getChildren()) {
+                    VBox v = (VBox) kid;
+                    if (!v.getId().equals("gameBoard")){
+                        for (Node bebe: v.getChildren())
+                            bebe.setRotate(0);
+                    }
+                }
+            }
+        }
+    }
+
+	public void UI_dance(){
+	    for (Node child : mama_pane.getChildren()){
+	        AnchorPane c = (AnchorPane)child;
+	        if (c.getId().equals("Game_Session_Page"))
+            {
+                HBox papa_container = (HBox)c.getChildren().get(0);
+                for (Node kid: papa_container.getChildren()) {
+                    VBox v = (VBox) kid;
+                    if (!v.getId().equals("gameBoard")){
+                        for (Node bebe: v.getChildren())
+                            if (bebe.getRotate() == 0) {
+                                bebe.setRotate(15);
+                            } else
+                                bebe.setRotate(-bebe.getRotate());
+                    }
+
+                }
+            }
+        }
+    }
 
 }
