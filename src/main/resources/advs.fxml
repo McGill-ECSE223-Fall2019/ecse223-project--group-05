@@ -261,7 +261,7 @@
                                              </font>
                                           </Label>
                                           <Label fx:id="gameSessionNotificationLabel" prefHeight="41.0" prefWidth="134.0" textFill="RED" wrapText="true" />
-                                          <Button fx:id="btn_dropWall" mnemonicParsing="false" onMouseClicked="#switchPlayer" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="Drop wall" textFill="#735c2d" />
+                                          <Button fx:id="btn_dropWall" mnemonicParsing="false" onAction="#switchPlayer" style="-fx-background-color: #f2c160; -fx-border-color: #e5b75b;" text="Drop wall" textFill="#735c2d" />
                                           <HBox id="blackStock" fx:id="blackStock" alignment="CENTER" maxWidth="100.0" minWidth="100.0" onMouseClicked="#GrabWall" prefHeight="71.0" prefWidth="100.0" style="-fx-background-color: #60a9f2;">
                                              <children>
                                                 <Rectangle fx:id="blackWall1" arcHeight="5.0" arcWidth="5.0" height="67.0" stroke="BLACK" strokeType="INSIDE" width="5.0" />

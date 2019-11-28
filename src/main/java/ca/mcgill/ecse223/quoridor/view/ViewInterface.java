@@ -267,7 +267,7 @@ public class ViewInterface {
                 //turn btn_dropWall to enabled and visible
                 btn_dropWall.setDisable(false);
                 btn_dropWall.setVisible(true);
-                btn_dropWall.setFocusTraversable(false);
+                btn_dropWall.setFocusTraversable(true); //fix bug where the button stole the focus and stopped the "press enter to drop wall" functionality
 				validWallGrab = true;
 				wallMoveCandidate = wall;
 				wallSelected = wall;
@@ -843,16 +843,36 @@ public class ViewInterface {
         ColorAdjust colorAdjust = new ColorAdjust();
 
         //Setting the contrast value
-        colorAdjust.setContrast(0.8);
+        //colorAdjust.setContrast(0.8);
+
+//        //top 1
+//        //Setting the hue value
+//        colorAdjust.setHue(55/255.0);
+//
+//        //setting brightness
+//        //colorAdjust.setBrightness(0.5);
+//        //Setting the saturation value
+//        colorAdjust.setSaturation(167/255.0);
+
+
+//        //top 3
+//        //Setting the hue value
+//        colorAdjust.setHue(55/255.0);
+//
+//        //setting brightness
+//        colorAdjust.setBrightness(0.5);
+//        //Setting the saturation value
+//        colorAdjust.setSaturation(167/255.0);
 
         //Setting the hue value
-        //colorAdjust.setHue(-0.05);
+        colorAdjust.setHue(55/255.0);
 
         //setting brightness
         //colorAdjust.setBrightness(0.5);
         //Setting the saturation value
-        colorAdjust.setSaturation(0.5);
+        colorAdjust.setSaturation(167/255.0);
 
+        colorAdjust.setContrast(0.1);
         //Applying coloradjust effect to the ImageView node
         img.setEffect(colorAdjust);
     }
@@ -948,6 +968,7 @@ public class ViewInterface {
     };
 
     /**
+     * @author Matthias Arabian
      * Change the opacity of tiles that the current player can move to.
      */
     private void setPossibleMoveTiles(){
@@ -956,11 +977,11 @@ public class ViewInterface {
 
         //array used to store moves
         MoveDirection[] dir = {
-        null,   null,           MoveDirection.North,    null,           null,
-        null,   MoveDirection.NorthWest,    MoveDirection.North,    MoveDirection.NorthEast,    null,
-        MoveDirection.West, MoveDirection.West,         null,       MoveDirection.East,         MoveDirection.East,
-        null,   MoveDirection.SouthWest,    MoveDirection.South,    MoveDirection.SouthEast,    null,
-        null,   null,           MoveDirection.South,    null,           null
+        null,               null,                       MoveDirection.North,        null,                       null,
+        null,               MoveDirection.NorthWest,    MoveDirection.North,        MoveDirection.NorthEast,    null,
+        MoveDirection.West, MoveDirection.West,         null,                       MoveDirection.East,         MoveDirection.East,
+        null,               MoveDirection.SouthWest,    MoveDirection.South,        MoveDirection.SouthEast,    null,
+        null,               null,                       MoveDirection.South,        null,                       null
         };
         //array used to decide if stepMove
         boolean[] canStep = {
