@@ -10,6 +10,7 @@ import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
 import ca.mcgill.ecse223.quoridor.model.Game.MoveMode;
 import ca.mcgill.ecse223.quoridor.view.ViewInterface;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
 import io.cucumber.java.en.*;
 
@@ -2095,14 +2096,16 @@ public class CucumberStepDefinitions {
 
     @Given("^The following moves were executed:$")
     public void executeMove(DataTable dt){
-        List<Map<String, String>> list = dt.asMaps(String.class, String.class);
+        List<Map<String, String>> valueMaps = dt.asMaps();
         int currentWhiteRow = 9;
         int currentWhiteCol = 5;
         int currentBlackRow = 1;
         int currentBlackCol = 5;
-        for(int i = 0; i <list.size(); i++){
-            int nextRow = list.get(i).get("row");
-            int nextCol = list.get(i).get("col");
+        int i = 0;
+        for(Map<String, String> map : valueMaps){
+
+            Integer nextRow = Integer.decode(map.get("row"));
+            Integer nextCol = Integer.decode(map.get("col"));
             String dir;
             if(i%2==0){
                 dir = convertTileToDirection(currentWhiteRow,currentWhiteCol,nextRow, nextCol);
@@ -2115,13 +2118,10 @@ public class CucumberStepDefinitions {
                 dir = convertTileToDirection(currentBlackRow,currentBlackCol,nextRow, nextCol);
                 QuoridorController.movePawn(QuoridorApplication.getQuoridor(),dir,QuoridorApplication.getBlackPawnBehaviour(QuoridorController.getCurrentBlackPlayer()));
                 QuoridorController.completePlayerTurn(QuoridorController.getCurrentBlackPlayer());
-                currentWhiteRow = nextRow;
-                currentWhiteCol = nextCol;
+                currentBlackRow = nextRow;
+                currentBlackCol = nextCol;
             }
-
-
-
-
+            i++;
         }
 
     }
@@ -2130,7 +2130,7 @@ public class CucumberStepDefinitions {
      * @author David
      * @param playerString either "white" or "black"
      */
-    @Given("Player {String} has just completed his move")
+    @Given("Player {string} has just completed his move")
     public void completeMove(String playerString){
         if(playerString.equals("white")){
             QuoridorController.completePlayerTurn(QuoridorController.getCurrentWhitePlayer());
@@ -2146,20 +2146,31 @@ public class CucumberStepDefinitions {
      * @param row
      * @param col
      */
-    @And("The last move of {String} is pawn move to {int}:{int}")
+    @And("The last move of {string} is pawn move to {int}:{int}")
     public void moveLast(String playerString, int row, int col) {
         int currentRow, currentCol;
         PawnBehaviour pb;
         if(playerString.equals("white")){
             pb = QuoridorApplication.getWhitePawnBehaviour();
+            //we switch to white player's turn to prepare for the move
+            QuoridorController.completePlayerTurn(QuoridorController.getCurrentBlackPlayer());
         }
         else{
             pb = QuoridorApplication.getBlackPawnBehaviour();
+            //we switch to black player's turn to prepare for the move
+            QuoridorController.completePlayerTurn(QuoridorController.getCurrentWhitePlayer());
         }
 
         currentRow = QuoridorController.getCurrentPawnTilePos(0);
         currentCol = QuoridorController.getCurrentPawnTilePos(1);
         QuoridorController.movePawn(QuoridorApplication.getQuoridor(),convertTileToDirection(currentRow,currentCol,row,col),pb);
+        //we finish the turn
+        if(playerString.equals("white")){
+            QuoridorController.completePlayerTurn(QuoridorController.getCurrentWhitePlayer());
+        }
+        else{
+            QuoridorController.completePlayerTurn(QuoridorController.getCurrentBlackPlayer());
+        }
     }
 
     @When("Checking of game result is initated")
@@ -2167,12 +2178,15 @@ public class CucumberStepDefinitions {
         QuoridorController.checkResult();
     }
 
-    @Then("Game result shall be {String}")
+    @Then("Game result shall be {string}")
     public void gameResultShallBe(String input){
-        assertEquals(true,QuoridorController.getGameResult().equals(input));
+        assertEquals(true,QuoridorController.getGameResult().toLowerCase().equals(input.toLowerCase()));
 
     }
 
+    /**Feature: identify game won, game drawn
+     * @author David
+     */
     @And("The game shall no longer be running")
     public void gameShallNoLongerBeRunning(){
         if(QuoridorController.isGameRunning(QuoridorController.getCurrentGame())){
@@ -2180,6 +2194,78 @@ public class CucumberStepDefinitions {
         }
 
     }
+
+    @Given("The new position of {string} is {int}:{int}")
+    public void newPositionIs(String playerString, int row, int col){
+        //Player current;
+        int startRow, startCol;
+        PawnBehaviour pb;
+        if(playerString.equals("white")){
+            startRow=9;
+            startCol=5;
+            pb = QuoridorApplication.getWhitePawnBehaviour(QuoridorController.getCurrentWhitePlayer());
+            //we switch to white player's turn to prepare for the move
+            QuoridorController.completePlayerTurn(QuoridorController.getCurrentBlackPlayer());
+        }
+        else{
+            pb = QuoridorApplication.getBlackPawnBehaviour(QuoridorController.getCurrentBlackPlayer());
+            startRow=1;
+            startCol=5;
+            //we switch to black player's turn to prepare for the move
+            QuoridorController.completePlayerTurn(QuoridorController.getCurrentWhitePlayer());
+        }
+
+        if(row>startRow) {
+            while (startRow != row) {
+                QuoridorController.movePawn(QuoridorApplication.getQuoridor(),"down",pb);
+                startRow++;
+            }
+        }
+        else if(row < startRow){
+            while (startRow != row) {
+                QuoridorController.movePawn(QuoridorApplication.getQuoridor(),"up",pb);
+                startRow--;
+            }
+        }
+
+        if(col>startCol) {
+            while (startCol != col) {
+                QuoridorController.movePawn(QuoridorApplication.getQuoridor(),"right",pb);
+                startCol++;
+            }
+        }
+        else if(col < startCol){
+            while (startCol != col) {
+                QuoridorController.movePawn(QuoridorApplication.getQuoridor(),"left",pb);
+                startCol--;
+            }
+        }
+    }
+
+    @And("The clock of {string} is more than zero")
+    public void theClockIsMoreThanZero(String playerString){
+        Player x;
+        if(playerString.equals("white")){
+            QuoridorController.getCurrentWhitePlayer().setRemainingTime(new Time(3600000));
+
+        }
+        else{
+            QuoridorController.getCurrentBlackPlayer().setRemainingTime(new Time(3600000));
+        }
+    }
+
+    @When("The clock of {string} counts down to zero")
+    public void countDownToZero(String playerString){
+        if(playerString.equals("white")){
+            QuoridorController.timerUp(QuoridorController.getCurrentWhitePlayer());
+
+        }
+        else{
+            QuoridorController.timerUp(QuoridorController.getCurrentBlackPlayer());
+        }
+    }
+
+
 
 
 
