@@ -424,8 +424,8 @@ public class QuoridorController {
         user2 = quoridor.addUser("user2");
         int thinkingTime = 180;
 
-        Player player1 = new Player(new Time(thinkingTime), user1, 9, Direction.Horizontal);
-        Player player2 = new Player(new Time(thinkingTime), user2, 1, Direction.Horizontal);
+        Player player1 = new Player(new Time(thinkingTime), user1, 1, Direction.Horizontal);
+        Player player2 = new Player(new Time(thinkingTime), user2, 9, Direction.Horizontal);
 
 
         Player[] players = {player1, player2};
@@ -979,6 +979,11 @@ public class QuoridorController {
         return true;
     }
 
+    /**
+     *
+     * @return true if the path exists and false if not
+     * @author Daniel Wu
+     */
     public static Boolean pathExistenceCheck(){
         //check if row is blocked by walls, basically i need to check the pos of the player and get all the walls above the player
         //above meaning in front when going towards their own destinations
@@ -996,6 +1001,61 @@ public class QuoridorController {
         return true;
     }
 
+    /**
+     *
+     * @return true if successfully initialized replay mode
+     */
+    public static Boolean initializeReplayMode(){
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        Game currentGame = quoridor.getCurrentGame();
+        boolean createUsers = true;
+        if (currentGame == null){
+            currentGame = new Game(GameStatus.Replay, Game.MoveMode.PlayerMove, quoridor);
+            User user1 = null;
+            User user2 = null;
+
+            //Check if the temp user name already exists
+            for (User user : quoridor.getUsers()){
+                if ((user.getName() == "user1") || (user.getName() == "user2")){
+                    createUsers = false;
+                }
+
+            }
+
+            //If it doesn't then create them
+            if (createUsers) {
+                user1 = quoridor.addUser("user1");
+                user2 = quoridor.addUser("user2");
+            }
+            int thinkingTime = 180;
+
+            Player player1 = new Player(new Time(thinkingTime), user1, 1, Direction.Horizontal);
+            Player player2 = new Player(new Time(thinkingTime), user2, 9, Direction.Horizontal);
+
+
+            Player[] players = {player1, player2};
+            // Create all walls. Walls with lower ID belong to player1,
+            // while the second half belongs to player 2
+            for (int i = 0; i < 2; i++) {
+                for (int j = 1; j <= 10; j++) {
+                    new Wall(i * 10 + j, players[i]);
+                }
+            }
+
+//            initializeBoard(quoridor, );  //i dont need the timer here
+
+            currentGame.setWhitePlayer(player1);
+            currentGame.setBlackPlayer(player2);
+            QuoridorApplication.getWhitePawnBehaviour(player1);
+
+            QuoridorApplication.getBlackPawnBehaviour(player2);
+        }
+
+        if (currentGame.getGameStatus() != GameStatus.Replay){
+            return false;
+        }
+        return true;
+    }
 
     //Getter for gamestate
 

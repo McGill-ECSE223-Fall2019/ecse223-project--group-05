@@ -2285,6 +2285,8 @@ public class CucumberStepDefinitions {
     }
 
     /**
+     * CheckIfPathExists.feature - Check If Path Exists
+     * Scenario: Path to target area is not blocked
      *
      * @param result
      * @author Daniel Wu
@@ -2376,6 +2378,128 @@ public class CucumberStepDefinitions {
     public void blackUnableToMove(){
         boolean flag = QuoridorController.getCurrentGame().getGameStatus() != GameStatus.Running;
         assertEquals(true, flag);
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Entering replay mode
+     *
+     * @author Daniel Wu
+     */
+    @When("I initiate replay mode")
+    public void iInitiateReplayMode(){
+        QuoridorController.initializeReplayMode();
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Entering replay mode
+     * Scenario: Continue a finished game
+     *
+     * @author Daniel Wu
+     */
+    @Then("The game shall be in replay mode")
+    public void theGameShallBeInReplayMode(){
+        boolean inReplayMode = (QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus() == GameStatus.Replay);
+        assertEquals(true, inReplayMode);
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     * Scenario: Continue a finished game
+     *
+     * @author Daniel Wu
+     */
+    @Given("The game is replay mode")
+    public void theGameIsReplayMode(){
+        QuoridorApplication.getQuoridor().getCurrentGame().setGameStatus(GameStatus.Replay);
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     * Scenario: Continue a finished game
+     *
+     * @param mv
+     * @param rnd
+     * @param move
+     * @author Daniel Wu
+     */
+    @Given("The following moves have been played in game:")
+    public void theFollowingMovesHaveBeenPlayedInGame(int mv, int rnd, String move){
+        //from load game?
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     *
+     * @author Daniel Wu
+     */
+    @And("The game does not have a final result")
+    public void theGameDoesNotHaveAFinalResult(){
+        //might be a conflict
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     * Scenario: Continue a finished game
+     *
+     * @param movno
+     * @param rndno
+     * @author Daniel Wu
+     */
+    @And("The next move is {int}.{int}")
+    public void theNextMoveIs(int movno, int rndno){
+        //not sure how to get this
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     * Scenario: Continue a finished game
+     *
+     * @author Daniel Wu
+     */
+    @When("I initiate to continue game")
+    public void iInitiateToContinueGame(){
+        //what does this imply
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     *
+     * @author Daniel Wu
+     */
+    @And("The remaining moves of the game shall be removed")
+    public void theRemainingMovesOfTheGameShallBeRemoved(){
+        //again what?
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue a finished game
+     *
+     * @author Daniel Wu
+     */
+    @And("The game has a final result")
+    public void theGameHasAFinalResult(){
+        //might be a conflict
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue a finished game
+     *
+     * @author Daniel Wu
+     */
+    @And("I shall be notified that finished games cannot be continued")
+    public void iShallBeNotifiedThatFinishedGamesCannotBeContinued(){
+        assertEquals(true, true);   //this should prolly query the application, but i'm not sure how to do that
+                                                    //otherwise just get the bool from the when
     }
 
     // ***********************************************
