@@ -587,7 +587,6 @@ public class QuoridorSavesManager {
 			throw e;
 		}
 		
-		
 		/*
 		 * Game setup
 		 * Set up the game to be everything it should be at the start of the game.
@@ -636,7 +635,12 @@ public class QuoridorSavesManager {
 				
 				//SANITY CHECK: the tile for this player in gamePosition should be the same as the initial position for the move in the file.
 				if( currentCol != initialCol || currentRow != initialRow ) {
-					throw new InvalidPositionException("Move and Position arguments do not match. Attempted to move out of a tile that the pawn wasn't already in. See: " + bufferedLine);
+					throw new InvalidPositionException(
+							"Move and Position arguments do not match. Attempted to move out of a tile that the pawn wasn't already in. \n "
+							+ "See: \"" + bufferedLine + "\". \n " 
+							+ "Consider that the current position is " + ((char)(currentCol + 'a' - 1)) + currentRow 
+							+ " and it is currently " + (whiteTurn?"white player's":"black player's") + " turn.\n"
+							+ "Further consider that it is currrent moveNo " + moveNumber + " and roundNo " + roundNumber + ".");
 				}
 				
 				//SANITY CHECK: the areas that the pawn can ever legitimately jump to form a diamond around it. We will check that the final destination is in this area.
@@ -657,7 +661,10 @@ public class QuoridorSavesManager {
 			//Note that wall sanity checks are specific to wall instances, and will therefore be checked once we actually start adding things in.
 			
 			//Now that we know what kind of moves we are dealing with, we now proceed to instantiate the new GamePosition based on the previous one.
-			game.setCurrentPosition( duplicateGamePosition( game.getCurrentPosition(), game ) );
+			game.setCurrentPosition( 
+					duplicateGamePosition( game.getCurrentPosition(), game,
+							(whiteTurn?game.getWhitePlayer():game.getBlackPlayer()) ) 
+					);
 			
 			//Now we make adjustments to the current GamePosition based on the current bufferedLine and simultaneously complete some additional Sanity Checks.
 			//We also need to simultaneously add the new moves to our list of moves in order.
@@ -667,6 +674,16 @@ public class QuoridorSavesManager {
 				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[1]) , getColumn(arguments[1]) ) );
 				Direction direction = ( arguments[1].charAt(2) == 'h' ? Direction.Horizontal : Direction.Vertical );
 				Player player = ( whiteTurn? game.getWhitePlayer(): game.getBlackPlayer() );
+				if(!( whiteTurn? currentPosition.hasWhiteWallsInStock(): currentPosition.hasBlackWallsInStock() )) {
+					int whiteInStock = currentPosition.numberOfWhiteWallsInStock();
+					int whiteOnBoard = currentPosition.numberOfWhiteWallsOnBoard();
+					int blackInStock = currentPosition.numberOfBlackWallsInStock();
+					int blackOnBoard = currentPosition.numberOfBlackWallsOnBoard();
+					throw new InvalidPositionException( (whiteTurn?"white":"black") +
+							" player has no walls in stock! Cannot place another wall.\n" +
+							"white has " + whiteInStock + " in stock and " + whiteOnBoard + " on board, and\n" +
+							"black has " + blackInStock + " in stock and " + blackOnBoard + " on board.");
+				}
 				Wall wall = ( whiteTurn? currentPosition.getWhiteWallsInStock(0): currentPosition.getBlackWallsInStock(0) );
 				WallMove wallMove = new WallMove( moveNumber, roundNumber, player, targetTile, game, direction, wall );
 				//Put the wall into the current game position.
@@ -688,19 +705,23 @@ public class QuoridorSavesManager {
 					throw new InvalidPositionException("IMPLEMENTATION ERROR FOR STEPMOVE CREATION; THIS CLAUSE SHOULD BE UNREACHABLE. Going from " + arguments[1] + " to " + arguments[2] + ".");
 				}
 				PawnBehaviour pawnStateMachine = ( whiteTurn? QuoridorApplication.getWhitePawnBehaviour(firstPlayer) : QuoridorApplication.getBlackPawnBehaviour(secondPlayer) );
-				if( !pawnStateMachine.isLegalStep(direction) ) {
-					throw new InvalidPositionException("Detected illegal step.");
-				} else {
-					//Update the state machine
-					pawnStateMachine.move(direction);
-					//Add the step move to the game
-					Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[2]) ,getColumn(arguments[2])) );
-					StepMove stepMove = new StepMove( moveNumber, roundNumber, (whiteTurn?firstPlayer:secondPlayer), targetTile, game );
-					game.addMove(stepMove);
-					//Update the position of the pawn
-					PlayerPosition playerPosition = (whiteTurn? currentPosition.getWhitePosition() : currentPosition.getBlackPosition() );
-					playerPosition.setTile( targetTile );
+				try{
+					pawnStateMachine.isLegalStep(direction);
+				} catch (IllegalArgumentException e) {
+					throw new InvalidPositionException(
+							"Detected illegal step.\n"+
+							"Step direction inputted is " + direction + " " +
+							"with initial tile " + arguments[1] + " and target tile " + arguments[2] + ".");
 				}
+				//Update the state machine
+				pawnStateMachine.move(direction);
+				//Add the step move to the game
+				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[2]) ,getColumn(arguments[2])) );
+				StepMove stepMove = new StepMove( moveNumber, roundNumber, (whiteTurn?firstPlayer:secondPlayer), targetTile, game );
+				game.addMove(stepMove);
+				//Update the position of the pawn
+				PlayerPosition playerPosition = (whiteTurn? currentPosition.getWhitePosition() : currentPosition.getBlackPosition() );
+				playerPosition.setTile( targetTile );
 				
 			} else /* isJumpStep */ {
 				//IMPORTANT TO NOTE: jumpMoves interact with the PawnBehaviour state machines.
@@ -710,25 +731,31 @@ public class QuoridorSavesManager {
 					throw new InvalidPositionException("IMPLEMENTATION ERROR FOR JUMPMOVE CREATION; THIS CLAUSE SHOULD BE UNREACHABLE. Going from " + arguments[1] + " to " + arguments[2] + ".");
 				}
 				PawnBehaviour pawnStateMachine = ( whiteTurn? QuoridorApplication.getWhitePawnBehaviour(firstPlayer) : QuoridorApplication.getBlackPawnBehaviour(secondPlayer) );
-				if( !pawnStateMachine.isLegalJump(direction) ) {
-					throw new InvalidPositionException("Detected illegal jump.");
-				} else {
-					//Update the state machine
-					pawnStateMachine.jump(direction);
-					//Add the step move to the game
-					Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[2]) ,getColumn(arguments[2])) );
-					JumpMove jumpMove = new JumpMove( moveNumber, roundNumber, (whiteTurn?firstPlayer:secondPlayer), targetTile, game );
-					game.addMove(jumpMove);
-					//Update the position of the pawn
-					PlayerPosition playerPosition = (whiteTurn? currentPosition.getWhitePosition() : currentPosition.getBlackPosition() );
-					playerPosition.setTile( targetTile );
+				try{
+					pawnStateMachine.isLegalJump(direction);
+				} catch (IllegalArgumentException e) {
+					throw new InvalidPositionException(
+							"Detected illegal jump."+
+							"Step direction inputted is " + direction + " " +
+							"with initial tile " + arguments[1] + " and target tile " + arguments[2] + ".");
 				}
+				//Update the state machine
+				pawnStateMachine.jump(direction);
+				//Add the step move to the game
+				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[2]) ,getColumn(arguments[2])) );
+				JumpMove jumpMove = new JumpMove( moveNumber, roundNumber, (whiteTurn?firstPlayer:secondPlayer), targetTile, game );
+				game.addMove(jumpMove);
+				//Update the position of the pawn
+				PlayerPosition playerPosition = (whiteTurn? currentPosition.getWhitePosition() : currentPosition.getBlackPosition() );
+				playerPosition.setTile( targetTile );
+				
 			}
 			
 			//Now we complete final sanity checks to do with conflicts between walls and player positions.
 			validateCurrentGamePosition(game);
 			
 			//Now we update the while loop parametres.
+			bufferedLine = bufferedReader.readLine();
 			if(whiteTurn) {
 				whiteTurn = !whiteTurn;
 				roundNumber = 2;
@@ -806,7 +833,7 @@ public class QuoridorSavesManager {
 		for( int i = 1 ; i <= 10 ; i ++ ) {
 			initialPosition.addWhiteWallsInStock( new Wall(i,whitePlayer) );
 		}
-		for( int i = 11 ; i <= 10 ; i ++ ) {
+		for( int i = 11 ; i <= 20 ; i ++ ) {
 			initialPosition.addBlackWallsInStock( new Wall(i,blackPlayer) );
 		}
 		game.setCurrentPosition(initialPosition);
@@ -818,8 +845,11 @@ public class QuoridorSavesManager {
 	 * Helper method which duplicates the GamePosition provided
 	 * Useful for recreating the multiple phases of a game being loaded.
 	 */
-	private static GamePosition duplicateGamePosition(GamePosition gamePosition, Game game) {
-		GamePosition newGamePosition = game.addPosition( gamePosition.getId()+1, gamePosition.getWhitePosition(), gamePosition.getBlackPosition(), gamePosition.getWhitePosition().getPlayer() );
+	private static GamePosition duplicateGamePosition(GamePosition gamePosition, Game game, Player playerToMove) {
+		int newGamePositionId = gamePosition.getId() + 1;
+		PlayerPosition whitePosition = new PlayerPosition( gamePosition.getWhitePosition().getPlayer(), gamePosition.getWhitePosition().getTile() );
+		PlayerPosition blackPosition = new PlayerPosition( gamePosition.getBlackPosition().getPlayer(), gamePosition.getBlackPosition().getTile() );
+		GamePosition newGamePosition = game.addPosition( newGamePositionId, whitePosition, blackPosition, playerToMove );
 		for( int i = 0 ; i < gamePosition.getWhiteWallsInStock().size() ; i ++ ) {
 			newGamePosition.addWhiteWallsInStock( gamePosition.getWhiteWallsInStock(i) );
 		}
@@ -1069,8 +1099,8 @@ public class QuoridorSavesManager {
 	private static MoveDirection getStepDirection( int initialCol, int initialRow, int finalCol, int finalRow ) {
 		MoveDirection direction = null;
 		
-		int deltaCol = initialCol - finalCol;
-		int deltaRow = initialRow - finalRow;
+		int deltaCol = finalCol - initialCol;
+		int deltaRow = finalRow - initialRow;
 		if( deltaCol == 0 && deltaRow == -1 ) {
 			direction = MoveDirection.North;
 		} else if(deltaCol == 1 && deltaRow == 0) {
@@ -1090,8 +1120,8 @@ public class QuoridorSavesManager {
 	private static MoveDirection getJumpDirection( int initialCol, int initialRow, int finalCol, int finalRow ){
 		MoveDirection direction = null;
 		
-		int deltaCol = initialCol - finalCol;
-		int deltaRow = initialRow - finalRow;
+		int deltaCol = finalCol - initialCol;
+		int deltaRow = finalRow - initialRow;
 		if(deltaCol == -2) {
 			if(deltaRow == 0) {
 				direction = MoveDirection.West;

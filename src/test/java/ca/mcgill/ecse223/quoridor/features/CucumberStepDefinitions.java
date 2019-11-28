@@ -1372,6 +1372,10 @@ public class CucumberStepDefinitions {
         } catch (InvalidPositionException e) {
             receivedInvalidPositionException = true;
             e.printStackTrace();
+            boolean truth = true;
+            if(truth) {
+            	throw new IllegalArgumentException(e.getMessage());
+            }
         }
     }
     
