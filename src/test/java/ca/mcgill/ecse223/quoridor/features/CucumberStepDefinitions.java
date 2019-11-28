@@ -2034,6 +2034,17 @@ public class CucumberStepDefinitions {
             System.out.println(e.toString());
         }
     }
+
+    /**Feature: move pawn, identigy game won, identify game drawn
+     * Converts target pawn tile position to a direction string based on current pawn position.
+     * It checks for valid pawn jumps, but does not account for placement of walls
+     * @author David
+     * @param currentRow
+     * @param currentCol
+     * @param row
+     * @param col
+     * @return "up","down",'left","right"
+     */
     private String convertTileToDirection(int currentRow, int currentCol, int row, int col){
         int rowDiff = row-currentRow;
         int colDiff = col-currentCol;
@@ -2094,6 +2105,13 @@ public class CucumberStepDefinitions {
         return dir;
     }
 
+    /**Features: identify gameDrawn
+     * Execute the moves from datatable with headers. The move number
+     * and round number columns are ignored, as it is assumed the moves will be done
+     * in a normal order (white->black->white->black->etc.)
+     * @author David
+     * @param dt
+     */
     @Given("^The following moves were executed:$")
     public void executeMove(DataTable dt){
         List<Map<String, String>> valueMaps = dt.asMaps();
@@ -2126,7 +2144,8 @@ public class CucumberStepDefinitions {
 
     }
 
-    /**the input into the test cases need to be either "white" or "black"
+    /**Features: identify gameDrawn, identify game won
+     * the input into the test cases need to be either "white" or "black"
      * @author David
      * @param playerString either "white" or "black"
      */
@@ -2140,7 +2159,8 @@ public class CucumberStepDefinitions {
         }
     }
 
-    /**Moves the pawn to a specified coordinate
+    /**Features: identify gameDrawn
+     * Moves the pawn to a specified coordinate that can be reached through one move
      * @author David
      * @param playerString can only be "white" or "black"
      * @param row
@@ -2173,11 +2193,18 @@ public class CucumberStepDefinitions {
         }
     }
 
+    /**Features: identify gameDrawn, identify game won
+     * @author David
+     */
     @When("Checking of game result is initated")
     public void initiateResultCheck(){
         QuoridorController.checkResult();
     }
 
+    /**Features: identify gameDrawn, identify game won
+     * @author David
+     * @param input
+     */
     @Then("Game result shall be {string}")
     public void gameResultShallBe(String input){
         assertEquals(true,QuoridorController.getGameResult().toLowerCase().equals(input.toLowerCase()));
@@ -2195,8 +2222,25 @@ public class CucumberStepDefinitions {
 
     }
 
+    /**Features: identify gameDrawn, identify game won
+     * Moves the pawn in question to a given position by moving
+     * pawn step by step from starting point, eliminating column difference first
+     * then row difference.
+     * This method does not handle invalid coordinates
+     * @author David
+     * @param playerString "white" or "black"
+     * @param row destination row
+     * @param col destination col
+     */
     @Given("The new position of {string} is {int}:{int}")
     public void newPositionIs(String playerString, int row, int col){
+        //the test case identifyGameWon suggests that black starts at row 9 and white starts at row 1
+        //yet in all the previous test cases this was the opposite
+        //and we had designed black to start at row 1.
+        //to make the test case fit into game, we make some adjustments
+        row = 10 - row;
+
+
         //Player current;
         int startRow, startCol;
         PawnBehaviour pb;
@@ -2214,7 +2258,18 @@ public class CucumberStepDefinitions {
             //we switch to black player's turn to prepare for the move
             QuoridorController.completePlayerTurn(QuoridorController.getCurrentWhitePlayer());
         }
-
+        if(col>startCol) {
+            while (startCol != col) {
+                QuoridorController.movePawn(QuoridorApplication.getQuoridor(),"right",pb);
+                startCol++;
+            }
+        }
+        else if(col < startCol){
+            while (startCol != col) {
+                QuoridorController.movePawn(QuoridorApplication.getQuoridor(),"left",pb);
+                startCol--;
+            }
+        }
         if(row>startRow) {
             while (startRow != row) {
                 QuoridorController.movePawn(QuoridorApplication.getQuoridor(),"down",pb);
@@ -2242,6 +2297,11 @@ public class CucumberStepDefinitions {
         }
     }
 
+    /**set remaining time of playerto a nonzero value
+     * Features: identify game won
+     * @author David
+     * @param playerString "white" or "black"
+     */
     @And("The clock of {string} is more than zero")
     public void theClockIsMoreThanZero(String playerString){
         Player x;
@@ -2254,6 +2314,11 @@ public class CucumberStepDefinitions {
         }
     }
 
+    /**calling controller as if player's timer reached zero
+     * Features: identify game won
+     * @author David
+     * @param playerString "white" or "black"
+     */
     @When("The clock of {string} counts down to zero")
     public void countDownToZero(String playerString){
         if(playerString.equals("white")){
