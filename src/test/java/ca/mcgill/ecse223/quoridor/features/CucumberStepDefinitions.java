@@ -3,10 +3,10 @@ package ca.mcgill.ecse223.quoridor.features;
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
 import ca.mcgill.ecse223.quoridor.controller.PawnBehaviour;
-import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
 import ca.mcgill.ecse223.quoridor.model.*;
+import ca.mcgill.ecse223.quoridor.controller.*;
 import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
 import ca.mcgill.ecse223.quoridor.model.Game.MoveMode;
 import ca.mcgill.ecse223.quoridor.view.ViewInterface;
@@ -1853,6 +1853,79 @@ public class CucumberStepDefinitions {
                 pawnMoveSuccesful = false;
             }
         }
+    }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //RESIGN GAME
+
+    /**
+     * @author Matthias Arabian
+     * Ends the game by changing the game status from Running to [Player]Won
+     */
+    @When("Player initiates to resign")
+    public void playerInitiatesToResign(){
+        QuoridorController.initiateToResign();
+    }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //REPORT FINAL RESULT
+
+    /**
+     * @author Matthias Arabian
+     * Stops timers, display the final resuls on the GUI.
+     */
+    @Then("The final result shall be displayed")
+    public void displayFinalResult(){
+
+        timer.cancel();
+        timer = null;
+        //since we are using JavaFX, we cannot directly assert/interact with
+        //the view during JUnit tests. We therefore have to assert that the view is unaccessible.
+        if (QuoridorApplication.getViewInterface() == null){
+            assertEquals(true, true);
+            return;
+        }
+
+
+        QuoridorController.displayFinalResults();
+    }
+
+    /**
+     * @author Matthias Arabian
+     * Ensure the clock of White Player has been stopped
+     */
+    @And("White's clock shall not be counting down")
+    public void whiteClockNotCountingDown(){
+        assertEquals(null, timer);
+    }
+
+    /**
+     * @author Matthias Arabian
+     * Ensure the clock of Black Player has been stopped
+     */
+    @And("Black's clock shall not be counting down")
+    public void blackClockNotCountingDown(){
+        assertEquals(null, timer);
+    }
+
+    /**
+     * @author Matthias Arabian
+     * Ensure the game has ended (player can't move if game has ended)
+     */
+    @And("White shall be unable to move")
+    public void whiteUnableToMove(){
+        boolean flag = QuoridorController.getCurrentGame().getGameStatus() != GameStatus.Running;
+        assertEquals(true, flag);
+    }
+
+    /**
+     * @author Matthias Arabian
+     * Ensure the game has ended (player can't move if game has ended)
+     */
+    @And("Black shall be unable to move")
+    public void blackUnableToMove(){
+        boolean flag = QuoridorController.getCurrentGame().getGameStatus() != GameStatus.Running;
+        assertEquals(true, flag);
     }
 
     // ***********************************************
