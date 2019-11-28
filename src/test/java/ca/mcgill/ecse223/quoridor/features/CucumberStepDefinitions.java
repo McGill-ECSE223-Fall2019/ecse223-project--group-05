@@ -46,7 +46,6 @@ public class CucumberStepDefinitions {
     private boolean failedToReadSaveFile = false;
     private boolean receivedInvalidPositionException = false;
 
-
     //Timer object for starting and stopping the player clock
     Timer timer = new Timer();
     // ***********************************************
@@ -370,7 +369,7 @@ public class CucumberStepDefinitions {
     @When("I try to grab a wall from my stock")
     public void iTryToGrabAWallFromMyStock() {
 
-       handHasWall = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
+        handHasWall = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
     }
 
     /**
@@ -471,7 +470,7 @@ public class CucumberStepDefinitions {
      * original plan: communicates to View to verify that the wall is indeed moved to a new position. NOTE: THIS ORIGINAL (COMMENTED-OUT) TEST FAILS BECAUSE
      * THE TEST CASES ARE DONE WITHOUT EVER INITIALIZING VIEW. If test cases try to access view, a null pointe exception
      * will always be thrown. It is my opinion that the test case is not necessary.
-     *
+     * <p>
      * update: since tryToMoveWall in step definition does not alter the view, there is no reason for the wall to be displayed at the position stated. The only way for the test to pass is to change the test to test controller only.
      * And this is what we have done.
      *
@@ -1492,7 +1491,7 @@ public class CucumberStepDefinitions {
 
     /**
      * Given method to set player at corresponding position
-	 * Jump pawn step definition, MovePawn.feature stepDefinition
+     * Jump pawn step definition, MovePawn.feature stepDefinition
      *
      * @param row current player row position
      * @param col current player col position
@@ -1597,6 +1596,7 @@ public class CucumberStepDefinitions {
     /**
      * Method to offSet opponent from player to move
      * JumpPawn.feature - Jump Pawn, MovePawn.feature
+     *
      * @param side side to make sure opponent is not current player side
      * @author Daniel Wu
      * @author Alex Masciotra
@@ -1670,17 +1670,17 @@ public class CucumberStepDefinitions {
      * Jump pawn step definition
      */
 
-
-	/**
-	 * method to set opponent pawn posiiton
-	 * JumpPawn.feature - Jump Pawn, MovePawn.feature
-	 * @param orow
-	 * @param ocol
-	 * @author Thomas Philippon
-	 * @author Alex Masciotra
-	 * @author Daniel Wu
-	 */
-	@And("The opponent is located at {int}:{int}")
+    /**
+     * method to set opponent pawn posiiton
+     * JumpPawn.feature - Jump Pawn, MovePawn.feature
+     *
+     * @param orow
+     * @param ocol
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * @author Daniel Wu
+     */
+    @And("The opponent is located at {int}:{int}")
     public void the_opponent_is_located_at(Integer orow, Integer ocol) {
         Player opponentPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getPlayerToMove();
         Player blackPlayer = QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer();
@@ -1698,13 +1698,13 @@ public class CucumberStepDefinitions {
     }
 
     /**
+     * @param string  direction of walls
+     * @param string2 side of player
+     *                JumpPawn.feature - Jump Pawn
+     *                Scenario: The game is running
      * @author Thomas Philippon
      * @author Alex Masciotra
      * @author Daniel Wu
-	 * @param string direction of walls
-	 * @param string2 side of player
-     * JumpPawn.feature - Jump Pawn
-     * Scenario: The game is running
      */
     @And("There are no {string} walls {string} from the player nearby")
     public void there_are_no_walls_from_the_player_nearby(String string, String string2) {
@@ -1758,11 +1758,12 @@ public class CucumberStepDefinitions {
 
 
     /**
-	 * Assertion if illegal or success pawn move
+     * Assertion if illegal or success pawn move
+     *
      * @author Thomas Philippon
      * @author Alex Masciotra
      * @author Daniel Wu
-	 *
+     * <p>
      * JumpPawn.feature - Jump Pawn, MovePawn.feature
      */
     @Then("The move {string} shall be {string}")
@@ -1777,15 +1778,16 @@ public class CucumberStepDefinitions {
         }
     }
 
-	/**
-	 * Assertion that the move was registered at the targetted tile
-	 * JumpPawn.feature - Jump Pawn, MovePawn
-	 * @author Thomas Philippon
-	 * @author Alex Masciotra
-	 * @author Daniel Wu
-	 * @param row new row
-	 * @param col new col
-	 */
+    /**
+     * Assertion that the move was registered at the targetted tile
+     * JumpPawn.feature - Jump Pawn, MovePawn
+     *
+     * @param row new row
+     * @param col new col
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * @author Daniel Wu
+     */
     @And("Player's new position shall be {int}:{int}")
     public void player_s_new_position_shall_be(int row, int col) {
         // Write code here that turns the phrase above into concrete actions
@@ -1804,12 +1806,13 @@ public class CucumberStepDefinitions {
     }
 
     /**
-	 * Assertion of completion of move
+     * Assertion of completion of move
+     *
+     * @param nplayerColor player color of the next player
+     *                     JumpPawn.feature - Jump Pawn, MovePawn.feature
      * @author Thomas Philippon
      * @author Alex Masciotra
      * @author Daniel Wu
-	 * @param nplayerColor player color of the next player
-     * JumpPawn.feature - Jump Pawn, MovePawn.feature
      */
     @And("The next player to move shall become {string}")
     public void the_next_player_to_move_shall_become(String nplayerColor) {
@@ -1831,11 +1834,11 @@ public class CucumberStepDefinitions {
      * Method that calls QuoridorController to move the pawn
      *
      * @param playerColor color of currentplayer
-     * @param side direction the pawn wants to move in
-	 * @author Alex Masciotra
-	 * @author Thomas Philippon
-	 * @author Daniel Wu
-	 * JumpPawn.feature - Jump Pawn, MovePawn.feature
+     * @param side        direction the pawn wants to move in
+     * @author Alex Masciotra
+     * @author Thomas Philippon
+     * @author Daniel Wu
+     * JumpPawn.feature - Jump Pawn, MovePawn.feature
      */
     @When("Player {string} initiates to move {string}")
     public void playerInitiatesToMove(String playerColor, String side) {
@@ -1853,6 +1856,296 @@ public class CucumberStepDefinitions {
                 pawnMoveSuccesful = false;
             }
         }
+    }
+
+    /*
+     * Step Backward Step definition
+     */
+
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
+    @Given("The game is in replay mode")
+    public void the_game_is_in_replay_mode() {
+        //need to create an empty game and
+        initQuoridorAndBoard();
+        ArrayList<Player> players = createUsersAndPlayers("user1", "user2");
+        createAndStartGame(players);
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+        game.setGameStatus(GameStatus.Replay);
+        whitePawnBehaviour.setPlayer(QuoridorApplication.getQuoridor().getCurrentGame().getWhitePlayer());
+        blackPawnBehaviour.setPlayer(QuoridorApplication.getQuoridor().getCurrentGame().getBlackPlayer());
+        whitePawnBehaviour.setCurrentGame(QuoridorApplication.getQuoridor().getCurrentGame());
+        blackPawnBehaviour.setCurrentGame(QuoridorApplication.getQuoridor().getCurrentGame());
+        blackPawnBehaviour.entry();
+        whitePawnBehaviour.entry();
+    }
+
+    /**
+    * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
+    @Given("The following moves have been played in game:")
+    public void the_following_moves_have_been_played_in_game(io.cucumber.datatable.DataTable dataTable) {
+        // Write code here that turns the phrase above into concrete actions
+        // For automatic transformation, change DataTable to one of
+        // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
+        // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
+        // Double, Byte, Short, Long, BigInteger or BigDecimal.
+        //
+        // For other transformations you can register a DataTableType.
+
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        List<Map<String, String>> valueMaps = dataTable.asMaps();
+
+        for (Map<String, String> map : valueMaps) {
+            Integer mv = Integer.decode(map.get("mv"));
+            Integer rnd = Integer.decode(map.get("rnd"));
+            String move = map.get("move");
+
+            Direction direction;
+            String colrow = move.substring(0, 2);
+
+            char[] arr = colrow.toCharArray();
+            Integer col = arr[0] - 'a' + 1;
+            Integer row = arr[1] - '0';
+
+            if (move.length() == 3) {
+                //wall move
+                //get direction
+                String dir = move.substring(2);
+                switch (dir) {
+                    case "h":
+                        direction = Direction.Horizontal;
+                        break;
+                    case "v":
+                        direction = Direction.Vertical;
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unsupported wall direction was provided");
+                }
+
+                QuoridorController.grabWall(quoridor);
+                Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((row - 1) * 9 + col - 1);
+                QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setWallDirection(direction);
+                QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setTargetTile(targetTile);
+
+                //drop wall
+                QuoridorController.releaseWall(quoridor);
+
+                if (rnd.equals(1)) {
+                    QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getWhitePlayer());
+                } else {
+                    QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getBlackPlayer());
+                }
+            } else {
+                //pawn move
+                if (rnd.equals(1)) {
+                    //white
+                    PlayerPosition currentWhitePlayerPosition = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition();
+                    Integer currentWhiteRow = currentWhitePlayerPosition.getTile().getRow();
+                    Integer currentWhiteCol = currentWhitePlayerPosition.getTile().getColumn();
+
+                    String side;
+                    if (col > currentWhiteCol) {
+                        side = "right";
+                    } else if (col < currentWhiteCol) {
+                        side = "left";
+                    } else if (row > currentWhiteRow) {
+                        side = "down";
+                    } else {
+                        side = "up";
+                    }
+                    QuoridorController.movePawn(quoridor, side, whitePawnBehaviour);
+                    QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getWhitePlayer());
+
+                } else {
+                    //black
+                    PlayerPosition currentBlackPlayerPosition = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition();
+                    Integer currentBlackRow = currentBlackPlayerPosition.getTile().getRow();
+                    Integer currentBlackCol = currentBlackPlayerPosition.getTile().getColumn();
+
+                    String side;
+                    if (col > currentBlackCol) {
+                        side = "right";
+                    } else if (col < currentBlackCol) {
+                        side = "left";
+                    } else if (row > currentBlackRow) {
+                        side = "down";
+                    } else {
+                        side = "up";
+                    }
+
+                    QuoridorController.movePawn(quoridor, side, blackPawnBehaviour);
+                    QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getBlackPlayer());
+                }
+            }
+        }
+    }
+
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
+    @And("The next move is {double}")
+    public void the_next_move_is(Double mvRnd) {
+
+        //split the double variable into the move and round number
+        String[] moveRound = mvRnd.toString().split("\\.");
+        int move =  Integer.parseInt(moveRound[0]);
+        int round = Integer.parseInt(moveRound[1]);
+
+        //Compute the index in the game position list based on the move and round number
+        int gamePositionIndex = move *2 -(round%2) -1;
+
+        //assign the game position at the gameposition index to the current game position
+        GamePosition gamePosition = QuoridorApplication.getQuoridor().getCurrentGame().getPosition(gamePositionIndex);
+
+        QuoridorApplication.getQuoridor().getCurrentGame().setCurrentPosition(gamePosition);
+
+    }
+
+    /**
+     * @author Thomas Philippon
+     * Scenario: Step Backward, stepforward
+     */
+    @When("Step backward is initiated")
+    public void step_backward_is_initiated() {
+       //call the controller method for the feature step backward
+        QuoridorController.stepBackward(QuoridorApplication.getQuoridor().getCurrentGame());
+    }
+
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
+    @Then("The next move shall be {double}")
+    public void the_next_move_shall_be(Double mvRnd) {
+        //Strip the double to get the move and wall number
+        String[] moveRound = mvRnd.toString().split("\\.");
+        int movenm =  Integer.parseInt(moveRound[0]);
+        int roundnm = Integer.parseInt(moveRound[1]);
+        int nextMove, nextRound;
+
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
+
+        int gameId = currentGamePosition.getId();
+
+        try{
+            Move move = quoridor.getCurrentGame().getMove(gameId);
+            nextMove = move.getMoveNumber();
+            nextRound = move.getRoundNumber();
+        }catch (Exception e){ //if you are at the last game position, the last move (5,1) doesnt exist so an Exception is thrown
+            nextMove = 5;
+            nextRound = 1;
+        }
+        assertEquals(movenm, nextMove);
+        assertEquals(roundnm, nextRound);
+    }
+
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
+    @And("White player's position shall be \\({double})")
+    public void white_player_s_position_shall_be(Double rowCol) {
+        //Strip the double to get the row and column
+        String[] moveRound = rowCol.toString().split("\\.");
+        int temp = Integer.parseInt(moveRound[0]);
+        int row =  temp/10;
+        int col = temp-(10*row);
+
+         assertEquals(row, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile().getRow());
+         assertEquals(col, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile().getColumn());
+    }
+
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
+    @And("Black player's position shall be \\({double})")
+    public void black_player_s_position_shall_be(Double rowCol) {
+        //Strip the double to get the row and column
+        String[] moveRound = rowCol.toString().split("\\.");
+        int temp = Integer.parseInt(moveRound[0]);
+        int row =  temp/10;
+        int col = temp-(10*row);
+
+        assertEquals(row, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile().getRow());
+        assertEquals(col, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile().getColumn());
+    }
+
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
+    @And("White has {int} on stock")
+    public void white_has_on_stock(Integer nbOfWalls) {
+       assertEquals(nbOfWalls, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size());
+    }
+
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
+    @And("Black has {int} on stock")
+    public void black_has_on_stock(Integer nbOfWalls) {
+        assertEquals(nbOfWalls, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackWallsInStock().size());
+    }
+
+
+    /*
+     * Step Forward Step definition
+     */
+    /**
+     * @author Thomas Philippon
+     * Scenario: Step Backward, stepforward
+     */
+    @When("Step forward is initiated")
+    public void step_forward_is_initiated() {
+        //call the controller method for the step forward feature
+      QuoridorController.stepForward(QuoridorApplication.getQuoridor().getCurrentGame());
+    }
+
+    /*
+     * Jump to start Step definition
+     */
+
+    /**
+     * jump to start
+     * @author Alex Masciotra
+     */
+    @When("Jump to start position is initiated")
+    public void jump_to_start_position_is_initiated() {
+        // Write code here that turns the phrase above into concrete actions
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        QuoridorController.jumpToStart(quoridor);
+    }
+
+
+    /*
+     * Jump to final Step definition
+     */
+
+    /**
+     * jump to final
+     * @author Alex Masciotra
+     */
+    @When("Jump to final position is initiated")
+    public void jump_to_final_position_is_initiated() {
+        // Write code here that turns the phrase above into concrete actions
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        QuoridorController.jumpToFinal(quoridor);
     }
 
     // ***********************************************
@@ -1978,19 +2271,27 @@ public class CucumberStepDefinitions {
         game.setWhitePlayer(players.get(0));
         game.setBlackPlayer(players.get(1));
 
+        Player whitePlayer = quoridor.getCurrentGame().getWhitePlayer();
+        Player blackPlayer = quoridor.getCurrentGame().getBlackPlayer();
+
+        PlayerPosition whitePlayerInitialPos = new PlayerPosition(whitePlayer, player1StartPos);
+        PlayerPosition blackPlayerInitialPos = new PlayerPosition(blackPlayer, player2StartPos);
         PlayerPosition player1Position = new PlayerPosition(quoridor.getCurrentGame().getWhitePlayer(), player1StartPos);
         PlayerPosition player2Position = new PlayerPosition(quoridor.getCurrentGame().getBlackPlayer(), player2StartPos);
 
-        GamePosition gamePosition = new GamePosition(0, player1Position, player2Position, players.get(0), game);
+        GamePosition initialGamePosition = new GamePosition(0, whitePlayerInitialPos, blackPlayerInitialPos, whitePlayer, quoridor.getCurrentGame());
+        GamePosition gamePosition = new GamePosition(1, player1Position, player2Position, players.get(0), game);
 
         // Add the walls as in stock for the players
         for (int j = 1; j <= 10; j++) {
             Wall wall = Wall.getWithId(j);
             gamePosition.addWhiteWallsInStock(wall);
+            initialGamePosition.addWhiteWallsInStock(wall);
         }
         for (int j = 1; j <= 10; j++) {
             Wall wall = Wall.getWithId(j + 10);
             gamePosition.addBlackWallsInStock(wall);
+            initialGamePosition.addBlackWallsInStock(wall);
         }
 
         game.setCurrentPosition(gamePosition);
@@ -2032,5 +2333,4 @@ public class CucumberStepDefinitions {
             System.out.println(e.toString());
         }
     }
-
 }
