@@ -1281,7 +1281,29 @@ public class QuoridorController {
     }
 
     /**
-     * PENDING IMPLEMENTATION
+     * @author Matthias Arabian
+     * @return whether or not the resign has succeeded
+     * Sets the game status to [Player]Won, and ending the game.
+     */
+    public static boolean initiateToResign(){
+        if (getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black"))
+            return getCurrentGame().setGameStatus(GameStatus.WhiteWon);
+        else
+            return getCurrentGame().setGameStatus(GameStatus.BlackWon);
+    }
+
+    /**
+     * @author Matthias Arabian
+     * Get the final results from the model. Send those to the GUI to display.
+     */
+    public static void displayFinalResults(){
+        GameStatus finalResults = QuoridorController.getCurrentGame().getGameStatus();
+
+        //this is the method that the view would actually run
+        QuoridorApplication.getViewInterface().displayFinalResults(finalResults);
+    }
+
+    /**
      * GUI modifier method.
      * Stops the clock of the provided player.
      *
@@ -1294,7 +1316,6 @@ public class QuoridorController {
     }
 
     /**
-     * PENDING IMPLEMENTATION
      * GUI modifier method.
      * Lets the clock of the provided player run.
      *
