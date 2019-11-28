@@ -7,6 +7,7 @@ import ca.mcgill.ecse223.quoridor.controller.QuoridorController;
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.controller.*;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 
 public class PlayerTimer extends TimerTask{
@@ -31,7 +32,14 @@ public class PlayerTimer extends TimerTask{
         player.setRemainingTime(updatedTime);
         if (timeRemaining == 0) {
             System.out.println("timer reached 0!!!");
-            QuoridorController.timerUp(player);
+
+            Platform.runLater(new Runnable() {
+                public void run() {
+                    QuoridorController.timerUp(player);
+                }
+            });
+
+            this.cancel();
         }
 
         //if game isn't running, end timer:

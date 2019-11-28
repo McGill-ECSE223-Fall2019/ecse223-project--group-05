@@ -1543,6 +1543,11 @@ public class ViewInterface {
 		}
 		timer.cancel();
 		timer = new Timer(); //stop the player timers
+
+        RefreshTimer.cancel();
+        RefreshTimer = new Timer();
+        whiteTimeIsUp = false;
+        blackTimeISUp = false;
 	}
 
 
@@ -2124,7 +2129,6 @@ public class ViewInterface {
         //display a random "victory dance" gif to spice things up
         int num = (int)Math.floor(Math.random() * 9);
         img_result.setImage(new Image("textures/reportFinalResult/img" + num + ".gif"));
-
     }
 
     /**

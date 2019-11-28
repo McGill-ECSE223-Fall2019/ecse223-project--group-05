@@ -1576,16 +1576,16 @@ public class QuoridorController {
         if(getPlayerOfCurrentTurn().equals(white)){
             int x = getCurrentPawnTilePos(0);
             if(getCurrentPawnTilePos(0)==1 ){
-                endGame();
                 getCurrentGame().setGameStatus(GameStatus.WhiteWon);
+                endGame();
                 return "whiteWon";
             }
         }
         //check for black win
         else{
             if(getCurrentPawnTilePos(0)==9){
-                endGame();
                 getCurrentGame().setGameStatus(GameStatus.BlackWon);
+                endGame();
                 return "blackWon";
             }
         }
@@ -1637,16 +1637,17 @@ public class QuoridorController {
      */
     public static void timerUp(Player player){
         if(player.hasGameAsWhite()){
-            endGame();
             getCurrentGame().setGameStatus(GameStatus.BlackWon);
+            endGame();
         }
         else{
-            endGame();
             getCurrentGame().setGameStatus(GameStatus.WhiteWon);
+            endGame();
         }
     }
     private static void endGame(){
-        //TODO disable all pages
+        GameStatus results = getCurrentGame().getGameStatus();
+        QuoridorApplication.getViewInterface().displayFinalResults(results);
     }
 
     /**Returns result of game as a string
