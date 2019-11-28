@@ -19,6 +19,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import java.util.ArrayList?>
+
 <Pane stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
       <AnchorPane id="Application_Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3d6b99;">
@@ -28,20 +29,24 @@
                <children>
                   <AnchorPane id="Top_Buttons" fx:id="Top_Buttons" focusTraversable="true" onMouseDragged="#topDragged" onMousePressed="#topPressed" prefHeight="45.0" prefWidth="600.0">
                      <children>
-                        <Button mnemonicParsing="false" onMouseClicked="#Goto_Main_Page" style="-fx-background-color: #192c3f;">
-                           <graphic>
-                              <ImageView fitHeight="45.0" fitWidth="77.0" onMouseClicked="#Goto_Main_Page" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@logo.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button layoutX="97.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="New Game" textFill="#ffd800" />
-                        <Button layoutX="174.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="Previous Game" textFill="#ffd800" />
-                        <Button layoutX="270.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="Statistacks" textFill="#ffd800" />
-                        <Button layoutX="356.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#openRulesPage" onMouseEntered="#openRulesPage" onMouseExited="#closeRulesPage" style="-fx-background-color: #192c3f;" text="Rules" textFill="#ffd800" />
-                        <Button fx:id="btn_saveGame" alignment="CENTER" layoutX="413.0" layoutY="9.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#saveGameContainerFunction" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #192c3f;" text="Save Game" textFill="#ffd800" />
+                        <AnchorPane id="Top_left_buttons" fx:id="Top_left_buttons" prefHeight="42.0" prefWidth="493.0">
+                           <children>
+                              <Button mnemonicParsing="false" onMouseClicked="#Goto_Main_Page" style="-fx-background-color: #192c3f;">
+                                 <graphic>
+                                    <ImageView fitHeight="45.0" fitWidth="77.0" onMouseClicked="#Goto_Main_Page" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@logo.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="97.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="New Game" textFill="#ffd800" />
+                              <Button layoutX="174.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="Previous Game" textFill="#ffd800" />
+                              <Button fx:id="btn_ResignGame" layoutX="328.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#resignGame" prefHeight="25.0" prefWidth="99.0" style="-fx-background-color: #192c3f;" text="Resign Game" textFill="#ffd800" />
+                              <Button layoutX="278.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#openRulesPage" onMouseEntered="#openRulesPage" onMouseExited="#closeRulesPage" style="-fx-background-color: #192c3f;" text="Rules" textFill="#ffd800" />
+                              <Button fx:id="btn_saveGame" alignment="CENTER" layoutX="427.0" layoutY="9.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#saveGameContainerFunction" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #192c3f;" text="Save Game" textFill="#ffd800" />
+                           </children>
+                        </AnchorPane>
                         <Button layoutX="538.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#toggleMaximize" style="-fx-background-color: #192c3f;">
                            <graphic>
                               <ImageView fitHeight="12.0" fitWidth="11.0" pickOnBounds="true" preserveRatio="true">
@@ -64,7 +69,7 @@
                   </AnchorPane>
                   <StackPane id="Stacked_Pages" fx:id="mama_pane" layoutY="44.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="356.0" prefWidth="600.0">
                      <children>
-                        <AnchorPane id="Main_Page" fx:id="Main_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0">
+                        <AnchorPane id="Main_Page" fx:id="Main_Page" disable="true" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" visible="false">
                            <children>
                               <Button fx:id="Main_Page_btn_NewGame" layoutX="263.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #ffd800;" text="New Game" textFill="#2b393a" />
                               <Button fx:id="Main_Page_btn_LoadGame" layoutX="262.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #ffd800;" text="Load Game" textFill="#2b393a" />
@@ -180,7 +185,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" disable="true" prefWidth="397.0" visible="false">
+                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" disable="true" prefWidth="397.0">
                            <children>
                               <HBox prefHeight="356.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
@@ -418,6 +423,43 @@
                               </Pane>
                            </children>
                         </AnchorPane>
+                        <AnchorPane id="Results_Page" fx:id="Results_Page" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="356.0" prefWidth="600.0">
+                                 <children>
+                                    <Separator orientation="VERTICAL" prefHeight="65.0" prefWidth="600.0" visible="false" />
+                                    <HBox prefHeight="244.0" prefWidth="600.0" style="-fx-background-color: #ffffff;">
+                                       <children>
+                                          <Separator prefHeight="224.0" prefWidth="200.0" visible="false" />
+                                          <VBox alignment="CENTER" prefHeight="224.0" prefWidth="287.0">
+                                             <children>
+                                                <Label fx:id="lbl_result" alignment="CENTER" prefHeight="30.0" prefWidth="200.0" text="[PLAYER]  Wins!" textAlignment="CENTER" textFill="#ffd800">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <ImageView fx:id="img_result" fitHeight="140.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@textures/reportFinalResult/img6.gif" />
+                                                   </image>
+                                                </ImageView>
+                                                <Separator orientation="VERTICAL" prefHeight="19.0" prefWidth="200.0" visible="false" />
+                                                <HBox>
+                                                   <children>
+                                                      <Button mnemonicParsing="false" onAction="#fromResultsPageToMainMenu" prefHeight="39.0" prefWidth="109.0" style="-fx-background-color: #192c3f;" text="BACK TO MENU" textAlignment="CENTER" textFill="#ffd800" wrapText="true" />
+                                                      <Separator prefHeight="26.0" prefWidth="20.0" visible="false" />
+                                                      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="141.0" style="-fx-background-color: #192c3f;" text="ENTER REPLAY MODE" textAlignment="CENTER" textFill="#ffd800" wrapText="true" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                          <Separator prefHeight="223.0" prefWidth="200.0" visible="false" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
                      </children>
                      <fx:define>
                         <ArrayList fx:id="pageList">
@@ -429,6 +471,7 @@
                            <fx:reference source="Select_Host_Page" />
                            <fx:reference source="Game_Session_Page" />
                            <fx:reference source="Choose_Opponent_Page" />
+                           <fx:reference source="Results_Page" />
                         </ArrayList>
                      </fx:define>
                   </StackPane>

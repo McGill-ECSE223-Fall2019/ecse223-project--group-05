@@ -5,7 +5,7 @@ Feature: Resign game
 		
   Scenario Outline: Player resigns
     Given The player to move is "<player>"
-    When Player initates to resign
+    When Player initiates to resign
     Then Game result shall be "<result>"
     And The game shall no longer be running
 

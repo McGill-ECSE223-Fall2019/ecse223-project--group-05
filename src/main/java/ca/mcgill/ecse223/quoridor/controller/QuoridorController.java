@@ -1399,6 +1399,20 @@ public class QuoridorController {
 
     }
 
+    public static boolean initiateToResign(){
+        if (getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black"))
+            return getCurrentGame().setGameStatus(GameStatus.WhiteWon);
+        else
+            return getCurrentGame().setGameStatus(GameStatus.BlackWon);
+    }
+
+    public static void displayFinalResults(){
+        GameStatus finalResults = QuoridorController.getCurrentGame().getGameStatus();
+
+        //this is the method that the view would actually run
+        QuoridorApplication.getViewInterface().displayFinalResults(finalResults);
+    }
+
     /**
      * Controller mehtod to jump to final position of the game while in replayMode
      * @author Alex Masciotra
@@ -1429,7 +1443,6 @@ public class QuoridorController {
     }
 
     /**
-     * PENDING IMPLEMENTATION
      * GUI modifier method.
      * Lets the clock of the provided player run.
      *

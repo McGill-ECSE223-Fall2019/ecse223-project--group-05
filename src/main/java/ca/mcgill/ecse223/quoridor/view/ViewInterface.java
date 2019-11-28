@@ -58,7 +58,54 @@ import javafx.stage.Stage;
 public class ViewInterface {
 
 
+    public void displayFinalResults(Game.GameStatus finalResults) {
+    	//display the final results of the game.
+		//ensure that the game ends once the message is closed.
+		//Options: 	1. Go back to main menu
+		//			2. Review game
+		CurrentPage = getCurrentPage();
 
+		//if page is disabled, then game has already been resigned
+		if (CurrentPageIsDisabled()) {
+			return;
+		}
+
+
+		//disable the current page, but do not make it invisible or replace it.
+		CurrentPage.setDisable(true);
+
+		//display the endOfGame page, and bring it to front to allow for user interaction.
+		CurrentPage = getPage(Page.RESULTS_PAGE);
+		getPage(Page.RESULTS_PAGE).setDisable(false);
+		getPage(Page.RESULTS_PAGE).setVisible(true);
+		getPage(Page.RESULTS_PAGE).toFront();
+        Top_left_buttons.setDisable(true);
+
+        if (finalResults == Game.GameStatus.WhiteWon)
+            lbl_result.setText("White Wins!");
+        else
+            lbl_result.setText("Black Wins!");
+        int num = (int)Math.floor(Math.random() * 9);
+        img_result.setImage(new Image("textures/reportFinalResult/img" + num + ".gif"));
+
+    }
+
+    public void fromResultsPageToMainMenu(){
+        CurrentPage = getPage(Page.RESULTS_PAGE);
+        CurrentPage.setDisable(true);
+        CurrentPage.setVisible(false);
+        CurrentPage = getCurrentPage();
+        CurrentPage.setDisable(false);
+        Top_left_buttons.setDisable(false);
+        CurrentPage.toFront();
+        Goto_Main_Page();
+    }
+
+    public void resignGame(){
+    	//TODO resign game
+        QuoridorController.initiateToResign();
+        QuoridorController.displayFinalResults();
+	}
 
     //these are the pages that the user can travel to/interact with
 	private enum Page {
@@ -69,7 +116,8 @@ public class ViewInterface {
 		LOAD_GAME_PAGE,
 		SELECT_HOST_PAGE,
 		GAME_SESSION_PAGE,
-		CHOOSE_OPPONENT_PAGE;
+		CHOOSE_OPPONENT_PAGE,
+		RESULTS_PAGE;
 	};
 
 	private enum TileImage {
@@ -122,11 +170,17 @@ public class ViewInterface {
 	@FXML private Label whitePlayerName;
 	@FXML private Label blackPlayerName;
 	@FXML private Button btn_saveGame;
+	@FXML private Button btn_ResignGame;
 	private boolean validWallGrab = false; //boolean set to true when a used grabs one of his walls
 	private boolean whiteTimeIsUp = false;
 	private boolean blackTimeISUp = false;
     private ImageView[] gameBTiles;
 
+
+    //Results page variables
+    @FXML private Label lbl_result;
+    @FXML private ImageView img_result;
+    @FXML private AnchorPane Top_left_buttons; //buttons that will be disabled when results are displayed.
 
 	//tutorial variables
     @FXML private StackPane mama_pane;
@@ -317,8 +371,14 @@ public class ViewInterface {
 
 	@FXML
 	public void MoveWall(KeyEvent keyEvent) {
-		//ensure that a wall is selected
 
+	    //return if the game isn't currently running
+        if (QuoridorApplication.getQuoridor().getCurrentGame() == null)
+            return;
+        if (!QuoridorController.isGameRunning(QuoridorApplication.getQuoridor().getCurrentGame()))
+           return;
+
+        //ensure that a wall is selected
 		boolean isValid = true;
 		try {
 			if(wallSelected==null){
@@ -505,6 +565,10 @@ public class ViewInterface {
      * Reset the game, if it was initialized.
 	 */
 	public void Goto_Main_Page() {
+	    Game g = QuoridorApplication.getQuoridor().getCurrentGame();
+	    if (g != null && QuoridorController.isGameRunning(g))
+	        return;
+
 	    //when going to main page, not in tutorial anymore
         isInTutorial = false;
 		clearGUI_game_session_page();       //reset the GUI section of the QuoridorApplication
@@ -628,8 +692,12 @@ public class ViewInterface {
 		try {
 			setThinkingTime(whiteTimerField.getText(), blackTimerField.getText());
 			try {
+                //game has started at this point
+                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
 				QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
 			} catch (Exception e) {
+                //game has failed to be initialized
+                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Initializing);
 				throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
 			}
 
@@ -644,8 +712,11 @@ public class ViewInterface {
 			 * Addition made by Edwin Pan for SaveGame button to show on the game_session_page
 			 */
 			btn_saveGame.setVisible(true);
+			btn_ResignGame.setVisible(true);
 
 			lbl_white_awaitingMove.setText("It is your Turn!");
+
+
 
 			//This tasks runs on a separate thread. It is used to update the GUI every second
 			RefreshTimer.schedule(new TimerTask() {
@@ -678,7 +749,9 @@ public class ViewInterface {
 				}
 			}, 0, 1000);
             setPossibleMoveTiles();
+
 			Goto_Page(Page.GAME_SESSION_PAGE);
+//            quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
 		}
 		catch(Exception e) {
 			displayIllegalNotification(e.getMessage());
@@ -716,6 +789,7 @@ public class ViewInterface {
 		 */
 		if( p != Page.GAME_SESSION_PAGE) {
 			btn_saveGame.setVisible(false);
+			btn_ResignGame.setVisible(false);
 		}
 
 		CurrentPage = getCurrentPage();
@@ -821,6 +895,8 @@ public class ViewInterface {
 			return pageList.get(6);
 		if (Cur == Page.CHOOSE_OPPONENT_PAGE)
 			return pageList.get(7);
+		if (Cur == Page.RESULTS_PAGE)
+			return pageList.get(8);
 		else
 			return null;
 	}
@@ -1145,6 +1221,7 @@ public class ViewInterface {
 
 		//Hides the save game button
 		btn_saveGame.setVisible(false);
+		btn_ResignGame.setVisible(false);
 
 		quoridor = QuoridorApplication.getQuoridor();
 	}
