@@ -8,6 +8,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.List;
 
 import javafx.scene.shape.Rectangle;
 
@@ -172,7 +173,8 @@ public class QuoridorController {
         } else if( side.equals("downright") ) {
         	pawnMoveDirection = MoveDirection.SouthEast;
         } else {
-            throw new IllegalArgumentException("Unsupported pawn direction was provided");
+            pawnMoveDirection = null;
+            //throw new IllegalArgumentException("Unsupported pawn direction was provided");
         }
 
         boolean isLegalStep = false;
@@ -1560,7 +1562,42 @@ public class QuoridorController {
             }
         }
         //check for draw
-        //TODO
+        //draw occurs when move repeats three times for the current and repeats twice for opposing player in the last nine moves
+
+        int lastMoveNum = getCurrentGame().getMoves().size();
+        Game current = getCurrentGame();
+        if(lastMoveNum < 9) return "";
+        boolean currentPlayerRepeats = false;
+        boolean opposingPlayerRepeats = false;
+        //analyzing current player's past history
+        Move lastCurrent = getCurrentGame().getMove(lastMoveNum-1);//last move by current player
+        Move thirdLastCurrent = getCurrentGame().getMove(lastMoveNum-5);//third last move by current player
+        Move fifthLastCurrent = getCurrentGame().getMove(lastMoveNum-9);//fifth last move by current player
+        //only stepmove can lead to a draw
+        if(lastCurrent instanceof StepMove && thirdLastCurrent instanceof StepMove && fifthLastCurrent instanceof StepMove){
+            if(lastCurrent.getTargetTile() == thirdLastCurrent.getTargetTile() && lastCurrent.getTargetTile() == fifthLastCurrent.getTargetTile()){
+                currentPlayerRepeats = true;
+            }
+        }
+        Move secondLastOppo = getCurrentGame().getMove(lastMoveNum-4);
+        Move fourthLastOppo = getCurrentGame().getMove(lastMoveNum-8);
+        if(secondLastOppo instanceof StepMove && fourthLastOppo instanceof StepMove){
+            if(secondLastOppo.getTargetTile() == fourthLastOppo.getTargetTile()){
+                opposingPlayerRepeats = true;
+
+            }
+        }
+        if(currentPlayerRepeats && opposingPlayerRepeats){
+            endGame();
+            getCurrentGame().setGameStatus(GameStatus.Draw);
+            return "Drawn";
+        }
+
+
+
+
+
+
 
         return "";
     }
@@ -1599,7 +1636,7 @@ public class QuoridorController {
         if(current.equals(GameStatus.Draw)){
             return "Drawn";
         }
-        return "Pending";
+        return "pending";
     }
 
 

@@ -121,8 +121,14 @@ public class QuoridorApplication extends Application{
 		}
 		return whitePawnBehaviour;
 	}
+	public static PawnBehaviour getWhitePawnBehaviour(){
+	    return whitePawnBehaviour;
+    }
+    public static PawnBehaviour getBlackPawnBehaviour(){
+        return blackPawnBehaviour;
+    }
 	public static PawnBehaviour getBlackPawnBehaviour(Player player){
-		if(blackPawnBehaviour==null){
+		if(blackPawnBehaviour==null ){
 			blackPawnBehaviour = new PawnBehaviour();
 			blackPawnBehaviour.setPlayer(player);
 			blackPawnBehaviour.setCurrentGame(getQuoridor().getCurrentGame());
