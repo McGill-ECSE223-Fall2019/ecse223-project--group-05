@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import ca.mcgill.ecse223.quoridor.QuoridorApplication;
 import ca.mcgill.ecse223.quoridor.model.*;
+import ca.mcgill.ecse223.quoridor.controller.*;
 import javafx.scene.control.Label;
 
 public class PlayerTimer extends TimerTask{
@@ -30,6 +31,9 @@ public class PlayerTimer extends TimerTask{
         if (timeRemaining == 0)
             System.out.println("timer reached 0!!!");
 
+        //if game isn't running, end timer:
+        if (!QuoridorController.isGameRunning(QuoridorApplication.getQuoridor().getCurrentGame()))
+            this.cancel();
         if (QuoridorApplication.getViewInterface().isInTutorial())
             QuoridorApplication.getViewInterface().UI_dance();
     }

@@ -1278,8 +1278,21 @@ public class QuoridorController {
 
     }
 
+    public static boolean initiateToResign(){
+        if (getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black"))
+            return getCurrentGame().setGameStatus(GameStatus.WhiteWon);
+        else
+            return getCurrentGame().setGameStatus(GameStatus.BlackWon);
+    }
+
+    public static void displayFinalResults(){
+        GameStatus finalResults = QuoridorController.getCurrentGame().getGameStatus();
+
+        //this is the method that the view would actually run
+        QuoridorApplication.getViewInterface().displayFinalResults(finalResults);
+    }
+
     /**
-     * PENDING IMPLEMENTATION
      * GUI modifier method.
      * Stops the clock of the provided player.
      *
@@ -1292,7 +1305,6 @@ public class QuoridorController {
     }
 
     /**
-     * PENDING IMPLEMENTATION
      * GUI modifier method.
      * Lets the clock of the provided player run.
      *
