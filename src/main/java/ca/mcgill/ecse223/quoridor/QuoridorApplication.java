@@ -17,6 +17,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -74,7 +75,7 @@ public class QuoridorApplication extends Application{
 	        	scene.getRoot().getTransforms().setAll(scale);
 	       });
 			scene.addEventHandler(KeyEvent.KEY_PRESSED, (keyEvent) -> {
-				ViewInterface.MoveWall(keyEvent);
+				c.MoveWall(keyEvent);
 				ViewInterface.rotateWallEvent(keyEvent);
 			});
 	        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
@@ -90,8 +91,6 @@ public class QuoridorApplication extends Application{
 					System.exit(0);
 				}
 			});
-
-
 		} catch (IOException e) {e.printStackTrace();}
 	}
 
@@ -113,7 +112,7 @@ public class QuoridorApplication extends Application{
 	}
 
 	public static PawnBehaviour getWhitePawnBehaviour(Player player){
-		if(whitePawnBehaviour==null){
+		if(whitePawnBehaviour==null || !whitePawnBehaviour.getPlayer().hasGameAsWhite()){
 			whitePawnBehaviour = new PawnBehaviour();
 			whitePawnBehaviour.setPlayer(player);
 			whitePawnBehaviour.setCurrentGame(getQuoridor().getCurrentGame());
@@ -121,8 +120,14 @@ public class QuoridorApplication extends Application{
 		}
 		return whitePawnBehaviour;
 	}
+	public static PawnBehaviour getWhitePawnBehaviour(){
+	    return whitePawnBehaviour;
+    }
+    public static PawnBehaviour getBlackPawnBehaviour(){
+        return blackPawnBehaviour;
+    }
 	public static PawnBehaviour getBlackPawnBehaviour(Player player){
-		if(blackPawnBehaviour==null){
+		if(blackPawnBehaviour==null || !blackPawnBehaviour.getPlayer().hasGameAsBlack() ){
 			blackPawnBehaviour = new PawnBehaviour();
 			blackPawnBehaviour.setPlayer(player);
 			blackPawnBehaviour.setCurrentGame(getQuoridor().getCurrentGame());
@@ -130,6 +135,7 @@ public class QuoridorApplication extends Application{
 		}
 		return blackPawnBehaviour;
 	}
+
 
 	public static PawnBehaviour clearWhitePawnBehaviour() {
 
@@ -160,6 +166,8 @@ public class QuoridorApplication extends Application{
 	}
 
 
+	private void goThroughSceneElements(Node n){
 
+	}
 
 }

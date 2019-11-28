@@ -8,6 +8,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.List;
 
 import javafx.scene.shape.Rectangle;
 
@@ -172,7 +173,8 @@ public class QuoridorController {
         } else if( side.equals("downright") ) {
         	pawnMoveDirection = MoveDirection.SouthEast;
         } else {
-            throw new IllegalArgumentException("Unsupported pawn direction was provided");
+            pawnMoveDirection = null;
+            //throw new IllegalArgumentException("Unsupported pawn direction was provided");
         }
 
         boolean isLegalStep = false;
@@ -1398,6 +1400,29 @@ public class QuoridorController {
     }
 
     /**
+     * @author Matthias Arabian
+     * @return whether or not the resign has succeeded
+     * Sets the game status to [Player]Won, and ending the game.
+     */
+    public static boolean initiateToResign(){
+        if (getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black"))
+            return getCurrentGame().setGameStatus(GameStatus.WhiteWon);
+        else
+            return getCurrentGame().setGameStatus(GameStatus.BlackWon);
+    }
+
+    /**
+     * @author Matthias Arabian
+     * Get the final results from the model. Send those to the GUI to display.
+     */
+    public static void displayFinalResults(){
+        GameStatus finalResults = QuoridorController.getCurrentGame().getGameStatus();
+
+        //this is the method that the view would actually run
+        QuoridorApplication.getViewInterface().displayFinalResults(finalResults);
+    }
+
+    /**
      * Controller mehtod to jump to final position of the game while in replayMode
      * @author Alex Masciotra
      * @param quoridor
@@ -1427,7 +1452,6 @@ public class QuoridorController {
     }
 
     /**
-     * PENDING IMPLEMENTATION
      * GUI modifier method.
      * Lets the clock of the provided player run.
      *
@@ -1479,6 +1503,11 @@ public class QuoridorController {
         return color;
     }
 
+    /**Returns the row or column coordinate of current player
+     * @author David
+     * @param specifyRowOrCol input parameter: 0=row, 1=col
+     * @return
+     */
     //input parameter: 0=row, 1=col
     public static int getCurrentPawnTilePos(int specifyRowOrCol){
         Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -1531,6 +1560,120 @@ public class QuoridorController {
         }
         return false;
     }
+
+    /** Feature: Identify GameDrawn, identify game won
+     *
+     * This method is check if the game is won based on player positions and past moves.
+     * @author David
+     * @return "pending" or "Drawn" or "blackWon" or "whiteWon"
+     */
+    public static String checkResult(){
+        //TODO: this method needs to be called after each move (before end of turn)
+        Player black = getCurrentBlackPlayer();
+        Player white = getCurrentWhitePlayer();
+
+        //check for white win
+        if(getPlayerOfCurrentTurn().equals(white)){
+            int x = getCurrentPawnTilePos(0);
+            if(getCurrentPawnTilePos(0)==1 ){
+                getCurrentGame().setGameStatus(GameStatus.WhiteWon);
+                endGame();
+                return "whiteWon";
+            }
+        }
+        //check for black win
+        else{
+            if(getCurrentPawnTilePos(0)==9){
+                getCurrentGame().setGameStatus(GameStatus.BlackWon);
+                endGame();
+                return "blackWon";
+            }
+        }
+        //check for draw
+        //draw occurs when move repeats three times for the current and repeats twice for opposing player in the last nine moves
+
+        int lastMoveNum = getCurrentGame().getMoves().size();
+        Game current = getCurrentGame();
+        if(lastMoveNum < 9) return "";
+        boolean currentPlayerRepeats = false;
+        boolean opposingPlayerRepeats = false;
+        //analyzing current player's past history
+        Move lastCurrent = getCurrentGame().getMove(lastMoveNum-1);//last move by current player
+        Move thirdLastCurrent = getCurrentGame().getMove(lastMoveNum-5);//third last move by current player
+        Move fifthLastCurrent = getCurrentGame().getMove(lastMoveNum-9);//fifth last move by current player
+        //only stepmove can lead to a draw
+        if(lastCurrent instanceof StepMove && thirdLastCurrent instanceof StepMove && fifthLastCurrent instanceof StepMove){
+            if(lastCurrent.getTargetTile() == thirdLastCurrent.getTargetTile() && lastCurrent.getTargetTile() == fifthLastCurrent.getTargetTile()){
+                currentPlayerRepeats = true;
+            }
+        }
+        Move secondLastOppo = getCurrentGame().getMove(lastMoveNum-4);
+        Move fourthLastOppo = getCurrentGame().getMove(lastMoveNum-8);
+        if(secondLastOppo instanceof StepMove && fourthLastOppo instanceof StepMove){
+            if(secondLastOppo.getTargetTile() == fourthLastOppo.getTargetTile()){
+                opposingPlayerRepeats = true;
+
+            }
+        }
+        if(currentPlayerRepeats && opposingPlayerRepeats){
+            endGame();
+            getCurrentGame().setGameStatus(GameStatus.Draw);
+            return "Drawn";
+        }
+
+
+
+
+
+
+
+        return "";
+    }
+
+    /**Features: identify game won
+     * This method is called by the playerTimer object if timer reaches zero
+     * @author David
+     * @param player whose timer reaches zero
+     */
+    public static void timerUp(Player player){
+        if(player.hasGameAsWhite()){
+            getCurrentGame().setGameStatus(GameStatus.BlackWon);
+            endGame();
+        }
+        else{
+            getCurrentGame().setGameStatus(GameStatus.WhiteWon);
+            endGame();
+        }
+    }
+    private static void endGame(){
+        GameStatus results = getCurrentGame().getGameStatus();
+        QuoridorApplication.getViewInterface().displayFinalResults(results);
+    }
+
+    /**Returns result of game as a string
+     * Features: identify game won, identify game drawn
+     * @author David
+     * @return
+     */
+    public static String getGameResult(){
+        GameStatus current = getCurrentGame().getGameStatus();
+        if(current.equals(GameStatus.BlackWon)){
+            return "blackWon";
+        }
+        if(current.equals(GameStatus.WhiteWon)){
+            return "whiteWon";
+        }
+        if(current.equals(GameStatus.Draw)){
+            return "Drawn";
+        }
+        return "pending";
+    }
+
+
+
+
+
+
 }
 
 
