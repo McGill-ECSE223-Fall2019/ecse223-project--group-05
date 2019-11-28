@@ -34,6 +34,8 @@ public class PlayerTimer extends TimerTask{
         //if game isn't running, end timer:
         if (!QuoridorController.isGameRunning(QuoridorApplication.getQuoridor().getCurrentGame()))
             this.cancel();
+
+        //if game is in tutorial mode, rotate elements to spice things up.
         if (QuoridorApplication.getViewInterface().isInTutorial())
             QuoridorApplication.getViewInterface().UI_dance();
     }

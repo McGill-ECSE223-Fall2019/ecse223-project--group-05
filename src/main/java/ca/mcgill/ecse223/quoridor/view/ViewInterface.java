@@ -57,56 +57,6 @@ import javafx.stage.Stage;
 
 public class ViewInterface {
 
-
-    public void displayFinalResults(Game.GameStatus finalResults) {
-    	//display the final results of the game.
-		//ensure that the game ends once the message is closed.
-		//Options: 	1. Go back to main menu
-		//			2. Review game
-		CurrentPage = getCurrentPage();
-
-		//if page is disabled, then game has already been resigned
-		if (CurrentPageIsDisabled()) {
-			return;
-		}
-
-
-		//disable the current page, but do not make it invisible or replace it.
-		CurrentPage.setDisable(true);
-
-		//display the endOfGame page, and bring it to front to allow for user interaction.
-		CurrentPage = getPage(Page.RESULTS_PAGE);
-		getPage(Page.RESULTS_PAGE).setDisable(false);
-		getPage(Page.RESULTS_PAGE).setVisible(true);
-		getPage(Page.RESULTS_PAGE).toFront();
-        Top_left_buttons.setDisable(true);
-
-        if (finalResults == Game.GameStatus.WhiteWon)
-            lbl_result.setText("White Wins!");
-        else
-            lbl_result.setText("Black Wins!");
-        int num = (int)Math.floor(Math.random() * 9);
-        img_result.setImage(new Image("textures/reportFinalResult/img" + num + ".gif"));
-
-    }
-
-    public void fromResultsPageToMainMenu(){
-        CurrentPage = getPage(Page.RESULTS_PAGE);
-        CurrentPage.setDisable(true);
-        CurrentPage.setVisible(false);
-        CurrentPage = getCurrentPage();
-        CurrentPage.setDisable(false);
-        Top_left_buttons.setDisable(false);
-        CurrentPage.toFront();
-        Goto_Main_Page();
-    }
-
-    public void resignGame(){
-    	//TODO resign game
-        QuoridorController.initiateToResign();
-        QuoridorController.displayFinalResults();
-	}
-
     //these are the pages that the user can travel to/interact with
 	private enum Page {
 		TOP_BUTTONS,
@@ -223,6 +173,16 @@ public class ViewInterface {
     		return whiteStock;
 	}
 
+    /**
+     * @author Matthias Arabian
+     * wrapper event used to allow for grabWall to be triggered by
+     *  1) mouse click
+     *  2) keyboard key press
+     *
+     *  This wrapper detects the mouse click and converts it into a format that can be procesed by the
+     *  general event.
+     * @param mouseEvent
+     */
     public void GrabWall(MouseEvent mouseEvent){
 	    HBox source = (HBox)mouseEvent.getSource();
 	    GrabWall_move(source);
@@ -692,11 +652,12 @@ public class ViewInterface {
 		try {
 			setThinkingTime(whiteTimerField.getText(), blackTimerField.getText());
 			try {
-                //game has started at this point
+                //game has started at this point. Timers will begin to run.
                 quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
-				QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
+
+                QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
 			} catch (Exception e) {
-                //game has failed to be initialized
+                //game has failed to start. stop timers. Return to initializing phase.
                 quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Initializing);
 				throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
 			}
@@ -751,7 +712,6 @@ public class ViewInterface {
             setPossibleMoveTiles();
 
 			Goto_Page(Page.GAME_SESSION_PAGE);
-//            quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
 		}
 		catch(Exception e) {
 			displayIllegalNotification(e.getMessage());
@@ -914,6 +874,14 @@ public class ViewInterface {
             }
         }
     };
+
+    /**
+     * Changes the color of the tile by applying a colorAdjust onto it.
+     * This is used to color tiles that the user can move to.
+     *
+     * @author Matthias Arabian
+     * @param img the tile that'll be affected by the colorAdjust
+     */
     private void adjustImg_canMoveTo(ImageView img){
         //Instantiating the ColorAdjust class
         ColorAdjust colorAdjust = new ColorAdjust();
@@ -931,24 +899,10 @@ public class ViewInterface {
 //        colorAdjust.setSaturation(167/255.0);
 
 
-//        //top 3
-//        //Setting the hue value
-//        colorAdjust.setHue(55/255.0);
-//
-//        //setting brightness
-//        colorAdjust.setBrightness(0.5);
-//        //Setting the saturation value
-//        colorAdjust.setSaturation(167/255.0);
-
-        //Setting the hue value
         colorAdjust.setHue(55/255.0);
-
-        //setting brightness
-        //colorAdjust.setBrightness(0.5);
-        //Setting the saturation value
         colorAdjust.setSaturation(167/255.0);
-
         colorAdjust.setContrast(0.1);
+
         //Applying coloradjust effect to the ImageView node
         img.setEffect(colorAdjust);
     }
@@ -960,29 +914,6 @@ public class ViewInterface {
         @Override
         public void handle(MouseEvent e) {
             ImageView img = (ImageView)e.getSource();
-            img.setOpacity(1);
-        }
-    };
-    /**
-     * @Author Matthias Arabian
-     */
-    EventHandler<MouseEvent> hoverEffect_HBOX = new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent e) {
-                    if (!wallGrabbed) {
-                        HBox img = (HBox) e.getSource();
-                        img.setOpacity(0.5);
-                    }
-                }
-            };
-
-    /**
-     *@Author Matthias Arabian
-     */
-    EventHandler<MouseEvent> cancelHoverEffect_HBOX = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent e) {
-            HBox img = (HBox)e.getSource();
             img.setOpacity(1);
         }
     };
@@ -1113,8 +1044,8 @@ public class ViewInterface {
                 }
             }
         }
-
     }
+
     /**
      * @author Matthias Arabian
      * @param img the tile whose image will be changed
@@ -1480,6 +1411,15 @@ public class ViewInterface {
 
 	}
 
+    /**
+     * @author Matthias Arabian
+     * method called by the SwitchPlayer() function.
+     * Updates the model with the final position of the wallMoveCandidate.
+     * Ensure that the wall cannot be moved after this point.
+     *
+     * This method was created to allow for walls to be dropped automatically when the player's
+     * turn ends. Simplifies game logic
+     */
     private void doDropWallLogicAtEndOfTurn(){
         //dropWall implemented here
         if (wallSelected != null) {
@@ -2071,14 +2011,25 @@ public class ViewInterface {
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //TUTORIAL METHODS
+
+    /**
+     * @author Matthias Arabian
+     */
     public void Start_Tutorial(){
         isInTutorial = true;
     }
-
+    /**
+     * @author Matthias Arabian
+     */
     public boolean isInTutorial() {
         return isInTutorial;
     }
 
+    /**
+     * @author Matthias Arabian
+     * Resets all variables related to the Tutorial Mode.
+     * Resets the position of all GUI elements affected by the Tutorial Mode.
+     */
     private void resetGUI_tutorial() {
         for (Node child : mama_pane.getChildren()){
             AnchorPane c = (AnchorPane)child;
@@ -2096,6 +2047,10 @@ public class ViewInterface {
         }
     }
 
+    /**
+     * @author Matthias Arabian
+     * rotates GameSessionPage GUI elemets to spice things up.
+     */
 	public void UI_dance(){
 	    for (Node child : mama_pane.getChildren()){
 	        AnchorPane c = (AnchorPane)child;
@@ -2115,6 +2070,83 @@ public class ViewInterface {
                 }
             }
         }
+    }
+
+    /**
+     * @author Matthias Arabian
+     * @param finalResults Lets the program know who has won.
+     * display the final results of the game.
+     * ensure that the game ends once the message is closed.
+     * Options: 	1. Go back to main menu
+     *  			2. Review game
+     */
+    public void displayFinalResults(Game.GameStatus finalResults) {
+
+        CurrentPage = getCurrentPage();
+
+        //if page is disabled, then game has already been resigned
+        if (CurrentPageIsDisabled())
+            return;
+
+        //disable the current page, but do not make it invisible or replace it.
+        CurrentPage.setDisable(true);
+
+        //display the ResultsPage page, and bring it to front to allow for user interaction.
+        CurrentPage = getPage(Page.RESULTS_PAGE);
+        getPage(Page.RESULTS_PAGE).setDisable(false);
+        getPage(Page.RESULTS_PAGE).setVisible(true);
+        getPage(Page.RESULTS_PAGE).toFront();
+        Top_left_buttons.setDisable(true); //disable top buttons. Play shouldn't be able to interact with them at this point in time.
+
+        //display who has won
+        switch (finalResults)
+        {
+            case BlackWon:
+                lbl_result.setText("Black Player Wins!");
+                break;
+            case WhiteWon:
+                lbl_result.setText("White Player Wins!");
+                break;
+            case Draw:
+                lbl_result.setText("It's a draw!");
+            default:
+                lbl_result.setText("Oops, something went wrong! Please restart the application");
+                break;
+        }
+
+        //display a random "victory dance" gif to spice things up
+        int num = (int)Math.floor(Math.random() * 9);
+        img_result.setImage(new Image("textures/reportFinalResult/img" + num + ".gif"));
+
+    }
+
+    /**
+     * @author Matthias Arabian
+     * Transitions from the Results_Page to the Main_Menu
+     */
+    public void fromResultsPageToMainMenu(){
+        //closes the results page
+        CurrentPage = getPage(Page.RESULTS_PAGE);
+        CurrentPage.setDisable(true);
+        CurrentPage.setVisible(false);
+        CurrentPage = getCurrentPage();
+        CurrentPage.setDisable(false);
+        Top_left_buttons.setDisable(false);
+        CurrentPage.toFront();
+
+        //go to main page
+        Goto_Main_Page();
+    }
+
+    /**
+     * @author Matthias Arabian
+     * Event triggered when the player chooses to resign the game.
+     * Changes the game status based on who resigned.
+     * Display the final results.
+     */
+    public void resignGame(){
+        QuoridorController.initiateToResign();
+        QuoridorController.displayFinalResults();
     }
 
 }
