@@ -230,7 +230,7 @@ public class QuoridorController {
             Tile targetTile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
             playerPosition.setTile(targetTile);
 
-            int moves = (quoridor.getCurrentGame().getPositions().size() +1)/2;
+            int moves = (quoridor.getCurrentGame().getPositions().size());
             int moveNumber = (moves+1) / 2;
             System.out.println("mv nb"+ moveNumber);
 
@@ -550,7 +550,7 @@ public class QuoridorController {
 
         if (nbOfWalls >= 1) {
             //the player has more walls in stock
-            int moves = (quoridor.getCurrentGame().getPositions().size() +1)/2;
+            int moves = (quoridor.getCurrentGame().getPositions().size());
             int lastMoveNumber = (moves+1) / 2;
             System.out.println("mv nb wall"+ lastMoveNumber);
 

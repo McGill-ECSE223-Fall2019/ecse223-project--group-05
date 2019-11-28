@@ -25,7 +25,7 @@ and see the board position after that move.
     And White has <wwallno> on stock
     And Black has <bwallno> on stock
 
-    Examples: 
+    Examples:
       | movno | rndno | nmov | nrnd | wrow | wcol | wwallno | brow | bcol | bwallno |
       |     1 |     1 |    1 |    2 |    8 |    5 |    10 |    1 |    5 |      10 |
       |     1 |     2 |    2 |    1 |    8 |    5 |    10 |    2 |    5 |      10 |

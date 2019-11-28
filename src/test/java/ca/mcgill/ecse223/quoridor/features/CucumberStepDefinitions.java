@@ -1671,7 +1671,6 @@ public class CucumberStepDefinitions {
      * Jump pawn step definition
      */
 
-
     /**
      * method to set opponent pawn posiiton
      * JumpPawn.feature - Jump Pawn, MovePawn.feature
@@ -1889,7 +1888,8 @@ public class CucumberStepDefinitions {
         whitePawnBehaviour.entry();
     }
 
-    @And("The following moves have been played in game:")
+
+    @Given("The following moves have been played in game:")
     public void the_following_moves_have_been_played_in_game(io.cucumber.datatable.DataTable dataTable) {
         // Write code here that turns the phrase above into concrete actions
         // For automatic transformation, change DataTable to one of
@@ -1965,7 +1965,7 @@ public class CucumberStepDefinitions {
 
                 } else {
                     //black
-                    PlayerPosition currentBlackPlayerPosition = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition();
+                    PlayerPosition currentBlackPlayerPosition = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition();
                     Integer currentBlackRow = currentBlackPlayerPosition.getTile().getRow();
                     Integer currentBlackCol = currentBlackPlayerPosition.getTile().getColumn();
 
