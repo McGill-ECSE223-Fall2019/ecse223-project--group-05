@@ -2011,12 +2011,21 @@ public class CucumberStepDefinitions {
         QuoridorApplication.getQuoridor().getCurrentGame().setCurrentPosition(gamePosition);
     }
 
+    /**
+     * @author Thomas Philippon
+     * Scenario: Step Backward, stepforward
+     */
     @When("Step backward is initiated")
     public void step_backward_is_initiated() {
        //call the controller method for the feature step backward
         currentMove = QuoridorController.stepBackward(QuoridorApplication.getQuoridor().getCurrentGame());
     }
 
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
     @Then("The next move shall be {double}")
     public void the_next_move_shall_be(Double mvRnd) {
         //Strip the double to get the move and wall number
@@ -2028,7 +2037,11 @@ public class CucumberStepDefinitions {
        assertEquals(round, currentMove.getNextMove().getRoundNumber());
     }
 
-
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
     @And("White player's position shall be \\({double})")
     public void white_player_s_position_shall_be(Double rowCol) {
         //Strip the double to get the row and column
@@ -2041,6 +2054,11 @@ public class CucumberStepDefinitions {
          assertEquals(col, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile().getColumn());
     }
 
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
     @And("Black player's position shall be \\({double})")
     public void black_player_s_position_shall_be(Double rowCol) {
         //Strip the double to get the row and column
@@ -2053,11 +2071,21 @@ public class CucumberStepDefinitions {
         assertEquals(col, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile().getColumn());
     }
 
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
     @And("White has {int} on stock")
     public void white_has_on_stock(Integer nbOfWalls) {
        assertEquals(nbOfWalls, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhiteWallsInStock().size());
     }
 
+    /**
+     * @author Thomas Philippon
+     * @author Alex Masciotra
+     * Scenario: Step Backward, stepforward, jump to final. jump to start, enter replaymode
+     */
     @And("Black has {int} on stock")
     public void black_has_on_stock(Integer nbOfWalls) {
         assertEquals(nbOfWalls, QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackWallsInStock().size());
@@ -2066,6 +2094,10 @@ public class CucumberStepDefinitions {
 
     /*
      * Step Forward Step definition
+     */
+    /**
+     * @author Thomas Philippon
+     * Scenario: Step Backward, stepforward
      */
     @When("Step forward is initiated")
     public void step_forward_is_initiated() {

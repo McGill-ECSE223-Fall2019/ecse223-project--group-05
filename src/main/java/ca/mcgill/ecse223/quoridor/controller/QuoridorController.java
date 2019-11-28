@@ -611,7 +611,7 @@ public class QuoridorController {
      * This is assuming the game is in replay mode
      *
      * @param game - The current Game
-     * @return GamePosition - Returns the gamePosition object containing the information about the next move
+     * @return Move - Returns the move object containing the information about the next move
      * @author Thomas Philippon
      */
     public static Move stepForward(Game game){
@@ -645,7 +645,7 @@ public class QuoridorController {
      * This is assuming the game is in replay mode
      *
      * @param game - The current Game
-     * @return GamePosition - Returns the gamePosition object containing the information about the previous move
+     * @return Move - Returns the move object containing the information about the next move
      * @author Thomas Philippon
      */
     public static Move stepBackward(Game game){
