@@ -113,7 +113,7 @@ public class QuoridorApplication extends Application{
 	}
 
 	public static PawnBehaviour getWhitePawnBehaviour(Player player){
-		if(whitePawnBehaviour==null){
+		if(whitePawnBehaviour==null || !whitePawnBehaviour.getPlayer().hasGameAsWhite()){
 			whitePawnBehaviour = new PawnBehaviour();
 			whitePawnBehaviour.setPlayer(player);
 			whitePawnBehaviour.setCurrentGame(getQuoridor().getCurrentGame());
@@ -128,7 +128,7 @@ public class QuoridorApplication extends Application{
         return blackPawnBehaviour;
     }
 	public static PawnBehaviour getBlackPawnBehaviour(Player player){
-		if(blackPawnBehaviour==null ){
+		if(blackPawnBehaviour==null || !blackPawnBehaviour.getPlayer().hasGameAsBlack() ){
 			blackPawnBehaviour = new PawnBehaviour();
 			blackPawnBehaviour.setPlayer(player);
 			blackPawnBehaviour.setCurrentGame(getQuoridor().getCurrentGame());

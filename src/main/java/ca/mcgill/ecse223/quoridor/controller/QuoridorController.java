@@ -1481,6 +1481,11 @@ public class QuoridorController {
         return color;
     }
 
+    /**Returns the row or column coordinate of current player
+     * @author David
+     * @param specifyRowOrCol input parameter: 0=row, 1=col
+     * @return
+     */
     //input parameter: 0=row, 1=col
     public static int getCurrentPawnTilePos(int specifyRowOrCol){
         Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -1534,9 +1539,9 @@ public class QuoridorController {
         return false;
     }
 
-    /** Feature: Identify GameDrawn
+    /** Feature: Identify GameDrawn, identify game won
      *
-     * This method is check if the game is won based on player positions, and it is also supposed stop the game if it is.
+     * This method is check if the game is won based on player positions and past moves.
      * @author David
      * @return "pending" or "Drawn" or "blackWon" or "whiteWon"
      */
@@ -1547,6 +1552,7 @@ public class QuoridorController {
 
         //check for white win
         if(getPlayerOfCurrentTurn().equals(white)){
+            int x = getCurrentPawnTilePos(0);
             if(getCurrentPawnTilePos(0)==1 ){
                 endGame();
                 getCurrentGame().setGameStatus(GameStatus.WhiteWon);
@@ -1602,7 +1608,8 @@ public class QuoridorController {
         return "";
     }
 
-    /**This method is called by the playerTimer object if timer reaches zero
+    /**Features: identify game won
+     * This method is called by the playerTimer object if timer reaches zero
      * @author David
      * @param player whose timer reaches zero
      */
