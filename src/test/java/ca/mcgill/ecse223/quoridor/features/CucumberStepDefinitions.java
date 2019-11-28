@@ -2155,7 +2155,7 @@ public class CucumberStepDefinitions {
 
     /**
      * @author Matthias Arabian
-     *
+     * Ends the game by changing the game status from Running to [Player]Won
      */
     @When("Player initiates to resign")
     public void playerInitiatesToResign(){
@@ -2164,6 +2164,11 @@ public class CucumberStepDefinitions {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //REPORT FINAL RESULT
+
+    /**
+     * @author Matthias Arabian
+     * Stops timers, display the final resuls on the GUI.
+     */
     @Then("The final result shall be displayed")
     public void displayFinalResult(){
 
@@ -2179,19 +2184,39 @@ public class CucumberStepDefinitions {
 
         QuoridorController.displayFinalResults();
     }
+
+    /**
+     * @author Matthias Arabian
+     * Ensure the clock of White Player has been stopped
+     */
     @And("White's clock shall not be counting down")
     public void whiteClockNotCountingDown(){
         assertEquals(null, timer);
     }
+
+    /**
+     * @author Matthias Arabian
+     * Ensure the clock of Black Player has been stopped
+     */
     @And("Black's clock shall not be counting down")
     public void blackClockNotCountingDown(){
         assertEquals(null, timer);
     }
+
+    /**
+     * @author Matthias Arabian
+     * Ensure the game has ended (player can't move if game has ended)
+     */
     @And("White shall be unable to move")
     public void whiteUnableToMove(){
         boolean flag = QuoridorController.getCurrentGame().getGameStatus() != GameStatus.Running;
         assertEquals(true, flag);
     }
+
+    /**
+     * @author Matthias Arabian
+     * Ensure the game has ended (player can't move if game has ended)
+     */
     @And("Black shall be unable to move")
     public void blackUnableToMove(){
         boolean flag = QuoridorController.getCurrentGame().getGameStatus() != GameStatus.Running;
