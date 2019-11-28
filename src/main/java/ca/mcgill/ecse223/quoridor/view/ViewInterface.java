@@ -2016,7 +2016,8 @@ public class ViewInterface {
      * @author Matthias Arabian
      */
     public void Start_Tutorial(){
-        isInTutorial = true;
+        isInTutorial = false;
+        System.out.println("Tutorial is disabled");
     }
     /**
      * @author Matthias Arabian
