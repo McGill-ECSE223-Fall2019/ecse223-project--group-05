@@ -1,9 +1,9 @@
 Feature: Step forward
-As a player using replay mode, 
-I want to check the next move made by the next player in turn 
+As a player using replay mode,
+I want to check the next move made by the next player in turn
 and see the board position after that move.
 
-  Background: 
+  Background:
     Given The game is in replay mode
 
   Scenario Outline: Step Forward

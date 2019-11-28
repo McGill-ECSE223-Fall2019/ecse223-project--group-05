@@ -100,19 +100,24 @@ public class QuoridorController {
         Tile blackPlayerStartTile = quoridor.getBoard().getTile((blackRow - 1) * 9 + blackCol - 1);
 
         //create position
+        PlayerPosition whitePlayerInitialPos = new PlayerPosition(whitePlayer, whitePlayerStartTile);
+        PlayerPosition blackPlayerInitialPos = new PlayerPosition(blackPlayer, blackPlayerStartTile);
         PlayerPosition whitePlayerStartPosition = new PlayerPosition(whitePlayer, whitePlayerStartTile);
         PlayerPosition blackPlayerStartPosition = new PlayerPosition(blackPlayer, blackPlayerStartTile);
 
-        GamePosition whitePlayerPosition = new GamePosition(0, whitePlayerStartPosition, blackPlayerStartPosition, whitePlayer, quoridor.getCurrentGame());
+        GamePosition initialGamePosition = new GamePosition(0, whitePlayerInitialPos, blackPlayerInitialPos, whitePlayer, quoridor.getCurrentGame());
+        GamePosition whitePlayerPosition = new GamePosition(1, whitePlayerStartPosition, blackPlayerStartPosition, whitePlayer, quoridor.getCurrentGame());
 
         //add 10 walls in stock for both players
         for (int j = 1; j <= 10; j++) {
             Wall wall = Wall.getWithId(j);
             whitePlayerPosition.addWhiteWallsInStock(wall);
+            initialGamePosition.addWhiteWallsInStock(wall);
         }
         for (int j = 1; j <= 10; j++) {
             Wall wall = Wall.getWithId(j + 10);
             whitePlayerPosition.addBlackWallsInStock(wall);
+            initialGamePosition.addBlackWallsInStock(wall);
         }
 
         quoridor.getCurrentGame().setCurrentPosition(whitePlayerPosition);
@@ -230,9 +235,8 @@ public class QuoridorController {
             Tile targetTile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
             playerPosition.setTile(targetTile);
 
-            int moves = (quoridor.getCurrentGame().getPositions().size());
+            int moves = quoridor.getCurrentGame().getPositions().size()-1;
             int moveNumber = (moves+1) / 2;
-            System.out.println("mv nb"+ moveNumber);
 
             if (!isLegalJump) {
                 StepMove stepMove = new StepMove(moveNumber, roundNumber, currentPlayer, targetTile, quoridor.getCurrentGame());
@@ -546,15 +550,11 @@ public class QuoridorController {
         //check if the player to move has more walls in stock
         Player playerToMove = game.getCurrentPosition().getPlayerToMove();
         int nbOfWalls = numberOfWallsInStock(playerToMove, game);
-        //System.out.println("nb of walls in stock: "+nbOfWalls);
 
         if (nbOfWalls >= 1) {
             //the player has more walls in stock
-            int moves = (quoridor.getCurrentGame().getPositions().size());
+            int moves = quoridor.getCurrentGame().getPositions().size()-1;
             int lastMoveNumber = (moves+1) / 2;
-            System.out.println("mv nb wall"+ lastMoveNumber);
-
-            // int lastPlayer = game.
             int roundNumber = game.getCurrentPosition().getId();
 
             Tile targetTile = quoridor.getBoard().getTile(0); //initialize the wall move candidate to the tile(0,0)
@@ -563,19 +563,13 @@ public class QuoridorController {
                 wall = playerToMove.getWall(nbOfWalls - 1);
                 game.getCurrentPosition().removeWhiteWallsInStock(wall);
                 WallMove wallMoveCandidate = new WallMove(lastMoveNumber, 1, playerToMove, targetTile, game, Direction.Vertical, wall);
-//                int a = lastMoveNumber+1;
-//                System.out.println("white : "+a);
                 game.setWallMoveCandidate(wallMoveCandidate);
             } else {
                 wall = playerToMove.getWall(nbOfWalls - 1);
                 game.getCurrentPosition().removeBlackWallsInStock(wall);
                 WallMove wallMoveCandidate = new WallMove(lastMoveNumber, 2, playerToMove, targetTile, game, Direction.Vertical, wall);
-//                int a = lastMoveNumber+1;
-//                System.out.println("Black : "+a);
                 game.setWallMoveCandidate(wallMoveCandidate);
             }
-
-
             returnVal = true;
         }
         return returnVal;
@@ -611,6 +605,71 @@ public class QuoridorController {
         }
     }
 
+    /**
+     * Gherkin feature: Step Forward
+     * This controller method is used to see the board position after the move made by the next player in turn.
+     * This is assuming the game is in replay mode
+     *
+     * @param game - The current Game
+     * @return GamePosition - Returns the gamePosition object containing the information about the next move
+     * @author Thomas Philippon
+     */
+    public static Move stepForward(Game game){
+        //get the ID of the current game and move position
+        int currentId = game.getCurrentPosition().getId();
+
+        //Check if it is the very last move played in the game
+        int nbOfMoves = game.numberOfMoves();
+        if(currentId == game.numberOfMoves()-1){
+            Move currentMove = game.getMove(currentId);
+            Move nextMove = game.getMove(currentId);
+            currentMove.setNextMove(nextMove);
+            return game.getMove(currentId);
+        }
+
+        //get the next game position and assign it to the game's current position.
+        GamePosition nextGamePosition = game.getPosition(currentId +1);
+        game.setCurrentPosition(nextGamePosition);
+
+        //get the next move and set its next move
+        Move currentMove = game.getMove(currentId);
+        Move nextMove = game.getMove(currentId+1);
+        currentMove.setNextMove(nextMove);
+
+        return currentMove;
+    }
+
+    /**
+     * Gherkin feature: Step Backward
+     * This controller method is used to see the board position after the move made by the  previous player in turn.
+     * This is assuming the game is in replay mode
+     *
+     * @param game - The current Game
+     * @return GamePosition - Returns the gamePosition object containing the information about the previous move
+     * @author Thomas Philippon
+     */
+    public static Move stepBackward(Game game){
+        //get the ID of the current game position
+        int currentId = game.getCurrentPosition().getId();
+
+        //check if it is the very first move of the game
+        if(currentId == 0){
+            Move currentMove = game.getMove(currentId);
+            Move nextMove = game.getMove(currentId);
+            currentMove.setNextMove(nextMove);
+            return game.getMove(0);
+        }
+        //get the next game position and assign it to the game's current position.
+        GamePosition nextGamePosition = game.getPosition(currentId -1);
+        game.setCurrentPosition(nextGamePosition);
+
+        //get the previous move and set its next move
+        Move currentMove = game.getMove(currentId);
+        Move nextMove = game.getMove(currentId-1);
+        currentMove.setNextMove(nextMove);
+
+        return game.getMove(currentId);
+    }
 
     /**
      * Query method to get the number of walls in stock for a player
