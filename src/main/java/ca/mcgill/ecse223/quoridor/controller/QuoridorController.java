@@ -221,10 +221,10 @@ public class QuoridorController {
                 } else if( side.equals("upright") ) {
                 	row = row - 1;
                 	col = col + 1;
-                } else if( side.equals("downleft") ) {
+                } else if(side.equals("downleft") ) {
                 	row = row + 1;
                 	col = col - 1;
-                } else if( side.equals("downright") ) {
+                } else if(side.equals("downright") ) {
                 	row = row + 1;
                 	col = col + 1;
                 } 
@@ -611,32 +611,20 @@ public class QuoridorController {
      * This is assuming the game is in replay mode
      *
      * @param game - The current Game
-     * @return Move - Returns the move object containing the information about the next move
+     * @return void
      * @author Thomas Philippon
      */
-    public static Move stepForward(Game game){
+    public static void stepForward(Game game){
         //get the ID of the current game and move position
         int currentId = game.getCurrentPosition().getId();
 
         //Check if it is the very last move played in the game
         int nbOfMoves = game.numberOfMoves();
-        if(currentId == game.numberOfMoves()-1){
-            Move currentMove = game.getMove(currentId);
-            Move nextMove = game.getMove(currentId);
-            currentMove.setNextMove(nextMove);
-            return game.getMove(currentId);
+        if(currentId != game.numberOfPositions()-1){
+            //get the next game position and assign it to the game's current position.
+            GamePosition nextGamePosition = game.getPosition(currentId +1);
+            game.setCurrentPosition(nextGamePosition);
         }
-
-        //get the next game position and assign it to the game's current position.
-        GamePosition nextGamePosition = game.getPosition(currentId +1);
-        game.setCurrentPosition(nextGamePosition);
-
-        //get the next move and set its next move
-        Move currentMove = game.getMove(currentId);
-        Move nextMove = game.getMove(currentId+1);
-        currentMove.setNextMove(nextMove);
-
-        return currentMove;
     }
 
     /**
@@ -645,30 +633,19 @@ public class QuoridorController {
      * This is assuming the game is in replay mode
      *
      * @param game - The current Game
-     * @return Move - Returns the move object containing the information about the next move
+     * @return void
      * @author Thomas Philippon
      */
-    public static Move stepBackward(Game game){
+    public static void stepBackward(Game game){
         //get the ID of the current game position
         int currentId = game.getCurrentPosition().getId();
 
         //check if it is the very first move of the game
-        if(currentId == 0){
-            Move currentMove = game.getMove(currentId);
-            Move nextMove = game.getMove(currentId);
-            currentMove.setNextMove(nextMove);
-            return game.getMove(0);
+        if(currentId != 0){
+            //get the next game position and assign it to the game's current position.
+            GamePosition nextGamePosition = game.getPosition(currentId -1);
+            game.setCurrentPosition(nextGamePosition);
         }
-        //get the next game position and assign it to the game's current position.
-        GamePosition nextGamePosition = game.getPosition(currentId -1);
-        game.setCurrentPosition(nextGamePosition);
-
-        //get the previous move and set its next move
-        Move currentMove = game.getMove(currentId);
-        Move nextMove = game.getMove(currentId-1);
-        currentMove.setNextMove(nextMove);
-
-        return game.getMove(currentId);
     }
 
     /**
@@ -1429,7 +1406,7 @@ public class QuoridorController {
 
         List<GamePosition> gamePositions = quoridor.getCurrentGame().getPositions();
 
-        int index  = gamePositions.size() - 3;
+        int index  = gamePositions.size() - 2;
 
         GamePosition finalGamePosition = gamePositions.get(index);
 

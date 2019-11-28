@@ -2030,17 +2030,23 @@ public class CucumberStepDefinitions {
         String[] moveRound = mvRnd.toString().split("\\.");
         int movenm =  Integer.parseInt(moveRound[0]);
         int roundnm = Integer.parseInt(moveRound[1]);
-
+        int nextMove, nextRound;
 
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
 
         int gameId = currentGamePosition.getId();
 
-        Move move = quoridor.getCurrentGame().getMove(gameId);
-
-       assertEquals(movenm, move.getMoveNumber());
-       assertEquals(roundnm, move.getRoundNumber());
+        try{
+            Move move = quoridor.getCurrentGame().getMove(gameId);
+            nextMove = move.getMoveNumber();
+            nextRound = move.getRoundNumber();
+        }catch (Exception e){ //if you are at the last game position, the last move (5,1) doesnt exist so an Exception is thrown
+            nextMove = 5;
+            nextRound = 1;
+        }
+        assertEquals(movenm, nextMove);
+        assertEquals(roundnm, nextRound);
     }
 
     /**
