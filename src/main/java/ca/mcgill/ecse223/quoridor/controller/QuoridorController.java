@@ -1340,6 +1340,7 @@ public class QuoridorController {
      * @return
      * @author Edwin Pan
      * @author Matthias Arabian made modifications for deliverable 3
+     * @author Thomas Philippon major modifications for deliverable 5
      */
     public static boolean completePlayerTurn(Player player) {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -1401,9 +1402,38 @@ public class QuoridorController {
             quoridor.getCurrentGame().setCurrentPosition(nextGamePosition);
             return quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(tmp);
         }
+    }
 
 
+    /**
+     * Controller mehtod to jump to start position of the game while in replayMode
+     * @author Alex Masciotra
+     * @param quoridor
+     */
+    public static void jumpToStart(Quoridor quoridor){
 
+        List<GamePosition> gamePositions = quoridor.getCurrentGame().getPositions();
+
+        GamePosition startGamePosition = gamePositions.get(0); //get original game position
+
+        quoridor.getCurrentGame().setCurrentPosition(startGamePosition);
+
+    }
+
+    /**
+     * Controller mehtod to jump to final position of the game while in replayMode
+     * @author Alex Masciotra
+     * @param quoridor
+     */
+    public static void jumpToFinal(Quoridor quoridor){
+
+        List<GamePosition> gamePositions = quoridor.getCurrentGame().getPositions();
+
+        int index  = gamePositions.size() - 3;
+
+        GamePosition finalGamePosition = gamePositions.get(index);
+
+        quoridor.getCurrentGame().setCurrentPosition(finalGamePosition);
     }
 
     /**

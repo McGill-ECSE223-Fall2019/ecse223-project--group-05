@@ -46,9 +46,6 @@ public class CucumberStepDefinitions {
     private boolean failedToReadSaveFile = false;
     private boolean receivedInvalidPositionException = false;
 
-    //instance variable for stepBack and StepForward tests
-    private Move currentMove;
-
     //Timer object for starting and stopping the player clock
     Timer timer = new Timer();
     // ***********************************************
@@ -2009,6 +2006,7 @@ public class CucumberStepDefinitions {
         GamePosition gamePosition = QuoridorApplication.getQuoridor().getCurrentGame().getPosition(gamePositionIndex);
 
         QuoridorApplication.getQuoridor().getCurrentGame().setCurrentPosition(gamePosition);
+
     }
 
     /**
@@ -2018,7 +2016,7 @@ public class CucumberStepDefinitions {
     @When("Step backward is initiated")
     public void step_backward_is_initiated() {
        //call the controller method for the feature step backward
-        currentMove = QuoridorController.stepBackward(QuoridorApplication.getQuoridor().getCurrentGame());
+        QuoridorController.stepBackward(QuoridorApplication.getQuoridor().getCurrentGame());
     }
 
     /**
@@ -2030,11 +2028,19 @@ public class CucumberStepDefinitions {
     public void the_next_move_shall_be(Double mvRnd) {
         //Strip the double to get the move and wall number
         String[] moveRound = mvRnd.toString().split("\\.");
-        int move =  Integer.parseInt(moveRound[0]);
-        int round = Integer.parseInt(moveRound[1]);
+        int movenm =  Integer.parseInt(moveRound[0]);
+        int roundnm = Integer.parseInt(moveRound[1]);
 
-       assertEquals(move, currentMove.getNextMove().getMoveNumber());
-       assertEquals(round, currentMove.getNextMove().getRoundNumber());
+
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
+
+        int gameId = currentGamePosition.getId();
+
+        Move move = quoridor.getCurrentGame().getMove(gameId);
+
+       assertEquals(movenm, move.getMoveNumber());
+       assertEquals(roundnm, move.getRoundNumber());
     }
 
     /**
@@ -2102,17 +2108,22 @@ public class CucumberStepDefinitions {
     @When("Step forward is initiated")
     public void step_forward_is_initiated() {
         //call the controller method for the step forward feature
-       currentMove = QuoridorController.stepForward(QuoridorApplication.getQuoridor().getCurrentGame());
+      QuoridorController.stepForward(QuoridorApplication.getQuoridor().getCurrentGame());
     }
 
     /*
      * Jump to start Step definition
      */
 
+    /**
+     * jump to start
+     * @author Alex Masciotra
+     */
     @When("Jump to start position is initiated")
     public void jump_to_start_position_is_initiated() {
         // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        QuoridorController.jumpToStart(quoridor);
     }
 
 
@@ -2120,10 +2131,15 @@ public class CucumberStepDefinitions {
      * Jump to final Step definition
      */
 
+    /**
+     * jump to final
+     * @author Alex Masciotra
+     */
     @When("Jump to final position is initiated")
     public void jump_to_final_position_is_initiated() {
         // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        QuoridorController.jumpToFinal(quoridor);
     }
 
     // ***********************************************
