@@ -1950,7 +1950,7 @@ public class CucumberStepDefinitions {
         File file = new File(SaveConfig.getGameSaveFilePath(this.testGameSaveFilename));
         file.delete();
         //Clear load position files from saves directory
-        CucumberTest_LoadPosition_TestFileWriters.clearGameSaveLoadingTestFiles();
+        //CucumberTest_LoadPosition_TestFileWriters.clearGameSaveLoadingTestFiles();
         this.testGameSaveFilename = "";
         for (int i = 0; i < refFileData.length; i++) {
             this.refFileData[i] = 0;

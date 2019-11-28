@@ -313,13 +313,12 @@ public class QuoridorSavesManager {
 		/*
 		 * Check of what type of save is being read.
 		 */
-		boolean isDatFile;
-		if( filename.trim().substring( filename.lastIndexOf(".") ).equals( SaveConfig.gameMovesExtension) ){
+		boolean isDatFile = false;
+		boolean isMovFile = false;
+		if( filename.trim().substring( filename.lastIndexOf(".") ).equals( SaveConfig.gamePositionExtension) ){
 			isDatFile = true;
-		} else if( filename.substring( filename.lastIndexOf(".") ).equals( SaveConfig.gamePositionExtension ) ) {
-			isDatFile = false;
-		} else {
-			throw new IllegalArgumentException("Unknown filetype detected. Loadgame aborted.");
+		} else if( filename.trim().substring( filename.lastIndexOf(".") ).equals( SaveConfig.gameMovesExtension ) ) {
+			isMovFile = true;
 		}
 		
 		/*
@@ -327,8 +326,10 @@ public class QuoridorSavesManager {
 		 */
 		if(isDatFile) {
 			return loadPosition(filename, quoridor, firstPlayer, secondPlayer);
-		} else {
+		} else if(isMovFile) {
 			return loadMoves(filename, quoridor, firstPlayer, secondPlayer);
+		} else {
+			throw new IllegalArgumentException("Unknown filetype detected. Loadgame aborted.");
 		}
 	}
 	
@@ -776,16 +777,27 @@ public class QuoridorSavesManager {
 	 * @throws IOException
 	 */
 	private static Game initializeGame(File file, Quoridor quoridor, Player whitePlayer, Player blackPlayer ) throws FileNotFoundException, IOException {
+		//Deletion of old stuff
+		if(quoridor.getCurrentGame()!=null) {
+			quoridor.getCurrentGame().delete();
+		}
+		//Instantiation of new stuff
 		Game game = new Game(GameStatus.Initializing, MoveMode.PlayerMove, quoridor);
 		game.setWhitePlayer(whitePlayer);
 		game.setBlackPlayer(blackPlayer);
 		whitePlayer.setNextPlayer(blackPlayer);
 		blackPlayer.setNextPlayer(whitePlayer);
-		while( whitePlayer.hasWalls() ) {
-			whitePlayer.removeWall( whitePlayer.getWalls().get(0) );
+		List<Wall> oldWalls = new ArrayList<Wall>();
+		oldWalls.addAll(whitePlayer.getWalls());
+		for(Wall wall : oldWalls ) {
+			whitePlayer.removeWall(wall);
+			wall.delete();
 		}
-		while( blackPlayer.hasWalls() ) {
-			blackPlayer.removeWall( blackPlayer.getWalls().get(0) );
+		oldWalls = new ArrayList<Wall>();
+		oldWalls.addAll(blackPlayer.getWalls());
+		for(Wall wall : oldWalls ) {
+			blackPlayer.removeWall(wall);
+			wall.delete();
 		}
 		PlayerPosition initialWhitePosition = new PlayerPosition(whitePlayer, quoridor.getBoard().getTile( getTileId(9, 5) ) );
 		PlayerPosition initialBlackPosition = new PlayerPosition(blackPlayer, quoridor.getBoard().getTile( getTileId(1,5) ) );
@@ -794,9 +806,10 @@ public class QuoridorSavesManager {
 		for( int i = 1 ; i <= 10 ; i ++ ) {
 			initialPosition.addWhiteWallsInStock( new Wall(i,whitePlayer) );
 		}
-		for( int i = 1 ; i <= 10 ; i ++ ) {
+		for( int i = 11 ; i <= 10 ; i ++ ) {
 			initialPosition.addBlackWallsInStock( new Wall(i,blackPlayer) );
 		}
+		game.setCurrentPosition(initialPosition);
 		
 		return game;
 	}
@@ -806,7 +819,7 @@ public class QuoridorSavesManager {
 	 * Useful for recreating the multiple phases of a game being loaded.
 	 */
 	private static GamePosition duplicateGamePosition(GamePosition gamePosition, Game game) {
-		GamePosition newGamePosition = new GamePosition( gamePosition.getId()+1, gamePosition.getWhitePosition(), gamePosition.getBlackPosition(), gamePosition.getWhitePosition().getPlayer(), game );
+		GamePosition newGamePosition = game.addPosition( gamePosition.getId()+1, gamePosition.getWhitePosition(), gamePosition.getBlackPosition(), gamePosition.getWhitePosition().getPlayer() );
 		for( int i = 0 ; i < gamePosition.getWhiteWallsInStock().size() ; i ++ ) {
 			newGamePosition.addWhiteWallsInStock( gamePosition.getWhiteWallsInStock(i) );
 		}
@@ -1122,7 +1135,7 @@ public class QuoridorSavesManager {
 		BufferedReader bufferedReader = new BufferedReader( new FileReader( file ) );
 		int numberOfLines = 0;
 		String bufferedLine = bufferedReader.readLine();
-		while( !bufferedLine.equals("") && bufferedLine != null ) {
+		while( bufferedLine != null && !bufferedLine.equals("") ) {
 			bufferedLine = bufferedReader.readLine();
 			numberOfLines++;
 		}
