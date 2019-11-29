@@ -19,7 +19,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import java.util.ArrayList?>
-
 <Pane stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
       <AnchorPane id="Application_Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3d6b99;">
@@ -448,7 +447,7 @@
                                                    <children>
                                                       <Button mnemonicParsing="false" onAction="#fromResultsPageToMainMenu" prefHeight="39.0" prefWidth="109.0" style="-fx-background-color: #192c3f;" text="BACK TO MENU" textAlignment="CENTER" textFill="#ffd800" wrapText="true" />
                                                       <Separator prefHeight="26.0" prefWidth="20.0" visible="false" />
-                                                      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="141.0" style="-fx-background-color: #192c3f;" text="ENTER REPLAY MODE" textAlignment="CENTER" textFill="#ffd800" wrapText="true" />
+                                                      <Button mnemonicParsing="false" onAction="#start_replayMode" prefHeight="40.0" prefWidth="141.0" style="-fx-background-color: #192c3f;" text="ENTER REPLAY MODE" textAlignment="CENTER" textFill="#ffd800" wrapText="true" />
                                                    </children>
                                                 </HBox>
                                              </children>

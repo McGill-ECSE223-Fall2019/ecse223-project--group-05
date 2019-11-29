@@ -1616,8 +1616,8 @@ public class QuoridorController {
             }
         }
         if(currentPlayerRepeats && opposingPlayerRepeats){
-            endGame();
             getCurrentGame().setGameStatus(GameStatus.Draw);
+            endGame();
             return "Drawn";
         }
 

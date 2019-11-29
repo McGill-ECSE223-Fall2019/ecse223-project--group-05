@@ -556,7 +556,7 @@ public class ViewInterface {
 	private void clearGUI_game_session_page() {
 		//set the current player to be WhitePlayer
 		resetGUI_playerTurn();
-		resetGUI_tutorial();
+		end_ReplayMode();
 
 		//reset the player usernames
 		whiteExistingName.getSelectionModel().clearSelection();
@@ -1320,7 +1320,10 @@ public class ViewInterface {
 			throw new java.lang.UnsupportedOperationException("Unable to assign next Player");
 		}
 		String userNameToSet = whiteNewName.getText();
-
+		if (userNameToSet.equals("")) {//dont allow empty username
+			whiteUsernameExistsLabel.setText("username cannot be empty");
+			return;
+		}
 		try {
 			isValid = QuoridorController.selectNewUserName(userNameToSet, quoridor);
 		} catch (Exception e) {
@@ -1354,6 +1357,10 @@ public class ViewInterface {
 		}
 
 		String userNameToSet = blackNewName.getText();
+		if (userNameToSet.equals("")) {//dont allow empty username
+			blackUsernameExistsLabel.setText("username cannot be empty");
+			return;
+		}
 
 		try {
 			isValid = QuoridorController.selectNewUserName(userNameToSet, quoridor);
@@ -1473,6 +1480,10 @@ public class ViewInterface {
         //clear the wall error strings
         invalidWallPlacement.setText("");
         gameSessionNotificationLabel.setText("");
+
+
+        //check if game won
+		QuoridorController.checkResult();
 
 		if (color.equals("white")) {
 			 //starts black player turn
@@ -2039,10 +2050,10 @@ public class ViewInterface {
 
     /**
      * @author Matthias Arabian
-     * Resets all variables related to the Tutorial Mode.
-     * Resets the position of all GUI elements affected by the Tutorial Mode.
+     * Resets all variables related to the Replay Mode.
+     * Resets the position of all GUI elements affected by the Replay Mode.
      */
-    private void resetGUI_tutorial() {
+    private void end_ReplayMode() {
         for (Node child : mama_pane.getChildren()){
             AnchorPane c = (AnchorPane)child;
             if (c.getId().equals("Game_Session_Page"))
@@ -2051,8 +2062,7 @@ public class ViewInterface {
                 for (Node kid: papa_container.getChildren()) {
                     VBox v = (VBox) kid;
                     if (!v.getId().equals("gameBoard")){
-                        for (Node bebe: v.getChildren())
-                            bebe.setRotate(0);
+                        v.setVisible(true);
                     }
                 }
             }
@@ -2061,9 +2071,9 @@ public class ViewInterface {
 
     /**
      * @author Matthias Arabian
-     * rotates GameSessionPage GUI elemets to spice things up.
+     * clears the Game Session page to initiate the ReplayMode
      */
-	public void UI_dance(){
+	public void start_replayMode(){
 	    for (Node child : mama_pane.getChildren()){
 	        AnchorPane c = (AnchorPane)child;
 	        if (c.getId().equals("Game_Session_Page"))
@@ -2072,16 +2082,13 @@ public class ViewInterface {
                 for (Node kid: papa_container.getChildren()) {
                     VBox v = (VBox) kid;
                     if (!v.getId().equals("gameBoard")){
-                        for (Node bebe: v.getChildren())
-                            if (bebe.getRotate() == 0) {
-                                bebe.setRotate(15);
-                            } else
-                                bebe.setRotate(-bebe.getRotate());
+						v.setVisible(false);
                     }
-
                 }
             }
         }
+	    quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Replay);
+		fromResultsPageToGameSession();
     }
 
     /**
@@ -2111,16 +2118,20 @@ public class ViewInterface {
         Top_left_buttons.setDisable(true); //disable top buttons. Play shouldn't be able to interact with them at this point in time.
 
         //display who has won
+		String name;
         switch (finalResults)
         {
             case BlackWon:
-                lbl_result.setText("Black Player Wins!");
+            	name = blackPlayer.getUser().getName();
+                lbl_result.setText(name + " Wins!");
                 break;
             case WhiteWon:
-                lbl_result.setText("White Player Wins!");
+            	name = whitePlayer.getUser().getName();
+				lbl_result.setText(name + " Wins!");
                 break;
             case Draw:
                 lbl_result.setText("It's a draw!");
+                break;
             default:
                 lbl_result.setText("Oops, something went wrong! Please restart the application");
                 break;
@@ -2136,18 +2147,27 @@ public class ViewInterface {
      * Transitions from the Results_Page to the Main_Menu
      */
     public void fromResultsPageToMainMenu(){
-        //closes the results page
-        CurrentPage = getPage(Page.RESULTS_PAGE);
-        CurrentPage.setDisable(true);
-        CurrentPage.setVisible(false);
-        CurrentPage = getCurrentPage();
-        CurrentPage.setDisable(false);
-        Top_left_buttons.setDisable(false);
-        CurrentPage.toFront();
+		//return to game session page
+    	fromResultsPageToGameSession();
 
         //go to main page
         Goto_Main_Page();
     }
+
+	/**
+	 * @author Matthias Arabian
+	 * Transitions from the Results_Page to the Game_Session_Page
+	 */
+	public void fromResultsPageToGameSession(){
+		//closes the results page
+		CurrentPage = getPage(Page.RESULTS_PAGE);
+		CurrentPage.setDisable(true);
+		CurrentPage.setVisible(false);
+		CurrentPage = getCurrentPage();
+		CurrentPage.setDisable(false);
+		Top_left_buttons.setDisable(false);
+		CurrentPage.toFront();
+	}
 
     /**
      * @author Matthias Arabian
