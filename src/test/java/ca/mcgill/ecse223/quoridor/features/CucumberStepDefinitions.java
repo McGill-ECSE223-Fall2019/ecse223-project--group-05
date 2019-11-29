@@ -1360,7 +1360,7 @@ public class CucumberStepDefinitions {
     @When("I initiate to load a saved game {string}")
     public void iInitiateToLoadASavedGame(String fileName) {
         myPlayers = createUsersAndPlayers("user1", "user2");
-        CucumberTest_LoadPosition_TestFileWriters.createGameSaveTestFile(fileName);
+        CucumberTest_LoadSystems_TestFileWriters.createGameSaveTestFile(fileName);
         try {
             QuoridorController.loadSavedGame(fileName, this.myPlayers.get(0), this.myPlayers.get(1));
         } catch (FileNotFoundException e) {
@@ -1372,10 +1372,6 @@ public class CucumberStepDefinitions {
         } catch (InvalidPositionException e) {
             receivedInvalidPositionException = true;
             e.printStackTrace();
-            boolean truth = true;
-            if(truth) {
-            	throw new IllegalArgumentException(e.getMessage());
-            }
         }
     }
     
@@ -1439,7 +1435,6 @@ public class CucumberStepDefinitions {
     	GameStatus gameState = QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus();
     	assertNotEquals( gameState, GameStatus.Initializing );
     	assertNotEquals( gameState, GameStatus.ReadyToStart );
-    	assertNotEquals( gameState, GameStatus.Replay );
     	assertNotEquals( gameState, GameStatus.Running );
     }
     
@@ -1472,10 +1467,12 @@ public class CucumberStepDefinitions {
     public void itShallBePlayer_s_Turn(String player) {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
-        if (player.equals("black"))
-            assertEquals(null, currentPlayer.getGameAsWhite());
-        else
-            assertEquals(null, currentPlayer.getGameAsBlack());
+        if (player.equals("black")) {
+        	assertEquals(null, currentPlayer.getGameAsWhite());
+        }
+        else {
+        	assertEquals(null, currentPlayer.getGameAsBlack());
+        }
 
     }
 

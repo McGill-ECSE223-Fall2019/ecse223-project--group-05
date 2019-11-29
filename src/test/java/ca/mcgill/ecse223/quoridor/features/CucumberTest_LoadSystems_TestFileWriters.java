@@ -19,7 +19,7 @@ import ca.mcgill.ecse223.quoridor.configuration.SaveConfig;
  * @author Edwin Pan
  *
  */
-public class CucumberTest_LoadPosition_TestFileWriters {	
+public class CucumberTest_LoadSystems_TestFileWriters {	
 	
     /**
      * Takes in a filename. If the filename is recognized, then the related File will be written into the File System,
@@ -100,7 +100,7 @@ public class CucumberTest_LoadPosition_TestFileWriters {
 																				"15. f3 e3\n"	+
 																				"16. d7 e7\n"	+
 																				"17. e6h\n"	+
-																				"18. e3h\n");
+																				"18. e3v\n");
 		
 		testFileTable.put("quoridor_test_game_2.mov",							"1. e9 f9\n"	+
 																				"2. e1 d1\n"	+
@@ -118,10 +118,12 @@ public class CucumberTest_LoadPosition_TestFileWriters {
 																				"14. d6 d7\n"	+
 																				"15. f3 e3\n"	+
 																				"16. d7 e7\n"	+
-																				"17. e6h\n"	+
-																				"18. e3h\n"	+
-																				"19. e5h\n"	+
-																				"20. e4h\n");
+																				"17. e3 e2\n"	+
+																				"18. e7 e8\n"	+
+																				"19. e6h\n"	+
+																				"20. e3v\n"	+
+																				"21. e5h\n"	+
+																				"22. e4h\n");
 		
 		testFileTable.put("quoridor_test_game_3.mov",							"1. e9 f9\n"	+
 																				"2. e1 d1\n"	+
@@ -145,7 +147,7 @@ public class CucumberTest_LoadPosition_TestFileWriters {
 																				"20. e4h\n"	+
 																				"21. e3 e2\n"	+
 																				"22. e7 e8\n"	+
-																				"23. e8 e9\n");
+																				"23. e2 e1\n");
 		
 		testFileTable.put("quoridor_test_game_invalid_pawn_move.mov",			"1. e9 f1\n");
 		

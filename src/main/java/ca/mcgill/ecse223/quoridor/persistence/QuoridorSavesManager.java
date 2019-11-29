@@ -663,7 +663,14 @@ public class QuoridorSavesManager {
 			//Now that we know what kind of moves we are dealing with, we now proceed to instantiate the new GamePosition based on the previous one.
 			game.setCurrentPosition( 
 					duplicateGamePosition( game.getCurrentPosition(), game,
-							(whiteTurn?game.getWhitePlayer():game.getBlackPlayer()) ) 
+							(whiteTurn?game.getBlackPlayer():game.getWhitePlayer()) )	//This might seem really weird, but actually this is the case:
+																						//The first move is made by the white player because, in GamePosition 0, it is white's move.
+																						//This means that the transfer from GamePosition 0 to GamePosition 1 is white's move, and therefore
+																						//the player to move in GamePosition 0 is white's. However, the player to move in GP 1 is Black's, not whites.
+																						//This is important to note because despite step 1. being white player's gameposition 1 isn't white's; it's black's.
+																						//Essentially, when interpreting the steps from the file, line 1 indicates the transition made from state 0 to state 1;
+																						//line 2 from state 1 to state 2, etc. So when attributing whose player it was to move in each transition, one must
+																						//keep in mind that the line number is a number ahead of its associated starting-end game position of the move.
 					);
 			
 			//Now we make adjustments to the current GamePosition based on the current bufferedLine and simultaneously complete some additional Sanity Checks.
@@ -770,20 +777,12 @@ public class QuoridorSavesManager {
 		
 		/*
 		 * Game State Checker
-		 * Now that we have loaded in all the moves into the game, we now need to check what state the game is in.
-		 * Note that all we can analyze is whether or not either player has won. If neither player has won, then the game will be "running".
-		 * Note that we have 0 control over GUI-related states such as ReadyToStart and Replay, so those will have to be dealt with elsewhere.
-		 * Further note that there isn't Initializing should not be accessible anymore, and I'm pretty sure it's not even logically possible for the game to end in a Draw.
+		 * If the game is done and the player is attempting to load the game, then it must be a replay.
+		 * If the game is anything then I mark it as ReadyToStart for the gui to takeover.
 		 */
-		game.setGameStatus(GameStatus.Running);
-		if( game.getCurrentPosition().getWhitePosition().getTile().getRow() == 1 ) {
-			if( game.getCurrentPosition().getBlackPosition().getTile().getRow() == 9 ) {
-				game.setGameStatus(GameStatus.Draw);
-			} else {
-				game.setGameStatus(GameStatus.WhiteWon);
-			}
-		} else if( game.getCurrentPosition().getBlackPosition().getTile().getRow() == 9 ) {
-			game.setGameStatus(GameStatus.BlackWon);
+		game.setGameStatus(GameStatus.ReadyToStart);
+		if( game.getCurrentPosition().getWhitePosition().getTile().getRow() == 1 ||  game.getCurrentPosition().getBlackPosition().getTile().getRow() == 9 ) {
+			game.setGameStatus(GameStatus.Replay);
 		}
 		
 		/*
@@ -810,7 +809,9 @@ public class QuoridorSavesManager {
 		}
 		//Instantiation of new stuff
 		Game game = new Game(GameStatus.Initializing, MoveMode.PlayerMove, quoridor);
+		whitePlayer.setGameAsBlack(null);
 		game.setWhitePlayer(whitePlayer);
+		blackPlayer.setGameAsWhite(null);
 		game.setBlackPlayer(blackPlayer);
 		whitePlayer.setNextPlayer(blackPlayer);
 		blackPlayer.setNextPlayer(whitePlayer);
@@ -828,7 +829,7 @@ public class QuoridorSavesManager {
 		}
 		PlayerPosition initialWhitePosition = new PlayerPosition(whitePlayer, quoridor.getBoard().getTile( getTileId(9, 5) ) );
 		PlayerPosition initialBlackPosition = new PlayerPosition(blackPlayer, quoridor.getBoard().getTile( getTileId(1,5) ) );
-		Player playerToMove = ( ( numberOfMovesInMovFile(file) % 2 == 0 )? whitePlayer : blackPlayer );
+		Player playerToMove = whitePlayer; /*Player playerToMove = ( ( numberOfMovesInMovFile(file) % 2 == 0 )? whitePlayer : blackPlayer ); */		//White player is always first to move in the initial game state.
 		GamePosition initialPosition = new GamePosition(0, initialWhitePosition,  initialBlackPosition, playerToMove, game);
 		for( int i = 1 ; i <= 10 ; i ++ ) {
 			initialPosition.addWhiteWallsInStock( new Wall(i,whitePlayer) );
@@ -850,6 +851,7 @@ public class QuoridorSavesManager {
 		PlayerPosition whitePosition = new PlayerPosition( gamePosition.getWhitePosition().getPlayer(), gamePosition.getWhitePosition().getTile() );
 		PlayerPosition blackPosition = new PlayerPosition( gamePosition.getBlackPosition().getPlayer(), gamePosition.getBlackPosition().getTile() );
 		GamePosition newGamePosition = game.addPosition( newGamePositionId, whitePosition, blackPosition, playerToMove );
+		newGamePosition.setPlayerToMove(playerToMove);
 		for( int i = 0 ; i < gamePosition.getWhiteWallsInStock().size() ; i ++ ) {
 			newGamePosition.addWhiteWallsInStock( gamePosition.getWhiteWallsInStock(i) );
 		}
