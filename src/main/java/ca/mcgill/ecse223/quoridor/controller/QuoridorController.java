@@ -1679,7 +1679,7 @@ public class QuoridorController {
      * @return
      */
     public static boolean createBoard() {
-    	if(!QuoridorApplication.getQuoridor().hasBoard()) {
+    	if(QuoridorApplication.getQuoridor().hasBoard()) {
     		return false;
     	}
         Board board = new Board(QuoridorApplication.getQuoridor());
@@ -1688,6 +1688,7 @@ public class QuoridorController {
                 board.addTile(i, j);
             }
         }
+        QuoridorApplication.getQuoridor().setBoard(board);
         return true;
     }
 

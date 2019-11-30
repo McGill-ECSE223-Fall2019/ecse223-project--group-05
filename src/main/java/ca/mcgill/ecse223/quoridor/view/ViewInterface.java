@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.sql.Time;
 import java.util.TimerTask;
 
+import java.time.LocalDateTime;	//Useful for dating saves
+
 import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
 import javafx.collections.FXCollections;
@@ -1704,11 +1706,20 @@ public class ViewInterface {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save Your Game");
 		List<String> extensions = new ArrayList<String>();
-		extensions.add(".dat");
+		extensions.add(".mov");
 		extensions.add(SaveConfig.gameSavesDataExtension);
 		ExtensionFilter extensionsFilter = new ExtensionFilter("quoridor data saves files",extensions);
 		fileChooser.setSelectedExtensionFilter( extensionsFilter );
-		fileChooser.setInitialFileName("newgamesave.dat");
+		//Set up the filename to be suggested in the file choosing window for saving
+		String defaultFilename = LocalDateTime.now().toString();
+		defaultFilename = defaultFilename.replace('-', '_');
+		defaultFilename = defaultFilename.replace(':', '_');
+		defaultFilename = defaultFilename.substring(0,19);
+		defaultFilename = defaultFilename.replace('T', '-');
+		defaultFilename = defaultFilename.replaceAll("_", "");
+		defaultFilename += ".mov";
+		fileChooser.setInitialFileName(defaultFilename);
+		//Prepare everything
 		SaveConfig.createGameSavesFolder();
 		fileChooser.setInitialDirectory( new File(SaveConfig.getGameSavesFolder()) );
 
@@ -1842,7 +1853,7 @@ public class ViewInterface {
 		/*
 		 * PREPARING THE BOARD FOR LOADING
 		 */
-		QuoridorController.createBoard();
+		boolean createdBoard = QuoridorController.createBoard();
 		
 		/*
 		 * LOADING FILE SYSTEM DATA SECTION

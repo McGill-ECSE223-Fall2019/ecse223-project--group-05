@@ -285,7 +285,7 @@ public class QuoridorSavesManager {
 				wallPosition = wallPosition + move.getTargetTile().getRow();
 				wallPosition = wallPosition + ( ((WallMove)move).getWallDirection() == Direction.Horizontal ? "h" : "v" );
 				//Write the new line.
-				lines = lines + i + "." + wallPosition + "\n";
+				lines = lines + i + ". " + wallPosition + "\n";
 				
 			} else {			//If we're saving a pawn move.
 				//Figure out what the second argument of this new line is.
@@ -295,7 +295,7 @@ public class QuoridorSavesManager {
 				nextPosition = nextPosition + columnIntToChar(move.getTargetTile().getColumn());
 				nextPosition = nextPosition + move.getTargetTile().getRow();
 				//Write the new line
-				lines = lines + i + "." + currentPosition + " " + nextPosition +"\n";
+				lines = lines + i + ". " + currentPosition + " " + nextPosition +"\n";
 				//Update the currentPosition of the desired pawn.
 				if(isBlackPawnMove) {
 					blackPosition = nextPosition;
@@ -678,7 +678,7 @@ public class QuoridorSavesManager {
 			
 			//First figure out what kind of move we are dealing with by pre-reading the data.
 			//We also complete INITIAL SANITY CHECKS to make sure the numbers that are coming in make sense.
-			boolean isWallPlace = (arguments.length == 2);
+			boolean isWallPlace = (arguments.length == 2);	//If there are only two words, then it must be a wall place.
 			boolean isBasicStep = false;
 			if(!isWallPlace) {
 				//We're going to figure out if we're dealing with a pawn step or a pawn jump.
