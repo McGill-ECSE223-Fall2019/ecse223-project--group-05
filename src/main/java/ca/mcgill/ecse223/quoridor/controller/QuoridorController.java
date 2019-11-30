@@ -1647,6 +1647,10 @@ public class QuoridorController {
     }
     private static void endGame(){
         GameStatus results = getCurrentGame().getGameStatus();
+
+        if (QuoridorApplication.getViewInterface() == null)
+            return; //for JUnit test
+
         QuoridorApplication.getViewInterface().displayFinalResults(results);
     }
 

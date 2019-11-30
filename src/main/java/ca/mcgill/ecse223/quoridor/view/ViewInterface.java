@@ -121,6 +121,8 @@ public class ViewInterface {
 	@FXML private Label blackPlayerName;
 	@FXML private Button btn_saveGame;
 	@FXML private Button btn_ResignGame;
+	@FXML private VBox playerInfo, wallStocks;
+	@FXML private StackPane gameSession_rightSide;
 	private boolean validWallGrab = false; //boolean set to true when a used grabs one of his walls
 	private boolean whiteTimeIsUp = false;
 	private boolean blackTimeISUp = false;
@@ -132,9 +134,8 @@ public class ViewInterface {
     @FXML private ImageView img_result;
     @FXML private AnchorPane Top_left_buttons; //buttons that will be disabled when results are displayed.
 
-	//tutorial variables
-    @FXML private StackPane mama_pane;
-    private boolean isInTutorial;
+	//replay page variables
+    @FXML private HBox replay_Page;
 
 
 	//movePawn varaibles
@@ -196,6 +197,9 @@ public class ViewInterface {
      * Matthias edited this for deliverable 5. Can be called programatically
 	 */
 	public void GrabWall_move(HBox stockClicked) {
+        //only works if game is running
+        if (!gameIsRunning())
+            return;
 
 		playerToMove = QuoridorController.getPlayerOfCurrentTurn();
 
@@ -335,8 +339,8 @@ public class ViewInterface {
 	    //return if the game isn't currently running
         if (QuoridorApplication.getQuoridor().getCurrentGame() == null)
             return;
-        if (!QuoridorController.isGameRunning(QuoridorApplication.getQuoridor().getCurrentGame()))
-           return;
+        if (!gameIsRunning())
+            return;
 
         //ensure that a wall is selected
 		boolean isValid = true;
@@ -529,8 +533,7 @@ public class ViewInterface {
 	    if (g != null && QuoridorController.isGameRunning(g))
 	        return;
 
-	    //when going to main page, not in tutorial anymore
-        isInTutorial = false;
+
 		clearGUI_game_session_page();       //reset the GUI section of the QuoridorApplication
         clearGUI_new_game_page();
         QuoridorController.clearGame();     //reset the model section of the QuoridorApplication
@@ -929,6 +932,10 @@ public class ViewInterface {
             if (wallGrabbed) //only allow the player to move if they haven't done anything this turn
                 return;
 
+            //only works if game is running
+            if (!gameIsRunning())
+                return;
+
             //get the tile object that was clicked, row and column
             ImageView img = (ImageView)e.getSource();
             String id = img.getId();
@@ -974,13 +981,21 @@ public class ViewInterface {
         }
     };
 
+    private void clearPossibleMoveTiles(){
+        for (int i = 0; i < 81; i++) //clear previous effects
+            gameBTiles[i].setEffect(null);
+    }
     /**
      * @author Matthias Arabian
      * Change the opacity of tiles that the current player can move to.
      */
     private void setPossibleMoveTiles(){
-        for (int i = 0; i < 81; i++) //clear previous effects
-            gameBTiles[i].setEffect(null);
+        //only works if game is running
+        if (!gameIsRunning())
+            return;
+
+        //clear previous effects
+        clearPossibleMoveTiles();
 
         //array used to store moves
         MoveDirection[] dir = {
@@ -1391,7 +1406,6 @@ public class ViewInterface {
      * rotates GUI and model wallMoveCandidate.
      */
 	public static void rotateWallEvent(KeyEvent keyEvent) {
-
 		//ensure that a wall is selected
 		if (wallSelected == null)
 			return;
@@ -1466,6 +1480,10 @@ public class ViewInterface {
         //wallGrabbed is used as a flag to assert that the player has completed an action.
         //wallGrabbed is set to true when a pawn is moved AND when a wall is grabbed.
 	    String color = QuoridorController.getColorOfPlayerToMove(quoridor);
+
+        //only works if game is running
+        if (!gameIsRunning())
+            return;
 
 		if (!wallGrabbed)
             return;
@@ -1886,6 +1904,15 @@ public class ViewInterface {
 		getPage(Page.MAIN_PAGE).setDisable(false);
 		getPage(Page.MAIN_PAGE).setVisible(true);
 		currentState = Page.MAIN_PAGE;
+
+
+		//reset the GameSession page in case the replay mode was open in the FXML file
+        wallStocks.setVisible(true);
+        wallStocks.setDisable(false);
+        wallStocks.toFront();
+        playerInfo.setVisible(true);
+        replay_Page.setVisible(false);
+        replay_Page.setDisable(true);
 	}
 
 	/**
@@ -2032,21 +2059,7 @@ public class ViewInterface {
 
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //TUTORIAL METHODS
-
-    /**
-     * @author Matthias Arabian
-     */
-    public void Start_Tutorial(){
-        isInTutorial = false;
-        System.out.println("Tutorial is disabled");
-    }
-    /**
-     * @author Matthias Arabian
-     */
-    public boolean isInTutorial() {
-        return isInTutorial;
-    }
+    //REPLAY MODE METHODS
 
     /**
      * @author Matthias Arabian
@@ -2054,19 +2067,15 @@ public class ViewInterface {
      * Resets the position of all GUI elements affected by the Replay Mode.
      */
     private void end_ReplayMode() {
-        for (Node child : mama_pane.getChildren()){
-            AnchorPane c = (AnchorPane)child;
-            if (c.getId().equals("Game_Session_Page"))
-            {
-                HBox papa_container = (HBox)c.getChildren().get(0);
-                for (Node kid: papa_container.getChildren()) {
-                    VBox v = (VBox) kid;
-                    if (!v.getId().equals("gameBoard")){
-                        v.setVisible(true);
-                    }
-                }
-            }
-        }
+        wallStocks.setVisible(true);
+        wallStocks.setDisable(false);
+        wallStocks.toFront();
+        playerInfo.setVisible(true);
+        replay_Page.setVisible(false);
+        replay_Page.setDisable(true);
+        playerInfo.setPrefWidth(playerInfo.getPrefWidth() + 100);
+        gameSession_rightSide.setPrefWidth(gameSession_rightSide.getPrefWidth() - 100);
+        shiftWallOnBoard(100);
     }
 
     /**
@@ -2074,23 +2083,62 @@ public class ViewInterface {
      * clears the Game Session page to initiate the ReplayMode
      */
 	public void start_replayMode(){
-	    for (Node child : mama_pane.getChildren()){
-	        AnchorPane c = (AnchorPane)child;
-	        if (c.getId().equals("Game_Session_Page"))
-            {
-                HBox papa_container = (HBox)c.getChildren().get(0);
-                for (Node kid: papa_container.getChildren()) {
-                    VBox v = (VBox) kid;
-                    if (!v.getId().equals("gameBoard")){
-						v.setVisible(false);
-                    }
-                }
-            }
-        }
+        wallStocks.setVisible(false);
+        wallStocks.setDisable(true);
+        playerInfo.setVisible(false);
+        replay_Page.setVisible(true);
+        replay_Page.setDisable(false);
+        replay_Page.toFront();
+        playerInfo.setPrefWidth(playerInfo.getPrefWidth() - 100);
+        gameSession_rightSide.setPrefWidth(gameSession_rightSide.getPrefWidth() + 100);
+        shiftWallOnBoard(-100);
 	    quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Replay);
 		fromResultsPageToGameSession();
     }
 
+    public void nextMove(){}
+    public void previousMove(){ }
+    public void firstMove(){}
+    public void lastMove(){}
+
+
+
+
+    public void shiftWallOnBoard(int shift){
+        //put all blackWalls back into their stock positions
+        Rectangle[] blackWalls = {blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6
+                ,blackWall7,blackWall8, blackWall9, blackWall10};
+        for (Rectangle r : blackWalls){
+            shiftWallOnBoard_helper(r, shift);
+        }
+
+        //put all whiteWalls back into their stock positions
+        Rectangle[] whiteWalls = {whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6
+                , whiteWall7, whiteWall8, whiteWall9, whiteWall10};
+        for (Rectangle r : whiteWalls){
+            shiftWallOnBoard_helper(r, shift);
+        }
+    }
+
+    private void shiftWallOnBoard_helper(Rectangle r, int shift){
+        Node p = r.getParent();
+        if (!p.getClass().getName().contains("HBox")) {
+            r.setTranslateX(r.getTranslateX() + shift);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //DISPLAY FINAL RESULTS
     /**
      * @author Matthias Arabian
      * @param finalResults Lets the program know who has won.
@@ -2109,6 +2157,9 @@ public class ViewInterface {
 
         //disable the current page, but do not make it invisible or replace it.
         CurrentPage.setDisable(true);
+
+        //clear tile effects
+        clearPossibleMoveTiles();
 
         //display the ResultsPage page, and bring it to front to allow for user interaction.
         CurrentPage = getPage(Page.RESULTS_PAGE);
@@ -2155,19 +2206,19 @@ public class ViewInterface {
     }
 
 	/**
-	 * @author Matthias Arabian
-	 * Transitions from the Results_Page to the Game_Session_Page
-	 */
-	public void fromResultsPageToGameSession(){
-		//closes the results page
-		CurrentPage = getPage(Page.RESULTS_PAGE);
-		CurrentPage.setDisable(true);
-		CurrentPage.setVisible(false);
-		CurrentPage = getCurrentPage();
-		CurrentPage.setDisable(false);
-		Top_left_buttons.setDisable(false);
-		CurrentPage.toFront();
-	}
+     * @author Matthias Arabian
+     * Transitions from the Results_Page to the Game_Session_Page.
+     */
+    public void fromResultsPageToGameSession(){
+        //closes the results page
+        CurrentPage = getPage(Page.RESULTS_PAGE);
+        CurrentPage.setDisable(true);
+        CurrentPage.setVisible(false);
+        CurrentPage = getCurrentPage();
+        CurrentPage.setDisable(false);
+        Top_left_buttons.setDisable(false);
+        CurrentPage.toFront();
+    }
 
     /**
      * @author Matthias Arabian
@@ -2176,8 +2227,26 @@ public class ViewInterface {
      * Display the final results.
      */
     public void resignGame(){
+        if (!gameIsRunning())
+            return;
+
+        //take care of wall related variables
+        if (wallSelected != null)
+            returnWallToStock(wallSelected, getStockOf(QuoridorController.getColorOfPlayerToMove(quoridor)));
+        //reset the GUI wall related global variables
+        invalidWallPlacement.setText("");
+        gameSessionNotificationLabel.setText("");
+        validWallGrab = false;
+        wallSelected = null;
+        if (wallMoveCandidate != null)
+            wallMoveCandidate.setStroke(Color.BLACK);
+        wallMoveCandidate = null;
+        wallGrabbed = false; //added by Thomas
+
         QuoridorController.initiateToResign();
         QuoridorController.displayFinalResults();
     }
-
+    private boolean gameIsRunning(){
+        return (quoridor.getCurrentGame().getGameStatus() == Game.GameStatus.Running);
+    }
 }
