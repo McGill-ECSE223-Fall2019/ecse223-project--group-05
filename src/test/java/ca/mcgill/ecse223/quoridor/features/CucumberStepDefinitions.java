@@ -1361,10 +1361,12 @@ public class CucumberStepDefinitions {
      */
     @When("I initiate to load a saved game {string}")
     public void iInitiateToLoadASavedGame(String fileName) {
-        myPlayers = createUsersAndPlayers("user1", "user2");
+    	Quoridor quoridor = QuoridorApplication.getQuoridor();
+        User user1 = quoridor.addUser("bruh1");
+        User user2 = quoridor.addUser("bruh2");
         CucumberTest_LoadSystems_TestFileWriters.createGameSaveTestFile(fileName);
         try {
-            QuoridorController.loadSavedGame(fileName, this.myPlayers.get(0), this.myPlayers.get(1));
+            QuoridorController.loadSavedGame(fileName, user1, user2, new Time(300));
         } catch (FileNotFoundException e) {
             failedToReadSaveFile = true;
             e.printStackTrace();

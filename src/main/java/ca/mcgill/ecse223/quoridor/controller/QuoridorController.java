@@ -1169,9 +1169,9 @@ public class QuoridorController {
      * @author Matthias Arabian (Interface Author)
      * @author Edwin Pan (Method Author)
      */
-    public static void loadSavedGame(String fileName, Player firstPlayer, Player secondPlayer) throws IOException, FileNotFoundException, InvalidPositionException {
+    public static void loadSavedGame(String fileName, User firstUser, User secondUser, Time thinkingTime) throws IOException, FileNotFoundException, InvalidPositionException {
         try {
-            Game game = QuoridorSavesManager.loadGame(fileName, QuoridorApplication.getQuoridor(), firstPlayer, secondPlayer);
+            Game game = QuoridorSavesManager.loadGame(fileName, QuoridorApplication.getQuoridor(), firstUser, secondUser, thinkingTime);
             QuoridorApplication.getQuoridor().setCurrentGame(game);
         } catch (FileNotFoundException e) {
             QuoridorApplication.getQuoridor().setCurrentGame(null);
@@ -1675,8 +1675,26 @@ public class QuoridorController {
 
 
 
-
-
+    /**
+     * Instantiates a new board if quoridor does not currently have a board.
+     * Returns true if quoridor, indeed, didn't have a board; false if quoridor already had a board and thus this method did not create any new board.
+     * This basically reduces the scope of what Thomas's initializeBoard function does. 
+     * @author Edwin Pan
+     * @return
+     */
+    public static boolean createBoard() {
+    	if(QuoridorApplication.getQuoridor().hasBoard()) {
+    		return false;
+    	}
+        Board board = new Board(QuoridorApplication.getQuoridor());
+        for (int i = 1; i <= 9; i++) {
+            for (int j = 1; j <= 9; j++) {
+                board.addTile(i, j);
+            }
+        }
+        QuoridorApplication.getQuoridor().setBoard(board);
+        return true;
+    }
 
 }
 

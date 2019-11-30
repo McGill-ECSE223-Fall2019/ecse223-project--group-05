@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.sql.Time;
 import java.util.TimerTask;
 
+import java.time.LocalDateTime;	//Useful for dating saves
+
 import ca.mcgill.ecse223.quoridor.model.*;
 import ca.mcgill.ecse223.quoridor.persistence.QuoridorRuntimeModelPersistence;
 import javafx.collections.FXCollections;
@@ -155,6 +157,9 @@ public class ViewInterface {
 
 	//bool variable to prevent the user from grabbing a second wall during the same turn.
 	private boolean wallGrabbed = false;
+	
+	//@author Edwin Pan; this is a middle-man variable between Goto_Game_Session_Page and loadSavedGame methods in order to let the former know that it does not need to initialize the board when loadSavedGame was used before it.
+	private boolean resumingFromSaveFile = false;
 
   //Rotate wall variables
 	private Rectangle wallMoveCandidate;
@@ -678,16 +683,18 @@ public class ViewInterface {
 
 		try {
 			setThinkingTime(whiteTimerField.getText(), blackTimerField.getText());
-			try {
-                //game has started at this point. Timers will begin to run.
-                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
-
-                QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
-			} catch (Exception e) {
-                //game has failed to start. stop timers. Return to initializing phase.
-                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Initializing);
-				throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
-			}
+			if(!resumingFromSaveFile) {	//Try statement addition @author Edwin Pan in order to avoid initializing of the board that has been prepared by reading a save file.
+				try {
+	                //game has started at this point. Timers will begin to run.
+	                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
+	
+	                QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
+				} catch (Exception e) {
+	                //game has failed to start. stop timers. Return to initializing phase.
+	                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Initializing);
+					throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
+				}
+			}	resumingFromSaveFile = false;
 
 			//get both players
 			whitePlayer = QuoridorController.getCurrentWhitePlayer();
@@ -1757,11 +1764,20 @@ public class ViewInterface {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save Your Game");
 		List<String> extensions = new ArrayList<String>();
-		extensions.add(".dat");
+		extensions.add(".mov");
 		extensions.add(SaveConfig.gameSavesDataExtension);
 		ExtensionFilter extensionsFilter = new ExtensionFilter("quoridor data saves files",extensions);
 		fileChooser.setSelectedExtensionFilter( extensionsFilter );
-		fileChooser.setInitialFileName("newgamesave.dat");
+		//Set up the filename to be suggested in the file choosing window for saving
+		String defaultFilename = LocalDateTime.now().toString();
+		defaultFilename = defaultFilename.replace('-', '_');
+		defaultFilename = defaultFilename.replace(':', '_');
+		defaultFilename = defaultFilename.substring(0,19);
+		defaultFilename = defaultFilename.replace('T', '-');
+		defaultFilename = defaultFilename.replaceAll("_", "");
+		defaultFilename += ".mov";
+		fileChooser.setInitialFileName(defaultFilename);
+		//Prepare everything
 		SaveConfig.createGameSavesFolder();
 		fileChooser.setInitialDirectory( new File(SaveConfig.getGameSavesFolder()) );
 
@@ -1792,7 +1808,7 @@ public class ViewInterface {
 					//receive from alert
 					Optional<ButtonType> overwriteConfirmation = alert.showAndWait();
 					if( overwriteConfirmation.get() == ButtonType.OK ) {	//If we are good to overwrite
-
+						
 						//Now attempt to overwrite the file.
 						SavingStatus saveStatus2 = QuoridorController.saveGame( file.getAbsolutePath() , QuoridorController.getCurrentGame(), SavePriority.FORCE_OVERWRITE );
 						switch( saveStatus2 ) {
@@ -1859,7 +1875,10 @@ public class ViewInterface {
 	 * @param event
 	 */
 	public void continuePreviousGame(Event event) {
-		//Make sure we have a selected item.
+
+		/*
+		 * SANITY CHECKING FOR SELECTED GAME
+		 */
 		if( this.loadedGameList.getSelectionModel().getSelectedItem() == null ) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("No Save Selected!");
@@ -1870,9 +1889,10 @@ public class ViewInterface {
 		}
 		String selectedPath = this.loadedGameList.getSelectionModel().getSelectedItem().toString();
 
-		//Find the players to used for reloading into this game.
-		//Because game saves in sprint3-format do not contain player data, I am unfortunately forced to use random users
-		//THERE IS ALSO A BUG IN MY QUORIDORSAVESMANAGER CODE: the load game should require user input, not player input, as player input would give no choice in destination.
+		/*
+		 * USER SELECTION
+		 * TODO: Give the user the opportunity to choose the users they will use in the game.
+		 */
 		User user1, user2;
 		if( QuoridorApplication.getQuoridor().getUsers().size() < 2 ) {
 			user1 = new User("firstboi",QuoridorApplication.getQuoridor());
@@ -1881,12 +1901,23 @@ public class ViewInterface {
 			user1 = QuoridorApplication.getQuoridor().getUser(0);
 			user2 = QuoridorApplication.getQuoridor().getUser(1);
 		}
-		Player player1 = new Player( new Time((10*60+10)*1000) , user1 , 1 , Direction.Horizontal );
-		Player player2 = new Player( new Time((10*60+10)*1000) , user1 , 9 , Direction.Horizontal );
+		
+		/*
+		 * THINKING TIME SELECTION
+		 * TODO: Give the user the opportunity to choose how much thinking time they will have.
+		 */
+		Time thinkingTime = new Time(300);
 
-		//Attempt to load the save game.
+		/*
+		 * PREPARING THE BOARD FOR LOADING
+		 */
+		QuoridorController.createBoard();
+		
+		/*
+		 * LOADING FILE SYSTEM DATA SECTION
+		 */
 		try{
-			QuoridorController.loadSavedGame(selectedPath, player1, player2);
+			QuoridorController.loadSavedGame(selectedPath, user1, user2, thinkingTime);
 		} catch (FileNotFoundException e) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Save Was Not Found");
@@ -1910,7 +1941,11 @@ public class ViewInterface {
 			return;
 		}
 
-		//Once we're doing loading in the game, go on and actually continue the game in the game session page.
+		/*
+		 * POST-LOAD STUFF
+		 * Hands the application over to Thomas's Goto_Game_Session_Page method, with the global variable resumingFromSaveFile informing that method that it needs to behave differently when initializing the board (ie, not to).
+		 */
+		this.resumingFromSaveFile = true;
 		this.Goto_Game_Session_Page();
 	}
 
