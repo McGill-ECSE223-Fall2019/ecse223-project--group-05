@@ -162,6 +162,30 @@ public class ViewInterface {
 	//For moving the window
     double x,y;
 
+
+
+
+    public void populateBoard(){
+        GamePosition position = quoridor.getCurrentGame().getCurrentPosition();
+        PlayerPosition white = position.getWhitePosition();
+        PlayerPosition black = position.getBlackPosition();
+        List<Wall> blackWalls = position.getBlackWallsOnBoard();
+        List<Wall> whiteWalls = position.getWhiteWallsInStock();
+        movePawnsTo(black.getTile(), white.getTile());
+    }
+
+    private void movePawnsTo(Tile t_black, Tile t_white){
+        //FUCK
+        ImageView imgBlack = gameBTiles[(t_black.getRow()-1)*9 + (t_black.getColumn() - 1)];
+        ImageView imgWhite = gameBTiles[(t_white.getRow()-1)*9 + (t_white.getColumn() - 1)];
+        setTileImage(blackPlayerTile, emptyTileShouldBe(blackPlayerTile));
+        setTileImage(whitePlayerTile, emptyTileShouldBe(whitePlayerTile));
+        setTileImage(imgBlack, TileImage.BLACK_PAWN);
+        setTileImage(imgWhite, TileImage.WHITE_PAWN);
+        blackPlayerTile = imgBlack;
+        whitePlayerTile = imgWhite;
+    }
+
 	/**
 	 * @author Matthias Arabian
 	 * @param color the color of the HBox to return
@@ -2096,8 +2120,14 @@ public class ViewInterface {
 		fromResultsPageToGameSession();
     }
 
-    public void nextMove(){}
-    public void previousMove(){ }
+    public void nextMove(){
+	    QuoridorController.stepForward(quoridor.getCurrentGame());
+	    populateBoard();
+    }
+    public void previousMove(){
+	    QuoridorController.stepBackward(quoridor.getCurrentGame());
+        populateBoard();
+	}
     public void firstMove(){}
     public void lastMove(){}
 
