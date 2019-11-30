@@ -1171,7 +1171,7 @@ public class QuoridorController {
      */
     public static void loadSavedGame(String fileName, Player firstPlayer, Player secondPlayer) throws IOException, FileNotFoundException, InvalidPositionException {
         try {
-            Game game = QuoridorSavesManager.loadGamePawnsAndWalls(fileName, QuoridorApplication.getQuoridor(), firstPlayer, secondPlayer);
+            Game game = QuoridorSavesManager.loadGame(fileName, QuoridorApplication.getQuoridor(), firstPlayer, secondPlayer);
             QuoridorApplication.getQuoridor().setCurrentGame(game);
         } catch (FileNotFoundException e) {
             QuoridorApplication.getQuoridor().setCurrentGame(null);
@@ -1233,7 +1233,7 @@ public class QuoridorController {
      * @author Edwin Pan
      */
     public static SavingStatus saveGame(String filename, Game game) throws IOException {
-        return QuoridorSavesManager.saveGamePawnsAndWalls(game, filename, SavePriority.DEFAULT);
+        return QuoridorSavesManager.saveGame(game, filename, SavePriority.DEFAULT);
     }
 
     /**
@@ -1248,7 +1248,7 @@ public class QuoridorController {
      * @author Edwin Pan
      */
     public static SavingStatus saveGame(String filename, Game game, SavePriority save_enforcement_type) throws IOException {
-        return QuoridorSavesManager.saveGamePawnsAndWalls(game, filename, save_enforcement_type);
+        return QuoridorSavesManager.saveGame(game, filename, save_enforcement_type);
     }
 
     /**

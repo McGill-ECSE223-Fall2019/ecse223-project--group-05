@@ -1362,7 +1362,7 @@ public class CucumberStepDefinitions {
     @When("I initiate to load a saved game {string}")
     public void iInitiateToLoadASavedGame(String fileName) {
         myPlayers = createUsersAndPlayers("user1", "user2");
-        CucumberTest_LoadPosition_TestFileWriters.createGameSaveTestFile(fileName);
+        CucumberTest_LoadSystems_TestFileWriters.createGameSaveTestFile(fileName);
         try {
             QuoridorController.loadSavedGame(fileName, this.myPlayers.get(0), this.myPlayers.get(1));
         } catch (FileNotFoundException e) {
@@ -1375,6 +1375,15 @@ public class CucumberStepDefinitions {
             receivedInvalidPositionException = true;
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * This is a duplicate function of the "When I initiate to load a saved game {string}" since it literally does the exact same thing.
+     * @author Edwin Pan
+     */
+    @When("I initiate to load a game in {string}")
+    public void iInitiateToLoadAGameIn(String fileName) {
+    	this.iInitiateToLoadASavedGame(fileName);
     }
 
     /**
@@ -1390,6 +1399,68 @@ public class CucumberStepDefinitions {
     }
 
     /**
+     * This is a duplicate function of "The position to load is valid".
+     * @author Edwin Pan
+     */
+    @And("Each game move is valid")
+    public void eachGameMoveIsValid() {
+    	this.thePositionToLoadIsValid();
+    }
+    
+    /**
+     * This is a duplicate function of "The position to load is invalid".
+     * @author Edwin Pan
+     */
+    @And("The game to load has an invalid move")
+    public void theGameToLoadHasAnInvalidMove() {
+    	assertEquals(false, this.failedToReadSaveFile);
+    	assertEquals(true, this.receivedInvalidPositionException);
+    }
+    
+    /**
+     * Checks that the game has not ended
+     * @author Edwin Pan
+     */
+    @And("The game has no final results")
+    public void theGameHasNoFinalResults() {
+    	GameStatus gameState = QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus();
+    	assertNotEquals( GameStatus.BlackWon, gameState );
+    	assertNotEquals( GameStatus.WhiteWon, gameState );
+    	assertNotEquals( GameStatus.Draw, gameState );
+    }
+    
+    /**
+     * Checks that the game has a final result
+     */
+    @And("The game has a final result")
+    public void theGameHasAFinalResult() {
+    	GameStatus gameState = QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus();
+    	assertNotEquals( gameState, GameStatus.Initializing );
+    	assertNotEquals( gameState, GameStatus.ReadyToStart );
+    	assertNotEquals( gameState, GameStatus.Running );
+    }
+    
+    /**
+     * Checks that the game is in replay mode.
+     * @author Edwin Pan
+     */
+    @Then("The game shall be in replay mode")
+    public void theGameShallBeInReplayMode() {
+    	assertEquals( GameStatus.Replay, QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus() );
+    }
+    
+    /**
+     * Checks that there was a message that indicate the game was corrupted.
+     * @author Edwin Pan
+     */
+    @Then("The game shall notify the user that the game file is invalid")
+    public void theGameShallNotifyTheUserThatTheGameFileIsInvalid() {
+    	assertEquals(false, this.failedToReadSaveFile);
+    	assertEquals(true, this.receivedInvalidPositionException);
+    }
+    
+    
+    /**
      * Ensures that the player whose turn it is to play is the right player.
      *
      * @author Matthias Arabian
@@ -1398,10 +1469,12 @@ public class CucumberStepDefinitions {
     public void itShallBePlayer_s_Turn(String player) {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         Player currentPlayer = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
-        if (player.equals("black"))
-            assertEquals(null, currentPlayer.getGameAsWhite());
-        else
-            assertEquals(null, currentPlayer.getGameAsBlack());
+        if (player.equals("black")) {
+        	assertEquals(null, currentPlayer.getGameAsWhite());
+        }
+        else {
+        	assertEquals(null, currentPlayer.getGameAsBlack());
+        }
 
     }
 
@@ -2246,7 +2319,7 @@ public class CucumberStepDefinitions {
         File file = new File(SaveConfig.getGameSaveFilePath(this.testGameSaveFilename));
         file.delete();
         //Clear load position files from saves directory
-        CucumberTest_LoadPosition_TestFileWriters.clearGameSaveLoadingTestFiles();
+        CucumberTest_LoadSystems_TestFileWriters.clearGameSaveLoadingTestFiles();
         this.testGameSaveFilename = "";
         for (int i = 0; i < refFileData.length; i++) {
             this.refFileData[i] = 0;
