@@ -1616,8 +1616,8 @@ public class QuoridorController {
             }
         }
         if(currentPlayerRepeats && opposingPlayerRepeats){
-            endGame();
             getCurrentGame().setGameStatus(GameStatus.Draw);
+            endGame();
             return "Drawn";
         }
 
@@ -1647,6 +1647,10 @@ public class QuoridorController {
     }
     private static void endGame(){
         GameStatus results = getCurrentGame().getGameStatus();
+
+        if (QuoridorApplication.getViewInterface() == null)
+            return; //for JUnit test
+
         QuoridorApplication.getViewInterface().displayFinalResults(results);
     }
 
