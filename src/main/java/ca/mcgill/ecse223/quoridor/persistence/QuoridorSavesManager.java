@@ -50,6 +50,10 @@ public class QuoridorSavesManager {
 	 * @return
 	 */
 	public static SavingStatus saveGame( Game game , String filename, SavePriority save_enforcement_type) {
+		
+		System.out.println("\n\neeeeey lmao. Welcome to dah club. We now gonna start saveGame().");
+		System.out.println("The path of the filename we have been given today is " + filename);
+		
 		/*
 		 * CANCELATION CHECK
 		 */
@@ -75,6 +79,14 @@ public class QuoridorSavesManager {
 			baseFilename = baseFilename.substring( 0 , baseFilename.lastIndexOf(".") );
 		}
 		
+		System.out.println("After pruning the filename, we've obtained the base filename as \"" + baseFilename + "\".");
+		
+		if(saveDatRequired) {
+			System.out.println("Aight so we're gonna make a .dat save file.");
+		}
+		if(saveMovRequired) {
+			System.out.println("We" + (saveDatRequired?" also ":" ") + "gonna make a .mov save file.");
+		}
 		
 		/*
 		 * OVERWRITE CHECK: Pulls out if the file already exists and we don't have an overwrite order.
@@ -82,29 +94,23 @@ public class QuoridorSavesManager {
 		//First, check if the game already exists. If it does, then check if the user wants to overwrite it; inform them that it already exists if not.
 		//If the game does not exist, but the operation is being used with FORCE_OVERWRITE as an argument, someone's not using this method properly.
 		if( saveDatRequired ) {
-			File file = new File( SaveConfig.getGameSaveFilePath( baseFilename + SaveConfig.gamePositionExtension ) );
+			File file = new File( baseFilename + SaveConfig.gamePositionExtension );
 			if( file.exists() ) {
 				if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
 				return SavingStatus.ALREADY_EXISTS;
 				} 
-			} else {
-				if( save_enforcement_type == SavePriority.FORCE_OVERWRITE) {
-					throw new IllegalArgumentException("Programmer has made improper use of save_enforcement_type. Did not check that the file already exists before using FORCE_OVERWRITE: Detected use of FORCE_OVERWRITE with a non-existing file.");
-				}
 			}
 		}
 		if( saveMovRequired ) {
-			File file = new File( SaveConfig.getGameSaveFilePath( baseFilename + SaveConfig.gameMovesExtension ) );
+			File file = new File( baseFilename + SaveConfig.gameMovesExtension );
 			if( file.exists() ) {
 				if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
 				return SavingStatus.ALREADY_EXISTS;
 				} 
-			} else {
-				if( save_enforcement_type == SavePriority.FORCE_OVERWRITE) {
-					throw new IllegalArgumentException("Programmer has made improper use of save_enforcement_type. Did not check that the file already exists before using FORCE_OVERWRITE: Detected use of FORCE_OVERWRITE with a non-existing file.");
-				}
 			}
 		}
+		
+		System.out.println("Hmmm aight everything is looking good so far. By the way, if you're the end user reading this, please don't. It doesn't make sense to read this without the source code.");
 		
 		
 		/*
@@ -129,12 +135,17 @@ public class QuoridorSavesManager {
 		SavingStatus saveStatusMov = SavingStatus.SAVED;
 		//Actual saving
 		if( saveDatRequired ) {
-			File file = new File( SaveConfig.getGameSaveFilePath( baseFilename + SaveConfig.gamePositionExtension ) );
+			File file = new File( baseFilename + SaveConfig.gamePositionExtension );
+			System.out.println("Aight we're gonna now call savePosition with the file path \"" + file.getPath() + "\".");
 			saveStatusDat = savePosition(game, file , save_enforcement_type);
+			System.out.println("Aight so in attempting to write the .dat save file, we got the " + saveStatusDat.toString() + " flag.");
 		}
 		if( saveMovRequired ) {
-			File file = new File( SaveConfig.getGameSaveFilePath( baseFilename + SaveConfig.gameMovesExtension ) );
+			File file = new File( baseFilename + SaveConfig.gameMovesExtension );
+			System.out.println("Aight we're gonna now call saveMoves with the file path \"" + file.getPath() + "\".");
 			saveStatusMov = saveMoves(game, file , save_enforcement_type);
+			System.out.println("In attempting to write the .mov save file, we got the " + saveStatusMov.toString() + " flag.");
+
 		}
 		//Checking how things went and reporting on it.
 		if( saveStatusDat == SavingStatus.FAILED || saveStatusMov == SavingStatus.FAILED ) {
@@ -155,6 +166,10 @@ public class QuoridorSavesManager {
 	 * @return
 	 */
 	private static SavingStatus savePosition( Game game , File file, SavePriority save_enforcement_type) {
+		
+		System.out.println("\nWort wort wort! We've begun savePosition().");
+		System.out.println("---savePosition file path is " + file.getPath());
+		
 		/*
 		 * Output String Parsing
 		 */
@@ -172,6 +187,8 @@ public class QuoridorSavesManager {
 			line2 = blackPosition;
 		}
 		
+		System.out.println("Aaaaaarh! Aight so the lines of the game so far follow on the next two lines: \n\t" + line1 + "\t" + line2);
+		
 		/*
 		 * Output File Writing
 		 */
@@ -181,6 +198,8 @@ public class QuoridorSavesManager {
 			bufferedWriter.write(line2);
 			bufferedWriter.close();
 		} catch (IOException e) {
+			System.out.println("Aaaaand we just received an IOException. RIP savePosition().");
+			System.out.println("Oh, but if you're interested in the IOEXCEPTION: \"" + e.getMessage() +"\".");
 			return SavingStatus.FAILED;
 		}
 
@@ -188,8 +207,10 @@ public class QuoridorSavesManager {
 		 * Success Responding
 		 */
 		if( save_enforcement_type == SavePriority.FORCE_OVERWRITE ) {
+			System.out.println("Aight yup yup yup we have overwritten the previous .dat files here in savePosition().");
 			return SavingStatus.OVERWRITTEN;
 		}
+		System.out.println("Aright succesful save in savePosition().");
 		return SavingStatus.SAVED;
 	}
 	
@@ -201,6 +222,10 @@ public class QuoridorSavesManager {
 	 * @return
 	 */
 	private static SavingStatus saveMoves( Game game , File file, SavePriority save_enforcement_type) {
+		
+		System.out.println("\nAhoi! This one is a bit more complex. We're beginning saveMoves().");
+		System.out.println("---saveMoves file path is " + file.getPath());
+		
 		/*
 		 * Output String Parsing
 		 */
@@ -225,7 +250,7 @@ public class QuoridorSavesManager {
 			//While we don't need to differentiate between Step and Jump move, we do need to keep check of WallMove. Here, we check if we have a wallmove.
 			boolean isWallMove = false;
 			for( WallMove wallMove : allWallMoves ) {
-				if( wallMove.getMoveNumber() == move.getMoveNumber() ) {
+				if( wallMove.getMoveNumber() == move.getMoveNumber() && wallMove.getRoundNumber() == move.getRoundNumber() ) {
 					isWallMove = true;
 					break;
 				}
@@ -264,6 +289,8 @@ public class QuoridorSavesManager {
 			
 		}
 		
+		System.out.println("Very nahce! Aight so so far our game .mov save file is looking like:\n--MOV SAVE FILE CONTENT START " + lines + "--MOV SAVE FILE CONTENT END ");
+		
 		/*
 		 * Output File Writing
 		 */
@@ -272,6 +299,8 @@ public class QuoridorSavesManager {
 			bufferedWriter.write(lines);
 			bufferedWriter.close();
 		} catch (IOException e) {
+			System.out.println("Aaaand we received in IOException. RIP saveMoves().");
+			System.out.println("Oh, but if you're interested in the IOEXCEPTION: \"" + e.getMessage() +"\".");
 			return SavingStatus.FAILED;
 		}
 		
@@ -279,8 +308,10 @@ public class QuoridorSavesManager {
 		 * Success Responding
 		 */
 		if( save_enforcement_type == SavePriority.FORCE_OVERWRITE ) {
+			System.out.println("Yup yup overwrote a mov file.");
 			return SavingStatus.OVERWRITTEN;
 		}
+		System.out.println("Aight saved a mov file.");
 		return SavingStatus.SAVED;
 	}
 	
@@ -701,6 +732,9 @@ public class QuoridorSavesManager {
 					currentPosition.removeBlackWallsInStock(wall);
 					currentPosition.addBlackWallsOnBoard(wall);
 				}
+				//Link the moves like a doubly linked list
+				wallMove.setPrevMove( game.getMove( game.getMoves().size() - 1 ) );
+				game.getMove( game.getMoves().size() -1 ).setNextMove(wallMove);
 				//Having the WallMove, add it into the game.
 				game.addMove(wallMove);
 				
@@ -725,6 +759,9 @@ public class QuoridorSavesManager {
 				//Add the step move to the game
 				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[2]) ,getColumn(arguments[2])) );
 				StepMove stepMove = new StepMove( moveNumber, roundNumber, (whiteTurn?firstPlayer:secondPlayer), targetTile, game );
+				//Link the moves like a doubly linked list
+				stepMove.setPrevMove( game.getMove( game.getMoves().size() - 1 ) );
+				game.getMove( game.getMoves().size() -1 ).setNextMove(stepMove);
 				game.addMove(stepMove);
 				//Update the position of the pawn
 				PlayerPosition playerPosition = (whiteTurn? currentPosition.getWhitePosition() : currentPosition.getBlackPosition() );
@@ -751,6 +788,9 @@ public class QuoridorSavesManager {
 				//Add the step move to the game
 				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[2]) ,getColumn(arguments[2])) );
 				JumpMove jumpMove = new JumpMove( moveNumber, roundNumber, (whiteTurn?firstPlayer:secondPlayer), targetTile, game );
+				//Link the moves like a doubly linked list
+				jumpMove.setPrevMove( game.getMove( game.getMoves().size() - 1 ) );
+				game.getMove( game.getMoves().size() -1 ).setNextMove(jumpMove);
 				game.addMove(jumpMove);
 				//Update the position of the pawn
 				PlayerPosition playerPosition = (whiteTurn? currentPosition.getWhitePosition() : currentPosition.getBlackPosition() );
@@ -803,6 +843,20 @@ public class QuoridorSavesManager {
 	 * @throws IOException
 	 */
 	private static Game initializeGame(File file, Quoridor quoridor, Player whitePlayer, Player blackPlayer ) throws FileNotFoundException, IOException {
+		//Input checks
+		if(file==null) {
+			throw new NullPointerException("initializeGame(file...) was null!");
+		}
+		if(quoridor==null) {
+			throw new NullPointerException("initializeGame(.quoridor..) was null!");
+		}
+		if(whitePlayer==null) {
+			throw new NullPointerException("initializeGame(..whitePlayer) was null!");
+		}
+		if(blackPlayer==null) {
+			throw new NullPointerException("initializeGame(...blackPlayer) was null!");
+		}
+		
 		//Deletion of old stuff
 		if(quoridor.getCurrentGame()!=null) {
 			quoridor.getCurrentGame().delete();
@@ -826,6 +880,9 @@ public class QuoridorSavesManager {
 		for(Wall wall : oldWalls ) {
 			blackPlayer.removeWall(wall);
 			wall.delete();
+		}
+		if(quoridor.getBoard()==null) {
+			throw new NullPointerException("initializeGame(): quoridor board has not been initialized!");
 		}
 		PlayerPosition initialWhitePosition = new PlayerPosition(whitePlayer, quoridor.getBoard().getTile( getTileId(9, 5) ) );
 		PlayerPosition initialBlackPosition = new PlayerPosition(blackPlayer, quoridor.getBoard().getTile( getTileId(1,5) ) );

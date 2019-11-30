@@ -1739,7 +1739,7 @@ public class ViewInterface {
 					//receive from alert
 					Optional<ButtonType> overwriteConfirmation = alert.showAndWait();
 					if( overwriteConfirmation.get() == ButtonType.OK ) {	//If we are good to overwrite
-
+						
 						//Now attempt to overwrite the file.
 						SavingStatus saveStatus2 = QuoridorController.saveGame( file.getAbsolutePath() , QuoridorController.getCurrentGame(), SavePriority.FORCE_OVERWRITE );
 						switch( saveStatus2 ) {
@@ -1806,7 +1806,10 @@ public class ViewInterface {
 	 * @param event
 	 */
 	public void continuePreviousGame(Event event) {
-		//Make sure we have a selected item.
+
+		/*
+		 * SANITY CHECKING FOR SELECTED GAME
+		 */
 		if( this.loadedGameList.getSelectionModel().getSelectedItem() == null ) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("No Save Selected!");
@@ -1817,9 +1820,10 @@ public class ViewInterface {
 		}
 		String selectedPath = this.loadedGameList.getSelectionModel().getSelectedItem().toString();
 
-		//Find the players to used for reloading into this game.
-		//Because game saves in sprint3-format do not contain player data, I am unfortunately forced to use random users
-		//THERE IS ALSO A BUG IN MY QUORIDORSAVESMANAGER CODE: the load game should require user input, not player input, as player input would give no choice in destination.
+		/*
+		 * USER SELECTION
+		 * TODO: GIVE THE USER THE CHANCE TO ACTUALLY CHOOSE THEIR USERS AND THEREBY THEIR PLAYER INSTANCES
+		 */
 		User user1, user2;
 		if( QuoridorApplication.getQuoridor().getUsers().size() < 2 ) {
 			user1 = new User("firstboi",QuoridorApplication.getQuoridor());
@@ -1831,7 +1835,14 @@ public class ViewInterface {
 		Player player1 = new Player( new Time((10*60+10)*1000) , user1 , 1 , Direction.Horizontal );
 		Player player2 = new Player( new Time((10*60+10)*1000) , user1 , 9 , Direction.Horizontal );
 
-		//Attempt to load the save game.
+		/*
+		 * PREPARING THE BOARD FOR LOADING
+		 */
+		QuoridorController.initializeGame(QuoridorApplication.getQuoridor());
+		
+		/*
+		 * LOADING FILE SYSTEM DATA SECTION
+		 */
 		try{
 			QuoridorController.loadSavedGame(selectedPath, player1, player2);
 		} catch (FileNotFoundException e) {
@@ -1857,7 +1868,10 @@ public class ViewInterface {
 			return;
 		}
 
-		//Once we're doing loading in the game, go on and actually continue the game in the game session page.
+		/*
+		 * POST-LOAD STUFF
+		 * Do something once the loading is done lul.
+		 */
 		this.Goto_Game_Session_Page();
 	}
 
