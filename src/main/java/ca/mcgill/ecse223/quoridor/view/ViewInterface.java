@@ -1822,7 +1822,7 @@ public class ViewInterface {
 
 		/*
 		 * USER SELECTION
-		 * TODO: GIVE THE USER THE CHANCE TO ACTUALLY CHOOSE THEIR USERS AND THEREBY THEIR PLAYER INSTANCES
+		 * TODO: Give the user the opportunity to choose the users they will use in the game.
 		 */
 		User user1, user2;
 		if( QuoridorApplication.getQuoridor().getUsers().size() < 2 ) {
@@ -1832,19 +1832,23 @@ public class ViewInterface {
 			user1 = QuoridorApplication.getQuoridor().getUser(0);
 			user2 = QuoridorApplication.getQuoridor().getUser(1);
 		}
-		Player player1 = new Player( new Time((10*60+10)*1000) , user1 , 1 , Direction.Horizontal );
-		Player player2 = new Player( new Time((10*60+10)*1000) , user1 , 9 , Direction.Horizontal );
+		
+		/*
+		 * THINKING TIME SELECTION
+		 * TODO: Give the user the opportunity to choose how much thinking time they will have.
+		 */
+		Time thinkingTime = new Time(300);
 
 		/*
 		 * PREPARING THE BOARD FOR LOADING
 		 */
-		QuoridorController.initializeGame(QuoridorApplication.getQuoridor());
+		QuoridorController.createBoard();
 		
 		/*
 		 * LOADING FILE SYSTEM DATA SECTION
 		 */
 		try{
-			QuoridorController.loadSavedGame(selectedPath, player1, player2);
+			QuoridorController.loadSavedGame(selectedPath, user1, user2, thinkingTime);
 		} catch (FileNotFoundException e) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Save Was Not Found");

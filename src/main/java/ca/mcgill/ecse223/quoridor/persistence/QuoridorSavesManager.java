@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import ca.mcgill.ecse223.quoridor.enumerations.SavePriority;
 import ca.mcgill.ecse223.quoridor.enumerations.SavingStatus;
 import ca.mcgill.ecse223.quoridor.exceptions.InvalidPositionException;
 import ca.mcgill.ecse223.quoridor.model.Board;
+import ca.mcgill.ecse223.quoridor.model.Destination;
 import ca.mcgill.ecse223.quoridor.model.Direction;
 import ca.mcgill.ecse223.quoridor.model.Game;
 import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
@@ -30,6 +32,7 @@ import ca.mcgill.ecse223.quoridor.model.PlayerPosition;
 import ca.mcgill.ecse223.quoridor.model.Quoridor;
 import ca.mcgill.ecse223.quoridor.model.StepMove;
 import ca.mcgill.ecse223.quoridor.model.Tile;
+import ca.mcgill.ecse223.quoridor.model.User;
 import ca.mcgill.ecse223.quoridor.model.Wall;
 import ca.mcgill.ecse223.quoridor.model.WallMove;
 
@@ -89,12 +92,27 @@ public class QuoridorSavesManager {
 		}
 		
 		/*
+		 * Exact Final Filename/Filepath Creator
+		 * Here, we check if the path we have is a relative path to the game or an absolute system path.
+		 * Based on either of these, we will produce a final directory accordingly.
+		 */
+		String datSaveFilePath;
+		String movSaveFilePath;
+		if(baseFilename.charAt(1)==':') {	//Check to see if we're dealing with a Windows File System Absolute path wherein the second character is always :, ie in C:/ or D:/ etc.
+			datSaveFilePath = baseFilename + SaveConfig.gamePositionExtension;
+			movSaveFilePath = baseFilename + SaveConfig.gameMovesExtension;
+		} else {
+			datSaveFilePath = SaveConfig.getGameSaveFilePath(baseFilename + SaveConfig.gamePositionExtension);
+			movSaveFilePath = SaveConfig.getGameSaveFilePath(baseFilename + SaveConfig.gameMovesExtension);
+		}
+		
+		/*
 		 * OVERWRITE CHECK: Pulls out if the file already exists and we don't have an overwrite order.
 		 */
 		//First, check if the game already exists. If it does, then check if the user wants to overwrite it; inform them that it already exists if not.
 		//If the game does not exist, but the operation is being used with FORCE_OVERWRITE as an argument, someone's not using this method properly.
 		if( saveDatRequired ) {
-			File file = new File( baseFilename + SaveConfig.gamePositionExtension );
+			File file = new File( datSaveFilePath );
 			if( file.exists() ) {
 				if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
 				return SavingStatus.ALREADY_EXISTS;
@@ -102,7 +120,7 @@ public class QuoridorSavesManager {
 			}
 		}
 		if( saveMovRequired ) {
-			File file = new File( baseFilename + SaveConfig.gameMovesExtension );
+			File file = new File( movSaveFilePath );
 			if( file.exists() ) {
 				if( save_enforcement_type != SavePriority.FORCE_OVERWRITE ) {
 				return SavingStatus.ALREADY_EXISTS;
@@ -135,13 +153,13 @@ public class QuoridorSavesManager {
 		SavingStatus saveStatusMov = SavingStatus.SAVED;
 		//Actual saving
 		if( saveDatRequired ) {
-			File file = new File( baseFilename + SaveConfig.gamePositionExtension );
+			File file = new File( datSaveFilePath );
 			System.out.println("Aight we're gonna now call savePosition with the file path \"" + file.getPath() + "\".");
 			saveStatusDat = savePosition(game, file , save_enforcement_type);
 			System.out.println("Aight so in attempting to write the .dat save file, we got the " + saveStatusDat.toString() + " flag.");
 		}
 		if( saveMovRequired ) {
-			File file = new File( baseFilename + SaveConfig.gameMovesExtension );
+			File file = new File( movSaveFilePath );
 			System.out.println("Aight we're gonna now call saveMoves with the file path \"" + file.getPath() + "\".");
 			saveStatusMov = saveMoves(game, file , save_enforcement_type);
 			System.out.println("In attempting to write the .mov save file, we got the " + saveStatusMov.toString() + " flag.");
@@ -319,26 +337,37 @@ public class QuoridorSavesManager {
 	 * Loads a saved game. Behaviour differs based on the extension of the file provided. If it's a .dat, it will load the game position; if it's a .mov, it will load the game
 	 * position with its history. Important to note is that data of who were the users of each game aren't saved, so you will have to provide the players for this game.
 	 * Note that if neither the .dat or the .mov extension provided, no attempt will be made to open a file.
-	 * @param filename of the save to load
-	 * @param quoridor of the application
-	 * @param game whose data will be replaced with that of the loaded file
-	 * @param firstPlayer the white player which moves first
-	 * @param secondPlayer the black player which moves second
-	 * @return game provided but with loaded data
-	 * @throws FileNotFoundException, IOException, InvalidPositionException, IllegalArgumentException
+	 * IMPORTANT TO NOTE: A Pre-Condition for this loadGame method is that the board of the game be set up. This method will fail if this is not the case.
+	 * @param filename
+	 * @param quoridor
+	 * @param whiteUser
+	 * @param blackUser
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws InvalidPositionException
 	 */
-	public static Game loadGame( String filename, Quoridor quoridor, Player firstPlayer, Player secondPlayer ) throws FileNotFoundException, IOException, InvalidPositionException {
+	public static Game loadGame( String filename, Quoridor quoridor, User firstUser , User secondUser, Time thinkingTime ) throws FileNotFoundException, IOException, InvalidPositionException {
 		/*
 		 * Input Sanity Check
 		 */
-		if(quoridor==null) {
-			throw new NullPointerException("Provided quoridor is null.");
-		}
-		if(firstPlayer==null) {
-			throw new NullPointerException("Provided firstPlayer is null.");
-		}
-		if(secondPlayer==null) {
-			throw new NullPointerException("Provided secondPlayer is null.");
+		if(quoridor==null) {	throw new NullPointerException("Provided quoridor is null.");	}
+		if(firstUser==null) {	throw new NullPointerException("Provided firstUser is null.");	}
+		if(secondUser==null) {	throw new NullPointerException("Provided secondUser is null.");	}
+		
+		/*
+		 * Player Instantiation
+		 * Gives each user their player for the game.
+		 */
+		Player firstPlayer = new Player(thinkingTime,firstUser,1,Direction.Horizontal);
+		Player secondPlayer = new Player(thinkingTime,secondUser,9,Direction.Horizontal);
+		
+		/*
+		 * Quoridor Player Cleansing
+		 * Gets rid of existing player in the quoridor system and their walls.
+		 */
+		if(quoridor.hasCurrentGame()) {
+			quoridor.getCurrentGame().delete();
 		}
 		
 		/*
@@ -821,7 +850,8 @@ public class QuoridorSavesManager {
 		 * If the game is anything then I mark it as ReadyToStart for the gui to takeover.
 		 */
 		game.setGameStatus(GameStatus.ReadyToStart);
-		if( game.getCurrentPosition().getWhitePosition().getTile().getRow() == 1 ||  game.getCurrentPosition().getBlackPosition().getTile().getRow() == 9 ) {
+		if( game.getCurrentPosition().getWhitePosition().getTile().getRow() == game.getWhitePlayer().getDestination().getTargetNumber() 
+				||  game.getCurrentPosition().getBlackPosition().getTile().getRow() == game.getBlackPlayer().getDestination().getTargetNumber() ) {
 			game.setGameStatus(GameStatus.Replay);
 		}
 		
