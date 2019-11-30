@@ -845,6 +845,14 @@ public class QuoridorSavesManager {
 		bufferedReader.close();
 		
 		/*
+		 * Duplicate the last GamePosition for actual game use. The last GamePosition in our list of positions is always one that is ready for editing as the game is played.
+		 */
+		game.setCurrentPosition( 
+				duplicateGamePosition( game.getCurrentPosition(), game,
+						game.getCurrentPosition().getPlayerToMove() )
+				);
+		
+		/*
 		 * Game State Checker
 		 * If the game is done and the player is attempting to load the game, then it must be a replay.
 		 * If the game is anything then I mark it as ReadyToStart for the gui to takeover.
@@ -930,7 +938,7 @@ public class QuoridorSavesManager {
 	}
 	
 	/**
-	 * Helper method which duplicates the GamePosition provided
+	 * Helper method which duplicates the GamePosition provided. The duplicate is immediately added into the game's list of Positions, but not into its current game field.
 	 * Useful for recreating the multiple phases of a game being loaded.
 	 */
 	private static GamePosition duplicateGamePosition(GamePosition gamePosition, Game game, Player playerToMove) {
