@@ -156,6 +156,9 @@ public class ViewInterface {
 
 	//bool variable to prevent the user from grabbing a second wall during the same turn.
 	private boolean wallGrabbed = false;
+	
+	//@author Edwin Pan; this is a middle-man variable between Goto_Game_Session_Page and loadSavedGame methods in order to let the former know that it does not need to initialize the board when loadSavedGame was used before it.
+	private boolean resumingFromSaveFile = false;
 
   //Rotate wall variables
 	private Rectangle wallMoveCandidate;
@@ -653,16 +656,18 @@ public class ViewInterface {
 
 		try {
 			setThinkingTime(whiteTimerField.getText(), blackTimerField.getText());
-			try {
-                //game has started at this point. Timers will begin to run.
-                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
-
-                QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
-			} catch (Exception e) {
-                //game has failed to start. stop timers. Return to initializing phase.
-                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Initializing);
-				throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
-			}
+			if(!resumingFromSaveFile) {	//Try statement addition @author Edwin Pan in order to avoid initializing of the board that has been prepared by reading a save file.
+				try {
+	                //game has started at this point. Timers will begin to run.
+	                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
+	
+	                QuoridorController.initializeBoard(QuoridorApplication.getQuoridor(), timer);
+				} catch (Exception e) {
+	                //game has failed to start. stop timers. Return to initializing phase.
+	                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Initializing);
+					throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
+				}
+			}	resumingFromSaveFile = false;
 
 			//get both players
 			whitePlayer = QuoridorController.getCurrentWhitePlayer();
@@ -1853,7 +1858,7 @@ public class ViewInterface {
 		/*
 		 * PREPARING THE BOARD FOR LOADING
 		 */
-		boolean createdBoard = QuoridorController.createBoard();
+		QuoridorController.createBoard();
 		
 		/*
 		 * LOADING FILE SYSTEM DATA SECTION
@@ -1885,8 +1890,9 @@ public class ViewInterface {
 
 		/*
 		 * POST-LOAD STUFF
-		 * Do something once the loading is done lul.
+		 * Hands the application over to Thomas's Goto_Game_Session_Page method, with the global variable resumingFromSaveFile informing that method that it needs to behave differently when initializing the board (ie, not to).
 		 */
+		this.resumingFromSaveFile = true;
 		this.Goto_Game_Session_Page();
 	}
 
