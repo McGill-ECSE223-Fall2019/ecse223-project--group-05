@@ -980,6 +980,7 @@ public class QuoridorController {
     }
 
     /**
+     * Checks if path exists for each player
      *
      * @return true if the path exists and false if not
      * @author Daniel Wu
@@ -1002,8 +1003,10 @@ public class QuoridorController {
     }
 
     /**
+     * Go into replay mode
      *
      * @return true if successfully initialized replay mode
+     * @author Daniel Wu
      */
     public static Boolean initializeReplayMode(){
         Quoridor quoridor = QuoridorApplication.getQuoridor();
@@ -1049,10 +1052,39 @@ public class QuoridorController {
             QuoridorApplication.getWhitePawnBehaviour(player1);
 
             QuoridorApplication.getBlackPawnBehaviour(player2);
+        } else {
+            currentGame.setGameStatus(GameStatus.Replay);
         }
 
         if (currentGame.getGameStatus() != GameStatus.Replay){
             return false;
+        }
+        return true;
+    }
+
+    /**
+     *
+     * @return true if game can be continued and sets state to running, false if game is already won
+     * @author Daniel Wu
+     */
+    public static Boolean continueGame(){
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        Game currentGame = quoridor.getCurrentGame();
+
+        //If the game is won, then can't continue
+        if ((currentGame.getGameStatus() == GameStatus.BlackWon) || (currentGame.getGameStatus() == GameStatus.WhiteWon)){
+            currentGame.setGameStatus(GameStatus.Replay);
+            return false;
+        }
+
+        //Set gamePosition to current state and restart clock + setup state machine, then move to the in-game page
+        currentGame.setGameStatus(GameStatus.Running);
+        int index = currentGame.getPositions().indexOf(currentGame.getCurrentPosition());
+        index = currentGame.getMove(index).getRoundNumber();
+        if (index == 1){
+            currentGame.getCurrentPosition().setPlayerToMove(currentGame.getWhitePlayer());
+        } else if (index == 2){
+            currentGame.getCurrentPosition().setPlayerToMove(currentGame.getBlackPlayer());
         }
         return true;
     }

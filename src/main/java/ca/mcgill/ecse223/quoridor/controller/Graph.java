@@ -18,7 +18,7 @@ public class Graph {
 
     public Graph(){
         //create the nodes;
-        for (int i=1; i<82; i++){
+        for (int i=1; i<82; i++) {
             nodes.add(i);
         }
 
