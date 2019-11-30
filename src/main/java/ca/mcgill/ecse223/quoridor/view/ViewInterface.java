@@ -2128,8 +2128,14 @@ public class ViewInterface {
 	    QuoridorController.stepBackward(quoridor.getCurrentGame());
         populateBoard();
 	}
-    public void firstMove(){}
-    public void lastMove(){}
+    public void firstMove(){
+        QuoridorController.jumpToStart(quoridor);
+        populateBoard();
+    }
+    public void lastMove(){
+        QuoridorController.jumpToFinal(quoridor);
+        populateBoard();
+    }
 
 
 
