@@ -321,7 +321,7 @@
                                                          <children>
                                                             <Button alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" onAction="#Goto_Main_Page" style="-fx-background-color: #ffd800;" text="Back to menu" textFill="#2b393a" />
                                                             <Separator maxWidth="10.0" visible="false" />
-                                                            <Button alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" style="-fx-background-color: #ffd800;" text="Continue game" textFill="#2b393a" />
+                                                            <Button fx:id="btn_continueGame" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" onAction="#continueGame" style="-fx-background-color: #ffd800;" text="Continue game" textFill="#2b393a" />
                                                          </children>
                                                       </HBox>
                                                    </children>

@@ -1729,6 +1729,54 @@ public class QuoridorController {
      * @author David
      * @return "pending" or "Drawn" or "blackWon" or "whiteWon"
      */
+    public static String checkResult_replayMode(){
+        //TODO: this method needs to be called after each move (before end of turn)
+        Player black = getCurrentBlackPlayer();
+        Player white = getCurrentWhitePlayer();
+
+        //check for white win
+        Tile temp;
+        temp = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile();
+        if(temp.getRow() == 1){
+            return "whiteWon";
+        }
+        //check for black win
+        temp = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile();
+        if(temp.getRow()==9){
+            return "blackWon";
+        }
+        //check for draw
+        //draw occurs when move repeats three times for the current and repeats twice for opposing player in the last nine moves
+
+        int lastMoveNum = getCurrentGame().getMoves().size();
+        Game current = getCurrentGame();
+        if(lastMoveNum < 9) return "";
+        boolean currentPlayerRepeats = false;
+        boolean opposingPlayerRepeats = false;
+        //analyzing current player's past history
+        Move lastCurrent = getCurrentGame().getMove(lastMoveNum-1);//last move by current player
+        Move thirdLastCurrent = getCurrentGame().getMove(lastMoveNum-5);//third last move by current player
+        Move fifthLastCurrent = getCurrentGame().getMove(lastMoveNum-9);//fifth last move by current player
+        //only stepmove can lead to a draw
+        if(lastCurrent instanceof StepMove && thirdLastCurrent instanceof StepMove && fifthLastCurrent instanceof StepMove){
+            if(lastCurrent.getTargetTile() == thirdLastCurrent.getTargetTile() && lastCurrent.getTargetTile() == fifthLastCurrent.getTargetTile()){
+                currentPlayerRepeats = true;
+            }
+        }
+        Move secondLastOppo = getCurrentGame().getMove(lastMoveNum-4);
+        Move fourthLastOppo = getCurrentGame().getMove(lastMoveNum-8);
+        if(secondLastOppo instanceof StepMove && fourthLastOppo instanceof StepMove){
+            if(secondLastOppo.getTargetTile() == fourthLastOppo.getTargetTile()){
+                opposingPlayerRepeats = true;
+
+            }
+        }
+        if(currentPlayerRepeats && opposingPlayerRepeats){
+            return "Drawn";
+        }
+        return "";
+    }
+
     public static String checkResult(){
         //TODO: this method needs to be called after each move (before end of turn)
         Player black = getCurrentBlackPlayer();
@@ -1782,13 +1830,6 @@ public class QuoridorController {
             endGame();
             return "Drawn";
         }
-
-
-
-
-
-
-
         return "";
     }
 

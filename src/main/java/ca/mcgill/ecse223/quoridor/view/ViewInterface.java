@@ -138,6 +138,7 @@ public class ViewInterface {
 
 	//replay page variables
     @FXML private HBox replay_Page;
+    @FXML private Button btn_continueGame;
 
 
 	//movePawn varaibles
@@ -1644,8 +1645,9 @@ public class ViewInterface {
         gameSessionNotificationLabel.setText("");
 
 
-        //check if game won
-		QuoridorController.checkResult();
+        //check if game ended
+		QuoridorController.checkResult().equals("");
+
 
 		if (color.equals("white")) {
 			 //starts black player turn
@@ -2273,11 +2275,25 @@ public class ViewInterface {
         replay_Page.toFront();
         playerInfo.setPrefWidth(playerInfo.getPrefWidth() - 100);
         gameSession_rightSide.setPrefWidth(gameSession_rightSide.getPrefWidth() + 100);
+
+        if (QuoridorController.checkResult_replayMode().equals(""))
+        	btn_continueGame.setDisable(false);
+        else
+			btn_continueGame.setDisable(true);
+
         shiftWallOnBoard(-100);
 	    quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Replay);
 		fromResultsPageToGameSession();
 		populateBoard();
     }
+	public void continueGame(){
+		System.out.println("continue game");
+		end_ReplayMode();
+		quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
+		Player p = QuoridorController.getPlayerOfCurrentTurn();
+		QuoridorController.startPlayerTimer(p,timer);
+		setPossibleMoveTiles();
+	}
 
     public void nextMove(){
 	    QuoridorController.stepForward(quoridor.getCurrentGame());
