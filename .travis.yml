@@ -3,3 +3,8 @@ matrix:
   - language: java
     script:
     - "./gradlew build"
+    - "./gradlew clean"
+    - "./gradlew test"
+
+    
+
