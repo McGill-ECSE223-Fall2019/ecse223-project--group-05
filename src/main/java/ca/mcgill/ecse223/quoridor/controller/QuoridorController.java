@@ -842,8 +842,8 @@ public class QuoridorController {
         }
 
         //Check if walls are overlapping
-        GamePosition currentGamePosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition();
-
+        Game currentGame = QuoridorApplication.getQuoridor().getCurrentGame();
+        GamePosition currentGamePosition = currentGame.getCurrentPosition();
 
         List<Wall> whiteWallsOnBoard = currentGamePosition.getWhiteWallsOnBoard();
         List<Wall> blackWallsOnBoard = currentGamePosition.getBlackWallsOnBoard();
@@ -899,7 +899,20 @@ public class QuoridorController {
         }
 
         //This will potentially also check if the wall will block the path to the other side
-
+        ArrayList<Wall> allWallsOnBoard = new ArrayList<Wall>();
+        for (Wall wall : whiteWallsOnBoard){
+            allWallsOnBoard.add(wall);
+        }
+        for (Wall wall : blackWallsOnBoard){
+            allWallsOnBoard.add(wall);
+        }
+        allWallsOnBoard.add(currentGame.getWallMoveCandidate().getWallPlaced());
+        if (!pathExistenceCheck(currentGamePosition.getWhitePosition(), allWallsOnBoard)){
+            return false;
+        }
+        if (!pathExistenceCheck(currentGamePosition.getBlackPosition(), allWallsOnBoard)){
+            return false;
+        }
         return true;
     }
 
@@ -914,12 +927,6 @@ public class QuoridorController {
         //This is obsolete as the gamePosition wouldn't exist in the first place, so I'm skipping whether or not the move is on the board
 //    	if ((gamePosition.getBlackPosition().getTile().getRow() >9) || (gamePosition.getBlackPosition().getTile().getRow() <1)
 //    			|| (gamePosition.getBlackPosition().getTile().getColumn() >9) || (gamePosition.getBlackPosition().getTile().getColumn() <1));
-        if (!pathExistenceCheck(gamePosition.getWhitePosition())){
-            return false;
-        }
-        if (!pathExistenceCheck(gamePosition.getBlackPosition())){
-            return false;
-        }
         List<Wall> whiteWallsOnBoard = gamePosition.getWhiteWallsOnBoard();
         List<Wall> blackWallsOnBoard = gamePosition.getBlackWallsOnBoard();
 
@@ -972,7 +979,20 @@ public class QuoridorController {
                 }
             }
         }
-
+        //Check if path exists for each players
+        ArrayList<Wall> allWallsOnBoard = new ArrayList<Wall>();
+        for (Wall wall : whiteWallsOnBoard){
+            allWallsOnBoard.add(wall);
+        }
+        for (Wall wall : blackWallsOnBoard){
+            allWallsOnBoard.add(wall);
+        }
+        if (!pathExistenceCheck(gamePosition.getWhitePosition(), allWallsOnBoard)){
+            return false;
+        }
+        if (!pathExistenceCheck(gamePosition.getBlackPosition(), allWallsOnBoard)){
+            return false;
+        }
         return true;
     }
 
@@ -982,30 +1002,16 @@ public class QuoridorController {
      * @return true if the path exists and false if not
      * @author Daniel Wu
      */
-    public static Boolean pathExistenceCheck(PlayerPosition pos){
+    public static Boolean pathExistenceCheck(PlayerPosition pos, ArrayList<Wall> allWallsOnBoard){
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         GamePosition gamePosition = quoridor.getCurrentGame().getCurrentPosition();
         //Setup graph
         Graph graph = new Graph();
-        List<Wall> whiteWallsOnBoard = gamePosition.getWhiteWallsOnBoard();
-        List<Wall> blackWallsOnBoard = gamePosition.getBlackWallsOnBoard();
         //Remove edges
         int row = 0;
         int col = 0;
         Direction dir = Direction.Horizontal;
-        for (Wall wall : whiteWallsOnBoard){
-            row = wall.getMove().getTargetTile().getRow();
-            col = wall.getMove().getTargetTile().getColumn();
-            dir = wall.getMove().getWallDirection();
-            if (dir == Direction.Horizontal){
-                graph.removeEdge((row - 1) * 9 + col - 1, (row) * 9 + col - 1); //0-9
-                graph.removeEdge((row - 1) * 9 + col, (row) * 9 + col); //1-10
-            } else if (dir == Direction.Vertical){
-                graph.removeEdge((row - 1) * 9 + col - 1, (row - 1) * 9 + col); //0-1
-                graph.removeEdge((row) * 9 + col - 1, (row) * 9 + col); //9-10
-            }
-        }
-        for (Wall wall : blackWallsOnBoard){
+        for (Wall wall : allWallsOnBoard){
             row = wall.getMove().getTargetTile().getRow();
             col = wall.getMove().getTargetTile().getColumn();
             dir = wall.getMove().getWallDirection();

@@ -2304,10 +2304,20 @@ public class CucumberStepDefinitions {
     @When("Check path existence is initiated")
     public void checkPathExistenceIsInitiated(){
         Quoridor quoridor = QuoridorApplication.getQuoridor();
-        GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
-        QuoridorController.releaseWall(quoridor);
-        thereIsBlackPath = QuoridorController.pathExistenceCheck(currentGamePosition.getBlackPosition());
-        thereIsWhitePath = QuoridorController.pathExistenceCheck(currentGamePosition.getWhitePosition());
+        Game currentGame = quoridor.getCurrentGame();
+        GamePosition currentGamePosition = currentGame.getCurrentPosition();
+        List<Wall> whiteWallsOnBoard = currentGamePosition.getWhiteWallsOnBoard();
+        List<Wall> blackWallsOnBoard = currentGamePosition.getBlackWallsOnBoard();
+        ArrayList<Wall> allWallsOnBoard = new ArrayList<Wall>();
+        for (Wall wall : whiteWallsOnBoard){
+            allWallsOnBoard.add(wall);
+        }
+        for (Wall wall : blackWallsOnBoard){
+            allWallsOnBoard.add(wall);
+        }
+        allWallsOnBoard.add(currentGame.getWallMoveCandidate().getWallPlaced());
+        thereIsBlackPath = QuoridorController.pathExistenceCheck(currentGamePosition.getBlackPosition(), allWallsOnBoard);
+        thereIsWhitePath = QuoridorController.pathExistenceCheck(currentGamePosition.getWhitePosition(), allWallsOnBoard);
     }
 
     /**
@@ -2331,7 +2341,7 @@ public class CucumberStepDefinitions {
         } else {
             myResult = "none";
         }
-        assertEquals(myResult, result);
+        assertEquals(result, myResult);
     }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //RESIGN GAME
