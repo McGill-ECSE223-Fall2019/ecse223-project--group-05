@@ -18,8 +18,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import java.util.ArrayList?>
 
+<?import java.util.ArrayList?>
 <Pane stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
       <AnchorPane id="Application_Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3d6b99;">
@@ -41,10 +41,10 @@
                                  </graphic>
                               </Button>
                               <Button layoutX="97.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="New Game" textFill="#ffd800" />
-                              <Button layoutX="174.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="Previous Game" textFill="#ffd800" />
-                              <Button fx:id="btn_ResignGame" layoutX="328.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#resignGame" prefHeight="25.0" prefWidth="99.0" style="-fx-background-color: #192c3f;" text="Resign Game" textFill="#ffd800" />
-                              <Button layoutX="278.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#openRulesPage" onMouseEntered="#openRulesPage" onMouseExited="#closeRulesPage" style="-fx-background-color: #192c3f;" text="Rules" textFill="#ffd800" />
-                              <Button fx:id="btn_saveGame" alignment="CENTER" layoutX="427.0" layoutY="9.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#saveGameContainerFunction" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #192c3f;" text="Save Game" textFill="#ffd800" />
+                              <Button layoutX="169.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="Load Game" textFill="#ffd800" />
+                              <Button fx:id="btn_ResignGame" layoutX="340.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#resignGame" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #192c3f;" text="Resign Game" textFill="#ffd800" />
+                              <Button layoutX="243.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#openRulesPage" onMouseEntered="#openRulesPage" onMouseExited="#closeRulesPage" prefHeight="26.0" prefWidth="94.0" style="-fx-background-color: #192c3f;" text="Rules/Controls" textFill="#ffd800" />
+                              <Button fx:id="btn_saveGame" alignment="CENTER" layoutX="427.0" layoutY="8.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#saveGameContainerFunction" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #192c3f;" text="Save Game" textFill="#ffd800" />
                            </children>
                         </AnchorPane>
                         <Button layoutX="538.0" layoutY="5.0" mnemonicParsing="false" onMouseClicked="#toggleMaximize" style="-fx-background-color: #192c3f;">
@@ -143,7 +143,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Load_Game_Page" fx:id="Load_Game_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0">
+                        <AnchorPane id="Load_Game_Page" fx:id="Load_Game_Page" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="600.0" visible="false">
                            <children>
                               <VBox layoutX="54.0" layoutY="78.0" prefHeight="200.0" prefWidth="421.0">
                                  <children>
@@ -151,7 +151,7 @@
                                     <ListView fx:id="loadedGameList" editable="true" onMouseClicked="#gotSelected" prefHeight="164.0" prefWidth="334.0" style="-fx-background-color: #2d5072;" />
                                  </children>
                               </VBox>
-                              <Button fx:id="Load_Game_Btn1" layoutX="480.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#addToLoadedGameList" text="Change Directory" />
+                              <Button fx:id="Load_Game_Btn1" layoutX="480.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#addToLoadedGameList" style="-fx-background-color: #ffd800;" text="Change Directory" />
                               <Label layoutX="54.0" layoutY="23.0" text="Stored Games' Directory" />
                               <Label fx:id="lbl_directory" layoutX="54.0" layoutY="40.0" prefHeight="17.0" prefWidth="402.0" text="No directory selected..." />
                               <VBox layoutX="54.0" layoutY="272.0" prefHeight="70.0" prefWidth="421.0" spacing="1.0">
@@ -160,7 +160,7 @@
                                     <Label text="[Description of game is here]" />
                                     <HBox spacing="10.0">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#continuePreviousGame" text="Load Game" />
+                                          <Button mnemonicParsing="false" onAction="#continuePreviousGame" style="-fx-background-color: #ffd800;" text="Load Game" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -183,7 +183,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" prefWidth="397.0" visible="false">
+                        <AnchorPane id="Game_Session_Page" fx:id="Game_Session_Page" prefWidth="397.0">
                            <children>
                               <HBox prefHeight="356.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
@@ -417,7 +417,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Rules_Page" fx:id="Rules_Page" disable="true" prefHeight="200.0" prefWidth="200.0" visible="false">
+                        <AnchorPane id="Rules_Page" fx:id="Rules_Page" disable="true" prefHeight="200.0" prefWidth="200.0">
                            <children>
                               <Pane layoutX="90.0" layoutY="1.0" prefHeight="322.0" prefWidth="402.0">
                                  <children>
@@ -427,7 +427,7 @@
                                           <Font size="24.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="25.0" layoutY="97.0" text="1. REACH THE OTHER SIDE" textFill="#997a3d">
+                                    <Label layoutX="24.0" layoutY="97.0" text="1. REACH THE OTHER SIDE" textFill="#997a3d">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
@@ -437,17 +437,22 @@
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="24.0" layoutY="144.0" text="3. CLICK ON WALLS TO PLACE" textFill="#997a3d">
+                                    <Label layoutX="24.0" layoutY="144.0" text="3. CLICK(Q) ON WALL BOX TO SELECT WALL" textFill="#997a3d">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="25.0" layoutY="168.0" text="4. WASD TO MOVE WALLS" textFill="#997a3d">
+                                    <Label layoutX="24.0" layoutY="168.0" text="4. WASD TO MOVE WALLS" textFill="#997a3d">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="25.0" layoutY="191.0" text="5. R TO ROTATE WALLS" textFill="#997a3d">
+                                    <Label layoutX="24.0" layoutY="191.0" text="5. R TO ROTATE WALLS" textFill="#997a3d">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="24.0" layoutY="212.0" text="6. DROP WALL TO CONFIRM OR Q TO UNDO" textFill="#997a3d">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
