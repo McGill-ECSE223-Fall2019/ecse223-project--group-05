@@ -21,14 +21,6 @@ import ca.mcgill.ecse223.quoridor.model.Game.GameStatus;
 import ca.mcgill.ecse223.quoridor.persistence.QuoridorSavesManager;
 import ca.mcgill.ecse223.quoridor.timer.PlayerTimer;
 import ca.mcgill.ecse223.quoridor.view.ViewInterface;
-import javafx.scene.shape.Rectangle;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
 
 
 public class QuoridorController {
@@ -922,7 +914,12 @@ public class QuoridorController {
         //This is obsolete as the gamePosition wouldn't exist in the first place, so I'm skipping whether or not the move is on the board
 //    	if ((gamePosition.getBlackPosition().getTile().getRow() >9) || (gamePosition.getBlackPosition().getTile().getRow() <1)
 //    			|| (gamePosition.getBlackPosition().getTile().getColumn() >9) || (gamePosition.getBlackPosition().getTile().getColumn() <1));
-
+        if (!pathExistenceCheck(gamePosition.getWhitePosition())){
+            return false;
+        }
+        if (!pathExistenceCheck(gamePosition.getBlackPosition())){
+            return false;
+        }
         List<Wall> whiteWallsOnBoard = gamePosition.getWhiteWallsOnBoard();
         List<Wall> blackWallsOnBoard = gamePosition.getBlackWallsOnBoard();
 
@@ -985,21 +982,71 @@ public class QuoridorController {
      * @return true if the path exists and false if not
      * @author Daniel Wu
      */
-    public static Boolean pathExistenceCheck(){
-        //check if row is blocked by walls, basically i need to check the pos of the player and get all the walls above the player
-        //above meaning in front when going towards their own destinations
-        //need to somehow get the destination of each player and get the current position of the player + the directionality
-        //so an interval from player position to destination position, i check the row for horizontal and column for vertical
-        //how to get walls now, prolly gonna do the same as i did in validate position and get all the walls into a list,
-        //nah this is stupid, it would require for me to loop thru to much shit every time
-        //maybe incorporate this function into validateposition
-        //So whenever u place a wall, check all the walls with the same values of row or column, then add to some count,
-        //when the count reaches 4 or 5 and the value is between the interval, then there is no path
-        //how would this work with load position or load game,
-        //it would only work if they load one move at a time, or one wall at a time, which is probably has to
-        //i think this is good for now
+    public static Boolean pathExistenceCheck(PlayerPosition pos){
         Quoridor quoridor = QuoridorApplication.getQuoridor();
-        return true;
+        GamePosition gamePosition = quoridor.getCurrentGame().getCurrentPosition();
+        //Setup graph
+        Graph graph = new Graph();
+        List<Wall> whiteWallsOnBoard = gamePosition.getWhiteWallsOnBoard();
+        List<Wall> blackWallsOnBoard = gamePosition.getBlackWallsOnBoard();
+        //Remove edges
+        int row = 0;
+        int col = 0;
+        Direction dir = Direction.Horizontal;
+        for (Wall wall : whiteWallsOnBoard){
+            row = wall.getMove().getTargetTile().getRow();
+            col = wall.getMove().getTargetTile().getColumn();
+            dir = wall.getMove().getWallDirection();
+            if (dir == Direction.Horizontal){
+                graph.removeEdge((row - 1) * 9 + col - 1, (row) * 9 + col - 1); //0-9
+                graph.removeEdge((row - 1) * 9 + col, (row) * 9 + col); //1-10
+            } else if (dir == Direction.Vertical){
+                graph.removeEdge((row - 1) * 9 + col - 1, (row - 1) * 9 + col); //0-1
+                graph.removeEdge((row) * 9 + col - 1, (row) * 9 + col); //9-10
+            }
+        }
+        for (Wall wall : blackWallsOnBoard){
+            row = wall.getMove().getTargetTile().getRow();
+            col = wall.getMove().getTargetTile().getColumn();
+            dir = wall.getMove().getWallDirection();
+            if (dir == Direction.Horizontal){
+                graph.removeEdge((row - 1) * 9 + col - 1, (row) * 9 + col - 1); //0-9
+                graph.removeEdge((row - 1) * 9 + col, (row) * 9 + col); //1-10
+            } else if (dir == Direction.Vertical){
+                graph.removeEdge((row - 1) * 9 + col - 1, (row - 1) * 9 + col); //0-1
+                graph.removeEdge((row) * 9 + col - 1, (row) * 9 + col); //9-10
+            }
+        }
+        //DFS
+        int tileID = (pos.getTile().getRow() - 1) * 9 + pos.getTile().getColumn() - 1;
+        ArrayList<Integer> stack = new ArrayList<Integer>();
+        ArrayList<Integer> visited = new ArrayList<Integer>();
+        if (pos.getPlayer().hasGameAsWhite()){
+            //Add all the tiles on the top row
+            for (int i=0; i<9; i++){
+                stack.add(0, i);
+            }
+        } else if (pos.getPlayer().hasGameAsBlack()){
+            //Add all the tiles on the bottom row
+            for (int i=0; i<9; i++){
+                stack.add(0, i + 72);
+            }
+        }
+        while (!stack.isEmpty()){
+            int node = stack.remove(0);
+            if (node == tileID){
+                return true;
+            }
+            if (!visited.contains(node)){
+                visited.add(node);
+                for (int adjacentNode : graph.getNodes().get(node)){
+                    if(!visited.contains(adjacentNode)){
+                        stack.add(0, adjacentNode);
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**

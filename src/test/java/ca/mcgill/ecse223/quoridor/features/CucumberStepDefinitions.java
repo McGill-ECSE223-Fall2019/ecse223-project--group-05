@@ -2252,7 +2252,15 @@ public class CucumberStepDefinitions {
      */
     @Given("A {string} wall move candidate exists at position {int}:{int}")
     public void aWallMoveCandidateExistsAtPosition(String dir, int frow, int fcol){
-        //same as given wall exists at position? or do we have to do something special?
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        QuoridorController.grabWall(quoridor);
+        WallMove wallMove = QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate();
+        wallMove.setTargetTile(quoridor.getBoard().getTile((frow - 1) * 9 + fcol - 1));
+        if (dir.equals("horizontal")){
+            wallMove.setWallDirection(Direction.Horizontal);
+        } else if (dir.equals("vertical")){
+            wallMove.setWallDirection(Direction.Vertical);
+        }
     }
 
     /**
@@ -2295,8 +2303,11 @@ public class CucumberStepDefinitions {
      */
     @When("Check path existence is initiated")
     public void checkPathExistenceIsInitiated(){
-        //need to set if thereiswhitepath and if thereisbackpath
-        QuoridorController.pathExistenceCheck();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        GamePosition currentGamePosition = quoridor.getCurrentGame().getCurrentPosition();
+        QuoridorController.releaseWall(quoridor);
+        thereIsBlackPath = QuoridorController.pathExistenceCheck(currentGamePosition.getBlackPosition());
+        thereIsWhitePath = QuoridorController.pathExistenceCheck(currentGamePosition.getWhitePosition());
     }
 
     /**
@@ -2306,7 +2317,7 @@ public class CucumberStepDefinitions {
      * @param result
      * @author Daniel Wu
      */
-    @Then("Path is available for {string} player(s)")
+    @Then("Path is available for {string} player\\(s)")
     public void pathIsAvailableForPlayer(String result){
         String myResult = "";
         if (thereIsWhitePath){
