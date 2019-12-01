@@ -670,7 +670,10 @@ public class ViewInterface {
 	private void clearGUI_game_session_page() {
 		//set the current player to be WhitePlayer
 		resetGUI_playerTurn();
-		end_ReplayMode();
+
+		//if in replay mode, return the GUI to its original position
+		if (quoridor.getCurrentGame() != null && quoridor.getCurrentGame().getGameStatus() == Game.GameStatus.Replay)
+			end_ReplayMode();
 
 		//reset the player usernames
 		whiteExistingName.getSelectionModel().clearSelection();
@@ -756,6 +759,7 @@ public class ViewInterface {
 		quoridor = QuoridorApplication.getQuoridor();
 
 		try {
+			;
 			QuoridorController.initializeGame(quoridor);
 		} catch (Exception e) {
 			throw new java.lang.UnsupportedOperationException("Cannot initialize the Game");
