@@ -18,7 +18,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-
 <?import java.util.ArrayList?>
 <Pane stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse223.quoridor.view.ViewInterface">
    <children>
@@ -40,8 +39,8 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button layoutX="97.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="New Game" textFill="#ffd800" />
-                              <Button layoutX="169.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #192c3f;" text="Load Game" textFill="#ffd800" />
+                              <Button layoutX="97.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#Goto_Choose_Opponent_Page" style="-fx-background-color: #192c3f;" text="New Game" textFill="#ffd800" />
+                              <Button layoutX="169.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#Goto_Load_Game_Page" style="-fx-background-color: #192c3f;" text="Load Game" textFill="#ffd800" />
                               <Button fx:id="btn_ResignGame" layoutX="340.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#resignGame" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #192c3f;" text="Resign Game" textFill="#ffd800" />
                               <Button layoutX="243.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#openRulesPage" onMouseEntered="#openRulesPage" onMouseExited="#closeRulesPage" prefHeight="26.0" prefWidth="94.0" style="-fx-background-color: #192c3f;" text="Rules/Controls" textFill="#ffd800" />
                               <Button fx:id="btn_saveGame" alignment="CENTER" layoutX="427.0" layoutY="8.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#saveGameContainerFunction" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #192c3f;" text="Save Game" textFill="#ffd800" />
@@ -311,18 +310,18 @@
                                                       </Label>
                                                       <HBox id="blackStock" fx:id="blackStock1" alignment="CENTER" onMouseClicked="#GrabWall" prefHeight="37.0" style="-fx-background-color: #60a9f2;">
                                                          <children>
-                                                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#firstMove" text="&lt;&lt;" />
-                                                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#previousMove" text="&lt;" />
-                                                            <Separator maxWidth="10.0" />
-                                                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#nextMove" text="&gt;" />
-                                                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#lastMove" text="&gt;&gt;" />
+                                                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#firstMove" style="-fx-background-color: #ffd800;" text="&lt;&lt;" textFill="#2b393a" />
+                                                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#previousMove" style="-fx-background-color: #ffd800;" text="&lt;" textFill="#2b393a" />
+                                                            <Separator maxWidth="10.0" visible="false" />
+                                                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#nextMove" style="-fx-background-color: #ffd800;" text="&gt;" textFill="#2b393a" />
+                                                            <Button focusTraversable="false" mnemonicParsing="false" onAction="#lastMove" style="-fx-background-color: #ffd800;" text="&gt;&gt;" textFill="#2b393a" />
                                                          </children>
                                                       </HBox>
                                                       <HBox id="blackStock" fx:id="blackStock11" alignment="CENTER" onMouseClicked="#GrabWall" prefHeight="37.0" style="-fx-background-color: #60a9f2;">
                                                          <children>
-                                                            <Button alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" onAction="#Goto_Main_Page" text="Back to menu" />
-                                                            <Separator maxWidth="10.0" />
-                                                            <Button alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" text="Continue game" />
+                                                            <Button alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" onAction="#Goto_Main_Page" style="-fx-background-color: #ffd800;" text="Back to menu" textFill="#2b393a" />
+                                                            <Separator maxWidth="10.0" visible="false" />
+                                                            <Button alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" style="-fx-background-color: #ffd800;" text="Continue game" textFill="#2b393a" />
                                                          </children>
                                                       </HBox>
                                                    </children>
@@ -417,7 +416,7 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                        <AnchorPane id="Rules_Page" fx:id="Rules_Page" disable="true" prefHeight="200.0" prefWidth="200.0">
+                        <AnchorPane id="Rules_Page" fx:id="Rules_Page" prefHeight="200.0" prefWidth="200.0" visible="false">
                            <children>
                               <Pane layoutX="90.0" layoutY="1.0" prefHeight="322.0" prefWidth="402.0">
                                  <children>

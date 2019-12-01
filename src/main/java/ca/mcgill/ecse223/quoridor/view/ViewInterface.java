@@ -753,6 +753,14 @@ public class ViewInterface {
 	 * Changes the GUI CurrentPage to the Choose Opponent Page.
 	 */
 	public void Goto_Choose_Opponent_Page() {
+		Game g = QuoridorApplication.getQuoridor().getCurrentGame();
+		if (g != null && QuoridorController.isGameRunning(g))
+			return;
+
+
+		clearGUI_game_session_page();       //reset the GUI section of the QuoridorApplication
+		clearGUI_new_game_page();
+		QuoridorController.clearGame();     //reset the model section of the QuoridorApplication
 
 		Goto_Page(Page.CHOOSE_OPPONENT_PAGE);
 
@@ -853,6 +861,15 @@ public class ViewInterface {
 	 * Changes the GUI CurrentPage to the Load Game Page.
 	 */
 	public void Goto_Load_Game_Page() {
+		Game g = QuoridorApplication.getQuoridor().getCurrentGame();
+		if (g != null && QuoridorController.isGameRunning(g))
+			return;
+
+
+		clearGUI_game_session_page();       //reset the GUI section of the QuoridorApplication
+		clearGUI_new_game_page();
+		QuoridorController.clearGame();     //reset the model section of the QuoridorApplication
+
 		Goto_Page(Page.LOAD_GAME_PAGE);
 	}
 
