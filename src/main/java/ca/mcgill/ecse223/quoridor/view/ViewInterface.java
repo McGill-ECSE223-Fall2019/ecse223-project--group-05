@@ -264,8 +264,15 @@ public class ViewInterface {
         ImageView imgWhite = gameBTiles[(t_white.getRow()-1)*9 + (t_white.getColumn() - 1)];
         setTileImage(blackPlayerTile, emptyTileShouldBe(blackPlayerTile));
         setTileImage(whitePlayerTile, emptyTileShouldBe(whitePlayerTile));
-        setTileImage(imgBlack, TileImage.BLACK_PAWN);
+
+        if (QuoridorController.getColorOfPlayerToMove(quoridor).equals("black")){
+        setTileImage(imgBlack, TileImage.BLACK_PAWN_SELECTED);
         setTileImage(imgWhite, TileImage.WHITE_PAWN);
+        }
+        else {
+			setTileImage(imgBlack, TileImage.BLACK_PAWN);
+			setTileImage(imgWhite, TileImage.WHITE_PAWN_SELECTED);
+		}
         blackPlayerTile = imgBlack;
         whitePlayerTile = imgWhite;
     }
