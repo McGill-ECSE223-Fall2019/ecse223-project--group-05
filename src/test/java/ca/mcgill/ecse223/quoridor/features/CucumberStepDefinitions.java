@@ -49,6 +49,9 @@ public class CucumberStepDefinitions {
     //Instance Variables for LoadPosition tests
     private boolean failedToReadSaveFile = false;
     private boolean receivedInvalidPositionException = false;
+    
+    //Bandaid solution to the use of "The game has a final result" as both a GIVEN and THEN statement in EnterReplayMode.feature and LoadGame.feature respectively.
+    private boolean testingLoadMoves = false;
 
 
 
@@ -1364,6 +1367,7 @@ public class CucumberStepDefinitions {
      */
     @When("I initiate to load a saved game {string}")
     public void iInitiateToLoadASavedGame(String fileName) {
+    	this.testingLoadMoves = true;
     	Quoridor quoridor = QuoridorApplication.getQuoridor();
         User user1 = quoridor.addUser("bruh1");
         User user2 = quoridor.addUser("bruh2");
@@ -1432,17 +1436,6 @@ public class CucumberStepDefinitions {
     	assertNotEquals( GameStatus.BlackWon, gameState );
     	assertNotEquals( GameStatus.WhiteWon, gameState );
     	assertNotEquals( GameStatus.Draw, gameState );
-    }
-    
-    /**
-     * Checks that the game has a final result
-     */
-    @And("The game has a final result")
-    public void theGameHasAFinalResult() {
-    	GameStatus gameState = QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus();
-    	assertNotEquals( gameState, GameStatus.Initializing );
-    	assertNotEquals( gameState, GameStatus.ReadyToStart );
-    	assertNotEquals( gameState, GameStatus.Running );
     }
     
     /**
@@ -2537,16 +2530,23 @@ public class CucumberStepDefinitions {
      *
      * @author Daniel Wu
      */
-    //@And("The game has a final result")
-    //public void theGameHasAFinalResult(){
-    //    Game currentGame = QuoridorApplication.getQuoridor().getCurrentGame();
-    //    int roundNumber = currentGame.getMoves().get(currentGame.getMoves().size() - 1).getRoundNumber();
-    //    if ((roundNumber % 2) == 1){
-    //        currentGame.setGameStatus(GameStatus.BlackWon);
-    //    } else if ((roundNumber % 2) == 0){
-    //        currentGame.setGameStatus(GameStatus.WhiteWon);
-    //    }
-    //}
+    @And("The game has a final result")
+    public void theGameHasAFinalResult(){
+    	if (testingLoadMoves){
+    		GameStatus gameState = QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus();
+        	assertNotEquals( gameState, GameStatus.Initializing );
+        	assertNotEquals( gameState, GameStatus.ReadyToStart );
+        	assertNotEquals( gameState, GameStatus.Running );
+    	} else {
+    		Game currentGame = QuoridorApplication.getQuoridor().getCurrentGame();
+            int roundNumber = currentGame.getMoves().get(currentGame.getMoves().size() - 1).getRoundNumber();
+            if ((roundNumber % 2) == 1){
+                currentGame.setGameStatus(GameStatus.BlackWon);
+            } else if ((roundNumber % 2) == 0){
+                currentGame.setGameStatus(GameStatus.WhiteWon);
+            }
+    	}
+    }
 
     /**
      * EnterReplayMode.feature - Enter Replay Mode
@@ -2613,6 +2613,8 @@ public class CucumberStepDefinitions {
         thereIsWhitePath = false;
         thereIsBlackPath = false;
         notify = false;
+        
+        testingLoadMoves = false;
     }
 
     // ***********************************************
