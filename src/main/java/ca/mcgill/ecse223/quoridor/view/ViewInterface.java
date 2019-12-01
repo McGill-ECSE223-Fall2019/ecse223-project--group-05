@@ -1967,7 +1967,8 @@ public class ViewInterface {
 	 * @param event
 	 */
 	public void continuePreviousGame(Event event) {
-		QuoridorController.clearGame();
+//		QuoridorController.clearGame();
+
 		quoridor = QuoridorApplication.getQuoridor();
 		/*
 		 * SANITY CHECKING FOR SELECTED GAME
@@ -1988,8 +1989,8 @@ public class ViewInterface {
 		 */
 		User user1, user2;
 		if( QuoridorApplication.getQuoridor().getUsers().size() < 2 ) {
-			user1 = new User("first",QuoridorApplication.getQuoridor());
-			user2 = new User("second",QuoridorApplication.getQuoridor());
+			user1 = new User("firstboi",QuoridorApplication.getQuoridor());
+			user2 = new User("secondboi",QuoridorApplication.getQuoridor());
 		} else {
 			user1 = QuoridorApplication.getQuoridor().getUser(0);
 			user2 = QuoridorApplication.getQuoridor().getUser(1);
@@ -2044,6 +2045,9 @@ public class ViewInterface {
 
 		this.Goto_Game_Session_Page();
 		loadGame_populateBoard();
+
+		quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Replay);
+		start_replayMode();
 	}
 
     /**
@@ -2239,8 +2243,9 @@ public class ViewInterface {
      * clears the Game Session page to initiate the ReplayMode
      */
 	public void start_replayMode(){
-//        wallStocks.setVisible(false);
-//        wallStocks.setDisable(true);
+		clearPossibleMoveTiles();
+        wallStocks.setVisible(false);
+        wallStocks.setDisable(true);
         playerInfo.setVisible(false);
         replay_Page.setVisible(true);
         replay_Page.setDisable(false);
