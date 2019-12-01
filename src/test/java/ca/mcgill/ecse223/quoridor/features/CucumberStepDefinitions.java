@@ -36,6 +36,9 @@ public class CucumberStepDefinitions {
     boolean handHasWall = false;
     boolean pawnMoveSuccesful = false;
 
+    boolean thereIsWhitePath = false;
+    boolean thereIsBlackPath = false;
+    boolean notify = false;
 
     //Instance Variables for SavePosition tests
     private String testGameSaveFilename = "";
@@ -1991,35 +1994,48 @@ public class CucumberStepDefinitions {
             Integer col = arr[0] - 'a' + 1;
             Integer row = arr[1] - '0';
 
+            String dir = move.substring(2);//Moving this out of the if statement to allow for end moves
             if (move.length() == 3) {
-                //wall move
-                //get direction
-                String dir = move.substring(2);
-                switch (dir) {
-                    case "h":
-                        direction = Direction.Horizontal;
-                        break;
-                    case "v":
-                        direction = Direction.Vertical;
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Unsupported wall direction was provided");
-                }
-
-                QuoridorController.grabWall(quoridor);
-                Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((row - 1) * 9 + col - 1);
-                QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setWallDirection(direction);
-                QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setTargetTile(targetTile);
-
-                //drop wall
-                QuoridorController.releaseWall(quoridor);
-
-                if (rnd.equals(1)) {
-                    QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getWhitePlayer());
+                if (dir.equals("1")) {
+                    //Black won
+                    //hard coding the position of the move
+                    row = 9;
+                    col = 1;
+                } else if (dir.equals("0")) {
+                    //White won
+                    row = 1;
+                    col = 1;
                 } else {
-                    QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getBlackPlayer());
+                    //wall move
+                    //get direction
+
+                    switch (dir) {
+                        case "h":
+                            direction = Direction.Horizontal;
+                            break;
+                        case "v":
+                            direction = Direction.Vertical;
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unsupported wall direction was provided");
+                    }
+
+                    QuoridorController.grabWall(quoridor);
+                    Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((row - 1) * 9 + col - 1);
+                    QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setWallDirection(direction);
+                    QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate().setTargetTile(targetTile);
+
+                    //drop wall
+                    QuoridorController.releaseWall(quoridor);
+
+                    if (rnd.equals(1)) {
+                        QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getWhitePlayer());
+                    } else {
+                        QuoridorController.completePlayerTurn(quoridor.getCurrentGame().getBlackPlayer());
+                    }
                 }
-            } else {
+            }
+            if (move.length() == 2){
                 //pawn move
                 if (rnd.equals(1)) {
                     //white
@@ -2225,6 +2241,108 @@ public class CucumberStepDefinitions {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         QuoridorController.jumpToFinal(quoridor);
     }
+    /**
+     * CheckIfPathExists.feature - Check If Path Exists
+     * Scenario: Path to target area is not blocked
+     *
+     * @param dir
+     * @param frow
+     * @param fcol
+     * @author Daniel Wu
+     */
+    @Given("A {string} wall move candidate exists at position {int}:{int}")
+    public void aWallMoveCandidateExistsAtPosition(String dir, int frow, int fcol){
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        QuoridorController.grabWall(quoridor);
+        WallMove wallMove = QuoridorApplication.getQuoridor().getCurrentGame().getWallMoveCandidate();
+        wallMove.setTargetTile(quoridor.getBoard().getTile((frow - 1) * 9 + fcol - 1));
+        if (dir.equals("horizontal")){
+            wallMove.setWallDirection(Direction.Horizontal);
+        } else if (dir.equals("vertical")){
+            wallMove.setWallDirection(Direction.Vertical);
+        }
+    }
+
+    /**
+     * CheckIfPathExists.feature - Check If Path Exists
+     * Scenario: Path to target area is not blocked
+     *
+     * @param brow
+     * @param bcol
+     * @author Daniel Wu
+     */
+    @And("The black player is located at {int}:{int}")
+    public void theBlackPlayerIsLocatedAt(int brow, int bcol){
+        PlayerPosition playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition();
+
+        Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((brow - 1) * 9 + bcol - 1);
+        playerPosition.setTile(targetTile);
+    }
+
+    /**
+     * CheckIfPathExists.feature - Check If Path Exists
+     * Scenario: Path to target area is not blocked
+     *
+     * @param wrow
+     * @param wcol
+     * @author Daniel Wu
+     */
+    @And("The white player is located at {int}:{int}")
+    public void theWhitePlayerIsLocatedAt(int wrow, int wcol){
+        PlayerPosition playerPosition = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition();
+
+        Tile targetTile = QuoridorApplication.getQuoridor().getBoard().getTile((wrow - 1) * 9 + wcol - 1);
+        playerPosition.setTile(targetTile);
+    }
+
+    /**
+     * CheckIfPathExists.feature - Check If Path Exists
+     * Scenario: Path to target area is not blocked
+     *
+     * @author Daniel Wu
+     */
+    @When("Check path existence is initiated")
+    public void checkPathExistenceIsInitiated(){
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        Game currentGame = quoridor.getCurrentGame();
+        GamePosition currentGamePosition = currentGame.getCurrentPosition();
+        List<Wall> whiteWallsOnBoard = currentGamePosition.getWhiteWallsOnBoard();
+        List<Wall> blackWallsOnBoard = currentGamePosition.getBlackWallsOnBoard();
+        ArrayList<Wall> allWallsOnBoard = new ArrayList<Wall>();
+        for (Wall wall : whiteWallsOnBoard){
+            allWallsOnBoard.add(wall);
+        }
+        for (Wall wall : blackWallsOnBoard){
+            allWallsOnBoard.add(wall);
+        }
+        allWallsOnBoard.add(currentGame.getWallMoveCandidate().getWallPlaced());
+        thereIsBlackPath = QuoridorController.pathExistenceCheck(currentGamePosition.getBlackPosition(), allWallsOnBoard);
+        thereIsWhitePath = QuoridorController.pathExistenceCheck(currentGamePosition.getWhitePosition(), allWallsOnBoard);
+    }
+
+    /**
+     * CheckIfPathExists.feature - Check If Path Exists
+     * Scenario: Path to target area is not blocked
+     *
+     * @param result
+     * @author Daniel Wu
+     */
+    @Then("Path is available for {string} player\\(s)")
+    public void pathIsAvailableForPlayer(String result){
+        String myResult = "";
+        if (thereIsWhitePath){
+            if (thereIsBlackPath){
+                myResult = "both";
+            }else {
+                myResult = "white";
+            }
+        } else if (thereIsBlackPath){
+            myResult = "black";
+        } else {
+            myResult = "none";
+        }
+        assertEquals(result, myResult);
+    }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //RESIGN GAME
 
@@ -2298,6 +2416,148 @@ public class CucumberStepDefinitions {
         assertEquals(true, flag);
     }
 
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Entering replay mode
+     *
+     * @author Daniel Wu
+     */
+    @When("I initiate replay mode")
+    public void iInitiateReplayMode(){
+        QuoridorController.initializeReplayMode();
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Entering replay mode
+     * Scenario: Continue a finished game
+     *
+     * @author Daniel Wu
+     */
+    @Then("The game shall be in replay mode")
+    public void theGameShallBeInReplayMode(){
+        boolean inReplayMode = (QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus() == GameStatus.Replay);
+        assertEquals(true, inReplayMode);
+    }
+
+    /**
+     * Duplicate Method
+     *
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     * Scenario: Continue a finished game
+     *
+     * @author Daniel Wu
+     */
+//    @Given("The game is in replay mode")
+//    public void theGameIsInReplayMode(){
+//        QuoridorApplication.getQuoridor().getCurrentGame().setGameStatus(GameStatus.Replay);
+//    }
+
+    /**
+     * Duplicate method
+     *
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     * Scenario: Continue a finished game
+     *
+     * @param mv
+     * @param rnd
+     * @param move
+     * @author Daniel Wu
+     */
+//    @Given("The following moves have been played in game:")
+//    public void theFollowingMovesHaveBeenPlayedInGame(int mv, int rnd, String move){
+//    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     *
+     * @author Daniel Wu
+     */
+    @And("The game does not have a final result")
+    public void theGameDoesNotHaveAFinalResult(){
+        QuoridorApplication.getQuoridor().getCurrentGame().setGameStatus(GameStatus.Replay);
+    }
+
+    /**
+     * Duplicate method
+     *
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     * Scenario: Continue a finished game
+     *
+     * @param movno
+     * @param rndno
+     * @author Daniel Wu
+     */
+//    @And("The next move is {int}.{int}")
+//    public void theNextMoveIs(int movno, int rndno){
+//    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     * Scenario: Continue a finished game
+     *
+     * @author Daniel Wu
+     */
+    @When("I initiate to continue game")
+    public void iInitiateToContinueGame(){
+        notify = !QuoridorController.continueGame();
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue an unfinished game
+     *
+     * @author Daniel Wu
+     */
+    @And("The remaining moves of the game shall be removed")
+    public void theRemainingMovesOfTheGameShallBeRemoved(){
+        //delete all of the moves past this gamePosition
+        Game currentGame = QuoridorApplication.getQuoridor().getCurrentGame();
+        //Get the index of the current game position
+        int index = currentGame.getPositions().indexOf(currentGame.getCurrentPosition());
+
+        //Now delete all the game positions until we reach the index
+        int count = currentGame.getPositions().size() - 1;
+        while(count != index){
+            currentGame.removePosition(currentGame.getPosition(count));; //unsupported since it an unmodifiable collection
+            count--;
+        }
+
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue a finished game
+     *
+     * @author Daniel Wu
+     */
+    @And("The game has a final result")
+    public void theGameHasAFinalResult(){
+        Game currentGame = QuoridorApplication.getQuoridor().getCurrentGame();
+        int roundNumber = currentGame.getMoves().get(currentGame.getMoves().size() - 1).getRoundNumber();
+        if ((roundNumber % 2) == 1){
+            currentGame.setGameStatus(GameStatus.BlackWon);
+        } else if ((roundNumber % 2) == 0){
+            currentGame.setGameStatus(GameStatus.WhiteWon);
+        }
+    }
+
+    /**
+     * EnterReplayMode.feature - Enter Replay Mode
+     * Scenario: Continue a finished game
+     *
+     * @author Daniel Wu
+     */
+    @And("I shall be notified that finished games cannot be continued")
+    public void iShallBeNotifiedThatFinishedGamesCannotBeContinued(){
+        assertEquals(true, notify);
+    }
+
     // ***********************************************
     // Clean up
     // ***********************************************
@@ -2349,6 +2609,9 @@ public class CucumberStepDefinitions {
         whitePawnBehaviour = new PawnBehaviour();
         blackPawnBehaviour = new PawnBehaviour();
 
+        thereIsWhitePath = false;
+        thereIsBlackPath = false;
+        notify = false;
     }
 
     // ***********************************************
