@@ -170,17 +170,95 @@ public class ViewInterface {
 
 
 
+    public void loadGame_populateBoard(){
+		GamePosition position = quoridor.getCurrentGame().getCurrentPosition();
+		PlayerPosition white = position.getWhitePosition();
+		PlayerPosition black = position.getBlackPosition();
+		List<Wall> blackWalls = position.getBlackWallsOnBoard();
+		List<Wall> whiteWalls = position.getWhiteWallsOnBoard();
+
+		//populate board with pawns
+		movePawnsTo(black.getTile(), white.getTile());
+
+
+		//populate board with walls.
+		clearWallsOffBoard();
+		moveWallsTo(blackWalls, whiteWalls, false);
+	}
+
     public void populateBoard(){
         GamePosition position = quoridor.getCurrentGame().getCurrentPosition();
         PlayerPosition white = position.getWhitePosition();
         PlayerPosition black = position.getBlackPosition();
         List<Wall> blackWalls = position.getBlackWallsOnBoard();
-        List<Wall> whiteWalls = position.getWhiteWallsInStock();
+        List<Wall> whiteWalls = position.getWhiteWallsOnBoard();
+
+        //populate board with pawns
         movePawnsTo(black.getTile(), white.getTile());
+
+
+        //populate board with walls.
+		clearWallsOffBoard();
+		moveWallsTo(blackWalls, whiteWalls, true);
+
     }
 
+	private void moveWallsTo(List<Wall> blackWalls, List<Wall> whiteWalls, boolean offset){
+    	int addToPosition = 0;
+    	if (offset)
+    		addToPosition = -100;
+    	for (Wall w : blackWalls){
+			positionWallTo(w, "black", addToPosition);
+		}
+		for (Wall w : whiteWalls){
+			positionWallTo(w, "white", addToPosition);
+		}
+	}
+
+	private void positionWallTo(Wall w, String color, int offset){
+
+		HBox p;
+		if (color.equals("black"))
+			p = blackStock;
+		else
+			p = whiteStock;
+
+		if (p.getChildren().size() == 0) {
+			System.out.println("ok google");
+			return;
+		}
+		Rectangle sacrifice = (Rectangle)p.getChildren().get(0);
+		sacrifice.setX(0);
+		sacrifice.setY(0);
+		sacrifice.setTranslateX(0);
+		sacrifice.setTranslateY(0);
+		p.getChildren().remove(sacrifice);
+		getCurrentPage().getChildren().add(sacrifice);
+
+		//bring the walls to position (0,0, V)
+		sacrifice.setLayoutY(0);
+		sacrifice.setLayoutX(0);
+		sacrifice.setX(189);
+		sacrifice.setY(23);
+
+		//offset walls to new position
+		sacrifice.setLayoutX(sacrifice.getLayoutX() + offset);
+
+		System.out.println("Wall at: " +  w.getMove().getTargetTile().getRow() + ", " + w.getMove().getTargetTile().getColumn());
+		for (int i = 1; i < w.getMove().getTargetTile().getColumn(); i++)
+			sacrifice.setTranslateX(sacrifice.getTranslateX() + HORIZONTALSTEP);
+
+		for (int i = 1; i < w.getMove().getTargetTile().getRow(); i++)
+			sacrifice.setTranslateY(sacrifice.getTranslateY() + VERTICALSTEP);
+
+		if (w.getMove().getWallDirection().equals(Direction.Horizontal)){
+			wallMoveCandidate = sacrifice;
+			QuoridorController.GUI_flipWallCandidate();
+			wallMoveCandidate = null;
+		}
+	}
+
     private void movePawnsTo(Tile t_black, Tile t_white){
-        //FUCK
         ImageView imgBlack = gameBTiles[(t_black.getRow()-1)*9 + (t_black.getColumn() - 1)];
         ImageView imgWhite = gameBTiles[(t_white.getRow()-1)*9 + (t_white.getColumn() - 1)];
         setTileImage(blackPlayerTile, emptyTileShouldBe(blackPlayerTile));
@@ -304,7 +382,11 @@ public class ViewInterface {
 			try {
 				grabWallResult = QuoridorController.grabWall(QuoridorApplication.getQuoridor());
 			} catch (Exception e) {
+				wallGrabbed = false;
+				wallMoveCandidate = null;
+				wallSelected = null;
 				throw new java.lang.UnsupportedOperationException("Cannot retrieve the number of walls in stock");
+
 			}
 
 			if (grabWallResult == false) {
@@ -608,19 +690,9 @@ public class ViewInterface {
 		wallMoveCandidate = null;
 		wallGrabbed = false; //added by Thomas
 
-		//put all blackWalls back into their stock positions
-		Rectangle[] blackWalls = {blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6
-				,blackWall7,blackWall8, blackWall9, blackWall10};
-		for (Rectangle r : blackWalls){
-			returnWallToStock(r, blackStock);
-		}
+		//put all walls back into their stock positions
+		clearWallsOffBoard();
 
-		//put all whiteWalls back into their stock positions
-		Rectangle[] whiteWalls = {whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6
-				, whiteWall7, whiteWall8, whiteWall9, whiteWall10};
-		for (Rectangle r : whiteWalls){
-			returnWallToStock(r, whiteStock);
-		}
 		//set wall stock opacity back to default values (it will be white player's turn)
 		blackStock.setOpacity(0.5);
 		whiteStock.setOpacity(1);
@@ -638,6 +710,22 @@ public class ViewInterface {
         setTileImage(whitePlayerTile, TileImage.WHITE_PAWN_SELECTED);
         setTileImage(blackPlayerTile, TileImage.BLACK_PAWN);
 
+	}
+
+	public void clearWallsOffBoard(){
+		//put all blackWalls back into their stock positions
+		Rectangle[] blackWalls = {blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6
+				,blackWall7,blackWall8, blackWall9, blackWall10};
+		for (Rectangle r : blackWalls){
+			returnWallToStock(r, blackStock);
+		}
+
+		//put all whiteWalls back into their stock positions
+		Rectangle[] whiteWalls = {whiteWall1, whiteWall2, whiteWall3, whiteWall4, whiteWall5, whiteWall6
+				, whiteWall7, whiteWall8, whiteWall9, whiteWall10};
+		for (Rectangle r : whiteWalls){
+			returnWallToStock(r, whiteStock);
+		}
 	}
 
 	/**
@@ -694,7 +782,11 @@ public class ViewInterface {
 	                quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Initializing);
 					throw new java.lang.UnsupportedOperationException("Cannot initialize the board");
 				}
-			}	resumingFromSaveFile = false;
+			}else{
+				//game has started at this point. Timers will begin to run.
+				quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
+			}
+			resumingFromSaveFile = false;
 
 			//get both players
 			whitePlayer = QuoridorController.getCurrentWhitePlayer();
@@ -1875,7 +1967,8 @@ public class ViewInterface {
 	 * @param event
 	 */
 	public void continuePreviousGame(Event event) {
-
+		QuoridorController.clearGame();
+		quoridor = QuoridorApplication.getQuoridor();
 		/*
 		 * SANITY CHECKING FOR SELECTED GAME
 		 */
@@ -1895,8 +1988,8 @@ public class ViewInterface {
 		 */
 		User user1, user2;
 		if( QuoridorApplication.getQuoridor().getUsers().size() < 2 ) {
-			user1 = new User("firstboi",QuoridorApplication.getQuoridor());
-			user2 = new User("secondboi",QuoridorApplication.getQuoridor());
+			user1 = new User("first",QuoridorApplication.getQuoridor());
+			user2 = new User("second",QuoridorApplication.getQuoridor());
 		} else {
 			user1 = QuoridorApplication.getQuoridor().getUser(0);
 			user2 = QuoridorApplication.getQuoridor().getUser(1);
@@ -1946,7 +2039,11 @@ public class ViewInterface {
 		 * Hands the application over to Thomas's Goto_Game_Session_Page method, with the global variable resumingFromSaveFile informing that method that it needs to behave differently when initializing the board (ie, not to).
 		 */
 		this.resumingFromSaveFile = true;
+
+		loadGame_populateBoard(); //populates board w/ save file data
+
 		this.Goto_Game_Session_Page();
+		loadGame_populateBoard();
 	}
 
     /**
@@ -2142,8 +2239,8 @@ public class ViewInterface {
      * clears the Game Session page to initiate the ReplayMode
      */
 	public void start_replayMode(){
-        wallStocks.setVisible(false);
-        wallStocks.setDisable(true);
+//        wallStocks.setVisible(false);
+//        wallStocks.setDisable(true);
         playerInfo.setVisible(false);
         replay_Page.setVisible(true);
         replay_Page.setDisable(false);
@@ -2153,6 +2250,7 @@ public class ViewInterface {
         shiftWallOnBoard(-100);
 	    quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Replay);
 		fromResultsPageToGameSession();
+		populateBoard();
     }
 
     public void nextMove(){
