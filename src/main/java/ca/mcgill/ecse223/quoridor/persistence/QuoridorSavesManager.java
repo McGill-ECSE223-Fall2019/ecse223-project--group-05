@@ -249,8 +249,6 @@ public class QuoridorSavesManager {
 		 */
 		//Instantiate useful variables.
 		String lines = "";				//We'll use this to temporarily store the entire contents of the file in memory before writing into the file system.
-		String whitePosition = "e9";	//We'll use this to keep track of the current white position
-		String blackPosition = "e1";	//We'll use this to keep track of the current black position
 		//Instantiate the list of all wall moves, since we need to differentiate between wall moves and other moves.
 		ArrayList<WallMove> allWallMoves = new ArrayList<WallMove>();
 		for( Wall blackWall: game.getCurrentPosition().getBlackWallsOnBoard() ) {
@@ -261,9 +259,19 @@ public class QuoridorSavesManager {
 		}
 		//String building
 		int totalMoves = game.getMoves().size();
+		int currentMoveNumber = 1;
+		boolean blackRound = false;
 		for( int i = 1 ; i <= totalMoves ; i++ ) {
 			
+			//Get the move we are to analyze.
 			Move move = game.getMove(i-1);
+			
+			//Set up the moveNumber of the line if needed (if we are dealing with the first round
+			if(!blackRound){
+				lines += currentMoveNumber +". ";
+			} else {
+				lines += " ";
+			}
 			
 			//While we don't need to differentiate between Step and Jump move, we do need to keep check of WallMove. Here, we check if we have a wallmove.
 			boolean isWallMove = false;
@@ -274,9 +282,6 @@ public class QuoridorSavesManager {
 				}
 			}
 			
-			//Now we need to know whether or not to be referring to whitePosition or blackPosition for initial coordinates in the case of a non-wallMove.
-			boolean isBlackPawnMove = i % 2 == 0;
-			
 			//Now we build the text of our textfile into the String lines.
 			if( isWallMove ) {	//If we're saving a wall move.
 				//Get the string version of the wall's position
@@ -285,25 +290,29 @@ public class QuoridorSavesManager {
 				wallPosition = wallPosition + move.getTargetTile().getRow();
 				wallPosition = wallPosition + ( ((WallMove)move).getWallDirection() == Direction.Horizontal ? "h" : "v" );
 				//Write the new line.
-				lines = lines + i + ". " + wallPosition + "\n";
+				lines += wallPosition;
 				
 			} else {			//If we're saving a pawn move.
 				//Figure out what the second argument of this new line is.
-				String currentPosition = isBlackPawnMove ? blackPosition : whitePosition ;
 				//Figure out what the third argument of this new line is.
 				String nextPosition = "";
 				nextPosition = nextPosition + columnIntToChar(move.getTargetTile().getColumn());
 				nextPosition = nextPosition + move.getTargetTile().getRow();
 				//Write the new line
-				lines = lines + i + ". " + currentPosition + " " + nextPosition +"\n";
-				//Update the currentPosition of the desired pawn.
-				if(isBlackPawnMove) {
-					blackPosition = nextPosition;
-				} else {
-					whitePosition = nextPosition;
-				}
+				lines += nextPosition;
 				
 			}
+			
+			//If we just wrote the second round argument, then we have completed this line
+			if(blackRound){
+				lines += "\n";
+			}
+			
+			//Update information for lines moveNumber and roundNumber
+			if(blackRound){
+				currentMoveNumber++;
+			}
+			blackRound = !blackRound;
 			
 		}
 		
