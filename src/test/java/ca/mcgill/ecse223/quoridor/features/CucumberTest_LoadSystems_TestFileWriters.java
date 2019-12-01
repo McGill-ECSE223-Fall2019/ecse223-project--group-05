@@ -83,85 +83,36 @@ public class CucumberTest_LoadSystems_TestFileWriters {
 		testFileTable.put("quoridor_test_game_invalid_wall_out-of-track.dat",	"W: c3, i1v\n"	+	
 																				"B: e7, e9v");
 		
-		testFileTable.put("quoridor_test_game_1.mov",							"1. e9 f9\n"	+
-																				"2. e1 d1\n"	+
-																				"3. f9 f8\n"	+
-																				"4. d1 d2\n"	+
-																				"5. f8 f7\n"	+
-																				"6. d2 d3\n"	+
-																				"7. f7 f6\n"	+
-																				"8. d3 d4\n"	+
-																				"9. f6 f5\n"	+
-																				"10. d4 d5\n"	+
-																				"11. f5 f4\n"	+
-																				"12. d5 d6\n"	+
-																				"13. f4 f3\n"	+
-																				"14. d6 d7\n"	+
-																				"15. f3 e3\n"	+
-																				"16. d7 e7\n"	+
-																				"17. e6h\n"	+
-																				"18. e3v\n");
+		testFileTable.put("quoridor_test_game_1.mov",							"1. e8 e2\n"	+
+																				"2. e7 e3\n"	+
+																				"3. e3v e6h\n");
 		
-		testFileTable.put("quoridor_test_game_2.mov",							"1. e9 f9\n"	+
-																				"2. e1 d1\n"	+
-																				"3. f9 f8\n"	+
-																				"4. d1 d2\n"	+
-																				"5. f8 f7\n"	+
-																				"6. d2 d3\n"	+
-																				"7. f7 f6\n"	+
-																				"8. d3 d4\n"	+
-																				"9. f6 f5\n"	+
-																				"10. d4 d5\n"	+
-																				"11. f5 f4\n"	+
-																				"12. d5 d6\n"	+
-																				"13. f4 f3\n"	+
-																				"14. d6 d7\n"	+
-																				"15. f3 e3\n"	+
-																				"16. d7 e7\n"	+
-																				"17. e3 e2\n"	+
-																				"18. e7 e8\n"	+
-																				"19. e6h\n"	+
-																				"20. e3v\n"	+
-																				"21. e5h\n"	+
-																				"22. e4h\n");
+		testFileTable.put("quoridor_test_game_2.mov",							"1. e8 e2\n"	+
+																				"2. b6h a1h\n"	+
+																				"3. e3v e6h\n");
 		
-		testFileTable.put("quoridor_test_game_3.mov",							"1. e9 f9\n"	+
-																				"2. e1 d1\n"	+
-																				"3. f9 f8\n"	+
-																				"4. d1 d2\n"	+
-																				"5. f8 f7\n"	+
-																				"6. d2 d3\n"	+
-																				"7. f7 f6\n"	+
-																				"8. d3 d4\n"	+
-																				"9. f6 f5\n"	+
-																				"10. d4 d5\n"	+
-																				"11. f5 f4\n"	+
-																				"12. d5 d6\n"	+
-																				"13. f4 f3\n"	+
-																				"14. d6 d7\n"	+
-																				"15. f3 e3\n"	+
-																				"16. d7 e7\n"	+
-																				"17. e6h\n"	+
-																				"18. e3h\n"	+
-																				"19. e5h\n"	+
-																				"20. e4h\n"	+
-																				"21. e3 e2\n"	+
-																				"22. e7 e8\n"	+
-																				"23. e2 e1\n");
+		testFileTable.put("quoridor_test_game_3.mov",							"1. e8 e2\n"	+
+																				"2. e7 e3\n"	+
+																				"3. f7 e4\n"	+
+																				"4. f6 e5\n"	+
+																				"5. f5 e6\n"	+
+																				"6. f4 e7\n"	+
+																				"7. f3 e8\n"	+
+																				"8. f2 e9\n");
 		
-		testFileTable.put("quoridor_test_game_invalid_pawn_move.mov",			"1. e9 f1\n");
+		testFileTable.put("quoridor_test_game_invalid_pawn_move.mov",			"1. e8 e2\n"	+
+																				"2. e7 e3\n"	+
+																				"3. e6 e4\n"	+
+																				"4. e5 e5\n");
 		
-		testFileTable.put("quoridor_test_game_invalid_wall_move.mov",			"1. e9 e8\n"	+
-																				"2. e7h\n"	+
-																				"3. e8 e7\n");
+		testFileTable.put("quoridor_test_game_invalid_wall_move.mov",			"1. e3h e6h\n"	+
+																				"2. f5h f5v\n");
 		
-		testFileTable.put("quoridor_test_game_invalid_jump_move.mov",			"1. e9 e8\n"	+
-																				"2. e1 e2\n"	+
-																				"3. e8 e7\n"	+
-																				"4. e2 e3\n"	+
-																				"5. e7 e6\n"	+
-																				"6. e4 e5\n"	+
-																				"7. e6 f4\n");
+		testFileTable.put("quoridor_test_game_invalid_jump_move.mov",			"1. e8 e2\n"	+
+																				"2. e7 e3\n"	+
+																				"3. e6 e4\n"	+
+																				"4. e4h e5\n"	+
+																				"5. e4 a1v\n");
 		
 		
 		return testFileTable;

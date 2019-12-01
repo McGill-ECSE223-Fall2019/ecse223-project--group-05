@@ -249,8 +249,6 @@ public class QuoridorSavesManager {
 		 */
 		//Instantiate useful variables.
 		String lines = "";				//We'll use this to temporarily store the entire contents of the file in memory before writing into the file system.
-		String whitePosition = "e9";	//We'll use this to keep track of the current white position
-		String blackPosition = "e1";	//We'll use this to keep track of the current black position
 		//Instantiate the list of all wall moves, since we need to differentiate between wall moves and other moves.
 		ArrayList<WallMove> allWallMoves = new ArrayList<WallMove>();
 		for( Wall blackWall: game.getCurrentPosition().getBlackWallsOnBoard() ) {
@@ -261,9 +259,19 @@ public class QuoridorSavesManager {
 		}
 		//String building
 		int totalMoves = game.getMoves().size();
+		int currentMoveNumber = 1;
+		boolean blackRound = false;
 		for( int i = 1 ; i <= totalMoves ; i++ ) {
 			
+			//Get the move we are to analyze.
 			Move move = game.getMove(i-1);
+			
+			//Set up the moveNumber of the line if needed (if we are dealing with the first round
+			if(!blackRound){
+				lines += currentMoveNumber +". ";
+			} else {
+				lines += " ";
+			}
 			
 			//While we don't need to differentiate between Step and Jump move, we do need to keep check of WallMove. Here, we check if we have a wallmove.
 			boolean isWallMove = false;
@@ -274,9 +282,6 @@ public class QuoridorSavesManager {
 				}
 			}
 			
-			//Now we need to know whether or not to be referring to whitePosition or blackPosition for initial coordinates in the case of a non-wallMove.
-			boolean isBlackPawnMove = i % 2 == 0;
-			
 			//Now we build the text of our textfile into the String lines.
 			if( isWallMove ) {	//If we're saving a wall move.
 				//Get the string version of the wall's position
@@ -285,25 +290,29 @@ public class QuoridorSavesManager {
 				wallPosition = wallPosition + move.getTargetTile().getRow();
 				wallPosition = wallPosition + ( ((WallMove)move).getWallDirection() == Direction.Horizontal ? "h" : "v" );
 				//Write the new line.
-				lines = lines + i + ". " + wallPosition + "\n";
+				lines += wallPosition;
 				
 			} else {			//If we're saving a pawn move.
 				//Figure out what the second argument of this new line is.
-				String currentPosition = isBlackPawnMove ? blackPosition : whitePosition ;
 				//Figure out what the third argument of this new line is.
 				String nextPosition = "";
 				nextPosition = nextPosition + columnIntToChar(move.getTargetTile().getColumn());
 				nextPosition = nextPosition + move.getTargetTile().getRow();
 				//Write the new line
-				lines = lines + i + ". " + currentPosition + " " + nextPosition +"\n";
-				//Update the currentPosition of the desired pawn.
-				if(isBlackPawnMove) {
-					blackPosition = nextPosition;
-				} else {
-					whitePosition = nextPosition;
-				}
+				lines += nextPosition;
 				
 			}
+			
+			//If we just wrote the second round argument, then we have completed this line
+			if(blackRound){
+				lines += "\n";
+			}
+			
+			//Update information for lines moveNumber and roundNumber
+			if(blackRound){
+				currentMoveNumber++;
+			}
+			blackRound = !blackRound;
 			
 		}
 		
@@ -666,6 +675,7 @@ public class QuoridorSavesManager {
 		 * Go through each individual line in the save file which each represent a move and re-simulate the game.
 		 */
 		String bufferedLine = bufferedReader.readLine();
+		String [] arguments = bufferedLine.split(" ");
 		boolean whiteTurn = true;
 		int moveNumber = 1;			//it's the moveNumber'th move for each player
 		int roundNumber = 1;		//it's the number of the round within the round... so like, roundNumber 1 is always white; roundNumber 2 is always black.
@@ -673,39 +683,28 @@ public class QuoridorSavesManager {
 			//Every line creates a new game position and a new step. We first create each new game position as a duplicate of the previous game position, add it to game, and then make edits; then we add the step to game.
 			//Of course, the first thing we must do before anything is confirm that the move is valid.
 			
-			//Get the arguments of the line.
-			String[] arguments = bufferedLine.split(" ");
+			//Get the arguments of the line IF AND ONLY IF we finished the previous line.
+			if(roundNumber==1&&moveNumber!=1) {
+				arguments = bufferedLine.split(" ");
+			}
 			
 			//First figure out what kind of move we are dealing with by pre-reading the data.
 			//We also complete INITIAL SANITY CHECKS to make sure the numbers that are coming in make sense.
-			boolean isWallPlace = (arguments.length == 2);	//If there are only two words, then it must be a wall place.
+			boolean isWallPlace = (arguments[roundNumber].length() == 3);	//If there are only two words, then it must be a wall place.
 			boolean isBasicStep = false;
 			if(!isWallPlace) {
 				//We're going to figure out if we're dealing with a pawn step or a pawn jump.
 				int currentCol = (whiteTurn?game.getCurrentPosition().getWhitePosition():game.getCurrentPosition().getBlackPosition()).getTile().getColumn();
 				int currentRow = (whiteTurn?game.getCurrentPosition().getWhitePosition():game.getCurrentPosition().getBlackPosition()).getTile().getRow();
-				int initialCol = getColumn( arguments[1] );
-				int initialRow = getRow( arguments[1] );
-				int finalCol = getColumn( arguments[2] );
-				int finalRow = getRow( arguments[2] );
+				int finalCol = getColumn( arguments[roundNumber] );
+				int finalRow = getRow( arguments[roundNumber] );
 				
 				//SANITY CHECK: Tile Coordinates for steps
-				sanityCheckTileCoordinates(initialRow,initialCol);
 				sanityCheckTileCoordinates(finalRow,finalCol);
 				
-				//SANITY CHECK: the tile for this player in gamePosition should be the same as the initial position for the move in the file.
-				if( currentCol != initialCol || currentRow != initialRow ) {
-					throw new InvalidPositionException(
-							"Move and Position arguments do not match. Attempted to move out of a tile that the pawn wasn't already in. \n "
-							+ "See: \"" + bufferedLine + "\". \n " 
-							+ "Consider that the current position is " + ((char)(currentCol + 'a' - 1)) + currentRow 
-							+ " and it is currently " + (whiteTurn?"white player's":"black player's") + " turn.\n"
-							+ "Further consider that it is currrent moveNo " + moveNumber + " and roundNo " + roundNumber + ".");
-				}
-				
 				//SANITY CHECK: the areas that the pawn can ever legitimately jump to form a diamond around it. We will check that the final destination is in this area.
-				int deltaCol = initialCol - finalCol;
-				int deltaRow = initialRow - finalRow;
+				int deltaCol = finalCol - currentCol;
+				int deltaRow = finalRow - currentRow;
 				if( Math.abs(deltaCol) + Math.abs(deltaRow) > 2 ) {
 					throw new InvalidPositionException("Attempted move is not possible. See : " + bufferedLine);
 				}
@@ -738,8 +737,8 @@ public class QuoridorSavesManager {
 			GamePosition currentPosition = game.getCurrentPosition();
 			if(isWallPlace) {
 				//Set up all of the new stuff needed for the wall and put it into the current position.
-				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[1]) , getColumn(arguments[1]) ) );
-				Direction direction = ( arguments[1].charAt(2) == 'h' ? Direction.Horizontal : Direction.Vertical );
+				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[roundNumber]) , getColumn(arguments[roundNumber]) ) );
+				Direction direction = ( arguments[roundNumber].charAt(2) == 'h' ? Direction.Horizontal : Direction.Vertical );
 				Player player = ( whiteTurn? game.getWhitePlayer(): game.getBlackPlayer() );
 				if(!( whiteTurn? currentPosition.hasWhiteWallsInStock(): currentPosition.hasBlackWallsInStock() )) {
 					int whiteInStock = currentPosition.numberOfWhiteWallsInStock();
@@ -762,17 +761,22 @@ public class QuoridorSavesManager {
 					currentPosition.addBlackWallsOnBoard(wall);
 				}
 				//Link the moves like a doubly linked list
-				wallMove.setPrevMove( game.getMove( game.getMoves().size() - 1 ) );
-				game.getMove( game.getMoves().size() -1 ).setNextMove(wallMove);
+				if(moveNumber!=1) {
+					wallMove.setPrevMove( game.getMove( game.getMoves().size() - 1 ) );
+					game.getMove( game.getMoves().size() -1 ).setNextMove(wallMove);
+				}
 				//Having the WallMove, add it into the game.
 				game.addMove(wallMove);
 				
 			} else if (isBasicStep) {
 				//IMPORTANT TO NOTE: stepMoves interact with the PawnBehaviour state machines.
 				//First, we need to figure out what direction the step is making our pawn move.
-				MoveDirection direction = getStepDirection(getColumn(arguments[1]),getRow(arguments[1]),getColumn(arguments[2]),getRow(arguments[2]));
+				int currentCol = (whiteTurn?game.getCurrentPosition().getWhitePosition():game.getCurrentPosition().getBlackPosition()).getTile().getColumn();
+				int currentRow = (whiteTurn?game.getCurrentPosition().getWhitePosition():game.getCurrentPosition().getBlackPosition()).getTile().getRow();
+				MoveDirection direction = getStepDirection(currentCol,currentRow,getColumn(arguments[roundNumber]),getRow(arguments[roundNumber]));
 				if(direction==null) {
-					throw new InvalidPositionException("IMPLEMENTATION ERROR FOR STEPMOVE CREATION; THIS CLAUSE SHOULD BE UNREACHABLE. Going from " + arguments[1] + " to " + arguments[2] + ".");
+					throw new InvalidPositionException("IMPLEMENTATION ERROR FOR STEPMOVE CREATION; THIS CLAUSE SHOULD BE UNREACHABLE. Going from " + ((char)(currentCol + 'a' -1 )) + currentRow + " to " + arguments[roundNumber] + ".\n"+
+														"Line number read was " + moveNumber + " argument number " + roundNumber);
 				}
 				PawnBehaviour pawnStateMachine = ( whiteTurn? QuoridorApplication.getWhitePawnBehaviour(firstPlayer) : QuoridorApplication.getBlackPawnBehaviour(secondPlayer) );
 				try{
@@ -781,12 +785,12 @@ public class QuoridorSavesManager {
 					throw new InvalidPositionException(
 							"Detected illegal step.\n"+
 							"Step direction inputted is " + direction + " " +
-							"with initial tile " + arguments[1] + " and target tile " + arguments[2] + ".");
+							"with target tile " + arguments[roundNumber] + ".");
 				}
 				//Update the state machine
 				pawnStateMachine.move(direction);
 				//Add the step move to the game
-				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[2]) ,getColumn(arguments[2])) );
+				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[roundNumber]) ,getColumn(arguments[roundNumber])) );
 				StepMove stepMove = new StepMove( moveNumber, roundNumber, (whiteTurn?firstPlayer:secondPlayer), targetTile, game );
 				//Link the moves like a doubly linked list
 				stepMove.setPrevMove( game.getMove( game.getMoves().size() - 1 ) );
@@ -799,9 +803,11 @@ public class QuoridorSavesManager {
 			} else /* isJumpStep */ {
 				//IMPORTANT TO NOTE: jumpMoves interact with the PawnBehaviour state machines.
 				//First we need to figure out what direction the jump is making our pawn move.
-				MoveDirection direction = getJumpDirection(getColumn(arguments[1]),getRow(arguments[1]),getColumn(arguments[2]),getRow(arguments[2]));
+				int currentCol = (whiteTurn?game.getCurrentPosition().getWhitePosition():game.getCurrentPosition().getBlackPosition()).getTile().getColumn();
+				int currentRow = (whiteTurn?game.getCurrentPosition().getWhitePosition():game.getCurrentPosition().getBlackPosition()).getTile().getRow();				
+				MoveDirection direction = getJumpDirection(currentCol,currentRow,getColumn(arguments[roundNumber]),getRow(arguments[roundNumber]));
 				if(direction==null) {
-					throw new InvalidPositionException("IMPLEMENTATION ERROR FOR JUMPMOVE CREATION; THIS CLAUSE SHOULD BE UNREACHABLE. Going from " + arguments[1] + " to " + arguments[2] + ".");
+					throw new InvalidPositionException("IMPLEMENTATION ERROR FOR JUMPMOVE CREATION; THIS CLAUSE SHOULD BE UNREACHABLE. Going from " + ((char)(currentCol + 'a' -1 )) + currentRow + " to " + arguments[roundNumber] + ".");
 				}
 				PawnBehaviour pawnStateMachine = ( whiteTurn? QuoridorApplication.getWhitePawnBehaviour(firstPlayer) : QuoridorApplication.getBlackPawnBehaviour(secondPlayer) );
 				try{
@@ -810,12 +816,12 @@ public class QuoridorSavesManager {
 					throw new InvalidPositionException(
 							"Detected illegal jump."+
 							"Step direction inputted is " + direction + " " +
-							"with initial tile " + arguments[1] + " and target tile " + arguments[2] + ".");
+							"with target tile " + arguments[roundNumber] + ".");
 				}
 				//Update the state machine
 				pawnStateMachine.jump(direction);
 				//Add the step move to the game
-				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[2]) ,getColumn(arguments[2])) );
+				Tile targetTile = game.getQuoridor().getBoard().getTile( getTileId( getRow(arguments[roundNumber]) ,getColumn(arguments[roundNumber])) );
 				JumpMove jumpMove = new JumpMove( moveNumber, roundNumber, (whiteTurn?firstPlayer:secondPlayer), targetTile, game );
 				//Link the moves like a doubly linked list
 				jumpMove.setPrevMove( game.getMove( game.getMoves().size() - 1 ) );
@@ -831,14 +837,17 @@ public class QuoridorSavesManager {
 			validateCurrentGamePosition(game);
 			
 			//Now we update the while loop parametres.
-			bufferedLine = bufferedReader.readLine();
 			if(whiteTurn) {
-				whiteTurn = !whiteTurn;
+				if(arguments.length == 2) {
+					break;	//There should only ever be an odd-numbered amount of moves when the white player's move was the last. That would mean that it's the end of the save.
+				}
+				whiteTurn = false;
 				roundNumber = 2;
 			} else {
 				moveNumber++;
-				whiteTurn = !whiteTurn;
+				whiteTurn = true;
 				roundNumber = 1;
+				bufferedLine = bufferedReader.readLine();
 			}
 			
 		} //File reading complete.
