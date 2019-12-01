@@ -2434,11 +2434,12 @@ public class CucumberStepDefinitions {
      *
      * @author Daniel Wu
      */
-    @Then("The game shall be in replay mode")
-    public void theGameShallBeInReplayMode(){
-        boolean inReplayMode = (QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus() == GameStatus.Replay);
-        assertEquals(true, inReplayMode);
-    }
+    //@Then("The game shall be in replay mode")
+    //public void theGameShallBeInReplayMode(){
+    //    boolean inReplayMode = (QuoridorApplication.getQuoridor().getCurrentGame().getGameStatus() == GameStatus.Replay);
+    //    assertEquals(true, inReplayMode);
+    //}
+    //	I'VE GOT'CH'U HOMIE! - EDWIN
 
     /**
      * Duplicate Method
@@ -2536,16 +2537,16 @@ public class CucumberStepDefinitions {
      *
      * @author Daniel Wu
      */
-    @And("The game has a final result")
-    public void theGameHasAFinalResult(){
-        Game currentGame = QuoridorApplication.getQuoridor().getCurrentGame();
-        int roundNumber = currentGame.getMoves().get(currentGame.getMoves().size() - 1).getRoundNumber();
-        if ((roundNumber % 2) == 1){
-            currentGame.setGameStatus(GameStatus.BlackWon);
-        } else if ((roundNumber % 2) == 0){
-            currentGame.setGameStatus(GameStatus.WhiteWon);
-        }
-    }
+    //@And("The game has a final result")
+    //public void theGameHasAFinalResult(){
+    //    Game currentGame = QuoridorApplication.getQuoridor().getCurrentGame();
+    //    int roundNumber = currentGame.getMoves().get(currentGame.getMoves().size() - 1).getRoundNumber();
+    //    if ((roundNumber % 2) == 1){
+    //        currentGame.setGameStatus(GameStatus.BlackWon);
+    //    } else if ((roundNumber % 2) == 0){
+    //        currentGame.setGameStatus(GameStatus.WhiteWon);
+    //    }
+    //}
 
     /**
      * EnterReplayMode.feature - Enter Replay Mode
