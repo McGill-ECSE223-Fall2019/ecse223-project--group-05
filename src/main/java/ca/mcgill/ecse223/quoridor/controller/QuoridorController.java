@@ -1142,6 +1142,19 @@ public class QuoridorController {
         return true;
     }
 
+    public static void deleteRemainingMoves(){
+        Game currentGame = QuoridorApplication.getQuoridor().getCurrentGame();
+        //Get the index of the current game position
+        int index = currentGame.getPositions().indexOf(currentGame.getCurrentPosition());
+
+        //Now delete all the game positions until we reach the index
+        int count = currentGame.getPositions().size() - 1;
+        while(count != index){
+            currentGame.removePosition(currentGame.getPosition(count));; //unsupported since it an unmodifiable collection
+            count--;
+        }
+    }
+
     //Getter for gamestate
 
 
