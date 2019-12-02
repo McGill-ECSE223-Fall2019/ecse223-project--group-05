@@ -1162,6 +1162,7 @@ public class QuoridorController {
         int count = currentGame.getPositions().size() - 1;
         while(count != index){
             currentGame.getPositions().get(count).delete();
+            currentGame.getMoves().get(count -2).delete();
             count--;
         }
         System.out.println(currentGame.getPositions().size());
@@ -1194,7 +1195,7 @@ public class QuoridorController {
 //        } else {
 //            Player tmp = quoridor.getCurrentGame().getBlackPlayer();
 //
-//            GamePosition nextGamePosition = new GamePosition(gamePositionId+1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
+//            GamePosition nextGamePosition = new GamePosition(index+1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
 //            for(Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()){
 //                if(wall.hasMove()){
 //                    nextGamePosition.addWhiteWallsOnBoard(wall);
