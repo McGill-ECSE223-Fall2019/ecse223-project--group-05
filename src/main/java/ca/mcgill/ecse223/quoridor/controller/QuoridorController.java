@@ -1573,6 +1573,17 @@ public class QuoridorController {
             return getCurrentGame().setGameStatus(GameStatus.BlackWon);
     }
 
+    public static void setGameToNotRunning(){
+        //set game to initializing b/c that state can be used as a flag to detect that a game has ended.
+        Quoridor q = QuoridorApplication.getQuoridor();
+
+        Game g = QuoridorApplication.getQuoridor().getCurrentGame();
+        if (g == null) {
+            initializeGame(q);
+            g = QuoridorApplication.getQuoridor().getCurrentGame();
+        }
+        g.setGameStatus(GameStatus.Initializing); //initializing does not occur once game is started, so we can use it as a flag to decrate that a game is not running but whose results are still unknown
+    }
     /**
      * @author Matthias Arabian
      * Get the final results from the model. Send those to the GUI to display.

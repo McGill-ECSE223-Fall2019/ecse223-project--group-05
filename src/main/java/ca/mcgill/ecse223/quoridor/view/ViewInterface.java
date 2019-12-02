@@ -393,7 +393,8 @@ public class ViewInterface {
 				wallGrabbed = false;
 				wallMoveCandidate = null;
 				wallSelected = null;
-				throw new java.lang.UnsupportedOperationException("Cannot retrieve the number of walls in stock");
+				throw new java.lang.UnsupportedOperationException("Cannot retrieve the number of walls in stock. Details follow as:\n" +
+						e.getMessage());
 
 			}
 
@@ -2295,8 +2296,8 @@ public class ViewInterface {
     }
 	public void continueGame(){
 		System.out.println("continue game");
+		QuoridorController.continueGame();
 		end_ReplayMode();
-		quoridor.getCurrentGame().setGameStatus(Game.GameStatus.Running);
 		Player p = QuoridorController.getPlayerOfCurrentTurn();
 		QuoridorController.startPlayerTimer(p,timer);
 		setPossibleMoveTiles();

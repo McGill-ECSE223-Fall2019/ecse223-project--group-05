@@ -2351,6 +2351,10 @@ public class CucumberStepDefinitions {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //REPORT FINAL RESULT
 
+    @Given("The game is no longer running")
+    public void theGameIsNoLongerRunning(){
+        QuoridorController.setGameToNotRunning();
+    }
     /**
      * @author Matthias Arabian
      * Stops timers, display the final resuls on the GUI.
