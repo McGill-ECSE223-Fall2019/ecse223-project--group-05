@@ -1143,16 +1143,66 @@ public class QuoridorController {
     }
 
     public static void deleteRemainingMoves(){
-        Game currentGame = QuoridorApplication.getQuoridor().getCurrentGame();
+        Quoridor quoridor = QuoridorApplication.getQuoridor();
+        Game currentGame = quoridor.getCurrentGame();
         //Get the index of the current game position
         int index = currentGame.getPositions().indexOf(currentGame.getCurrentPosition());
 
         //Now delete all the game positions until we reach the index
         int count = currentGame.getPositions().size() - 1;
-        while(count >= index + 1){
-            currentGame.removePosition(currentGame.getPosition(count));; //unsupported since it an unmodifiable collection
+        while(count != index){
+            currentGame.getPositions().get(count).delete();
             count--;
         }
+        System.out.println(currentGame.getPositions().size());
+        System.out.println(index);
+//        Player player = currentGame.getCurrentPosition().getPlayerToMove();
+//        PlayerPosition whitePosition = currentGame.
+//        if (player.equals(quoridor.getCurrentGame().getBlackPlayer())) {
+//            Player tmp = quoridor.getCurrentGame().getWhitePlayer();
+//
+//            GamePosition nextGamePosition = new GamePosition(index+1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
+//            quoridor.getCurrentGame().setCurrentPosition(nextGamePosition);
+//            for(Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()){
+//                if(wall.hasMove()){
+//                    nextGamePosition.addWhiteWallsOnBoard(wall);
+//                }
+//                else{
+//                    nextGamePosition.addWhiteWallsInStock(wall);
+//                }
+//            }
+//            for(Wall wall : quoridor.getCurrentGame().getBlackPlayer().getWalls()){
+//                if(wall.hasMove()){
+//                    nextGamePosition.addBlackWallsOnBoard(wall);
+//                }
+//                else{
+//                    nextGamePosition.addBlackWallsInStock(wall);
+//                }
+//            }
+//            quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(tmp);
+//        } else {
+//            Player tmp = quoridor.getCurrentGame().getBlackPlayer();
+//
+//            GamePosition nextGamePosition = new GamePosition(gamePositionId+1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
+//            for(Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()){
+//                if(wall.hasMove()){
+//                    nextGamePosition.addWhiteWallsOnBoard(wall);
+//                }
+//                else{
+//                    nextGamePosition.addWhiteWallsInStock(wall);
+//                }
+//            }
+//            for(Wall wall : quoridor.getCurrentGame().getBlackPlayer().getWalls()){
+//                if(wall.hasMove()){
+//                    nextGamePosition.addBlackWallsOnBoard(wall);
+//                }
+//                else{
+//                    nextGamePosition.addBlackWallsInStock(wall);
+//                }
+//            }
+//            quoridor.getCurrentGame().setCurrentPosition(nextGamePosition);
+//            quoridor.getCurrentGame().getCurrentPosition().setPlayerToMove(tmp);
+//        }
     }
 
     //Getter for gamestate

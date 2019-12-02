@@ -2297,6 +2297,8 @@ public class ViewInterface {
 		System.out.println("continue game");
 		if (!QuoridorController.continueGame())
 			return; //return if you can't return game. redudancy measure to insure nothing goes wring
+		QuoridorController.continueGame();
+		QuoridorController.deleteRemainingMoves();
 		end_ReplayMode();
 		Player p = QuoridorController.getPlayerOfCurrentTurn();
 		QuoridorController.startPlayerTimer(p,timer);
