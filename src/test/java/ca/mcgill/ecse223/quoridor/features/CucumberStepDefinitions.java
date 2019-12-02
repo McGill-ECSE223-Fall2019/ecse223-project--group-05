@@ -2514,8 +2514,12 @@ public class CucumberStepDefinitions {
      */
     @And("The remaining moves of the game shall be removed")
     public void theRemainingMovesOfTheGameShallBeRemoved(){
-        //this is called in continue game
-//        QuoridorController.deleteRemainingMoves();
+        Game game = QuoridorApplication.getQuoridor().getCurrentGame();
+        int index = game.getCurrentPosition().getId();
+        int positionSize = game.getPositions().size();
+        int moveSize = game.getMoves().size();
+        assertEquals(index+1, positionSize);
+        assertEquals(index, moveSize);
     }
 
     /**
