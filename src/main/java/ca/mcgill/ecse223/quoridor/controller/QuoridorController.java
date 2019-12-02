@@ -614,7 +614,7 @@ public class QuoridorController {
 
         //Check if it is the very last move played in the game
         int nbOfMoves = game.numberOfMoves();
-        if (currentId != game.numberOfPositions() - 1) {
+        if (currentId != game.numberOfPositions() - 2) {
             //get the next game position and assign it to the game's current position.
             GamePosition nextGamePosition = game.getPosition(currentId + 1);
             game.setCurrentPosition(nextGamePosition);
