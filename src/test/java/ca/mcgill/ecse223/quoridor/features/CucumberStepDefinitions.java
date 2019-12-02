@@ -2514,18 +2514,8 @@ public class CucumberStepDefinitions {
      */
     @And("The remaining moves of the game shall be removed")
     public void theRemainingMovesOfTheGameShallBeRemoved(){
-        //delete all of the moves past this gamePosition
-        Game currentGame = QuoridorApplication.getQuoridor().getCurrentGame();
-        //Get the index of the current game position
-        int index = currentGame.getPositions().indexOf(currentGame.getCurrentPosition());
-
-        //Now delete all the game positions until we reach the index
-        int count = currentGame.getPositions().size() - 1;
-        while(count != index){
-            currentGame.removePosition(currentGame.getPosition(count));; //unsupported since it an unmodifiable collection
-            count--;
-        }
-
+        //this is called in continue game
+//        QuoridorController.deleteRemainingMoves();
     }
 
     /**
