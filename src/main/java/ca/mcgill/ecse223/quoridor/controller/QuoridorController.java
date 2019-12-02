@@ -602,10 +602,9 @@ public class QuoridorController {
     /**
      * Gherkin feature: Step Forward
      * This controller method is used to see the board position after the move made by the next player in turn.
-     * This is assuming the game is in replay mode
+     * This is assuming the game is in replay mode.
      *
      * @param game - The current Game
-     * @return void
      * @author Thomas Philippon
      */
     public static void stepForward(Game game){
@@ -623,11 +622,10 @@ public class QuoridorController {
 
     /**
      * Gherkin feature: Step Backward
-     * This controller method is used to see the board position after the move made by the  previous player in turn.
+     * This controller method is used to see the board position before the move made by the current player in turn.
      * This is assuming the game is in replay mode
      *
      * @param game - The current Game
-     * @return void
      * @author Thomas Philippon
      */
     public static void stepBackward(Game game){
