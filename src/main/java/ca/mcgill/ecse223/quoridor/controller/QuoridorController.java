@@ -1134,14 +1134,26 @@ public class QuoridorController {
         //Set gamePosition to current state and restart clock + setup state machine, then move to the in-game page
         currentGame.setGameStatus(GameStatus.Running);
         int index = currentGame.getPositions().indexOf(currentGame.getCurrentPosition());
-        System.out.println("index: " + index);
-        System.out.println("Positions: " + currentGame.getPositions().size());
-        System.out.println("Moves: " + currentGame.getMoves().size());
-
+        if (index != 0){
+            int moveIndex = index - 1;
+            int roundNumber = currentGame.getMoves().get(moveIndex).getRoundNumber();
+            if (roundNumber == 1){
+                currentGame.getCurrentPosition().setPlayerToMove(currentGame.getBlackPlayer());
+            } else if (roundNumber == 2){
+                currentGame.getCurrentPosition().setPlayerToMove(currentGame.getWhitePlayer());
+            }
+        } else {
+            currentGame.getCurrentPosition().setPlayerToMove(currentGame.getWhitePlayer());
+        }
         deleteRemainingMoves();
         return true;
     }
 
+    /**
+     * Deletes the game positions after the selected one
+     *
+     * @author Daniel Wu
+     */
     public static void deleteRemainingMoves(){
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         Game currentGame = quoridor.getCurrentGame();
@@ -1157,7 +1169,8 @@ public class QuoridorController {
         System.out.println(currentGame.getPositions().size());
         System.out.println(index);
 //        Player player = currentGame.getCurrentPosition().getPlayerToMove();
-//        PlayerPosition whitePosition = currentGame.
+//        PlayerPosition whitePosition = currentGame.getCurrentPosition().getWhitePosition();
+//        PlayerPosition blackPosition = currentGame.getCurrentPosition().getBlackPosition();
 //        if (player.equals(quoridor.getCurrentGame().getBlackPlayer())) {
 //            Player tmp = quoridor.getCurrentGame().getWhitePlayer();
 //
