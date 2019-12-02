@@ -169,9 +169,11 @@ public class ViewInterface {
     double x,y;
 
 
-
-
-    public void loadGame_populateBoard(){
+	/**
+	 * @author Matthias Arabian
+	 * used to populate the board with the loaded game
+	 */
+	public void loadGame_populateBoard(){
 		GamePosition position = quoridor.getCurrentGame().getCurrentPosition();
 		PlayerPosition white = position.getWhitePosition();
 		PlayerPosition black = position.getBlackPosition();
@@ -187,6 +189,10 @@ public class ViewInterface {
 		moveWallsTo(blackWalls, whiteWalls, false);
 	}
 
+	/**
+	 * @author Matthias Arabian
+	 * used to populate the board with the current game possition. (used for replay mode)
+	 */
     public void populateBoard(){
         GamePosition position = quoridor.getCurrentGame().getCurrentPosition();
         PlayerPosition white = position.getWhitePosition();
@@ -204,6 +210,13 @@ public class ViewInterface {
 
     }
 
+	/**
+	 * @author Matthias Arabian
+	 * @param blackWalls
+	 * @param whiteWalls
+	 * @param offset
+	 * Used in replayMode to populate the board with walls
+	 */
 	private void moveWallsTo(List<Wall> blackWalls, List<Wall> whiteWalls, boolean offset){
     	int addToPosition = 0;
     	if (offset)
@@ -216,6 +229,13 @@ public class ViewInterface {
 		}
 	}
 
+	/**
+	 * @author Matthias Arabian
+	 * @param blackWalls
+	 * @param whiteWalls
+	 * @param offset
+	 * Helper method used to move walls to their final positions
+	 */
 	private void positionWallTo(Wall w, String color, int offset){
 
 		HBox p;
@@ -258,6 +278,12 @@ public class ViewInterface {
 		}
 	}
 
+	/**
+	 * @author Matthias Arabian
+	 * @param t_black
+	 * @param t_white
+	 * Move pawns to position given by GamePosition currentPosition
+	 */
     private void movePawnsTo(Tile t_black, Tile t_white){
         ImageView imgBlack = gameBTiles[(t_black.getRow()-1)*9 + (t_black.getColumn() - 1)];
         ImageView imgWhite = gameBTiles[(t_white.getRow()-1)*9 + (t_white.getColumn() - 1)];
@@ -723,6 +749,9 @@ public class ViewInterface {
 
 	}
 
+	/**
+	 * Helper method to return all walls to stock
+	 */
 	public void clearWallsOffBoard(){
 		//put all blackWalls back into their stock positions
 		Rectangle[] blackWalls = {blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6
@@ -2294,6 +2323,13 @@ public class ViewInterface {
 		QuoridorController.jumpToStart(quoridor);
 		populateBoard();
     }
+
+	/**
+	 * @author Matthias Arabian
+	 * Calls the controller method continueGame
+	 * Ends replay mode.
+	 * Continues game, restarts timer.
+	 */
 	public void continueGame(){
 		System.out.println("continue game");
 		QuoridorController.continueGame();
@@ -2303,18 +2339,30 @@ public class ViewInterface {
 		setPossibleMoveTiles();
 	}
 
+	/**
+	 * @author Matthias Arabian
+	 */
     public void nextMove(){
 	    QuoridorController.stepForward(quoridor.getCurrentGame());
 	    populateBoard();
     }
+	/**
+	 * @author Matthias Arabian
+	 */
     public void previousMove(){
 	    QuoridorController.stepBackward(quoridor.getCurrentGame());
         populateBoard();
 	}
+	/**
+	 * @author Matthias Arabian
+	 */
     public void firstMove(){
         QuoridorController.jumpToStart(quoridor);
         populateBoard();
     }
+	/**
+	 * @author Matthias Arabian
+	 */
     public void lastMove(){
         QuoridorController.jumpToFinal(quoridor);
         populateBoard();
@@ -2323,6 +2371,10 @@ public class ViewInterface {
 
 
 
+	/**
+	 * @author Matthias Arabian
+	 * used to offset the walls' position when in replay mode
+	 */
     public void shiftWallOnBoard(int shift){
         //put all blackWalls back into their stock positions
         Rectangle[] blackWalls = {blackWall1, blackWall2, blackWall3, blackWall4, blackWall5, blackWall6
@@ -2339,6 +2391,9 @@ public class ViewInterface {
         }
     }
 
+	/**
+	 * @author Matthias Arabian
+	 */
     private void shiftWallOnBoard_helper(Rectangle r, int shift){
         Node p = r.getParent();
         if (!p.getClass().getName().contains("HBox")) {
