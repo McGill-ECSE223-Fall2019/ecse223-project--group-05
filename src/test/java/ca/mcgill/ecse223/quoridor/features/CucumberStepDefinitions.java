@@ -1745,7 +1745,7 @@ public class CucumberStepDefinitions {
      */
 
     /**
-     * method to set opponent pawn posiiton
+     * method to set opponent pawn position
      * JumpPawn.feature - Jump Pawn, MovePawn.feature
      *
      * @param orow

@@ -43,7 +43,13 @@ public class PlayerTimer extends TimerTask{
         }
 
         //if game isn't running, end timer:
-        if (!QuoridorController.isGameRunning(QuoridorApplication.getQuoridor().getCurrentGame()))
-            this.cancel();
+        try{
+            if (!QuoridorController.isGameRunning(QuoridorApplication.getQuoridor().getCurrentGame()))
+                this.cancel();
+        }
+        catch(Exception e){
+        //it means that there is no current game to the timer cannot be cancelled
+        }
+
     }
 }
