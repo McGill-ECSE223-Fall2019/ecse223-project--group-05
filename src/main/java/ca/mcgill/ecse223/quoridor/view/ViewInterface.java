@@ -245,7 +245,6 @@ public class ViewInterface {
 		//offset walls to new position
 		sacrifice.setLayoutX(sacrifice.getLayoutX() + offset);
 
-		System.out.println("Wall at: " +  w.getMove().getTargetTile().getRow() + ", " + w.getMove().getTargetTile().getColumn());
 		for (int i = 1; i < w.getMove().getTargetTile().getColumn(); i++)
 			sacrifice.setTranslateX(sacrifice.getTranslateX() + HORIZONTALSTEP);
 
@@ -1654,7 +1653,7 @@ public class ViewInterface {
 
 
         //check if game ended
-		QuoridorController.checkResult().equals("");
+		QuoridorController.checkResult();
 
 
 		if (color.equals("white")) {
@@ -2296,7 +2295,8 @@ public class ViewInterface {
     }
 	public void continueGame(){
 		System.out.println("continue game");
-		QuoridorController.continueGame();
+		if (!QuoridorController.continueGame())
+			return; //return if you can't return game. redudancy measure to insure nothing goes wring
 		end_ReplayMode();
 		Player p = QuoridorController.getPlayerOfCurrentTurn();
 		QuoridorController.startPlayerTimer(p,timer);

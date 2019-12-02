@@ -1125,7 +1125,8 @@ public class QuoridorController {
         Game currentGame = quoridor.getCurrentGame();
 
         //If the game is won, then can't continue
-        if ((currentGame.getGameStatus() == GameStatus.BlackWon) || (currentGame.getGameStatus() == GameStatus.WhiteWon)){
+        if ((currentGame.getGameStatus() == GameStatus.BlackWon) || (currentGame.getGameStatus() == GameStatus.WhiteWon)
+                || (currentGame.getGameStatus() == GameStatus.Draw)){
             currentGame.setGameStatus(GameStatus.Replay);
             return false;
         }
@@ -1133,12 +1134,11 @@ public class QuoridorController {
         //Set gamePosition to current state and restart clock + setup state machine, then move to the in-game page
         currentGame.setGameStatus(GameStatus.Running);
         int index = currentGame.getPositions().indexOf(currentGame.getCurrentPosition());
-        index = currentGame.getMove(index).getRoundNumber();
-        if (index == 1){
-            currentGame.getCurrentPosition().setPlayerToMove(currentGame.getWhitePlayer());
-        } else if (index == 2){
-            currentGame.getCurrentPosition().setPlayerToMove(currentGame.getBlackPlayer());
-        }
+        System.out.println("index: " + index);
+        System.out.println("Positions: " + currentGame.getPositions().size());
+        System.out.println("Moves: " + currentGame.getMoves().size());
+
+        deleteRemainingMoves();
         return true;
     }
 
@@ -1149,7 +1149,7 @@ public class QuoridorController {
 
         //Now delete all the game positions until we reach the index
         int count = currentGame.getPositions().size() - 1;
-        while(count != index){
+        while(count >= index + 1){
             currentGame.removePosition(currentGame.getPosition(count));; //unsupported since it an unmodifiable collection
             count--;
         }
