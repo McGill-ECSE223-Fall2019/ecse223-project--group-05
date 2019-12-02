@@ -2,6 +2,7 @@ package ca.mcgill.ecse223.quoridor.controller;
 
 
 import javafx.scene.paint.Color;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Time;
@@ -29,7 +30,7 @@ public class QuoridorController {
      * @author Matthias Arabian
      * resets the quoridor object of the QuoridorApplication to allow users to play consecutive games.
      */
-    public static void clearGame(){
+    public static void clearGame() {
 
         Quoridor q = QuoridorApplication.getQuoridor();
 
@@ -156,14 +157,14 @@ public class QuoridorController {
             pawnMoveDirection = MoveDirection.East;
         } else if (side.equals("left")) {
             pawnMoveDirection = MoveDirection.West;
-        } else if( side.equals("upleft") ) {
-        	pawnMoveDirection = MoveDirection.NorthWest;
-        } else if( side.equals("upright") ) {
-        	pawnMoveDirection = MoveDirection.NorthEast;
-        } else if( side.equals("downleft") ) {
-        	pawnMoveDirection = MoveDirection.SouthWest;
-        } else if( side.equals("downright") ) {
-        	pawnMoveDirection = MoveDirection.SouthEast;
+        } else if (side.equals("upleft")) {
+            pawnMoveDirection = MoveDirection.NorthWest;
+        } else if (side.equals("upright")) {
+            pawnMoveDirection = MoveDirection.NorthEast;
+        } else if (side.equals("downleft")) {
+            pawnMoveDirection = MoveDirection.SouthWest;
+        } else if (side.equals("downright")) {
+            pawnMoveDirection = MoveDirection.SouthEast;
         } else {
             pawnMoveDirection = null;
             //throw new IllegalArgumentException("Unsupported pawn direction was provided");
@@ -209,19 +210,19 @@ public class QuoridorController {
                     col = col + 2;
                 } else if (side.equals("left")) {
                     col = col - 2;
-                } else if( side.equals("upleft") ) {
-                	row = row - 1;
-                	col = col - 1;
-                } else if( side.equals("upright") ) {
-                	row = row - 1;
-                	col = col + 1;
-                } else if(side.equals("downleft") ) {
-                	row = row + 1;
-                	col = col - 1;
-                } else if(side.equals("downright") ) {
-                	row = row + 1;
-                	col = col + 1;
-                } 
+                } else if (side.equals("upleft")) {
+                    row = row - 1;
+                    col = col - 1;
+                } else if (side.equals("upright")) {
+                    row = row - 1;
+                    col = col + 1;
+                } else if (side.equals("downleft")) {
+                    row = row + 1;
+                    col = col - 1;
+                } else if (side.equals("downright")) {
+                    row = row + 1;
+                    col = col + 1;
+                }
             }
         }
 
@@ -229,8 +230,8 @@ public class QuoridorController {
             Tile targetTile = quoridor.getBoard().getTile((row - 1) * 9 + col - 1);
             playerPosition.setTile(targetTile);
 
-            int moves = quoridor.getCurrentGame().getPositions().size()-1;
-            int moveNumber = (moves+1) / 2;
+            int moves = quoridor.getCurrentGame().getPositions().size() - 1;
+            int moveNumber = (moves + 1) / 2;
 
             if (!isLegalJump) {
                 StepMove stepMove = new StepMove(moveNumber, roundNumber, currentPlayer, targetTile, quoridor.getCurrentGame());
@@ -547,8 +548,8 @@ public class QuoridorController {
 
         if (nbOfWalls >= 1) {
             //the player has more walls in stock
-            int moves = quoridor.getCurrentGame().getPositions().size()-1;
-            int lastMoveNumber = (moves+1) / 2;
+            int moves = quoridor.getCurrentGame().getPositions().size() - 1;
+            int lastMoveNumber = (moves + 1) / 2;
             int roundNumber = game.getCurrentPosition().getId();
 
             Tile targetTile = quoridor.getBoard().getTile(0); //initialize the wall move candidate to the tile(0,0)
@@ -577,12 +578,12 @@ public class QuoridorController {
      * @return Boolean - Returns 1 if a wall candidate object was created and 0 if not
      * @author Thomas Philippon
      */
-    public static void cancelWallGrabbed(Quoridor quoridor){
+    public static void cancelWallGrabbed(Quoridor quoridor) {
         Player playerToMove = quoridor.getCurrentGame().getCurrentPosition().getPlayerToMove();
         Game game = quoridor.getCurrentGame();
         String whitePlayerName = quoridor.getCurrentGame().getWhitePlayer().getUser().getName();
         WallMove wallCandidate;
-        try{
+        try {
             wallCandidate = quoridor.getCurrentGame().getWallMoveCandidate();
             Wall wall = wallCandidate.getWallPlaced();
             int nbOfWalls = numberOfWallsInStock(playerToMove, game);
@@ -607,15 +608,15 @@ public class QuoridorController {
      * @param game - The current Game
      * @author Thomas Philippon
      */
-    public static void stepForward(Game game){
+    public static void stepForward(Game game) {
         //get the ID of the current game and move position
         int currentId = game.getCurrentPosition().getId();
 
         //Check if it is the very last move played in the game
         int nbOfMoves = game.numberOfMoves();
-        if(currentId != game.numberOfPositions()-1){
+        if (currentId != game.numberOfPositions() - 1) {
             //get the next game position and assign it to the game's current position.
-            GamePosition nextGamePosition = game.getPosition(currentId +1);
+            GamePosition nextGamePosition = game.getPosition(currentId + 1);
             game.setCurrentPosition(nextGamePosition);
         }
     }
@@ -628,14 +629,14 @@ public class QuoridorController {
      * @param game - The current Game
      * @author Thomas Philippon
      */
-    public static void stepBackward(Game game){
+    public static void stepBackward(Game game) {
         //get the ID of the current game position
         int currentId = game.getCurrentPosition().getId();
 
         //check if it is the very first move of the game
-        if(currentId != 0){
+        if (currentId != 0) {
             //get the next game position and assign it to the game's current position.
-            GamePosition nextGamePosition = game.getPosition(currentId -1);
+            GamePosition nextGamePosition = game.getPosition(currentId - 1);
             game.setCurrentPosition(nextGamePosition);
         }
     }
@@ -898,17 +899,17 @@ public class QuoridorController {
 
         //This will potentially also check if the wall will block the path to the other side
         ArrayList<Wall> allWallsOnBoard = new ArrayList<Wall>();
-        for (Wall wall : whiteWallsOnBoard){
+        for (Wall wall : whiteWallsOnBoard) {
             allWallsOnBoard.add(wall);
         }
-        for (Wall wall : blackWallsOnBoard){
+        for (Wall wall : blackWallsOnBoard) {
             allWallsOnBoard.add(wall);
         }
         allWallsOnBoard.add(currentGame.getWallMoveCandidate().getWallPlaced());
-        if (!pathExistenceCheck(currentGamePosition.getWhitePosition(), allWallsOnBoard)){
+        if (!pathExistenceCheck(currentGamePosition.getWhitePosition(), allWallsOnBoard)) {
             return false;
         }
-        if (!pathExistenceCheck(currentGamePosition.getBlackPosition(), allWallsOnBoard)){
+        if (!pathExistenceCheck(currentGamePosition.getBlackPosition(), allWallsOnBoard)) {
             return false;
         }
         return true;
@@ -979,16 +980,16 @@ public class QuoridorController {
         }
         //Check if path exists for each players
         ArrayList<Wall> allWallsOnBoard = new ArrayList<Wall>();
-        for (Wall wall : whiteWallsOnBoard){
+        for (Wall wall : whiteWallsOnBoard) {
             allWallsOnBoard.add(wall);
         }
-        for (Wall wall : blackWallsOnBoard){
+        for (Wall wall : blackWallsOnBoard) {
             allWallsOnBoard.add(wall);
         }
-        if (!pathExistenceCheck(gamePosition.getWhitePosition(), allWallsOnBoard)){
+        if (!pathExistenceCheck(gamePosition.getWhitePosition(), allWallsOnBoard)) {
             return false;
         }
-        if (!pathExistenceCheck(gamePosition.getBlackPosition(), allWallsOnBoard)){
+        if (!pathExistenceCheck(gamePosition.getBlackPosition(), allWallsOnBoard)) {
             return false;
         }
         return true;
@@ -1000,7 +1001,7 @@ public class QuoridorController {
      * @return true if the path exists and false if not
      * @author Daniel Wu
      */
-    public static Boolean pathExistenceCheck(PlayerPosition pos, ArrayList<Wall> allWallsOnBoard){
+    public static Boolean pathExistenceCheck(PlayerPosition pos, ArrayList<Wall> allWallsOnBoard) {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         GamePosition gamePosition = quoridor.getCurrentGame().getCurrentPosition();
         //Setup graph
@@ -1009,14 +1010,14 @@ public class QuoridorController {
         int row = 0;
         int col = 0;
         Direction dir = Direction.Horizontal;
-        for (Wall wall : allWallsOnBoard){
+        for (Wall wall : allWallsOnBoard) {
             row = wall.getMove().getTargetTile().getRow();
             col = wall.getMove().getTargetTile().getColumn();
             dir = wall.getMove().getWallDirection();
-            if (dir == Direction.Horizontal){
+            if (dir == Direction.Horizontal) {
                 graph.removeEdge((row - 1) * 9 + col - 1, (row) * 9 + col - 1); //0-9
                 graph.removeEdge((row - 1) * 9 + col, (row) * 9 + col); //1-10
-            } else if (dir == Direction.Vertical){
+            } else if (dir == Direction.Vertical) {
                 graph.removeEdge((row - 1) * 9 + col - 1, (row - 1) * 9 + col); //0-1
                 graph.removeEdge((row) * 9 + col - 1, (row) * 9 + col); //9-10
             }
@@ -1025,26 +1026,26 @@ public class QuoridorController {
         int tileID = (pos.getTile().getRow() - 1) * 9 + pos.getTile().getColumn() - 1;
         ArrayList<Integer> stack = new ArrayList<Integer>();
         ArrayList<Integer> visited = new ArrayList<Integer>();
-        if (pos.getPlayer().hasGameAsWhite()){
+        if (pos.getPlayer().hasGameAsWhite()) {
             //Add all the tiles on the top row
-            for (int i=0; i<9; i++){
+            for (int i = 0; i < 9; i++) {
                 stack.add(0, i);
             }
-        } else if (pos.getPlayer().hasGameAsBlack()){
+        } else if (pos.getPlayer().hasGameAsBlack()) {
             //Add all the tiles on the bottom row
-            for (int i=0; i<9; i++){
+            for (int i = 0; i < 9; i++) {
                 stack.add(0, i + 72);
             }
         }
-        while (!stack.isEmpty()){
+        while (!stack.isEmpty()) {
             int node = stack.remove(0);
-            if (node == tileID){
+            if (node == tileID) {
                 return true;
             }
-            if (!visited.contains(node)){
+            if (!visited.contains(node)) {
                 visited.add(node);
-                for (int adjacentNode : graph.getNodes().get(node)){
-                    if(!visited.contains(adjacentNode)){
+                for (int adjacentNode : graph.getNodes().get(node)) {
+                    if (!visited.contains(adjacentNode)) {
                         stack.add(0, adjacentNode);
                     }
                 }
@@ -1059,18 +1060,18 @@ public class QuoridorController {
      * @return true if successfully initialized replay mode
      * @author Daniel Wu
      */
-    public static Boolean initializeReplayMode(){
+    public static Boolean initializeReplayMode() {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         Game currentGame = quoridor.getCurrentGame();
         boolean createUsers = true;
-        if (currentGame == null){
+        if (currentGame == null) {
             currentGame = new Game(GameStatus.Replay, Game.MoveMode.PlayerMove, quoridor);
             User user1 = null;
             User user2 = null;
 
             //Check if the temp user name already exists
-            for (User user : quoridor.getUsers()){
-                if ((user.getName() == "user1") || (user.getName() == "user2")){
+            for (User user : quoridor.getUsers()) {
+                if ((user.getName() == "user1") || (user.getName() == "user2")) {
                     createUsers = false;
                 }
 
@@ -1107,42 +1108,47 @@ public class QuoridorController {
             currentGame.setGameStatus(GameStatus.Replay);
         }
 
-        if (currentGame.getGameStatus() != GameStatus.Replay){
+        if (currentGame.getGameStatus() != GameStatus.Replay) {
             return false;
         }
         return true;
     }
 
     /**
-     *
      * @return true if game can be continued and sets state to running, false if game is already won
      * @author Daniel Wu
      */
-    public static Boolean continueGame(){
+    public static Boolean continueGame() {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         Game currentGame = quoridor.getCurrentGame();
 
         //If the game is won, then can't continue
         if ((currentGame.getGameStatus() == GameStatus.BlackWon) || (currentGame.getGameStatus() == GameStatus.WhiteWon)
-                || (currentGame.getGameStatus() == GameStatus.Draw)){
+                || (currentGame.getGameStatus() == GameStatus.Draw)) {
             currentGame.setGameStatus(GameStatus.Replay);
             return false;
         }
 
         //Set gamePosition to current state and restart clock + setup state machine, then move to the in-game page
         currentGame.setGameStatus(GameStatus.Running);
-        int index = currentGame.getPositions().indexOf(currentGame.getCurrentPosition());
-        if (index != 0){
-            int moveIndex = index - 1;
-            int roundNumber = currentGame.getMoves().get(moveIndex).getRoundNumber();
-            if (roundNumber == 1){
-                currentGame.getCurrentPosition().setPlayerToMove(currentGame.getWhitePlayer());
-            } else if (roundNumber == 2){
-                currentGame.getCurrentPosition().setPlayerToMove(currentGame.getBlackPlayer());
-            }
-        } else {
+//        int index = currentGame.getPositions().indexOf(currentGame.getCurrentPosition());
+        int index = currentGame.getCurrentPosition().getId();
+        if ((index % 2) == 0){
+            currentGame.getCurrentPosition().setPlayerToMove(currentGame.getBlackPlayer());
+        } else if ((index % 2) == 1){
             currentGame.getCurrentPosition().setPlayerToMove(currentGame.getWhitePlayer());
         }
+//        if (index != 0) {
+//            int moveIndex = index - 1;
+//            int roundNumber = currentGame.getMoves().get(moveIndex).getRoundNumber();
+//            if (roundNumber == 1) {
+//                currentGame.getCurrentPosition().setPlayerToMove(currentGame.getWhitePlayer());
+//            } else if (roundNumber == 2) {
+//                currentGame.getCurrentPosition().setPlayerToMove(currentGame.getBlackPlayer());
+//            }
+//        } else if (index == 0){
+//            currentGame.getCurrentPosition().setPlayerToMove(currentGame.getWhitePlayer());
+//        }
         deleteRemainingMoves();
         return true;
     }
@@ -1152,24 +1158,26 @@ public class QuoridorController {
      *
      * @author Daniel Wu
      */
-    public static void deleteRemainingMoves(){
+    public static void deleteRemainingMoves() {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         Game currentGame = quoridor.getCurrentGame();
         //Get the index of the current game position
         int index = currentGame.getPositions().indexOf(currentGame.getCurrentPosition());
 
         //Now delete all the game positions until we reach the index
-        if (index != 0){
-            int count = currentGame.getPositions().size() - 1;
-            while(count != index){
+        int count = currentGame.getPositions().size() - 1;
+        while (count != index) {
+            if (count == 1){
                 currentGame.getPositions().get(count).delete();
-                currentGame.getMoves().get(count -2).delete();
+                count--;
+            } else {
+                currentGame.getPositions().get(count).delete();
+                currentGame.getMoves().get(count - 2).delete();
                 count--;
             }
-        } else if (index == 0){
-            currentGame.getPositions().get(1).delete();
         }
         System.out.println(currentGame.getPositions().size());
+        System.out.println(currentGame.getMoves().size());
         System.out.println(index);
         Player player = currentGame.getCurrentPosition().getPlayerToMove();
         Player whitePlayer = quoridor.getCurrentGame().getWhitePlayer();
@@ -1182,21 +1190,19 @@ public class QuoridorController {
         if (player.equals(quoridor.getCurrentGame().getBlackPlayer())) {
             Player tmp = quoridor.getCurrentGame().getWhitePlayer();
 
-            GamePosition nextGamePosition = new GamePosition(index+1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
+            GamePosition nextGamePosition = new GamePosition(index + 1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
             quoridor.getCurrentGame().setCurrentPosition(nextGamePosition);
-            for(Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()){
-                if(wall.hasMove()){
+            for (Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()) {
+                if (wall.hasMove()) {
                     nextGamePosition.addWhiteWallsOnBoard(wall);
-                }
-                else{
+                } else {
                     nextGamePosition.addWhiteWallsInStock(wall);
                 }
             }
-            for(Wall wall : quoridor.getCurrentGame().getBlackPlayer().getWalls()){
-                if(wall.hasMove()){
+            for (Wall wall : quoridor.getCurrentGame().getBlackPlayer().getWalls()) {
+                if (wall.hasMove()) {
                     nextGamePosition.addBlackWallsOnBoard(wall);
-                }
-                else{
+                } else {
                     nextGamePosition.addBlackWallsInStock(wall);
                 }
             }
@@ -1204,20 +1210,18 @@ public class QuoridorController {
         } else {
             Player tmp = quoridor.getCurrentGame().getBlackPlayer();
 
-            GamePosition nextGamePosition = new GamePosition(index+1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
-            for(Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()){
-                if(wall.hasMove()){
+            GamePosition nextGamePosition = new GamePosition(index + 1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
+            for (Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()) {
+                if (wall.hasMove()) {
                     nextGamePosition.addWhiteWallsOnBoard(wall);
-                }
-                else{
+                } else {
                     nextGamePosition.addWhiteWallsInStock(wall);
                 }
             }
-            for(Wall wall : quoridor.getCurrentGame().getBlackPlayer().getWalls()){
-                if(wall.hasMove()){
+            for (Wall wall : quoridor.getCurrentGame().getBlackPlayer().getWalls()) {
+                if (wall.hasMove()) {
                     nextGamePosition.addBlackWallsOnBoard(wall);
-                }
-                else{
+                } else {
                     nextGamePosition.addBlackWallsInStock(wall);
                 }
             }
@@ -1299,6 +1303,7 @@ public class QuoridorController {
      * Helper method to reset the GUI wall direction and border color to their initial values
      * Vertical direction
      * Black border
+     *
      * @param r
      */
     public static void resetGUIWall(Rectangle r) {
@@ -1307,7 +1312,7 @@ public class QuoridorController {
 
         double curWidth = r.getWidth();
         double curHeight = r.getHeight();
-        double w2h = curWidth/curHeight;
+        double w2h = curWidth / curHeight;
 
         if (w2h > 1) {
             r.setWidth(curHeight);
@@ -1487,7 +1492,7 @@ public class QuoridorController {
      * This method saves a game into a file whose name is specified, but not its path, and whose game is provided.
      * It returns true when serialization of the game is successful and false when unsuccessful.
      *
-     * @param filename  (no extension will be added)
+     * @param filename (no extension will be added)
      * @param game
      * @return savingStatus enum
      * @throws IOException
@@ -1571,7 +1576,7 @@ public class QuoridorController {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         int gamePositionId;
         gamePositionId = quoridor.getCurrentGame().getPositions().size();
-        gamePositionId = quoridor.getCurrentGame().getPosition(gamePositionId-1).getId();
+        gamePositionId = quoridor.getCurrentGame().getPosition(gamePositionId - 1).getId();
 
         //Create new player positions
         Player whitePlayer = quoridor.getCurrentGame().getWhitePlayer();
@@ -1585,21 +1590,19 @@ public class QuoridorController {
         if (player.equals(quoridor.getCurrentGame().getBlackPlayer())) {
             Player tmp = quoridor.getCurrentGame().getWhitePlayer();
 
-            GamePosition nextGamePosition = new GamePosition(gamePositionId+1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
+            GamePosition nextGamePosition = new GamePosition(gamePositionId + 1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
             quoridor.getCurrentGame().setCurrentPosition(nextGamePosition);
-            for(Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()){
-                if(wall.hasMove()){
+            for (Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()) {
+                if (wall.hasMove()) {
                     nextGamePosition.addWhiteWallsOnBoard(wall);
-                }
-                else{
+                } else {
                     nextGamePosition.addWhiteWallsInStock(wall);
                 }
             }
-            for(Wall wall : quoridor.getCurrentGame().getBlackPlayer().getWalls()){
-                if(wall.hasMove()){
+            for (Wall wall : quoridor.getCurrentGame().getBlackPlayer().getWalls()) {
+                if (wall.hasMove()) {
                     nextGamePosition.addBlackWallsOnBoard(wall);
-                }
-                else{
+                } else {
                     nextGamePosition.addBlackWallsInStock(wall);
                 }
             }
@@ -1607,20 +1610,18 @@ public class QuoridorController {
         } else {
             Player tmp = quoridor.getCurrentGame().getBlackPlayer();
 
-            GamePosition nextGamePosition = new GamePosition(gamePositionId+1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
-            for(Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()){
-                if(wall.hasMove()){
+            GamePosition nextGamePosition = new GamePosition(gamePositionId + 1, whitePosition, blackPosition, tmp, quoridor.getCurrentGame());
+            for (Wall wall : quoridor.getCurrentGame().getWhitePlayer().getWalls()) {
+                if (wall.hasMove()) {
                     nextGamePosition.addWhiteWallsOnBoard(wall);
-                }
-                else{
+                } else {
                     nextGamePosition.addWhiteWallsInStock(wall);
                 }
             }
-            for(Wall wall : quoridor.getCurrentGame().getBlackPlayer().getWalls()){
-                if(wall.hasMove()){
+            for (Wall wall : quoridor.getCurrentGame().getBlackPlayer().getWalls()) {
+                if (wall.hasMove()) {
                     nextGamePosition.addBlackWallsOnBoard(wall);
-                }
-                else{
+                } else {
                     nextGamePosition.addBlackWallsInStock(wall);
                 }
             }
@@ -1632,10 +1633,11 @@ public class QuoridorController {
 
     /**
      * Controller mehtod to jump to start position of the game while in replayMode
-     * @author Alex Masciotra
+     *
      * @param quoridor
+     * @author Alex Masciotra
      */
-    public static void jumpToStart(Quoridor quoridor){
+    public static void jumpToStart(Quoridor quoridor) {
 
         List<GamePosition> gamePositions = quoridor.getCurrentGame().getPositions();
 
@@ -1646,18 +1648,18 @@ public class QuoridorController {
     }
 
     /**
-     * @author Matthias Arabian
      * @return whether or not the resign has succeeded
      * Sets the game status to [Player]Won, and ending the game.
+     * @author Matthias Arabian
      */
-    public static boolean initiateToResign(){
+    public static boolean initiateToResign() {
         if (getColorOfPlayerToMove(QuoridorApplication.getQuoridor()).equals("black"))
             return getCurrentGame().setGameStatus(GameStatus.WhiteWon);
         else
             return getCurrentGame().setGameStatus(GameStatus.BlackWon);
     }
 
-    public static void setGameToNotRunning(){
+    public static void setGameToNotRunning() {
         //set game to initializing b/c that state can be used as a flag to detect that a game has ended.
         Quoridor q = QuoridorApplication.getQuoridor();
 
@@ -1668,11 +1670,12 @@ public class QuoridorController {
         }
         g.setGameStatus(GameStatus.Initializing); //initializing does not occur once game is started, so we can use it as a flag to decrate that a game is not running but whose results are still unknown
     }
+
     /**
      * @author Matthias Arabian
      * Get the final results from the model. Send those to the GUI to display.
      */
-    public static void displayFinalResults(){
+    public static void displayFinalResults() {
         GameStatus finalResults = QuoridorController.getCurrentGame().getGameStatus();
 
         //this is the method that the view would actually run
@@ -1681,14 +1684,15 @@ public class QuoridorController {
 
     /**
      * Controller mehtod to jump to final position of the game while in replayMode
-     * @author Alex Masciotra
+     *
      * @param quoridor
+     * @author Alex Masciotra
      */
-    public static void jumpToFinal(Quoridor quoridor){
+    public static void jumpToFinal(Quoridor quoridor) {
 
         List<GamePosition> gamePositions = quoridor.getCurrentGame().getPositions();
 
-        int index  = gamePositions.size() - 2;
+        int index = gamePositions.size() - 2;
 
         GamePosition finalGamePosition = gamePositions.get(index);
 
@@ -1760,29 +1764,28 @@ public class QuoridorController {
         return color;
     }
 
-    /**Returns the row or column coordinate of current player
-     * @author David
+    /**
+     * Returns the row or column coordinate of current player
+     *
      * @param specifyRowOrCol input parameter: 0=row, 1=col
      * @return
+     * @author David
      */
     //input parameter: 0=row, 1=col
-    public static int getCurrentPawnTilePos(int specifyRowOrCol){
+    public static int getCurrentPawnTilePos(int specifyRowOrCol) {
         Quoridor quoridor = QuoridorApplication.getQuoridor();
         String colour = getColorOfPlayerToMove(quoridor);
         Tile temp;
-        if(colour.equals("white")){
+        if (colour.equals("white")) {
             temp = quoridor.getCurrentGame().getCurrentPosition().getWhitePosition().getTile();
-        }
-        else{
+        } else {
             temp = quoridor.getCurrentGame().getCurrentPosition().getBlackPosition().getTile();
         }
-        if(specifyRowOrCol==0){
+        if (specifyRowOrCol == 0) {
             return temp.getRow();
-        }
-        else if(specifyRowOrCol==1){
+        } else if (specifyRowOrCol == 1) {
             return temp.getColumn();
-        }
-        else{
+        } else {
             return -1;
         }
 
@@ -1802,29 +1805,31 @@ public class QuoridorController {
     }
 
     /**
-     * @author David
      * @param row
      * @param col
      * @return true if there is a pawn on that tile, false otherwise
+     * @author David
      */
-    public static boolean isPlayerOnTile(int row, int col){
+    public static boolean isPlayerOnTile(int row, int col) {
         int blackRow = getCurrentGame().getCurrentPosition().getBlackPosition().getTile().getRow();
         int blackCol = getCurrentGame().getCurrentPosition().getBlackPosition().getTile().getColumn();
         int whiteRow = getCurrentGame().getCurrentPosition().getWhitePosition().getTile().getRow();
         int whiteCol = getCurrentGame().getCurrentPosition().getWhitePosition().getTile().getColumn();
-        if((blackRow==row && blackCol==col)||(whiteRow==row && whiteCol==col)){
+        if ((blackRow == row && blackCol == col) || (whiteRow == row && whiteCol == col)) {
             return true;
         }
         return false;
     }
 
-    /** Feature: Identify GameDrawn, identify game won
-     *
+    /**
+     * Feature: Identify GameDrawn, identify game won
+     * <p>
      * This method is check if the game is won based on player positions and past moves.
-     * @author David
+     *
      * @return "pending" or "Drawn" or "blackWon" or "whiteWon"
+     * @author David
      */
-    public static String checkResult_replayMode(){
+    public static String checkResult_replayMode() {
         //TODO: this method needs to be called after each move (before end of turn)
         Player black = getCurrentBlackPlayer();
         Player white = getCurrentWhitePlayer();
@@ -1832,12 +1837,12 @@ public class QuoridorController {
         //check for white win
         Tile temp;
         temp = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getWhitePosition().getTile();
-        if(temp.getRow() == 1){
+        if (temp.getRow() == 1) {
             return "whiteWon";
         }
         //check for black win
         temp = QuoridorApplication.getQuoridor().getCurrentGame().getCurrentPosition().getBlackPosition().getTile();
-        if(temp.getRow()==9){
+        if (temp.getRow() == 9) {
             return "blackWon";
         }
         //check for draw
@@ -1845,50 +1850,50 @@ public class QuoridorController {
 
         int lastMoveNum = getCurrentGame().getMoves().size();
         Game current = getCurrentGame();
-        if(lastMoveNum < 9) return "";
+        if (lastMoveNum < 9) return "";
         boolean currentPlayerRepeats = false;
         boolean opposingPlayerRepeats = false;
         //analyzing current player's past history
-        Move lastCurrent = getCurrentGame().getMove(lastMoveNum-1);//last move by current player
-        Move thirdLastCurrent = getCurrentGame().getMove(lastMoveNum-5);//third last move by current player
-        Move fifthLastCurrent = getCurrentGame().getMove(lastMoveNum-9);//fifth last move by current player
+        Move lastCurrent = getCurrentGame().getMove(lastMoveNum - 1);//last move by current player
+        Move thirdLastCurrent = getCurrentGame().getMove(lastMoveNum - 5);//third last move by current player
+        Move fifthLastCurrent = getCurrentGame().getMove(lastMoveNum - 9);//fifth last move by current player
         //only stepmove can lead to a draw
-        if(lastCurrent instanceof StepMove && thirdLastCurrent instanceof StepMove && fifthLastCurrent instanceof StepMove){
-            if(lastCurrent.getTargetTile() == thirdLastCurrent.getTargetTile() && lastCurrent.getTargetTile() == fifthLastCurrent.getTargetTile()){
+        if (lastCurrent instanceof StepMove && thirdLastCurrent instanceof StepMove && fifthLastCurrent instanceof StepMove) {
+            if (lastCurrent.getTargetTile() == thirdLastCurrent.getTargetTile() && lastCurrent.getTargetTile() == fifthLastCurrent.getTargetTile()) {
                 currentPlayerRepeats = true;
             }
         }
-        Move secondLastOppo = getCurrentGame().getMove(lastMoveNum-4);
-        Move fourthLastOppo = getCurrentGame().getMove(lastMoveNum-8);
-        if(secondLastOppo instanceof StepMove && fourthLastOppo instanceof StepMove){
-            if(secondLastOppo.getTargetTile() == fourthLastOppo.getTargetTile()){
+        Move secondLastOppo = getCurrentGame().getMove(lastMoveNum - 4);
+        Move fourthLastOppo = getCurrentGame().getMove(lastMoveNum - 8);
+        if (secondLastOppo instanceof StepMove && fourthLastOppo instanceof StepMove) {
+            if (secondLastOppo.getTargetTile() == fourthLastOppo.getTargetTile()) {
                 opposingPlayerRepeats = true;
 
             }
         }
-        if(currentPlayerRepeats && opposingPlayerRepeats){
+        if (currentPlayerRepeats && opposingPlayerRepeats) {
             return "Drawn";
         }
         return "";
     }
 
-    public static String checkResult(){
+    public static String checkResult() {
         //TODO: this method needs to be called after each move (before end of turn)
         Player black = getCurrentBlackPlayer();
         Player white = getCurrentWhitePlayer();
 
         //check for white win
-        if(getPlayerOfCurrentTurn().equals(white)){
+        if (getPlayerOfCurrentTurn().equals(white)) {
             int x = getCurrentPawnTilePos(0);
-            if(getCurrentPawnTilePos(0)==1 ){
+            if (getCurrentPawnTilePos(0) == 1) {
                 getCurrentGame().setGameStatus(GameStatus.WhiteWon);
                 endGame();
                 return "whiteWon";
             }
         }
         //check for black win
-        else{
-            if(getCurrentPawnTilePos(0)==9){
+        else {
+            if (getCurrentPawnTilePos(0) == 9) {
                 getCurrentGame().setGameStatus(GameStatus.BlackWon);
                 endGame();
                 return "blackWon";
@@ -1899,28 +1904,28 @@ public class QuoridorController {
 
         int lastMoveNum = getCurrentGame().getMoves().size();
         Game current = getCurrentGame();
-        if(lastMoveNum < 9) return "";
+        if (lastMoveNum < 9) return "";
         boolean currentPlayerRepeats = false;
         boolean opposingPlayerRepeats = false;
         //analyzing current player's past history
-        Move lastCurrent = getCurrentGame().getMove(lastMoveNum-1);//last move by current player
-        Move thirdLastCurrent = getCurrentGame().getMove(lastMoveNum-5);//third last move by current player
-        Move fifthLastCurrent = getCurrentGame().getMove(lastMoveNum-9);//fifth last move by current player
+        Move lastCurrent = getCurrentGame().getMove(lastMoveNum - 1);//last move by current player
+        Move thirdLastCurrent = getCurrentGame().getMove(lastMoveNum - 5);//third last move by current player
+        Move fifthLastCurrent = getCurrentGame().getMove(lastMoveNum - 9);//fifth last move by current player
         //only stepmove can lead to a draw
-        if(lastCurrent instanceof StepMove && thirdLastCurrent instanceof StepMove && fifthLastCurrent instanceof StepMove){
-            if(lastCurrent.getTargetTile() == thirdLastCurrent.getTargetTile() && lastCurrent.getTargetTile() == fifthLastCurrent.getTargetTile()){
+        if (lastCurrent instanceof StepMove && thirdLastCurrent instanceof StepMove && fifthLastCurrent instanceof StepMove) {
+            if (lastCurrent.getTargetTile() == thirdLastCurrent.getTargetTile() && lastCurrent.getTargetTile() == fifthLastCurrent.getTargetTile()) {
                 currentPlayerRepeats = true;
             }
         }
-        Move secondLastOppo = getCurrentGame().getMove(lastMoveNum-4);
-        Move fourthLastOppo = getCurrentGame().getMove(lastMoveNum-8);
-        if(secondLastOppo instanceof StepMove && fourthLastOppo instanceof StepMove){
-            if(secondLastOppo.getTargetTile() == fourthLastOppo.getTargetTile()){
+        Move secondLastOppo = getCurrentGame().getMove(lastMoveNum - 4);
+        Move fourthLastOppo = getCurrentGame().getMove(lastMoveNum - 8);
+        if (secondLastOppo instanceof StepMove && fourthLastOppo instanceof StepMove) {
+            if (secondLastOppo.getTargetTile() == fourthLastOppo.getTargetTile()) {
                 opposingPlayerRepeats = true;
 
             }
         }
-        if(currentPlayerRepeats && opposingPlayerRepeats){
+        if (currentPlayerRepeats && opposingPlayerRepeats) {
             getCurrentGame().setGameStatus(GameStatus.Draw);
             endGame();
             return "Drawn";
@@ -1928,22 +1933,24 @@ public class QuoridorController {
         return "";
     }
 
-    /**Features: identify game won
+    /**
+     * Features: identify game won
      * This method is called by the playerTimer object if timer reaches zero
-     * @author David
+     *
      * @param player whose timer reaches zero
+     * @author David
      */
-    public static void timerUp(Player player){
-        if(player.hasGameAsWhite()){
+    public static void timerUp(Player player) {
+        if (player.hasGameAsWhite()) {
             getCurrentGame().setGameStatus(GameStatus.BlackWon);
             endGame();
-        }
-        else{
+        } else {
             getCurrentGame().setGameStatus(GameStatus.WhiteWon);
             endGame();
         }
     }
-    private static void endGame(){
+
+    private static void endGame() {
         GameStatus results = getCurrentGame().getGameStatus();
 
         if (QuoridorApplication.getViewInterface() == null)
@@ -1952,38 +1959,40 @@ public class QuoridorController {
         QuoridorApplication.getViewInterface().displayFinalResults(results);
     }
 
-    /**Returns result of game as a string
+    /**
+     * Returns result of game as a string
      * Features: identify game won, identify game drawn
-     * @author David
+     *
      * @return
+     * @author David
      */
-    public static String getGameResult(){
+    public static String getGameResult() {
         GameStatus current = getCurrentGame().getGameStatus();
-        if(current.equals(GameStatus.BlackWon)){
+        if (current.equals(GameStatus.BlackWon)) {
             return "blackWon";
         }
-        if(current.equals(GameStatus.WhiteWon)){
+        if (current.equals(GameStatus.WhiteWon)) {
             return "whiteWon";
         }
-        if(current.equals(GameStatus.Draw)){
+        if (current.equals(GameStatus.Draw)) {
             return "Drawn";
         }
         return "pending";
     }
 
 
-
     /**
      * Instantiates a new board if quoridor does not currently have a board.
      * Returns true if quoridor, indeed, didn't have a board; false if quoridor already had a board and thus this method did not create any new board.
-     * This basically reduces the scope of what Thomas's initializeBoard function does. 
-     * @author Edwin Pan
+     * This basically reduces the scope of what Thomas's initializeBoard function does.
+     *
      * @return
+     * @author Edwin Pan
      */
     public static boolean createBoard() {
-    	if(QuoridorApplication.getQuoridor().hasBoard()) {
-    		return false;
-    	}
+        if (QuoridorApplication.getQuoridor().hasBoard()) {
+            return false;
+        }
         Board board = new Board(QuoridorApplication.getQuoridor());
         for (int i = 1; i <= 9; i++) {
             for (int j = 1; j <= 9; j++) {
